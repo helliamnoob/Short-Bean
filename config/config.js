@@ -1,4 +1,4 @@
-require("dotenv").config();
+ssrequire("dotenv").config();
 const env = process.env;
 const development = {
   username: env.MYSQL_USERNAME,
