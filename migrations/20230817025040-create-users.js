@@ -9,30 +9,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.BIGINT
       },
-      StudentInfo: {
-        allowNull: true,
-        type: Sequelize.BIGINT,
-        references: {
-          model: "StudentInfos",
-          key: "studentId",
-        },
-      },
-     TutorInfo: {
-        allowNull: true,
-        type: Sequelize.BIGINT,
-        references: {
-          model: "TutorInfos",
-          key: "tutorId",
-        },
-      },
-      AdminId: {
-        allowNull: false,
-        type: Sequelize.BIGINT,
-        references: {
-          model: "Admins",
-          key: "adminId",
-        },
-      },
       nickname: {
         allowNull: false,
         type: Sequelize.STRING

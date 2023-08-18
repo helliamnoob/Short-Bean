@@ -9,6 +9,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.BIGINT
       },
+      UserId: {
+        allowNull: false,
+        type: Sequelize.BIGINT,
+        references: {
+          model: "Users",
+          key: "userId",
+        },
+      },
       schoolName: {
         allowNull: false,
         type: Sequelize.STRING
@@ -17,9 +25,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING(200)
       },
-      studentIdcard: {
+      status: {
         allowNull: false,
-        type: Sequelize.STRING
+        defaultValue: '처리중',
+        type: Sequelize.ENUM('처리중','승인','반려')
       },
       createdAt: {
         allowNull: false,

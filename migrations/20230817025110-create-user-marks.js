@@ -17,12 +17,12 @@ module.exports = {
           key: "userId",
         },
       },
-      MarkId: {
+      TutorId: {
         allowNull: false,
         type: Sequelize.BIGINT,
         references: {
-          model: "Marks",
-          key: "markId",
+          model: "TutorInfos",
+          key: "tutorId",
         },
       },
       createdAt: {

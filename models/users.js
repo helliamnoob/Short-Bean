@@ -10,17 +10,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.StudentInfos, { //  1:N 관계 설정을 합니다.
-        targetKey: 'studentId', 
-        foreignKey: 'StudentInfo', 
-      });
-      this.belongsTo(models.TutorInfos, { //  1:N 관계 설정을 합니다.
-        targetKey: 'tutorId', 
-        foreignKey: 'TutorInfo', 
-      });
-      this.belongsTo(models.Admins, { //  1:N 관계 설정을 합니다.
-        targetKey: 'adminId', 
-        foreignKey: 'AdminId', 
+      this.hasOne(models.TutorInfos, {
+        sourceKey: "userId",
+        foreignKey: "UserId",
       });
       this.hasMany(models.Posts, {
         sourceKey: "userId",
@@ -50,30 +42,6 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.BIGINT
-    },
-    StudentInfo: {
-      allowNull: true,
-      type: DataTypes.BIGINT,
-      references: {
-        model: "StudentInfos",
-        key: "studentId",
-      },
-    },
-   TutorInfo: {
-      allowNull: true,
-      type: DataTypes.BIGINT,
-      references: {
-        model: "TutorInfos",
-        key: "tutorId",
-      },
-    },
-    AdminId: {
-      allowNull: false,
-      type: DataTypes.BIGINT,
-      references: {
-        model: "Admins",
-        key: "adminId",
-      },
     },
     nickname: {
       allowNull: false,

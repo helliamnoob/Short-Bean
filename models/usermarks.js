@@ -14,9 +14,9 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'userId', 
         foreignKey: 'UserId', 
       });
-      this.belongsTo(models.Marks, { //  1:N 관계 설정을 합니다.
-        targetKey: 'markId', 
-        foreignKey: 'MarkId', 
+      this.belongsTo(models.TutorInfos, { //  1:N 관계 설정을 합니다.
+        targetKey: 'tutorId', 
+        foreignKey: 'TutorId', 
       });
     }
   }
@@ -35,12 +35,12 @@ module.exports = (sequelize, DataTypes) => {
         key: "userId",
       },
     },
-    MarkId: {
+    TutorId: {
       allowNull: false,
       type: DataTypes.BIGINT,
       references: {
-        model: "Marks",
-        key: "markId",
+        model: "TutorInfos",
+        key: "tutorId",
       },
     },
     createdAt: {

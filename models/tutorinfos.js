@@ -10,9 +10,17 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.hasone(models.Users, {
+      this.belongsTo(models.Users, { //  1:N 관계 설정을 합니다.
+        targetKey: 'userId', 
+        foreignKey: 'UserId', 
+      });
+      this.hasMany(models.UserMarks, {
         sourceKey: "tutorId",
-        foreignKey: "TutorInfo",
+        foreignKey: "TutorId",
+      });
+      this.hasMany(models.Chats, {
+        sourceKey: "tutorId",
+        foreignKey: "TutorId",
       });
     }
   }
@@ -23,6 +31,14 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.BIGINT
     },
+    UserId: {
+      allowNull: false,
+      type: DataTypes.BIGINT,
+      references: {
+        model: "Users",
+        key: "userId",
+      },
+    },
     schoolName: {
       allowNull: false,
       type: DataTypes.STRING
@@ -31,9 +47,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.STRING(200)
     },
-    studentIdcard: {
+    status: {
       allowNull: false,
-      type: DataTypes.STRING
+      defaultValue: '처리중',
+      type: DataTypes.ENUM('처리중','승인','반려')
     },
     createdAt: {
       allowNull: false,

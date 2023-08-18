@@ -53,7 +53,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     reportStatus: {
       allowNull: false,
-      type: DataTypes.ENUM('처리중', '처리완료')
+      defaultValue: '처리중',
+      type: DataTypes.ENUM('처리중', '처리완료','처리취소')
     },
     createdAt: {
       allowNull: false,

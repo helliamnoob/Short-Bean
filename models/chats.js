@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'userId', 
         foreignKey: 'UserId', 
       });
+      this.belongsTo(models.TutorInfos, { //  1:N 관계 설정을 합니다.
+        targetKey: 'tutorId', 
+        foreignKey: 'TutorId', 
+      });
     }
   }
   Chats.init({
@@ -30,6 +34,19 @@ module.exports = (sequelize, DataTypes) => {
         model: "Users",
         key: "userId",
       },
+    },
+    TutorId: {
+      allowNull: false,
+      type: DataTypes.BIGINT,
+      references: {
+        model: "TutorInfos",
+        key: "tutorId",
+      },
+    },
+    chatStatus: {
+      allowNull: false,
+      defaultValue: '채팅중',
+      type: DataTypes.ENUM('채팅중','나가기')
     },
     chatRoomId: {
       allowNull: false,

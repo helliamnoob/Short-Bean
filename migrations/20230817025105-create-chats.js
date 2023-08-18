@@ -17,9 +17,22 @@ module.exports = {
           key: "userId",
         },
       },
+      TutorId: {
+        allowNull: false,
+        type: Sequelize.BIGINT,
+        references: {
+          model: "TutorInfos",
+          key: "tutorId",
+        },
+      },
       chatRoomId: {
         allowNull: false,
         type: Sequelize.BIGINT
+      },
+      chatStatus: {
+        allowNull: false,
+        defaultValue: '채팅중',
+        type: Sequelize.ENUM('채팅중','나가기')
       },
       createdAt: {
         allowNull: false,
