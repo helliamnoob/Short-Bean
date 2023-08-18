@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class TutorInfos extends Model {
+  class FaceChats extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -14,22 +14,14 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'userId', 
         foreignKey: 'UserId', 
       });
-      this.hasMany(models.UserMarks, {
-        sourceKey: "tutorId",
-        foreignKey: "TutorId",
-      });
-      this.hasMany(models.Chats, {
-        sourceKey: "tutorId",
-        foreignKey: "TutorId",
-      });
-      this.hasMany(models.FaceChats, {
-        sourceKey: "tutorId",
-        foreignKey: "TutorId",
+      this.belongsTo(models.TutorInfos, { //  1:N 관계 설정을 합니다.
+        targetKey: 'tutorId', 
+        foreignKey: 'TutorId', 
       });
     }
   }
-  TutorInfos.init({
-    tutorId: {
+  FaceChats.init({
+    chatId: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
@@ -43,18 +35,22 @@ module.exports = (sequelize, DataTypes) => {
         key: "userId",
       },
     },
-    schoolName: {
+    TutorId: {
       allowNull: false,
-      type: DataTypes.STRING
+      type: DataTypes.BIGINT,
+      references: {
+        model: "TutorInfos",
+        key: "tutorId",
+      },
     },
-    career: {
+    faceChatRoomId: {
       allowNull: false,
-      type: DataTypes.STRING(200)
+      type: DataTypes.BIGINT
     },
-    status: {
+    faceChatStatus: {
       allowNull: false,
-      defaultValue: '로그아웃',
-      type: DataTypes.ENUM('로그아웃','로그인')
+      defaultValue: '채팅중',
+      type: DataTypes.ENUM('채팅중','나가기')
     },
     createdAt: {
       allowNull: false,
@@ -68,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'TutorInfos',
+    modelName: 'FaceChats',
   });
-  return TutorInfos;
+  return FaceChats;
 };

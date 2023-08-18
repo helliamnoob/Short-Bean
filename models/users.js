@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: "userId",
         foreignKey: "UserId",
       });
+      this.hasMany(models.FaceChats, {
+        sourceKey: "userId",
+        foreignKey: "UserId",
+      });
       this.hasMany(models.Reviews, {
         sourceKey: "userId",
         foreignKey: "UserId",

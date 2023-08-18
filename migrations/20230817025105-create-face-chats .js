@@ -2,8 +2,8 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('TutorInfos', {
-      tutorId: {
+    await queryInterface.createTable('FaceChats', {
+      faceChatId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -17,18 +17,22 @@ module.exports = {
           key: "userId",
         },
       },
-      schoolName: {
+      TutorId: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.BIGINT,
+        references: {
+          model: "TutorInfos",
+          key: "tutorId",
+        },
       },
-      career: {
+      faceChatRoomId: {
         allowNull: false,
-        type: Sequelize.STRING(200)
+        type: Sequelize.BIGINT
       },
-      status: {
+      faceChatStatus: {
         allowNull: false,
-        defaultValue: '로그아웃',
-        type: Sequelize.ENUM('로그아웃','로그인')
+        defaultValue: '채팅중',
+        type: Sequelize.ENUM('채팅중','나가기')
       },
       createdAt: {
         allowNull: false,
@@ -43,6 +47,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('TutorInfos');
+    await queryInterface.dropTable('FaceChats');
   }
 };
