@@ -1,0 +1,35 @@
+* {
+  box-sizing: border-box;
+}
+.msgLine {
+  margin: 15px;
+}
+.msgBox {
+  border: 1px solid black;
+  background: black;
+  padding: 2px 5px;
+  border-radius: 10px;
+}
+#chatContent {
+  border: 1px solid #000;
+  width: 100%;
+  height: 200px;
+  margin-bottom: 10px;
+  overflow-y: auto;
+}
+#myChat {
+  width: 100%;
+}
+#msg,
+#myChat {
+  width: 80%;
+  height: 32px;
+  border-radius: 8px;
+}
+#send {
+  width: 16%;
+  height: 34px;
+  border-radius: 50px;
+  background: black;
+  color: white;
+}
