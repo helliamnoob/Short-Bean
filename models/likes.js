@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.Posts, { //  1:N 관계 설정을 합니다.
-        targetKey: 'PostId', 
-        foreignKey: 'postId', 
+        targetKey: 'postId', 
+        foreignKey: 'PostId', 
       });  
     }
   }
