@@ -5,8 +5,8 @@ class UserMarkController {
 
     getMark = async (req, res, next) =>{
         try{
-            const {userId} = res.locals.user;
-            const marks = await this.markService.getMark(userId);
+            const {user_id} = res.locals.user;
+            const marks = await this.markService.getMark(user_id);
 
             res.status(200).json({data: marks})
         }
@@ -17,9 +17,9 @@ class UserMarkController {
 
     creatMark = async (req, res , next) => {
         try{
-            const {tutorId} = req.params;
-            const {userId} = res.locals.user;
-            const marks = await this.markService.createLike({tutorId,userId});
+            const {tutor_id} = req.params;
+            const {user_id} = res.locals.user;
+            const marks = await this.markService.createLike({tutor_id,user_id});
 
             res.satus(201).json({data:marks});
         }
@@ -29,9 +29,9 @@ class UserMarkController {
     }
     updateMark = async(req, res, next) => {
         try{
-            const {userMarId, tutorId} = req.params;
-            const {userId} = res.locals.user;
-            const marks = await this.markService.updateMark({userMarkId, tutorId, userId});
+            const {user_mark_id, tutor_id} = req.params;
+            const {user_id} = res.locals.user;
+            const marks = await this.markService.updateMark({user_mark_id, tutor_id, user_id});
             
             res.status(200).json({data:marks});
         }
@@ -41,10 +41,10 @@ class UserMarkController {
     }
     deleteMark = async(req, res,next) => {
         try{
-            const {userMarkId} = req.params;
-            const {userId} = res.locals.user;
+            const {user_mark_id} = req.params;
+            const {user_id} = res.locals.user;
 
-            const marks = await this.markService.deleteMark({userMarkId,userId});
+            const marks = await this.markService.deleteMark({user_mark_id,user_id});
             
             res.status(200).json({data: marks});
         }

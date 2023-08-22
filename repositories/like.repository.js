@@ -3,21 +3,21 @@ const { Op } = require('sequelize');
 
 
 class LikeRepository {
-    createLike = async ({postId, userId}) => {
+    createLike = async ({post_id, user_id}) => {
         const likeData = await Like.create({
-            postId,
-            userId,
+            post_id,
+            user_id,
         });
         return likeData;
     }
 
-    findLike = async ({postId, userId}) => {
-        const likeData = await Like.findOne({ [Op.and]: [{postId: postId}, {userId: userId}],},)
+    findLike = async ({post_id, user_id}) => {
+        const likeData = await Like.findOne({ [Op.and]: [{post_id: post_id}, {user_id: user_id}],},)
         return likeData;
     }
 
-    destoryLike = async ({postId, userId}) => {
-        const likeData = await Like.findOne({ [Op.and]: [{postId: postId}, {userId: userId}],},)
+    destoryLike = async ({post_id, user_id}) => {
+        const likeData = await Like.findOne({ [Op.and]: [{post_id: post_id}, {user_id: user_id}],},)
         return likeData;
     }
 

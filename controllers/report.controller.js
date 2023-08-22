@@ -5,9 +5,9 @@ class ReportController {
 
     getReport = async (req, res, next) =>{
         try{
-            const {userId} = res.locals.user;
-            const {reportId} = req.params;
-            const report = await this.reportService.getReport(reportId, userId);
+            const {user_id} = res.locals.user;
+            const {report_id} = req.params;
+            const report = await this.reportService.getReport(report_id, user_id);
             res.status(200).json({data: report})
         }
         catch(error){
@@ -17,10 +17,10 @@ class ReportController {
 
     creatReport = async (req, res , next) => {
         try{
-            const {userId} = res.locals.user;
-            const {adminId} = req.params;
-            const {reportContent, reportUserId, reportstatus} = req.body;
-            const report = await this.reportService.creatReport(adminId, userId, reportContent, reportUserId, reportstatus)
+            const {user_id} = res.locals.user;
+            const {admin_id} = req.params;
+            const {report_content, report_user_id, report_status} = req.body;
+            const report = await this.reportService.creatReport(admin_id, user_id, report_content, report_user_id, report_status)
             res.satus(201).json({data:report});
         }
         catch(error){
@@ -29,10 +29,10 @@ class ReportController {
     }
     updateReport = async(req, res, next) => {
         try{
-            const {userId} = res.locals.user;
-            const {adminId} = req.params;
-            const {reportContent} = req.body;
-            const report = await this.reportService.getReport(adminId, userId, reportContent);
+            const {user_id} = res.locals.user;
+            const {admin_id} = req.params;
+            const {report_content} = req.body;
+            const report = await this.reportService.getReport(admin_id, user_id, report_content);
 
             res.status(200).json({data:report});
         }
@@ -42,9 +42,9 @@ class ReportController {
     }
     deleteReport = async(req, res,next) => {
         try{
-            const {userId} = res.locals.user;
-            const {reportId} = req.params;
-            const report = await this.reportService.deleteReport(reportId, userId, reportContent);
+            const {user_id} = res.locals.user;
+            const {report_id} = req.params;
+            const report = await this.reportService.deleteReport(report_id, user_id, report_content);
             res.status(200).json({data: report});
         }
         catch(error){
