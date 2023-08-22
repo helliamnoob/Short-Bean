@@ -11,36 +11,36 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.Users, { //  1:N 관계 설정을 합니다.
-        targetKey: 'userId', 
-        foreignKey: 'UserId', 
+        targetKey: 'user_id', 
+        foreignKey: 'user_id', 
       });
       this.belongsTo(models.TutorInfos, { //  1:N 관계 설정을 합니다.
-        targetKey: 'tutorId', 
-        foreignKey: 'TutorId', 
+        targetKey: 'tutor_id', 
+        foreignKey: 'tutor_id', 
       });
     }
   }
   Chats.init({
-    chatId: {
+    chat_id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.BIGINT
     },
-    UserId: {
+    user_id: {
       allowNull: false,
       type: DataTypes.BIGINT,
       references: {
         model: "Users",
-        key: "userId",
+        key: "user_id",
       },
     },
-    TutorId: {
+    tutor_id: {
       allowNull: false,
       type: DataTypes.BIGINT,
       references: {
         model: "TutorInfos",
-        key: "tutorId",
+        key: "tutor_id",
       },
     },
     chatStatus: {

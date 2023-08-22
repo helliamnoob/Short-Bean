@@ -10,14 +10,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.hasMany(models.Reports, {
-        sourceKey: "adminId",
-        foreignKey: "AdminId",
-      });
     }
   }
   Admins.init({
-    adminId: {
+    admin_id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
