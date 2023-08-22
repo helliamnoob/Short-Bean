@@ -10,25 +10,25 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.belongsTo(models.Posts, {
         //  1:N 관계 설정을 합니다.
-        targetKey: 'postId',
-        foreignKey: 'PostId',
+        targetKey: 'post_id',
+        foreignKey: 'post_id',
       });
     }
   }
   Comments.init(
     {
-      commentId: {
+      comment_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.BIGINT,
       },
-      PostId: {
+      post_id: {
         allowNull: false,
         type: DataTypes.BIGINT,
         references: {
           model: 'Posts',
-          key: 'postId',
+          key: 'post_id',
         },
       },
       content: {

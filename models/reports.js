@@ -11,43 +11,31 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.Users, { //  1:N 관계 설정을 합니다.
-        targetKey: 'userId', 
-        foreignKey: 'UserId', 
-      });
-      this.belongsTo(models.Admins, { //  1:N 관계 설정을 합니다.
-        targetKey: 'adminId', 
-        foreignKey: 'AdminId', 
+        targetKey: 'user_id', 
+        foreignKey: 'user_id', 
       });
     }
   }
   Reports.init({
-    reportId: {
+    report_id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.BIGINT
     },
-    UserId: {
+    user_id: {
       allowNull: false,
       type: DataTypes.BIGINT,
       references: {
         model: "Users",
-        key: "userId",
-      },
-    },
-    AdminId: {
-      allowNull: false,
-      type: DataTypes.BIGINT,
-      references: {
-        model: "Admins",
-        key: "adminId",
+        key: "user_id",
       },
     },
     reportContent: {
       allowNull: false,
       type: DataTypes.STRING(200)
     },
-    reportedUserID: {
+    reporteduser_id: {
       allowNull: false,
       type: DataTypes.STRING
     },

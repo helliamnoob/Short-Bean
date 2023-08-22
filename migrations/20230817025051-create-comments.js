@@ -3,18 +3,18 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Comments', {
-      commentId: {
+      comment_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.BIGINT
       },
-      PostId: {
+      post_id: {
         allowNull: false,
         type: Sequelize.BIGINT,
         references: {
           model: "Posts",
-          key: "postId",
+          key: "post_id",
         },
       },
       content: {
