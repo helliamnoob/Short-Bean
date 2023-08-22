@@ -3,33 +3,25 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Reports', {
-      reportId: {
+      report_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.BIGINT
       },
-      UserId: {
+      user_id: {
         allowNull: false,
         type: Sequelize.BIGINT,
         references: {
           model: "Users",
-          key: "userId",
-        },
-      },
-      AdminId: {
-        allowNull: false,
-        type: Sequelize.BIGINT,
-        references: {
-          model: "Admins",
-          key: "adminId",
+          key: "user_id",
         },
       },
       reportContent: {
         allowNull: false,
         type: Sequelize.STRING(200)
       },
-      reportedUserID: {
+      reporteduser_id: {
         allowNull: false,
         type: Sequelize.STRING
       },
