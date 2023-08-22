@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Reports extends Model {
+  class FaceChats extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -14,10 +14,14 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'user_id', 
         foreignKey: 'user_id', 
       });
+      this.belongsTo(models.TutorInfos, { //  1:N 관계 설정을 합니다.
+        targetKey: 'tutor_id', 
+        foreignKey: 'tutor_id', 
+      });
     }
   }
-  Reports.init({
-    report_id: {
+  FaceChats.init({
+    facechat_id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
@@ -31,18 +35,22 @@ module.exports = (sequelize, DataTypes) => {
         key: "user_id",
       },
     },
-    reportContent: {
+    tutor_id: {
       allowNull: false,
-      type: DataTypes.STRING(200)
+      type: DataTypes.BIGINT,
+      references: {
+        model: "TutorInfos",
+        key: "tutor_id",
+      },
     },
-    reporteduser_id: {
+    faceChatRoom_id: {
       allowNull: false,
-      type: DataTypes.STRING
+      type: DataTypes.BIGINT
     },
-    reportStatus: {
+    faceChatStatus: {
       allowNull: false,
-      defaultValue: '처리중',
-      type: DataTypes.ENUM('처리중', '처리완료','처리취소')
+      defaultValue: '채팅중',
+      type: DataTypes.ENUM('채팅중','나가기')
     },
     createdAt: {
       allowNull: false,
@@ -56,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'Reports',
+    modelName: 'FaceChats',
   });
-  return Reports;
+  return FaceChats;
 };

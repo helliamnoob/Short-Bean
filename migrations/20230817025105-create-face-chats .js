@@ -2,8 +2,8 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Reviews', {
-      review_id: {
+    await queryInterface.createTable('FaceChats', {
+      facechat_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -17,8 +17,22 @@ module.exports = {
           key: "user_id",
         },
       },
-      reviewcontent: {
-        type: Sequelize.STRING(200)
+      tutor_id: {
+        allowNull: false,
+        type: Sequelize.BIGINT,
+        references: {
+          model: "TutorInfos",
+          key: "tutor_id",
+        },
+      },
+      faceChatRoom_id: {
+        allowNull: false,
+        type: Sequelize.BIGINT
+      },
+      faceChatStatus: {
+        allowNull: false,
+        defaultValue: '채팅중',
+        type: Sequelize.ENUM('채팅중','나가기')
       },
       createdAt: {
         allowNull: false,
@@ -33,6 +47,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Reviews');
+    await queryInterface.dropTable('FaceChats');
   }
 };

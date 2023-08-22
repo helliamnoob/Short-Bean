@@ -11,33 +11,37 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.hasOne(models.TutorInfos, {
-        sourceKey: "userId",
-        foreignKey: "UserId",
+        sourceKey: "user_id",
+        foreignKey: "user_id",
       });
       this.hasMany(models.Posts, {
-        sourceKey: "userId",
-        foreignKey: "UserId",
+        sourceKey: "user_id",
+        foreignKey: "user_id",
       });
       this.hasMany(models.Chats, {
-        sourceKey: "userId",
-        foreignKey: "UserId",
+        sourceKey: "user_id",
+        foreignKey: "user_id",
+      });
+      this.hasMany(models.FaceChats, {
+        sourceKey: "user_id",
+        foreignKey: "user_id",
       });
       this.hasMany(models.Reviews, {
-        sourceKey: "userId",
-        foreignKey: "UserId",
+        sourceKey: "user_id",
+        foreignKey: "user_id",
       });
       this.hasMany(models.Reports, {
-        sourceKey: "userId",
-        foreignKey: "UserId",
+        sourceKey: "user_id",
+        foreignKey: "user_id",
       });
       this.hasMany(models.UserMarks, {
-        sourceKey: "userId",
-        foreignKey: "UserId",
+        sourceKey: "user_id",
+        foreignKey: "user_id",
       });
     }
   }
   Users.init({
-    userId: {
+    user_id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,

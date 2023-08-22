@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.Users, { //  1:N 관계 설정을 합니다.
-        targetKey: 'userId', 
-        foreignKey: 'UserId', 
+        targetKey: 'user_id', 
+        foreignKey: 'user_id', 
       });
       this.hasMany(models.UserMarks, {
         sourceKey: "tutorId",
@@ -22,21 +22,25 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: "tutorId",
         foreignKey: "TutorId",
       });
+      this.hasMany(models.FaceChats, {
+        sourceKey: "tutorId",
+        foreignKey: "TutorId",
+      });
     }
   }
   TutorInfos.init({
-    tutorId: {
+    tutor_id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.BIGINT
     },
-    UserId: {
+    user_id: {
       allowNull: false,
       type: DataTypes.BIGINT,
       references: {
         model: "Users",
-        key: "userId",
+        key: "user_id",
       },
     },
     schoolName: {
@@ -49,8 +53,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     status: {
       allowNull: false,
-      defaultValue: '처리중',
-      type: DataTypes.ENUM('처리중','승인','반려')
+      defaultValue: '로그아웃',
+      type: DataTypes.ENUM('로그아웃','로그인')
     },
     createdAt: {
       allowNull: false,
