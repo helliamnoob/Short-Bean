@@ -3,26 +3,26 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('UserMarks', {
-      userMarkId: {
+      user_mark_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.BIGINT
       },
-      UserId: {
+      user_id: {
         allowNull: false,
         type: Sequelize.BIGINT,
         references: {
           model: "Users",
-          key: "userId",
+          key: "user_id",
         },
       },
-      TutorId: {
+      tutor_id: {
         allowNull: false,
         type: Sequelize.BIGINT,
         references: {
           model: "TutorInfos",
-          key: "tutorId",
+          key: "tutor_id",
         },
       },
       createdAt: {
