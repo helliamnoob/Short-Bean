@@ -1,76 +1,87 @@
 const socket = io();
-const welcome = document.getElementById("welcome");
-const form = welcome.querySelector("form");
-const room = document.getElementById("room");
+
+const roomList = document.getElementById("roomList");
+const enterRoomForm = roomList.querySelector("button");
+const userList = document.getElementById("userList");
+const chatBox = document.getElementById("chat");
+const availableRooms = document.getElementById("rooms");
+chatBox.hidden = true;
+
+// 입장먼저하자
+enterRoomForm.addEventListener("click", handleRoomSubmit);
+
 let roomName;
 
-room.hidden = true;
 function addMessage(message) {
-  const ul = room.querySelector("ul");
+  const ul = chatBox.querySelector("ul");
   const li = document.createElement("li");
   li.innerText = message;
   ul.appendChild(li);
 }
 
-function handleMessageSubmit(event) {
-  event.preventDefault();
-  const input = room.querySelector("#msg input");
+function handleMessageSubmit() {
+  console.log("??");
+  const input = chatBox.querySelector("#messageInput input");
   socket.emit("new_message", input.value, roomName, () => {
-    addMessage(`You: ${input.value}`);
+    addMessage(`myMessage: ${input.value}`);
   });
 }
 
-function handleNicknameSubmit(event) {
-  event.preventDefault();
-  const input = welcome.querySelector("#name input");
-  socket.emit("nickname", input.value);
-}
-
 function showRoom() {
-  welcome.hidden = true;
-  room.hidden = false;
-  const h3 = room.querySelector("h3");
+  roomList.hidden = true;
+  userList.hidden = true;
+  chatBox.hidden = false;
+  const h3 = chatBox.querySelector("h3");
   h3.innerText = `Room ${roomName}`;
-  const msg = room.querySelector("#msg");
-  msg.addEventListener("submit", handleMessageSubmit);
+  const msg = chatBox.querySelector("#messageInput button");
+  msg.addEventListener("click", handleMessageSubmit);
 }
 
 function handleRoomSubmit(event) {
   event.preventDefault();
-  const input = form.querySelector("input");
+  const input = roomList.querySelector("input");
   socket.emit("enter_room", input.value, showRoom);
   roomName = input.value;
   input.value = "";
 }
 
-form.addEventListener("submit", handleRoomSubmit);
-const name = welcome.querySelector("#name");
-name.addEventListener("submit", handleNicknameSubmit);
-
 socket.on("welcome", (user, newCount) => {
-  const h3 = room.querySelector("h3");
-  h3.innerText = `Room ${roomName} (${newCount})`;
+  const h3 = chatBox.querySelector("h3");
+  h3.innerText = `Room ${roomName} 현재 (${newCount}명)`;
   addMessage(`${user} joined!!`);
 });
 
 socket.on("bye", (user, newCount) => {
-  const h3 = room.querySelector("h3");
-  h3.innerText = `Room ${roomName} (${newCount})`;
+  const h3 = chatBox.querySelector("h3");
+  h3.innerText = `Room ${roomName} 현재 (${newCount}명)`;
   addMessage(`${user} left`);
 });
 
 socket.on("new_message", addMessage); // argument 를 조정해줄 필요가 없어서 이렇게 써도 된다
 
 socket.on("room_change", (rooms) => {
-  const roomList = welcome.querySelector("ul");
-  roomList.innerHTML = "";
-  if (rooms.lenth === 0) {
+  availableRooms.innerHTML = "";
+  if (rooms.length === 0) {
     return;
   }
   console.log(rooms);
   rooms.forEach((room) => {
     const li = document.createElement("li");
     li.innerText = room;
-    roomList.append(li);
+    availableRooms.append(li);
+  });
+});
+
+socket.on("show_users", (users) => {
+  console.log(users);
+  const ul = userList.querySelector("ul");
+  ul.innerHTML = "";
+  if (users.length === 0) {
+    return;
+  }
+  users.forEach((user) => {
+    const li = document.createElement("li");
+    li.innerHTML = `😊${user}`;
+    ul.append(li);
   });
 });

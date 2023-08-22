@@ -1,35 +1,53 @@
-* {
-  box-sizing: border-box;
+body {
+  background-color: #292c36;
+  color: white;
+  font-family: Arial, sans-serif;
 }
-.msgLine {
-  margin: 15px;
+
+#roomList,
+#userList,
+#chat {
+  background-color: #626365;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 5px;
 }
-.msgBox {
-  border: 1px solid black;
-  background: black;
-  padding: 2px 5px;
-  border-radius: 10px;
+button {
+  background-color: #292c36;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 5px;
+  color: white;
 }
-#chatContent {
-  border: 1px solid #000;
-  width: 100%;
-  height: 200px;
-  margin-bottom: 10px;
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 5px;
+}
+
+#chatWindow {
+  max-height: 300px;
   overflow-y: auto;
 }
-#myChat {
-  width: 100%;
+
+#messageInput {
+  margin-top: 20px;
 }
-#msg,
-#myChat {
-  width: 80%;
-  height: 32px;
-  border-radius: 8px;
+
+#message {
+  width: 70%;
+  padding: 5px;
 }
-#send {
-  width: 16%;
-  height: 34px;
-  border-radius: 50px;
-  background: black;
+
+#sendButton {
+  padding: 5px 10px;
+  background-color: #505060;
   color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
