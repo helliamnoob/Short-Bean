@@ -1,12 +1,22 @@
-const express = require("express");
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const authRouter = require('./routes/auth.route.js');
+const chatRouter = require('./routes/chat.route.js');
+const commentRouter = require('./routes/comment.route.js');
+const likeRouter = require('./routes/like.route.js');
+const postRouter = require('./routes/post.route.js');
+const reportRouter = require('./routes/report.route.js');
+const useMarkRouter = require('./routes/userMark.route.js');
 const app = express();
-const port = 3000;
 
-const router = require("./routes");
-
+const PORT = 3000;
 app.use(express.json());
-app.use("/api", router);
+app.use(cookieParser());
 
-app.listen(port, () => {
-  console.log(port, "포트로 서버가 열렸어요!");
+
+app.use('/api', [
+  authRouter,chatRouter,commentRouter,likeRouter,postRouter,reportRouter,useMarkRouter
+]);
+app.listen(PORT, () => {
+  console.log(PORT, '포트 번호로 서버가 실행되었습니다.');
 });
