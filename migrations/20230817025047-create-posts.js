@@ -21,9 +21,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING(200)
       },
+      
       subject: {
         allowNull: false,
         type: Sequelize.ENUM('국어', '수학','영어')
+      },
+      post_like: {
+        allowNull: false,
+        type: Sequelize.BIGINT
       },
       createdAt: {
         allowNull: false,

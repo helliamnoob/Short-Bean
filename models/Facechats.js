@@ -43,11 +43,11 @@ module.exports = (sequelize, DataTypes) => {
         key: "tutor_id",
       },
     },
-    faceChatRoom_id: {
+    facechat_room_id: {
       allowNull: false,
       type: DataTypes.BIGINT
     },
-    faceChatStatus: {
+    facechat_status: {
       allowNull: false,
       defaultValue: '채팅중',
       type: DataTypes.ENUM('채팅중','나가기')

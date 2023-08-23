@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.BIGINT
       },
-      adminName: {
+      admin_name: {
         allowNull: false,
         type: Sequelize.STRING
       },
