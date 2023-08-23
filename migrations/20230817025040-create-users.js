@@ -29,7 +29,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.BIGINT,
       },
-      birthDate: {
+      birth_date: {
         allowNull: false,
         type: Sequelize.DATE,
       },

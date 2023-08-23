@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
         key: "user_id",
       },
     },
-    schoolName: {
+    school_name: {
       allowNull: false,
       type: DataTypes.STRING
     },

@@ -17,6 +17,14 @@ module.exports = {
           key: "post_id",
         },
       },
+      user_id: {
+        allowNull: false,
+        type: Sequelize.BIGINT,
+        references: {
+          model: "Users",
+          key: "user_id",
+        },
+      },
       content: {
         allowNull: false,
         type:Sequelize.STRING(200)

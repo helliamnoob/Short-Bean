@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         key: "user_id",
       },
     },
-    reviewcontent: {
+    review_content: {
       type: DataTypes.STRING(200)
     },
     createdAt: {

@@ -25,11 +25,11 @@ module.exports = {
           key: "tutor_id",
         },
       },
-      chatRoomId: {
+      chat_room_id: {
         allowNull: false,
         type: Sequelize.BIGINT
       },
-      chatStatus: {
+      chat_status: {
         allowNull: false,
         defaultValue: '채팅중',
         type: Sequelize.ENUM('채팅중','나가기')
