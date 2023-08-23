@@ -7,42 +7,42 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
       },
       user_id: {
         allowNull: false,
         type: Sequelize.BIGINT,
         references: {
-          model: "Users",
-          key: "user_id",
+          model: 'Users',
+          key: 'user_id',
         },
       },
       report_content: {
         allowNull: false,
-        type: Sequelize.STRING(200)
+        type: Sequelize.STRING(200),
       },
       reported_user_id: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       report_status: {
         allowNull: false,
         defaultValue: '처리중',
-        type: Sequelize.ENUM('처리중', '처리완료','처리취소')
+        type: Sequelize.ENUM('처리중', '처리완료', '처리취소'),
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn("now"),
+        defaultValue: Sequelize.fn('now'),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn("now"),
-      }
+        defaultValue: Sequelize.fn('now'),
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Reports');
-  }
+  },
 };

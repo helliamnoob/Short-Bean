@@ -7,32 +7,32 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
       },
       user_id: {
         allowNull: false,
         type: Sequelize.BIGINT,
         references: {
-          model: "Users",
-          key: "user_id",
+          model: 'Users',
+          key: 'user_id',
         },
       },
       review_content: {
-        type: Sequelize.STRING(200)
+        type: Sequelize.STRING(200),
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn("now"),
+        defaultValue: Sequelize.fn('now'),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn("now"),
-      }
+        defaultValue: Sequelize.fn('now'),
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Reviews');
-  }
+  },
 };

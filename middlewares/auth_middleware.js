@@ -4,7 +4,7 @@ const { Users } = require('../models');
 module.exports = async (req, res, next) => {
   const { authorization } = req.cookies;
   if (!authorization) {
-   return res.status(400).json({ message: '토큰이 없습니다. 로그인을 해주시길 바랍니다.' });
+    return res.status(400).json({ message: '토큰이 없습니다. 로그인을 해주시길 바랍니다.' });
   }
   const [tokenType, token] = authorization.split(' ');
   if (tokenType !== 'Bearer' || !token) {
