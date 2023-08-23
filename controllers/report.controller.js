@@ -40,7 +40,7 @@ class ReportController {
             return res.status(500).json({message: error.message})
         }
     }
-    deleteReport = async(req, res,next) => {
+    deleteReport = async(req, res, next) => {
         try{
             const {user_id} = res.locals.user;
             const {report_id} = req.params;

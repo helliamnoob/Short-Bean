@@ -4,6 +4,7 @@
   "description": "내배캠 nodejs 파이널 프로젝트, 실시간 매칭 과외 사이트",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
