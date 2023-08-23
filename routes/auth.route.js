@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const middleware = require('../middlewares/auth_middleware');
 const router = express.Router();
 const { Op } = require('sequelize');
+const cache = require('node-cache');
+const cache_middleware = require("../middlewares/cache_middleware");
 require('dotenv').config();
 
 // 회원가입
@@ -34,7 +36,7 @@ router.post('/signup', async (req, res) => {
   });
 
   // 로그인
-router.post('/login', async (req, res) => {
+router.post('/login', cache_middleware ,async (req, res) => {
   const { email, password } = req.body;
   try {
     if (!email || !password) {
@@ -103,6 +105,7 @@ router.post('/login', async (req, res) => {
   //삭제
   router.delete('/signout', middleware, async (req, res) => {
     const { userId } = res.locals.user;
+    res.locals.userId = userId;
     try {
       const userFind = await Users.findOne({ where: userId });
       if (!userFind) {
@@ -119,7 +122,7 @@ router.post('/login', async (req, res) => {
     }
   });
 
-  //정보 조회
+  //나의정보 조회
   router.get('/userInfo', middleware, async (req, res) => {
     const { userId } = res.locals.user;
     try {
@@ -129,6 +132,17 @@ router.post('/login', async (req, res) => {
           message: '해당 유저가 존재하지 않습니다.',
         });
       }
+      return res.status(200).json({ user });
+    } catch {
+      res.status(500).json({ message: 'server error.' });
+    }
+  });
+
+  //개인정보 가져오기(node-cache사용)
+  router.get('/usertest',middleware,cache_middleware, async (req, res) => {
+    const { userId } = res.locals.user;
+    try {
+      const user = cache.get(userId);
       return res.status(200).json({ user });
     } catch {
       res.status(500).json({ message: 'server error.' });

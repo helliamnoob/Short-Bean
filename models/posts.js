@@ -10,29 +10,29 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.belongsTo(models.Users, {
         //  1:N 관계 설정을 합니다.
-        targetKey: 'userId',
-        foreignKey: 'UserId',
+        targetKey: 'user_id',
+        foreignKey: 'user_id',
       });
       this.hasMany(models.Comments, {
-        sourceKey: 'postId',
-        foreignKey: 'PostId',
+        sourceKey: 'post_id',
+        foreignKey: 'post_id',
       });
     }
   }
   Posts.init(
     {
-      postId: {
+      post_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.BIGINT,
       },
-      UserId: {
+      user_id: {
         allowNull: false,
         type: DataTypes.BIGINT,
         references: {
           model: 'Users',
-          key: 'userId',
+          key: 'user_id',
         },
       },
       content: {
