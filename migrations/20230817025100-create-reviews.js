@@ -17,7 +17,7 @@ module.exports = {
           key: "user_id",
         },
       },
-      reviewcontent: {
+      review_content: {
         type: Sequelize.STRING(200)
       },
       createdAt: {

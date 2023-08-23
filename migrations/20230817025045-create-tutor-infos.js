@@ -17,7 +17,7 @@ module.exports = {
           key: "user_id",
         },
       },
-      schoolName: {
+      school_name: {
         allowNull: false,
         type: Sequelize.STRING
       },

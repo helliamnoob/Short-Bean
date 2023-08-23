@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.Posts, { //  1:N 관계 설정을 합니다.
         targetKey: 'post_id', 
         foreignKey: 'post_id', 
+      });
+      this.belongsTo(models.Users, { //  1:N 관계 설정을 합니다.
+        targetKey: 'user_id', 
+        foreignKey: 'user_id', 
       });  
     }
   }
@@ -29,6 +33,14 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: "Posts",
         key: "post_id",
+      },
+    },
+    user_id: {
+      allowNull: false,
+      type: DataTypes.BIGINT,
+      references: {
+        model: "Users",
+        key: "user_id",
       },
     },
     createdAt: {
