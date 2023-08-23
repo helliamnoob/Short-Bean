@@ -3,20 +3,20 @@ const ReportRepository = require('../repositories/report.repository');
 class ReportService{
     reportRepository = new ReportRepository();
 
-    getReport = async ({reportId, userId}) => {
-        const reportData = await this.reportRepository.findReport(reportId, userId);
+    getReport = async ({report_id, user_id}) => {
+        const reportData = await this.reportRepository.findReport(report_id, user_id);
         return reportData
     }
 
-    creatReport = async ({adminId, userId, reportContent, reportUserId, reportstatus}) => {
-        const reportData = await this.reportRepository.createReport({adminId, userId, reportContent, reportUserId, reportstatus});
+    creatReport = async ({admin_id, user_id, report_content, reportuser_id, report_status}) => {
+        const reportData = await this.reportRepository.createReport({admin_id, user_id, report_content, reportuser_id, report_status});
         return reportData;
     }
-    updateReport = async ({reportId, userId, reportContent}) =>{
-        const reportData = await this.reportRepository.updateReport({reportId, userId, reportContent});
+    updateReport = async ({report_id, user_id, report_content}) =>{
+        const reportData = await this.reportRepository.updateReport({report_id, user_id, report_content});
     }
-    deleteReport = async ({reportId, userId}) => {
-        const reportData = await this.reportRepository.deleteReport({reportId, userId});
+    deleteReport = async ({report_id, user_id}) => {
+        const reportData = await this.reportRepository.deleteReport({report_id, user_id});
         return reportData;
     }
 }

@@ -44,7 +44,7 @@ class ReportController {
         try{
             const {user_id} = res.locals.user;
             const {report_id} = req.params;
-            const report = await this.reportService.deleteReport(report_id, user_id, report_content);
+            const report = await this.reportService.deleteReport(report_id, user_id);
             res.status(200).json({data: report});
         }
         catch(error){

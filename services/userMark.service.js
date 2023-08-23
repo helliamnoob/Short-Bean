@@ -8,15 +8,15 @@ class UserMarkService{
         return markData
     }
 
-    creatMark = async ({tutorId, userId}) => {
-        const markData = await this.userMarkRepository.createMark({tutorId, userId});
+    creatMark = async ({tutor_id, user_id}) => {
+        const markData = await this.userMarkRepository.createMark({tutor_id, user_id});
         return markData;
     }
-    updateMark = async ({userMarkId, tutorId, userId}) =>{
-        const markData = await this.userMarkRepository.updateMark({userMarkId, tutorId, userId});
+    updateMark = async ({user_mark_id, tutor_id, user_id}) =>{
+        const markData = await this.userMarkRepository.updateMark({user_mark_id, tutor_id, user_id});
     }
-    deleteMark = async ({userMarkId, userId}) => {
-        const markData = await this.userMarkRepository.deleteMark({userMarkId, userId});
+    deleteMark = async ({user_mark_id, user_id}) => {
+        const markData = await this.userMarkRepository.deleteMark({user_mark_id, user_id});
         return markData;
     }
 }
