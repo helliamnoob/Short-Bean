@@ -1,11 +1,12 @@
 const socket = io();
-
 const myFace = document.getElementById("myFace");
 const muteBtn = document.getElementById("mute");
 const cameraBtn = document.getElementById("camera");
 const camerasSelect = document.getElementById("cameras");
 const call = document.getElementById("call");
-
+const welcome = document.getElementById("welcome");
+const welcomeForm = welcome.querySelector("form");
+const peerFace = document.getElementById("peerFace");
 
 call.hidden = true;
 
@@ -44,6 +45,7 @@ async function getMedia(deviceId) {
     audio: true,
     video: { deviceId: { exact: deviceId } },
   };
+  
   try {
     myStream = await navigator.mediaDevices.getUserMedia(
       deviceId ? cameraConstraints : initialConstrains
@@ -94,8 +96,6 @@ muteBtn.addEventListener("click", handleMuteClick);
 cameraBtn.addEventListener("click", handleCameraClick);
 camerasSelect.addEventListener("input", handleCameraChange);
 
-const welcome = document.getElementById("welcome");
-const welcomeForm = welcome.querySelector("form");
 
 async function initCall() {
   welcome.hidden = true;

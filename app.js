@@ -1,22 +1,25 @@
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const authRouter = require('./routes/auth.route.js');
-const chatRouter = require('./routes/chat.route.js');
-const commentRouter = require('./routes/comment.route.js');
-const likeRouter = require('./routes/like.route.js');
-const postRouter = require('./routes/post.route.js');
-const reportRouter = require('./routes/report.route.js');
-const useMarkRouter = require('./routes/userMark.route.js');
+const SocketIO = require("socket.io");
+const express = require("express");
 const app = express();
+const port = 3000;
+const http = require("http");
 
-const PORT = 3000;
+const server = http.createServer(app);
+const io = SocketIO(server);
+// const router = require("./routes");
+
 app.use(express.json());
-app.use(cookieParser());
-
-
-app.use('/api', [
-  authRouter,chatRouter,commentRouter,likeRouter,postRouter,reportRouter,useMarkRouter
-]);
-app.listen(PORT, () => {
-  console.log(PORT, '포트 번호로 서버가 실행되었습니다.');
+// app.use("/api", router);
+app.set("view engine", "html");
+app.set("views", __dirname + "/public/views");
+app.set("io", io);
+app.use("/public", express.static(__dirname + "/public"));
+app.get("/", (_, res) => {
+  res.sendFile(__dirname + "/public/views/facechat.html");
 });
+server.listen(port, () => {
+  console.log(port, "포트로 서버가 열렸어요!");
+});
+
+const socketLogic = require("./socket");
+socketLogic(io);
