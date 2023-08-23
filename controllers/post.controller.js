@@ -31,9 +31,9 @@ class PostController {
 
   // 게시글 상세 조회
   getPost = async (req, res) => {
-    const { postId } = req.params;
+    const { post_id } = req.params;
     try {
-      const { code, data } = await this.postService.findPost({ postId });
+      const { code, data } = await this.postService.findPost({ post_id });
 
       if (code === 404) {
         res.status(404).json({ errorMessage: '존재하는 게시글이 없습니다.' });
@@ -47,20 +47,19 @@ class PostController {
   // 게시글 생성
   createPost = async (req, res) => {
     try {
-      const { image, content, subject } = req.body;
-      const { userId } = res.locals.user;
+      const { content, subject } = req.body;
+      const { user_id } = res.locals.user;
 
-      if (!image || !content || !subject) {
+      if (!content || !subject) {
         return res
           .status(400)
-          .json({ error: '이미지, 질문 내용, 과목 기입은 필수입니다.' });
+          .json({ error: '질문 내용, 과목 기입은 필수입니다.' });
       }
 
       const { code, message } = await this.postService.createPost({
-        image,
         content,
         subject,
-        userId,
+        user_id,
       });
 
       return res.status(code).json({ message });
@@ -72,20 +71,19 @@ class PostController {
   // 게시글 수정
   updatePost = async (req, res) => {
     try {
-      const { image, content, subject } = req.body;
-      const { userId } = res.locals.user;
-      const { postId } = req.params;
+      const { content, subject } = req.body;
+      const { user_id } = res.locals.user;
+      const { post_id } = req.params;
 
-      if (!image && !content && !subject) {
+      if (!content && !subject) {
         return res.status(400).json({ error: '수정할 내용이 없습니다.' });
       }
 
       const { code, message } = await this.postService.updatePost({
-        image,
         content,
         subject,
-        userId,
-        postId,
+        user_id,
+        post_id,
       });
 
       return res.status(code).json({ message });
@@ -97,16 +95,16 @@ class PostController {
   // 게시글 삭제
   deletePost = async (req, res) => {
     try {
-      const { postId } = req.params;
-      const { userId } = res.locals.user;
+      const { post_id } = req.params;
+      const { user_id } = res.locals.user;
 
-      if (!postId) {
+      if (!post_id) {
         return res.status(400).json({ error: '게시글 ID가 필요합니다.' });
       }
 
       const { code, message } = await this.postService.deletePost({
-        postId,
-        userId,
+        post_id,
+        user_id,
       });
 
       return res.status(code).json({ message });

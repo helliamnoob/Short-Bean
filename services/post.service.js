@@ -15,20 +15,19 @@ class PostService {
     }
   };
 
-  findPost = async ({ postId }) => {
+  findPost = async ({ post_id }) => {
     try {
-      const data = await this.postRepository.findPost({ postId });
+      const data = await this.postRepository.findPost({ post_id });
       return { code: 200, data };
     } catch (error) {
       throw { code: 500, message: '예기치 못한 에러가 발생했습니다.' };
     }
   };
 
-  createPost = async ({ userId, image, content, subject }) => {
+  createPost = async ({ user_id, content, subject }) => {
     try {
       await this.postRepository.createPost({
-        userId,
-        image,
+        user_id,
         content,
         subject,
       });
@@ -38,12 +37,11 @@ class PostService {
     }
   };
 
-  updatePost = async ({ userId, postId, image, content, subject }) => {
+  updatePost = async ({ user_id, post_id, content, subject }) => {
     try {
       await this.postRepository.updatePost({
-        userId,
-        postId,
-        image,
+        user_id,
+        post_id,
         content,
         subject,
       });
@@ -53,9 +51,9 @@ class PostService {
     }
   };
 
-  deletePost = async ({ userId, postId }) => {
+  deletePost = async ({ user_id, post_id }) => {
     try {
-      await this.postRepository.deletePost({ postId, userId });
+      await this.postRepository.deletePost({ post_id, user_id });
       return { code: 200, message: '질문을 삭제하였습니다.' };
     } catch (error) {
       throw { code: 400, message: '데이터 형식이 올바르지 않습니다.' };

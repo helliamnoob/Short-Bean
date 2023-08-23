@@ -2,8 +2,11 @@ const express = require('express');
 const router = express.Router();
 
 // 로그인 인증부분
-//const AuthMiddleware = require('../middleware/auth.middleware');
+const auth = require('../middlewares/auth_middleware');
 //const auth = new AuthMiddleware();
+
+const PostController = require('../controllers/post.controller');
+const postController = new PostController();
 
 // 게시글 전체 조회
 router.get('/post', postController.getAllPost);
