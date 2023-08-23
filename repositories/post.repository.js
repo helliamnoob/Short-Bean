@@ -6,24 +6,24 @@ class PostRepository {
     return await Posts.findAll({ include: [{ model: Users }] });
   };
 
-  findPost = async ({ postId }) => {
-    return await Posts.findOne({ where: { postId } });
+  findPost = async ({ post_id }) => {
+    return await Posts.findOne({ where: { post_id } });
   };
 
-  createPost = async ({ userId, image, content, subject }) => {
-    return await Posts.create({ userId, image, content, subject });
+  createPost = async ({ user_id, content, subject }) => {
+    return await Posts.create({ user_id, content, subject });
   };
 
-  updatePost = async ({ userId, postId, image, content, subject }) => {
+  updatePost = async ({ user_id, post_id, content, subject }) => {
     return await Posts.update(
-      { image, content, subject },
-      { where: { [Op.and]: [{ userId }, { postId }] } }
+      { content, subject },
+      { where: { [Op.and]: [{ user_id }, { post_id }] } }
     );
   };
 
-  deletePost = async ({ userId, postId }) => {
+  deletePost = async ({ user_id, post_id }) => {
     return await Posts.destroy({
-      where: { [Op.and]: [{ userId }, { postId }] },
+      where: { [Op.and]: [{ user_id }, { post_id }] },
     });
   };
 }

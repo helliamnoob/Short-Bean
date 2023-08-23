@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-// 로그인 인증부분
+// 로그인 인증 부분
 const auth = require('../middlewares/auth_middleware');
 // const auth = AuthMiddleware();
 
