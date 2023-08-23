@@ -1,5 +1,5 @@
 const PostService = require('../services/post.service');
-const { Posts } = require('../models');
+const { Posts } = require('../models/posts');
 
 class PostController {
   postService = new PostService();
@@ -15,9 +15,9 @@ class PostController {
   // 게시글 전체 조회
   getAllPost = async (req, res) => {
     try {
-      if (!req.headers.authorization) {
-        return res.status(401).json({ error: '인증 정보가 필요합니다.' });
-      }
+      // if (!req.headers.authorization) {
+      //   return res.status(401).json({ error: '인증 정보가 필요합니다.' });
+      // }
       const { code, data } = await this.postService.findAllPost();
 
       if (code === 404) {
@@ -31,8 +31,22 @@ class PostController {
 
   // 게시글 상세 조회
   getPost = async (req, res) => {
-    const { post_id } = req.params;
     try {
+      const { post_id } = req.params;
+      // console.log(req.params); // postId: '1'
+      // const post_id = req.params.post_id;
+      // console.log(post_id); // undefined
+
+      const parsed_post_id = parseInt(post_id); // post_id 값을 숫자로 변환
+      // console.log(parsed_post_id); // NaN (변환된 값 확인)
+
+      if (isNaN(parsed_post_id)) {
+        // 숫자로 변환되지 않은 경우 처리
+        return res.status(400).json({ errorMessage: '유효하지 않은 post_id입니다.' });
+      }
+
+      // console.log(post_id); // post_id 값을 확인
+
       const { code, data } = await this.postService.findPost({ post_id });
 
       if (code === 404) {
@@ -51,9 +65,7 @@ class PostController {
       const { user_id } = res.locals.user;
 
       if (!content || !subject) {
-        return res
-          .status(400)
-          .json({ error: '질문 내용, 과목 기입은 필수입니다.' });
+        return res.status(400).json({ error: '질문 내용, 과목 기입은 필수입니다.' });
       }
 
       const { code, message } = await this.postService.createPost({
@@ -64,6 +76,8 @@ class PostController {
 
       return res.status(code).json({ message });
     } catch (error) {
+      console.error(error);
+
       return this.handleError(res, error);
     }
   };
