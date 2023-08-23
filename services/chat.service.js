@@ -4,7 +4,7 @@ class ChatService {
   chatRepository = new ChatRepository();
   getAllUsers = async () => {
     try {
-      const data = this.chatRepository.getAllUsers();
+      const data = await this.chatRepository.getAllUsers();
       return { code: 200, data };
     } catch (err) {
       throw err;

@@ -2,7 +2,9 @@ const { Users } = require('../models');
 
 class ChatRepository {
   getAllUsers = async () => {
-    return Users.findAll({});
+    return await Users.findAll({
+      attributes: ['user_id', 'nickname'],
+    });
   };
 }
 

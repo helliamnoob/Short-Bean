@@ -1,6 +1,7 @@
 module.exports = (io) => {
   io.on('connection', (socket) => {
-    socket['nickname'] = 'anonymous';
+    socket['nickname'] = 'aa';
+    console.log(socket.handshake.auth.token);
     io.sockets.emit('room_change', publicRooms());
     io.sockets.emit('show_users', getUser());
     socket.onAny((event) => {

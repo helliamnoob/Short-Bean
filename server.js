@@ -5,6 +5,7 @@ const port = 3000;
 const http = require('http');
 const cookieParser = require('cookie-parser');
 const chatRouter = require('./routes/chat.route');
+const authRouter = require('./routes/auth.route');
 
 const server = http.createServer(app);
 const io = SocketIO(server);
@@ -16,7 +17,7 @@ app.set('view engine', 'html');
 app.set('views', __dirname + '/public/views');
 app.set('io', io);
 app.use('/public', express.static(__dirname + '/public'));
-app.use('/api', chatRouter);
+app.use('/api', [chatRouter, authRouter]);
 app.get('/', (_, res) => {
   res.sendFile(__dirname + '/public/views/index.html');
 });

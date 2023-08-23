@@ -14,16 +14,16 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'user_id',
       });
       this.hasMany(models.UserMarks, {
-        sourceKey: 'tutorId',
-        foreignKey: 'TutorId',
+        sourceKey: 'tutor_id',
+        foreignKey: 'tutor_id',
       });
       this.hasMany(models.Chats, {
-        sourceKey: 'tutorId',
-        foreignKey: 'TutorId',
+        sourceKey: 'tutor_id',
+        foreignKey: 'tutor_id',
       });
       this.hasMany(models.FaceChats, {
-        sourceKey: 'tutorId',
-        foreignKey: 'TutorId',
+        sourceKey: 'tutor_id',
+        foreignKey: 'tutor_id',
       });
     }
   }
