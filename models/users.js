@@ -38,6 +38,14 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: "user_id",
         foreignKey: "user_id",
       });
+      this.hasMany(models.Comments, {
+        sourceKey: "user_id",
+        foreignKey: "user_id",
+      });
+      this.hasMany(models.Likes, {
+        sourceKey: "user_id",
+        foreignKey: "user_id",
+      });
     }
   }
   Users.init({
@@ -47,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.BIGINT
     },
-    nickname: {
+    nick_name: {
       allowNull: false,
       type: DataTypes.STRING
     },
@@ -59,15 +67,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.STRING
     },
-    userName: {
+    user_name: {
       allowNull: false,
       type: DataTypes.STRING
     },
-    phoneNumber: {
+    phone_number: {
       allowNull: false,
       type: DataTypes.BIGINT
     },
-    birthDate: {
+    birth_date: {
       allowNull: false,
       type: DataTypes.DATE
     },

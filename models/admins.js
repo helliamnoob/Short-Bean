@@ -19,11 +19,11 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.BIGINT
     },
-    adminName: {
+    admin_name: {
       allowNull: false,
       type: DataTypes.STRING
     },
-    Password: {
+    password: {
       allowNull: false,
       type: DataTypes.STRING
     },

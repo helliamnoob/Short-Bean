@@ -31,15 +31,15 @@ module.exports = (sequelize, DataTypes) => {
         key: "user_id",
       },
     },
-    reportContent: {
+    report_content: {
       allowNull: false,
       type: DataTypes.STRING(200)
     },
-    reporteduser_id: {
+    reported_user_id: {
       allowNull: false,
       type: DataTypes.STRING
     },
-    reportStatus: {
+    report_status: {
       allowNull: false,
       defaultValue: '처리중',
       type: DataTypes.ENUM('처리중', '처리완료','처리취소')

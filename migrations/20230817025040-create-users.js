@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.BIGINT
       },
-      nickname: {
+      nick_name: {
         allowNull: false,
         type: Sequelize.STRING
       },
@@ -21,15 +21,15 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      userName: {
+      user_name: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      phoneNumber: {
+      phone_number: {
         allowNull: false,
         type: Sequelize.BIGINT
       },
-      birthDate: {
+      birth_date: {
         allowNull: false,
         type: Sequelize.DATE
       },
