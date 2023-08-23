@@ -17,15 +17,15 @@ module.exports = {
           key: "user_id",
         },
       },
-      reportContent: {
+      report_content: {
         allowNull: false,
         type: Sequelize.STRING(200)
       },
-      reporteduser_id: {
+      reported_user_id: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      reportStatus: {
+      report_status: {
         allowNull: false,
         defaultValue: '처리중',
         type: Sequelize.ENUM('처리중', '처리완료','처리취소')

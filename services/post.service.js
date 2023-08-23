@@ -1,5 +1,5 @@
 const PostRepository = require('../repositories/post.repository');
-const Posts = require('../models/posts');
+const { Posts } = require('../models/posts');
 
 class PostService {
   postRepository = new PostRepository();
@@ -17,9 +17,16 @@ class PostService {
 
   findPost = async ({ post_id }) => {
     try {
-      const data = await this.postRepository.findPost({ post_id });
+      // console.log(post_id); // post_id 값을 확인
+
+      const data = await this.postRepository.findPost({ post_id: parseInt(post_id) }); // 숫자로 변환하여 전달
+      // console.log(post_id);
+      // console.log(parseInt(post_id));
+
       return { code: 200, data };
     } catch (error) {
+      console.error(error);
+
       throw { code: 500, message: '예기치 못한 에러가 발생했습니다.' };
     }
   };
@@ -33,6 +40,8 @@ class PostService {
       });
       return { code: 200, message: '질문 작성이 완료되었습니다.' };
     } catch (error) {
+      console.error(error);
+
       throw { code: 500, message: '예기치 못한 에러가 발생했습니다.' };
     }
   };

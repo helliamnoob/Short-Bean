@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-// 로그인 인증 부분
+// 로그인 인증부분
 const auth = require('../middlewares/auth_middleware');
-// const auth = AuthMiddleware();
+//const auth = new AuthMiddleware();
 
 const PostController = require('../controllers/post.controller');
 const postController = new PostController();
@@ -12,15 +12,15 @@ const postController = new PostController();
 router.get('/post', postController.getAllPost);
 
 // 게시글 상세 조회
-router.get('/post/:postId', postController.getPost);
+router.get('/post/:post_id', postController.getPost);
 
 // 게시글 생성
 router.post('/post', auth, postController.createPost);
 
 // 게시글 수정
-router.post('/post/:postId', auth, postController.updatePost);
+router.post('/post/:post_id', auth, postController.updatePost);
 
 // 게시글 삭제
-router.post('/post/:postId', auth, postController.deletePost);
+router.delete('/post/:post_id', auth, postController.deletePost);
 
 module.exports = router;

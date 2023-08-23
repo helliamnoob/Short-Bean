@@ -43,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.ENUM('국어', '수학', '영어'),
       },
+      post_like: {
+        defaultValue: 0,
+        type: DataTypes.BIGINT,
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
