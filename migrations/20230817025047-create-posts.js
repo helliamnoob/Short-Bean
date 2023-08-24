@@ -28,6 +28,7 @@ module.exports = {
       },
       post_like: {
         allowNull: false,
+        defaultValue: 0,
         type: Sequelize.BIGINT
       },
       createdAt: {

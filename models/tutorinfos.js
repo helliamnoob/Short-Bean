@@ -61,6 +61,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
+    tutor_like: {
+      allowNull: false,
+      defaultValue: 0,
+      type: DataTypes.BIGINT
+    },
     updatedAt: {
       allowNull: false,
       type: DataTypes.DATE,

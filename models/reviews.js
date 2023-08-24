@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     review_content: {
+      allowNull: false,
       type: DataTypes.STRING(200)
     },
     createdAt: {

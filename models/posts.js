@@ -46,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     post_like: {
       allowNull: false,
+      defaultValue: 0,
       type: DataTypes.BIGINT
     },
     createdAt: {
