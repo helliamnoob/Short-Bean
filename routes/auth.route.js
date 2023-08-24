@@ -10,8 +10,7 @@ require('dotenv').config();
 
 // 회원가입
 router.post('/signup', async (req, res) => {
-  const { nickname, email, password, user_name, phone_number, birth_date } =
-    req.body;
+  const { nickname, email, password, user_name, phone_number, birth_date } = req.body;
 
   try {
     const isExitstUser = await Users.findOne({ where: { email } });
@@ -64,14 +63,9 @@ router.post('/login', cache_middleware, async (req, res) => {
         message: 'check email or password',
       });
     }
-    const token = await jwt.sign(
-      { user_id: user.user_id },
-      process.env.SECRET_KEY
-    );
+    const token = await jwt.sign({ userId: user.userId }, process.env.SECRET_KEY);
     res.cookie('authorization', `Bearer ${token}`);
-    return res
-      .status(200)
-      .json({ message: `로그인 성공 ${user.user_name}님 환영합니다.` });
+    return res.status(200).json({ message: `로그인 성공 ${user.user_name}님 환영합니다.` });
   } catch {
     res.status(500).json({ message: 'login server error.' });
   }
@@ -129,9 +123,7 @@ router.delete('/signout', middleware, async (req, res) => {
         [Op.and]: [{ user_id: user_id }],
       },
     });
-    res
-      .status(200)
-      .json({ message: `${userFind.name}님 삭제가 완료되었습니다.` });
+    res.status(200).json({ message: `${userFind.name}님 삭제가 완료되었습니다.` });
   } catch {
     res.status(500).json({ message: 'server error.' });
   }

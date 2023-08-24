@@ -28,20 +28,20 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.BIGINT,
       },
-      user_id: {
-        allowNull: false,
-        type: DataTypes.BIGINT,
-        references: {
-          model: 'Users',
-          key: 'user_id',
-        },
-      },
       post_id: {
         allowNull: false,
         type: DataTypes.BIGINT,
         references: {
           model: 'Posts',
           key: 'post_id',
+        },
+      },
+      user_id: {
+        allowNull: false,
+        type: DataTypes.BIGINT,
+        references: {
+          model: 'Users',
+          key: 'user_id',
         },
       },
       content: {
