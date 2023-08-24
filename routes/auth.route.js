@@ -57,6 +57,7 @@ router.post('/login', async (req, res) => {
       });
     }
     const token = jwt.sign({ user_id: user.user_id }, process.env.SECRET_KEY);
+    console.log(token);
     res.cookie('authorization', `Bearer ${token}`);
     return res.status(200).json({ message: `로그인 성공 ${user.userName}님 환영합니다.` });
   } catch {

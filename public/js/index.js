@@ -57,7 +57,6 @@ loginbtn.addEventListener('click', async () => {
         if (rooms.length === 0) {
           return;
         }
-        console.log(rooms);
         rooms.forEach((room) => {
           const li = document.createElement('li');
           li.innerText = room;
@@ -66,7 +65,6 @@ loginbtn.addEventListener('click', async () => {
       });
 
       socket.on('show_users', (users) => {
-        console.log(users);
         const ul = userList.querySelector('ul');
         ul.innerHTML = '';
         if (users.length === 0) {

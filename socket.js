@@ -1,7 +1,17 @@
+const jwt = require('jsonwebtoken');
+const { Users } = require('./models');
+require('dotenv').config();
+
 module.exports = (io) => {
   io.on('connection', (socket) => {
     socket['nickname'] = 'aa';
-    console.log(socket.handshake.auth.token);
+    const authorization = socket.handshake.auth.token;
+    const [tokenType, token] = authorization.split('%');
+    console.log(token);
+    // const user = getUsers(token);
+    // console.log(user);
+
+    // console.log(tokenType, token);
     io.sockets.emit('room_change', publicRooms());
     io.sockets.emit('show_users', getUser());
     socket.onAny((event) => {
@@ -24,7 +34,9 @@ module.exports = (io) => {
       socket.to(room).emit('new_message', `${socket.id}: ${msg}`);
       done();
     });
-    socket.on('nickname', (nickname) => (socket['nickname'] = nickname));
+    socket.on('nickname', (nickname) => {
+      socket['nickname'] = nickname;
+    });
   });
 
   function publicRooms() {
@@ -53,5 +65,13 @@ module.exports = (io) => {
       users.push(sid);
     });
     return users;
+  }
+  async function getUsers(token) {
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    console.log(decodedToken);
+    const userId = decodedToken.user_id;
+    const user = await Users.findOne({ where: { user_id: userId } });
+    console.log(user);
+    return user;
   }
 };
