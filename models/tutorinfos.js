@@ -56,6 +56,11 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: '로그아웃',
         type: DataTypes.ENUM('로그아웃', '로그인'),
       },
+      tutor_like: {
+        allowNull: false,
+        defaultValue: 0,
+        type: DataTypes.BIGINT,
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,

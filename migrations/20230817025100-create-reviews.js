@@ -18,6 +18,7 @@ module.exports = {
         },
       },
       review_content: {
+        allowNull: false,
         type: Sequelize.STRING(200),
       },
       createdAt: {

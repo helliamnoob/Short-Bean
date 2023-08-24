@@ -30,6 +30,11 @@ module.exports = {
         defaultValue: '로그아웃',
         type: Sequelize.ENUM('로그아웃', '로그인'),
       },
+      tutor_like: {
+        allowNull: false,
+        defaultValue: 0,
+        type: Sequelize.BIGINT
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

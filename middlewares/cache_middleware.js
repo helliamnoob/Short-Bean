@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
       const create_cache = req.body;
       const cache_email = create_cache.email;
       const cache_user = await Users.findOne({ where: { email: cache_email } });
-      myCache.set(cache_user.userId, cache_user);
+      myCache.set(cache_user.user_id, cache_user);
       next();
     }
     //저장 안되어있다면 캐쉬값 탐색후 반환
@@ -25,5 +25,4 @@ module.exports = async (req, res, next) => {
     console.log(e);
     res.status(401).json({ message: 'cache 에 저장되었습니다.' });
     return;
-  }
 };
