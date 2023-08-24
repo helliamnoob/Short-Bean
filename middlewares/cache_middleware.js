@@ -25,4 +25,5 @@ module.exports = async (req, res, next) => {
     console.log(e);
     res.status(401).json({ message: 'cache 에 저장되었습니다.' });
     return;
+}
 };
