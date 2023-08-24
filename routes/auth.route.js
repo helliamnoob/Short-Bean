@@ -10,7 +10,7 @@ require('dotenv').config();
 
 // 회원가입
 router.post('/signup', async (req, res) => {
-    const { nickname,email, password, userName ,phoneNumber,birthDate} = req.body;
+    const { nickname, email, password, user_name ,phone_number,birth_date} = req.body;
   
     try {
       const isExitstUser = await Users.findOne({ where: { email } });
@@ -27,7 +27,7 @@ router.post('/signup', async (req, res) => {
     // 유저 & 유저정보 생성
     try {
       // 사용자 테이블에 데이터 삽입
-      await Users.create({ nickname,email, password, userName ,phoneNumber,birthDate });
+      await Users.create({ nickname,email, password, user_name ,phone_number,birth_date });
       // 사용자 정보 테이블에 데이터를 삽입
       res.status(201).json({ message: '회원가입이 완료되었습니다' });
     } catch (error) {
@@ -56,9 +56,9 @@ router.post('/login', cache_middleware ,async (req, res) => {
         message: 'check email or password',
       });
     }
-    const token = await jwt.sign({ userId: user.userId }, process.env.SECRET_KEY);
+    const token = await jwt.sign({ user_id: user.user_id }, process.env.SECRET_KEY);
     res.cookie('authorization', `Bearer ${token}`);
-    return res.status(200).json({ message: `로그인 성공 ${user.userName}님 환영합니다.` });
+    return res.status(200).json({ message: `로그인 성공 ${user.user_name}님 환영합니다.` });
   } catch {
     res.status(500).json({ message: 'login server error.' });
   }
@@ -72,15 +72,15 @@ router.post('/login', cache_middleware ,async (req, res) => {
 
   //회원 정보 수정
   router.put('/userInfo', middleware, async (req, res) => {
-    const { userId } = res.locals.user;
+    const { user_id } = res.locals.user;
     try {
-      const { email, password, nickname, phoneNumber } = req.body;
+      const { email, password, nickname, phone_number } = req.body;
   
-      const userUpdateFind = await Users.findOne({ where: { userId } });
+      const userUpdateFind = await Users.findOne({ where: { user_id } });
       const userEmailCheck = await Users.findOne({ where: { email } });
       if (!userUpdateFind) {
         return res.status(400).json({ message: '유저가 존재하지 않습니다.' });
-      } else if (userUpdateFind.userId !== userId) {
+      } else if (userUpdateFind.user_id !== user_id) {
         return res.status(400).json({ message: '권한이 없습니다.' });
       }
       if (userEmailCheck) {
@@ -88,10 +88,10 @@ router.post('/login', cache_middleware ,async (req, res) => {
       }
   
       await Users.update(
-        { email, nickname, password ,phoneNumber},
+        { email, nickname, password ,phone_number},
         {
           where: {
-            [Op.and]: [{ userId: userId }],
+            [Op.and]: [{ user_id: user_id }],
           },
         },
       );
@@ -104,16 +104,16 @@ router.post('/login', cache_middleware ,async (req, res) => {
 
   //삭제
   router.delete('/signout', middleware, async (req, res) => {
-    const { userId } = res.locals.user;
-    res.locals.userId = userId;
+    const { user_id } = res.locals.user;
+    res.locals.user_id = user_id;
     try {
-      const userFind = await Users.findOne({ where: userId });
+      const userFind = await Users.findOne({ where: user_id });
       if (!userFind) {
         res.status(400).json({ message: '회원이 조회되지 않습니다.' });
       }
       await Users.destroy({
         where: {
-          [Op.and]: [{ userId: userId }],
+          [Op.and]: [{ user_id: user_id }],
         },
       });
       res.status(200).json({ message: `${userFind.name}님 삭제가 완료되었습니다.` });
@@ -124,9 +124,9 @@ router.post('/login', cache_middleware ,async (req, res) => {
 
   //나의정보 조회
   router.get('/userInfo', middleware, async (req, res) => {
-    const { userId } = res.locals.user;
+    const { user_id } = res.locals.user;
     try {
-      const user = await Users.findOne({ where: { userId } });
+      const user = await Users.findOne({ where: { user_id } });
       if (!user) {
         return res.status(400).json({
           message: '해당 유저가 존재하지 않습니다.',
@@ -140,9 +140,9 @@ router.post('/login', cache_middleware ,async (req, res) => {
 
   //개인정보 가져오기(node-cache사용)
   router.get('/usertest',middleware,cache_middleware, async (req, res) => {
-    const { userId } = res.locals.user;
+    const { user_id } = res.locals.user;
     try {
-      const user = cache.get(userId);
+      const user = cache.get(user_id);
       return res.status(200).json({ user });
     } catch {
       res.status(500).json({ message: 'server error.' });

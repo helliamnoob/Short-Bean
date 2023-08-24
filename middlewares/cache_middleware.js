@@ -11,13 +11,13 @@ module.exports = async (req, res, next) => {
       const create_cache = req.body;
       const cache_email = create_cache.email;
       const cache_user = await Users.findOne({ where: { email : cache_email } });
-      myCache.set(cache_user.userId, cache_user);
+      myCache.set(cache_user.user_id, cache_user);
       next();
     }
     //저장 안되어있다면 캐쉬값 탐색후 반환
     else 
     {
-      const cached_body = myCache.get(is_exit_cache.userId);
+      const cached_body = myCache.get(is_exit_cache.user_id);
       if(cached_body) {
         res.status(200).json({ cached_body });
         return;

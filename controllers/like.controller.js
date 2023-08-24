@@ -5,9 +5,9 @@ class LikeController {
 
     getLike = async (req, res, next) =>{
         try{
-            const {postId} = req.params;
-            const {userId} = res.locals.user;
-            const likes = await this.likeService.getLike({postId,userId});
+            const {post_id} = req.params;
+            const {user_id} = res.locals.user;
+            const likes = await this.likeService.getLike({post_id,user_id});
 
             res.status(200).json({data: likes})
         }
@@ -18,9 +18,9 @@ class LikeController {
 
     createLike = async (req, res , next) => {
         try{
-            const {postId} = req.params;
-            const {userId} = res.locals.user;
-            const likes = await this.likeService.createLike({postId,userId});
+            const {post_id} = req.params;
+            const {user_id} = res.locals.user;
+            const likes = await this.likeService.createLike({post_id,user_id});
 
             res.satus(201).json({data:likes});
         }
@@ -30,10 +30,10 @@ class LikeController {
     }
     destroyLike = async(req, res,next) => {
         try{
-            const {postId} = req.params;
-            const {userId} = res.locals.user;
+            const {post_id} = req.params;
+            const {user_id} = res.locals.user;
 
-            const likes = await this.likeService.destroyLike({postId,userId});
+            const likes = await this.likeService.destroyLike({post_id,user_id});
             
             res.status(200).json({data: likes});
         }

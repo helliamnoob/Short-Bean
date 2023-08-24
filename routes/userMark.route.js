@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middlewares/auth');
+const auth = require('../middlewares/auth_middleware');
 
 const UserMarkController = require('../controllers/userMark.controller');
 const userMarkController = new UserMarkController();
 
-router.get('', auth, userMarkController.getMark);
-router.post('', auth, userMarkController.creatMark);
-router.update('', auth, userMarkController.updateMark);
-router.delete('', auth, userMarkController.deleteMark);
+router.get('/userMarks/:user_mark_id', auth, userMarkController.getMark);
+router.post('/userMarks', auth, userMarkController.creatMark);
+router.put('/userMarks/:user_mark_id', auth, userMarkController.updateMark);
+router.delete('/userMarks/:user_mark_id', auth, userMarkController.deleteMark);
 
 module.exports = router;

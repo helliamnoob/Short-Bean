@@ -11,20 +11,27 @@ class ReportController {
             res.status(200).json({data: report})
         }
         catch(error){
-                return res.status(500).json({message: error.message});
+            return res.status(500).json({message: error.message});
         }
     };
 
     creatReport = async (req, res , next) => {
         try{
+            const {report_content, reported_user_id, report_status} = req.body;
             const {user_id} = res.locals.user;
-            const {admin_id} = req.params;
-            const {report_content, report_user_id, report_status} = req.body;
-            const report = await this.reportService.creatReport(admin_id, user_id, report_content, report_user_id, report_status)
-            res.satus(201).json({data:report});
+
+            console.log(user_id, report_content,
+                reported_user_id,
+                report_status);
+
+            const report = await this.reportService.creatReport({user_id, report_content, reported_user_id, report_status})
+            res.status(201).json({data:report});
+           
         }
         catch(error){
+
             return res.status(500).json({message: error.message});
+           
         }
     }
     updateReport = async(req, res, next) => {

@@ -8,12 +8,13 @@ class ReportService{
         return reportData
     }
 
-    creatReport = async ({admin_id, user_id, report_content, reportuser_id, report_status}) => {
-        const reportData = await this.reportRepository.createReport({admin_id, user_id, report_content, reportuser_id, report_status});
+    creatReport = async ({user_id, report_content, reported_user_id, report_status}) => {
+        const reportData = await this.reportRepository.createReport({user_id, report_content, reported_user_id, report_status});
         return reportData;
     }
     updateReport = async ({report_id, user_id, report_content}) =>{
         const reportData = await this.reportRepository.updateReport({report_id, user_id, report_content});
+        return reportData;
     }
     deleteReport = async ({report_id, user_id}) => {
         const reportData = await this.reportRepository.deleteReport({report_id, user_id});
