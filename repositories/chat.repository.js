@@ -18,6 +18,14 @@ class ChatRepository {
       where: { user_id: userId, target_user_id: targetId },
     });
   };
+
+  createRooms = async (userId, targetId) => {
+    await Chats.create({
+      user_id: userId,
+      target_user_id: targetId,
+    });
+    return;
+  };
 }
 
 module.exports = ChatRepository;

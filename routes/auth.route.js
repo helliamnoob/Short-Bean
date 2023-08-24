@@ -43,7 +43,7 @@ router.post('/signup', async (req, res) => {
 });
 
 // 로그인
-router.post('/login', cache_middleware, async (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   try {
     if (!email || !password) {
@@ -63,7 +63,7 @@ router.post('/login', cache_middleware, async (req, res) => {
         message: 'check email or password',
       });
     }
-    const token = await jwt.sign({ userId: user.userId }, process.env.SECRET_KEY);
+    const token = jwt.sign({ userId: user.user_id }, 'aaa');
     res.cookie('authorization', `Bearer ${token}`);
     return res.status(200).json({ message: `로그인 성공 ${user.user_name}님 환영합니다.` });
   } catch {

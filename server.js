@@ -14,10 +14,9 @@ const useMarkRouter = require('./routes/userMark.route');
 
 const server = http.createServer(app);
 const io = SocketIO(server);
-// const router = require("./routes");
 
 app.use(express.json());
-// app.use("/api", router);
+app.use(cookieParser());
 app.set('view engine', 'html');
 app.set('views', __dirname + '/public/views');
 app.set('io', io);
