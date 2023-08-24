@@ -12,6 +12,33 @@ class ChatController {
       return res.status(500).json({ err: err.message });
     }
   };
+
+  getRooms = async (req, res) => {
+    try {
+      const userId = res.locals.user.user_id;
+      // userId 없으면 그냥 바로 리턴
+      const targetId = req.body;
+      const result = await this.chatService.getRooms(userId, targetId);
+      if (result.data) return res.status(result.code).json({ data: result.data });
+      return res.status(result.code).json({ message: result.message });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ err: err.message });
+    }
+  };
+
+  createRooms = async (req, res) => {
+    try {
+      const userId = res.locals.user.user_id;
+      const targetId = req.body;
+      const result = await this.chatService.getRooms(userId, targetId);
+      if (result.data) return res.status(result.code).json({ data: result.data });
+      return res.status(result.code).json({ message: result.message });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ err: err.message });
+    }
+  };
 }
 
 module.exports = ChatController;
