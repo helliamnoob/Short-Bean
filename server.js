@@ -4,6 +4,8 @@ const app = express();
 const port = 3000;
 const http = require('http');
 const cookieParser = require('cookie-parser');
+const { mongoDB } = require('./config/mongo.config');
+
 const chatRouter = require('./routes/chat.route');
 const authRouter = require('./routes/auth.route');
 const commentRouter = require('./routes/comment.route');
@@ -14,6 +16,7 @@ const useMarkRouter = require('./routes/userMark.route');
 
 const server = http.createServer(app);
 const io = SocketIO(server);
+mongoDB();
 
 app.use(express.json());
 app.use(cookieParser());
