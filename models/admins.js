@@ -17,31 +17,33 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.BIGINT,
       },
-    admin_name: {
-      allowNull: false,
-      type: DataTypes.STRING
+      admin_name: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      password: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      email: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
     },
-    password: {
-      allowNull: false,
-      type: DataTypes.STRING
-    },
-    email: {
-      allowNull: false,
-      type: DataTypes.STRING
-    },
-    createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
-    updatedAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
+    {
+      sequelize,
+      modelName: ' Admins',
     }
-  }, {
-    sequelize,
-    modelName: ' Admins',
-  });
-  return  Admins;
+  );
+  return Admins;
 };
