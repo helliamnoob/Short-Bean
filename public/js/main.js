@@ -64,3 +64,7 @@
 	});
 
 })(jQuery);
+
+window.onload = function(){
+	
+}
