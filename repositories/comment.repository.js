@@ -1,32 +1,29 @@
 const { Comments, Users } = require('../models');
-const { Op } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 
 class CommentRepository {
-  findAllComment = async ({ postId }) => {
+  findAllComment = async ({ post_id }) => {
     return await Comments.findAll({
-      where: { postId },
+      where: { post_id },
       include: [{ model: Users }],
     });
   };
 
-  findComment = async ({ commentId }) => {
-    return await Comments.findOne({ where: { commentId } });
+  findComment = async ({ comment_id }) => {
+    return await Comments.findOne({ where: { comment_id } });
   };
 
-  createComment = async ({ userId, postId, comment }) => {
-    return await Comments.create({ userId, postId, comment });
+  createComment = async ({ user_id, post_id, content }) => {
+    return await Comments.create({ user_id, post_id, content });
   };
 
-  updateComment = async ({ userId, commentId, comment }) => {
-    await Comments.update(
-      { comment },
-      { where: { commentId, UserId: userId } }
-    );
+  updateComment = async ({ user_id, comment_id, content }) => {
+    await Comments.update({ content }, { where: { comment_id, user_id: user_id } });
   };
 
-  deleteComment = async ({ userId, commentId }) => {
+  deleteComment = async ({ user_id, comment_id }) => {
     await Comments.destroy({
-      where: { commentId, UserId: userId },
+      where: { comment_id, user_id: user_id },
     });
   };
 }

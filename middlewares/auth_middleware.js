@@ -1,4 +1,6 @@
 const jwt = require('jsonwebtoken');
+// console.log(jwt);
+
 const { Users } = require('../models');
 require('dotenv').config();
 const env = process.env;
@@ -17,7 +19,7 @@ module.exports = async (req, res, next) => {
   }
   try {
     const decodedToken = jwt.verify(token, env.SECRET_KEY);
-    console.log(decodedToken);
+    // console.log(decodedToken);
 
     const user_id = decodedToken.user_id;
     const user = await Users.findOne({ where: { user_id } });

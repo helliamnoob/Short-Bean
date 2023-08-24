@@ -2,36 +2,28 @@ const express = require('express');
 const router = express.Router();
 
 // 로그인 인증부분
-const auth = require('../middlewares/auth_middleware');
-// const auth = AuthMiddleware();
+const authMiddleware = require('../middlewares/auth_middleware');
+// console.log('authMiddleware:', authMiddleware);
 
 const CommentController = require('../controllers/comment.controller');
-// const PostController = require('../controllers/post.controller');
 const commentController = new CommentController();
 
 // 댓글 전체 조회
-router.get('/post/comment', commentController.findAllComment);
+router.get('/post/:post_id/comment', commentController.findAllComment);
 
 // 댓글 상세 조회
-router.get(
-  '/post/:postId/comment/:commentId',
-  commentController.findPostComment
-);
+router.get('/post/:post_id/comment/:comment_id', commentController.findPostComment);
 
 // 댓글 생성
-router.post('/post/:postId/comment', auth, commentController.createComment);
+router.post('/post/:post_id/comment', authMiddleware, commentController.createComment);
 
 // 댓글 수정
-router.put(
-  '/post/:postId/comment/:commentId',
-  auth,
-  commentController.updateComment
-);
+router.put('/post/:post_id/comment/:comment_id', authMiddleware, commentController.updateComment);
 
 // 댓글 삭제
 router.delete(
-  '/post/:postId/comment/:commentId',
-  auth,
+  '/post/:post_id/comment/:comment_id',
+  authMiddleware,
   commentController.deleteComment
 );
 

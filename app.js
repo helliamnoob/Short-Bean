@@ -7,11 +7,17 @@ const likeRouter = require('./routes/like.route.js');
 const postRouter = require('./routes/post.route.js');
 const reportRouter = require('./routes/report.route.js');
 const useMarkRouter = require('./routes/userMark.route.js');
+const { error } = require('console');
 const app = express();
 
 const PORT = 3000;
 app.use(express.json());
 app.use(cookieParser());
+
+app.use((err, req, res, next) => {
+  console.error(error);
+  res.status(500).json({ error: 'Internal Server Error' });
+});
 
 app.use('/api', [
   authRouter,
