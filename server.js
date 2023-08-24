@@ -6,6 +6,11 @@ const http = require('http');
 const cookieParser = require('cookie-parser');
 const chatRouter = require('./routes/chat.route');
 const authRouter = require('./routes/auth.route');
+const commentRouter = require('./routes/comment.route');
+const postRouter = require('./routes/post.route');
+const likeRouter = require('./routes/like.route');
+const reportRouter = require('./routes/report.route');
+const useMarkRouter = require('./routes/userMark.route');
 
 const server = http.createServer(app);
 const io = SocketIO(server);
@@ -17,7 +22,15 @@ app.set('view engine', 'html');
 app.set('views', __dirname + '/public/views');
 app.set('io', io);
 app.use('/public', express.static(__dirname + '/public'));
-app.use('/api', [chatRouter, authRouter]);
+app.use('/api', [
+  authRouter,
+  chatRouter,
+  commentRouter,
+  likeRouter,
+  postRouter,
+  reportRouter,
+  useMarkRouter,
+]);
 app.get('/', (_, res) => {
   res.sendFile(__dirname + '/public/views/index.html');
 });
