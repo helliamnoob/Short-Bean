@@ -3,36 +3,37 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Reviews', {
-      reviewId: {
+      review_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
       },
-      UserId: {
+      user_id: {
         allowNull: false,
         type: Sequelize.BIGINT,
         references: {
-          model: "Users",
-          key: "userId",
+          model: 'Users',
+          key: 'user_id',
         },
       },
-      reviewcontent: {
-        type: Sequelize.STRING(200)
+      review_content: {
+        allowNull: false,
+        type: Sequelize.STRING(200),
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn("now"),
+        defaultValue: Sequelize.fn('now'),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn("now"),
-      }
+        defaultValue: Sequelize.fn('now'),
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Reviews');
-  }
+  },
 };

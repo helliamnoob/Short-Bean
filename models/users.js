@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     /**
@@ -11,79 +9,90 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.hasOne(models.TutorInfos, {
-        sourceKey: "userId",
-        foreignKey: "UserId",
+        sourceKey: 'user_id',
+        foreignKey: 'user_id',
       });
       this.hasMany(models.Posts, {
-        sourceKey: "userId",
-        foreignKey: "UserId",
+        sourceKey: 'user_id',
+        foreignKey: 'user_id',
       });
       this.hasMany(models.Chats, {
-        sourceKey: "userId",
-        foreignKey: "UserId",
+        sourceKey: 'user_id',
+        foreignKey: 'user_id',
       });
       this.hasMany(models.FaceChats, {
-        sourceKey: "userId",
-        foreignKey: "UserId",
+        sourceKey: 'user_id',
+        foreignKey: 'user_id',
       });
       this.hasMany(models.Reviews, {
-        sourceKey: "userId",
-        foreignKey: "UserId",
+        sourceKey: 'user_id',
+        foreignKey: 'user_id',
       });
       this.hasMany(models.Reports, {
-        sourceKey: "userId",
-        foreignKey: "UserId",
+        sourceKey: 'user_id',
+        foreignKey: 'user_id',
       });
       this.hasMany(models.UserMarks, {
-        sourceKey: "userId",
-        foreignKey: "UserId",
+        sourceKey: 'user_id',
+        foreignKey: 'user_id',
+      });
+      this.hasMany(models.Comments, {
+        sourceKey: 'user_id',
+        foreignKey: 'user_id',
+      });
+      this.hasMany(models.Likes, {
+        sourceKey: 'user_id',
+        foreignKey: 'user_id',
       });
     }
   }
-  Users.init({
-    userId: {
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      type: DataTypes.BIGINT
+  Users.init(
+    {
+      user_id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.BIGINT,
+      },
+      nickname: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      email: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      password: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      user_name: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      phone_number: {
+        allowNull: false,
+        type: DataTypes.BIGINT,
+      },
+      birth_date: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
     },
-    nickname: {
-      allowNull: false,
-      type: DataTypes.STRING
-    },
-    email: {
-      allowNull: false,
-      type: DataTypes.STRING
-    },
-    password: {
-      allowNull: false,
-      type: DataTypes.STRING
-    },
-    userName: {
-      allowNull: false,
-      type: DataTypes.STRING
-    },
-    phoneNumber: {
-      allowNull: false,
-      type: DataTypes.BIGINT
-    },
-    birthDate: {
-      allowNull: false,
-      type: DataTypes.DATE
-    },
-    createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
-    updatedAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
+    {
+      sequelize,
+      modelName: 'Users',
     }
-  }, {
-    sequelize,
-    modelName: 'Users',
-  });
+  );
   return Users;
 };
