@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
+const env = process.env;
 
 exports.mongoDB = () => {
   mongoose
-    .connect('mongodb+srv://sparta:short_bean_3333@cluster0.ixlq5pz.mongodb.net/TEST', {
+    .connect(env.MONGODB_INFO, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })

@@ -23,6 +23,15 @@ class ChatService {
       throw err;
     }
   };
+  getMessage = async (roomId) => {
+    try {
+      const msgData = await this.chatRepository.getMessage(roomId);
+      return { code: 200, data: msgData };
+    } catch (err) {
+      throw err;
+    }
+  };
+
   createRooms = async (userId, targetId) => {
     try {
       if (userId == targetId) throw new Error('본인과 대화할 수 없습니다.');

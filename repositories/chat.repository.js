@@ -20,6 +20,11 @@ class ChatRepository {
       where: { user_id: userId, target_user_id: targetId },
     });
   };
+
+  getMessage = async (roomId) => {
+    return await Chat.find({ room_id: roomId }).sort({ created_at: -1 }).exec();
+  };
+
   getRoomsByRoomId = async (roomId) => {
     return await Chats.findOne({
       attributes: ['chat_id', 'user_id', 'target_user_id'],

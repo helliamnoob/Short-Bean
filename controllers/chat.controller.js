@@ -15,11 +15,21 @@ class ChatController {
 
   getRooms = async (req, res) => {
     try {
-      console.log(res.locals.user);
       const userId = res.locals.user.user_id;
       // userId 없으면 그냥 바로 리턴
       const { targetId } = req.body;
       const result = await this.chatService.getRooms(userId, targetId);
+      if (result.data) return res.status(result.code).json({ data: result.data });
+      return res.status(result.code).json({ message: result.message });
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json({ err: err.message });
+    }
+  };
+  getMessage = async (req, res) => {
+    try {
+      const { roomId } = req.body;
+      const result = await this.chatService.getMessage(roomId);
       if (result.data) return res.status(result.code).json({ data: result.data });
       return res.status(result.code).json({ message: result.message });
     } catch (err) {

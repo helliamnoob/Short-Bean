@@ -5,9 +5,15 @@ const chatController = new ChatController();
 const authMiddleware = require('../middlewares/auth_middleware');
 
 router.get('/users', chatController.getAllUsers);
-router.get('/rooms', authMiddleware, chatController.getRooms); // 메시지 까지 가져오는 로직 추가
+// 모든 유저 조회
+router.get('/rooms', authMiddleware, chatController.getRooms);
+// 방 가져오기
+router.get('/message', authMiddleware, chatController.getMessage);
+// 방에 대한 메시지 가져오기
 router.post('/rooms', authMiddleware, chatController.createRooms);
-router.post('/message', authMiddleware, chatController.sendMsg); // 오프라인
+// 방 만들기
+router.post('/message', authMiddleware, chatController.sendMsg);
+// 오프라인 유저에게 메시지 보내기
 
 module.exports = router;
 
