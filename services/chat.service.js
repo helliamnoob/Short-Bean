@@ -36,9 +36,11 @@ class ChatService {
     try {
       if (userId == targetId) throw new Error('본인과 대화할 수 없습니다.');
       const targetUser = this.chatRepository.getUserById(targetId);
-      if (!targetUser) {
-        throw new Error('대상유저가 존재하지 않습니다.');
-      }
+      if (!targetUser) throw new Error('대상유저가 존재하지 않습니다.');
+
+      const roomInfo = await this.chatRepository.getRooms(userId, targetId);
+      if (roomInfo) throw new Error('이미 방이 존재합니다.');
+      // 프론트에서 방이 없을 때 호출할 메소드라 이 검증은 필요없을 수 있다.
       await this.chatRepository.createRooms(userId, targetId);
       return { code: 200, message: '새로운 방을 만들었습니다. 다시 연결해주세요' };
     } catch (err) {
