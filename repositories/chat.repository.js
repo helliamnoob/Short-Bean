@@ -1,4 +1,5 @@
 const { Users, Chats } = require('../models');
+const Chat = require('../schemas/chat');
 
 class ChatRepository {
   getAllUsers = async () => {
@@ -19,12 +20,29 @@ class ChatRepository {
       where: { user_id: userId, target_user_id: targetId },
     });
   };
+  getRoomsByRoomId = async (roomId) => {
+    return await Chats.findOne({
+      attributes: ['chat_id', 'user_id', 'target_user_id'],
+      where: { chat_id: roomId },
+    });
+  };
 
   createRooms = async (userId, targetId) => {
     await Chats.create({
       user_id: userId,
       target_user_id: targetId,
     });
+    return;
+  };
+
+  sendMsg = async (roomId, is_send, chatMsg) => {
+    const newChat = new Chat({
+      room_id: roomId,
+      is_send,
+      message_content: chatMsg,
+    });
+
+    await newChat.save();
     return;
   };
 }

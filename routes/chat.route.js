@@ -5,8 +5,9 @@ const chatController = new ChatController();
 const authMiddleware = require('../middlewares/auth_middleware');
 
 router.get('/users', chatController.getAllUsers);
-router.get('/rooms', authMiddleware, chatController.getRooms);
+router.get('/rooms', authMiddleware, chatController.getRooms); // 메시지 까지 가져오는 로직 추가
 router.post('/rooms', authMiddleware, chatController.createRooms);
+router.post('/message', authMiddleware, chatController.sendMsg); // 오프라인
 
 module.exports = router;
 

@@ -36,6 +36,19 @@ class ChatService {
       throw err;
     }
   };
+
+  sendMsg = async (roomId, userId, chatMsg) => {
+    try {
+      if (!chatMsg) throw new Error('메시지 내용을 입력해주세요');
+      const roomInfo = await this.chatRepository.getRoomsByRoomId(roomId);
+      const is_send = roomInfo.user_id === userId ? true : false;
+
+      await this.chatRepository.sendMsg(roomId, is_send, chatMsg);
+      return { code: 200, message: '메시지 전송 완료' };
+    } catch (err) {
+      throw err;
+    }
+  };
 }
 
 module.exports = ChatService;
