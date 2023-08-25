@@ -31,12 +31,13 @@ class PostService {
     }
   };
 
-  createPost = async ({ user_id, content, subject }) => {
+  createPost = async ({ user_id, content, subject, image }) => {
     try {
       await this.postRepository.createPost({
         user_id,
         content,
         subject,
+        image,
       });
       return { code: 200, message: '질문 작성이 완료되었습니다.' };
     } catch (error) {
@@ -46,13 +47,14 @@ class PostService {
     }
   };
 
-  updatePost = async ({ user_id, post_id, content, subject }) => {
+  updatePost = async ({ user_id, post_id, content, subject, image }) => {
     try {
       await this.postRepository.updatePost({
         user_id,
         post_id,
         content,
         subject,
+        image,
       });
       return { code: 200, message: '질문 수정이 완료되었습니다.' };
     } catch (error) {
