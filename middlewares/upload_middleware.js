@@ -44,7 +44,7 @@ module.exports = async (req, res, next) => {
       region: env.AWS_REGION,
     });
 
-    const allowedExtensions = ['.png', '.jpg', '.jpeg'];
+    const allowedExtensions = ['.png', '.jpg', '.jpeg', '.bmp'];
     const upload = multer({
       storage: multerS3({
         s3,
