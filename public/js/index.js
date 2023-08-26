@@ -17,10 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
         token: jwtToken,
       },
     });
-    socket.on('show_users', (data) => {
-      console.log(data);
-      // 이제 요놈들은 띄우면 되고
-    });
 
     socket.on('welcome', (user) => {
       const h3 = chatBox.querySelector('h3');
@@ -32,6 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     socket.on('bye', (user) => {
       addMessage(`${user} left`);
+    });
+
+    socket.on('show_users', (data) => {
+      console.log(data);
     });
 
     enterRoomForm.addEventListener('click', handleRoomSubmit);
@@ -72,8 +72,6 @@ function getCookieValue(cookieName) {
   }
   return null;
 }
-
-// const socket = io();
 
 // 다시짜보자
 

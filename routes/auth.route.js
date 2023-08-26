@@ -63,7 +63,10 @@ router.post('/login', async (req, res) => {
         message: 'check email or password',
       });
     }
-    const token = jwt.sign({ userId: user.user_id }, process.env.SECRET_KEY);
+    const token = jwt.sign(
+      { userId: user.user_id, userName: user.user_name },
+      process.env.SECRET_KEY
+    );
     res.cookie('authorization', `Bearer ${token}`);
     return res.status(200).json({ message: `로그인 성공 ${user.user_name}님 환영합니다.` });
   } catch {
