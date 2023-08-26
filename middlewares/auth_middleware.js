@@ -4,6 +4,9 @@ require('dotenv').config();
 
 module.exports = async (req, res, next) => {
   const { authorization } = req.cookies;
+
+  // console.log(req.cookies.authorization);
+
   if (!authorization) {
     return res.status(400).json({ message: '토큰이 없습니다. 로그인을 해주시길 바랍니다.' });
   }
@@ -28,7 +31,6 @@ module.exports = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error);
-
     res.status(401).json({ message: '비정상적인 접근입니다.' });
     return;
   }

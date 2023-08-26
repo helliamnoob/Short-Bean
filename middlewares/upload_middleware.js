@@ -4,6 +4,8 @@
 // require('dotenv').config();
 // const path = require('path');
 
+const { error } = require('console');
+
 // const s3 = new AWS.S3({
 //   region: process.env.REGION,
 //   accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -27,7 +29,7 @@
 //     },
 //   }),
 // });
-
+const sharp = require('sharp');
 require('dotenv').config();
 
 module.exports = async (req, res, next) => {
@@ -55,6 +57,7 @@ module.exports = async (req, res, next) => {
           const fileId = uuid4();
           const type = file.mimetype.split('/')[1];
 
+          // 파일 확장자와 MIME 타입 검사
           if (
             !allowedExtensions.includes(path.extname(file.originalname.toLowerCase())) ||
             !file.mimetype.startsWith('image/')
@@ -68,10 +71,43 @@ module.exports = async (req, res, next) => {
           callback(null, fileName);
         },
         acl: 'public-read-write',
-        limit: { fileSize: 20 * 1024 * 1024 },
+        limit: { fileSize: 50 * 1024 * 1024 },
       }),
     });
-    upload.single('newFile')(req, res, next);
+
+    // 여러 이미지 업로드 처리
+    upload.array('photos', 10)(req, res, async (error) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).json({ errorMessage: '파일 업로드 에러' });
+      } else {
+        const uploadedPhotos = req.files; // 업로드 된 사진들의 정보
+        for (const photo of uploadedPhotos) {
+          // 각 사진에 대한 처리 로직 구현
+          console.log('uploaded photo:', photo.originalname);
+
+          // 이미지 리사이징 함수 정의
+          async function resizeImage(imageBuffer, width, height) {
+            const resizedImageBuffer = await sharp(imageBuffer)
+              .resize({ width, height })
+              .toBuffer();
+            return resizedImageBuffer;
+          }
+
+          // 이미지 리사이징 후 S3 업로드
+          const resizedImageBuffer = await resizeImage(photo.buffer, 800, 600);
+          const result = await s3
+            .upload({
+              Bucket: env.BUCKET_NAME,
+              Key: 'resized-' + photo.originalname,
+              Body: resizedImageBuffer,
+            })
+            .promise();
+
+          console.log('Resized image uploaded:', result.Location);
+        }
+      }
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ errorMessage: '파일 업로드 에러' });
