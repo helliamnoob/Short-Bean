@@ -10,16 +10,16 @@ module.exports = (io) => {
     socket['name'] = userName;
 
     console.log(`${socket.name}님이 입장했습니다.`);
-    const user = { userId, userName };
+    const user = { userId, userName, socketId: socket.id };
     connectedUsers.push(user);
-    console.log(connectedUsers);
     // 새로운 사용자가 접속했음을 모든 클라이언트에 알림
     io.emit('show_users', connectedUsers);
 
     // 연결이 끊길 때 사용자 목록에서 제거
     socket.on('disconnect', () => {
-      delete connectedUsers[socket.id];
-      io.emit('user_disconnected', socket.id);
+      const disconnectedUser = connectedUsers.find((u) => u.socketId === socket.id);
+      if (disconnectedUser) connectedUsers.splice(connectedUsers.indexOf(disconnectedUser), 1);
+      io.emit('show_users', connectedUsers);
     });
 
     socket.on('enter_room', (roomName, done) => {

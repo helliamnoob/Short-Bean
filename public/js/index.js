@@ -31,7 +31,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     socket.on('show_users', (data) => {
-      console.log(data);
+      userList.innerHTML = '';
+
+      // data 배열을 순회하며 버튼을 생성하여 목록에 추가
+      data.forEach((user) => {
+        const button = document.createElement('button');
+        button.textContent = user.userName;
+        button.setAttribute('id', user.userId);
+
+        button.addEventListener('click', () => {
+          // 버튼 클릭 시 동작을 여기에 추가
+          console.log(`Button ${user.userName} clicked with ID ${user.userId}`);
+        });
+
+        userList.appendChild(button);
+      });
     });
 
     enterRoomForm.addEventListener('click', handleRoomSubmit);
