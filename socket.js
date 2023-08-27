@@ -7,6 +7,19 @@ module.exports = (server) => {
   const httpServer = http.createServer(app);
   const wsServer = SocketIO(httpServer);
 
+  wsServer.on('connection', (socket) => {
+    console.log('a user connected', socket.id);
+
+    socket.on('send-invite', (data) => {
+        // 다른 모든 클라이언트에게 초대 메세지 전송
+        socket.broadcast.emit('receive-invite', data);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+});
+
   wsServer.on("connection", (socket) => {
     socket.on("join_room", (roomName) => {
       socket.join(roomName);

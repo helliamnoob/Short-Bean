@@ -1,3 +1,15 @@
+	// DOM이 로드된 후 실행
+  window.onload = function() {
+    const faceChatLinks = document.querySelectorAll('.facechat-link');
+
+    faceChatLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault(); // 기본 링크 동작을 방지
+        window.location.href = "/facechat";
+      });
+    });
+  };
+
 const socket = io();
 const myFace = document.getElementById("myFace");
 const muteBtn = document.getElementById("mute");

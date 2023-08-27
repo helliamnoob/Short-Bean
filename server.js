@@ -5,12 +5,13 @@ const port = 3000;
 const http = require('http');
 const cookieParser = require('cookie-parser');
 const chatRouter = require('./routes/chat.route');
-// const authRouter = require('./routes/auth.route');
+const authRouter = require('./routes/auth.route');
 const commentRouter = require('./routes/comment.route');
 const postRouter = require('./routes/post.route');
 const likeRouter = require('./routes/like.route');
 const reportRouter = require('./routes/report.route');
 const useMarkRouter = require('./routes/userMark.route');
+const facechatRouter = require('./routes/facechat.route');
 
 const server = http.createServer(app);
 const io = SocketIO(server);
@@ -23,19 +24,23 @@ app.set('views', __dirname + '/public/views');
 app.set('io', io);
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/api', [
-  // authRouter,
+  authRouter,
   chatRouter,
   commentRouter,
   likeRouter,
   postRouter,
   reportRouter,
   useMarkRouter,
+  facechatRouter,
 ]);
-// app.get('/', (_, res) => {
-//   res.sendFile(__dirname + '/public/views/index.html');
-// });
 app.get('/', (_, res) => {
+  res.sendFile(__dirname + '/public/views/index.html');
+});
+app.get('/facechat', (_, res) => {
   res.sendFile(__dirname + '/public/views/facechat.html');
+});
+app.get('/api/login', (_, res) => {
+  res.sendFile(__dirname + '/public/views/zoom.html');
 });
 app.use(cookieParser());
 
