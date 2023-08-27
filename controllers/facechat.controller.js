@@ -22,6 +22,21 @@ class FacechatController {
             res.status(500).send({ message: error.message });
         }
     }
+
+    getChat = async(req, res) => {
+        try {
+            const { facechat_id } = req.params;
+            const chat = await this.facechatService.getChat(facechat_id);
+            if (chat) {
+                res.status(200).send(chat);
+            } else {
+                res.status(404).send({ message: "채팅방을 찾을 수 없습니다." });
+            }
+        } catch (error) {
+            res.status(500).send({ message: error.message });
+        }
+    }
+    
     
 }
 

@@ -10,6 +10,11 @@ class FacechatService {
     leaveChat = async (facechat_id) => {
         return await this.facechatRepository.leaveChat(facechat_id);
     };
+
+    getChat= async(facechat_id) => {
+        return await this.facechatRepository.getChat(facechat_id);
+    }
+    
 }
 
 module.exports = FacechatService;

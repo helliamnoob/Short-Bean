@@ -15,6 +15,11 @@ class FacechatRepository {
             { where: { facechat_id } }
         );
     };
+
+    getChat = async (facechat_id) => {
+        return await FaceChats.findOne({ where: { facechat_id } });
+    }
+    
 }
 
 module.exports = FacechatRepository;
