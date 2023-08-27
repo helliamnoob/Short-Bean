@@ -63,7 +63,8 @@ class PostController {
     try {
       const { content, subject } = req.body;
       const { user_id } = res.locals.user;
-
+      console.log(user_id);
+      console.log('user_id=');
       let filePath = req.file ? req.file.location : null;
       const image = filePath ? `<img src="${filePath}" class="image" alt="질문 이미지"/>` : '';
 
