@@ -1,14 +1,11 @@
-const express = require("express");
+const express = require('express');
 const { Users } = require('../models');
 const jwt = require('jsonwebtoken');
 const middleware = require('../middlewares/auth_middleware');
 const router = express.Router();
 const { Op } = require('sequelize');
-const node_cache = require('node-cache');
-const axios = require('axios');
-const crypto = require('crypto-js');
-const my_cache = new node_cache({stdTTL: 200, checkperiod:600});
-// const cache_middleware = require("../middlewares/cache_middleware");
+const cache = require('node-cache');
+const cache_middleware = require("../middlewares/cache_middleware");
 require('dotenv').config();
 
 // 회원가입
@@ -69,11 +66,11 @@ router.post('/login',async (req, res) => {
   }
 });
 
-  // 로그아웃
-    router.post('/logout', (req, res) => {
-    res.cookie('authorization','');
-   return res.status(200).json({message: '로그아웃 완료'})
-  })
+// 로그아웃
+router.post('/logout', (req, res) => {
+  res.cookie('authorization', '');
+  return res.status(200).json({ message: '로그아웃 완료' });
+});
 
   //회원 정보 수정
   router.put('/userInfo', middleware, async (req, res) => {
@@ -145,13 +142,9 @@ router.post('/login',async (req, res) => {
 
   //개인정보 가져오기(node-cache사용)
   router.get('/usertest',middleware, async (req, res) => {
-    const { user_id } = res.locals.user;
+    const { userId } = res.locals.user;
     try {
-      const user = my_cache.get(user_id);
-      if(!user)
-      {
-        return res.status(400).json({message : "없음"})
-      }
+      const user = cache.get(userId);
       return res.status(200).json({ user });
     } catch {
       res.status(500).json({ message: 'server error.' });
@@ -243,4 +236,5 @@ router.post('/login',async (req, res) => {
   
     return hash.toString(crypto.enc.Base64);
   }
+
 module.exports = router;

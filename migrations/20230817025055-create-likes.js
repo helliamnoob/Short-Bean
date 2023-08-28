@@ -7,22 +7,14 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.BIGINT,
-      },
-      post_id: {
-        allowNull: false,
-        type: Sequelize.BIGINT,
-        references: {
-          model: 'Posts',
-          key: 'post_id',
-        },
+        type: Sequelize.BIGINT
       },
       user_id: {
         allowNull: false,
         type: Sequelize.BIGINT,
         references: {
-          model: 'Users',
-          key: 'user_id',
+          model: "Posts",
+          key: "postId",
         },
       },
       createdAt: {
@@ -33,8 +25,8 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn('now'),
-      },
+        defaultValue: Sequelize.fn("now"),
+      }
     });
   },
   async down(queryInterface, Sequelize) {
