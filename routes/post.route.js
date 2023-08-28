@@ -17,11 +17,9 @@ router.get('/post', postController.getAllPost);
 router.get('/post/:post_id', postController.getPost);
 
 // 게시글 생성
-// router.post('/post', auth, upload, postController.createPost);
 router.post('/post', auth, upload.array('image'), postController.createPost);
 
 // 게시글 수정
-// router.post('/post/:post_id', auth, upload, postController.updatePost);
 router.post('/post/:post_id', auth, upload.array('image'), postController.updatePost);
 
 // 게시글 삭제

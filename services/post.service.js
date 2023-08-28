@@ -17,11 +17,7 @@ class PostService {
 
   findPost = async ({ post_id }) => {
     try {
-      // console.log(post_id); // post_id 값을 확인
-
       const data = await this.postRepository.findPost({ post_id: parseInt(post_id) }); // 숫자로 변환하여 전달
-      // console.log(post_id);
-      // console.log(parseInt(post_id));
 
       return { code: 200, data };
     } catch (error) {
