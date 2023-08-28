@@ -7,33 +7,34 @@ const { Op } = require('sequelize');
 const cache = require('node-cache');
 const cache_middleware = require('../middlewares/cache_middleware');
 require('dotenv').config();
-
+const env = process.env;
 // 회원가입
 router.post('/signup', async (req, res) => {
-    const { nickname,email, password, userName ,phoneNumber,birthDate} = req.body;
-  
-    try {
-      const isExitstUser = await Users.findOne({ where: { email } });
-      //이미 db에 이메일이 있다면
-      if (isExitstUser) {
-        res.status(409).json({ message: '이미 존재하는 이메일입니다.' });
-        return;
-      }
-    } catch (error) {
-      res.status(500).json({ message: error });
+  const { nickname, email, password, user_name, phone_number, birth_date } = req.body;
+
+  try {
+    const isExitstUser = await Users.findOne({ where: { email } });
+    //이미 db에 이메일이 있다면
+    if (isExitstUser) {
+      res.status(409).json({ message: '이미 존재하는 이메일입니다.' });
       return;
     }
-  
-    // 유저 & 유저정보 생성
-    try {
-      // 사용자 테이블에 데이터 삽입
-      await Users.create({ nickname,email, password, userName ,phoneNumber,birthDate });
-      // 사용자 정보 테이블에 데이터를 삽입
-      res.status(201).json({ message: '회원가입이 완료되었습니다' });
-    } catch (error) {
-      res.status(500).json({ message: error });
-    }
-  });
+  } catch (error) {
+    console.log(req.body);
+    res.status(500).json({ message: error });
+    return;
+  }
+
+  // 유저 & 유저정보 생성
+  try {
+    // 사용자 테이블에 데이터 삽입
+    await Users.create({ nickname, email, password, user_name, phone_number, birth_date });
+    // 사용자 정보 테이블에 데이터를 삽입
+    res.status(201).json({ message: '회원가입이 완료되었습니다' });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+});
 
 // 로그인
 router.post('/login', cache_middleware, async (req, res) => {
@@ -56,10 +57,10 @@ router.post('/login', cache_middleware, async (req, res) => {
         message: 'check email or password',
       });
     }
-    const token = await jwt.sign({ user_id: user.user_id }, process.env.SECRET_KEY);
     res.cookie('authorization', `Bearer ${token}`);
+    const token = jwt.sign({ user_id: user.user_id }, env.SECRET_KEY);
+
     return res.status(200).json({ message: `로그인 성공 ${user.user_name}님 환영합니다.` });
-  
   } catch {
     res.status(500).json({ message: 'login server error.' });
   }

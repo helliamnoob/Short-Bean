@@ -6,7 +6,7 @@ const UserMarkController = require('../controllers/userMark.controller');
 const userMarkController = new UserMarkController();
 
 router.get('/userMarks/:user_mark_id', auth, userMarkController.getMark);
-router.post('/userMarks', auth, userMarkController.creatMark);
+router.post('/userMarks/:tutor_id', auth, userMarkController.creatMark);
 router.put('/userMarks/:user_mark_id', auth, userMarkController.updateMark);
 router.delete('/userMarks/:user_mark_id', auth, userMarkController.deleteMark);
 

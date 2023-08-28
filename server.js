@@ -15,7 +15,7 @@ const useMarkRouter = require('./routes/userMark.route');
 const server = http.createServer(app);
 const io = SocketIO(server);
 // const router = require("./routes");
-
+app.use(cookieParser());
 app.use(express.json());
 // app.use("/api", router);
 app.set('view engine', 'html');
@@ -34,8 +34,9 @@ app.use('/api', [
 app.get('/', (_, res) => {
   res.sendFile(__dirname + '/public/views/index.html');
 });
-app.use(cookieParser());
-
+app.get('/post', (_, res) => {
+  res.sendFile(__dirname + '/public/views/post.html');
+});
 server.listen(port, () => {
   console.log(port, '포트로 서버가 열렸어요!');
 });
