@@ -28,8 +28,10 @@ class ReportRepository {
   };
 
   deleteReport = async ({ report_id, user_id }) => {
-    const reportData = await Reports.delete({
-      [Op.and]: [{ report_id: report_id }, { user_id: user_id }],
+    const reportData = await Reports.destroy({
+      where: {
+        [Op.and]: [{ report_id: report_id }, { user_id: user_id }],
+      },
     });
     return reportData;
   };
