@@ -40,4 +40,8 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Likes');
   }
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> 102392e064706a1f9e7429da78f3901ce3bc9389
