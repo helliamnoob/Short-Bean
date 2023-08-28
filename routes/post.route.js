@@ -3,7 +3,9 @@ const router = express.Router();
 
 // 로그인 인증부분
 const auth = require('../middlewares/auth_middleware');
-//const auth = new AuthMiddleware();
+
+// 이미지 업로드 부분
+const upload = require('../middlewares/upload_middleware');
 
 const PostController = require('../controllers/post.controller');
 const postController = new PostController();
@@ -15,10 +17,10 @@ router.get('/post', postController.getAllPost);
 router.get('/post/:post_id', postController.getPost);
 
 // 게시글 생성
-router.post('/post', auth, postController.createPost);
+router.post('/post', auth, upload.array('image'), postController.createPost);
 
 // 게시글 수정
-router.post('/post/:post_id', auth, postController.updatePost);
+router.post('/post/:post_id', auth, upload.array('image'), postController.updatePost);
 
 // 게시글 삭제
 router.delete('/post/:post_id', auth, postController.deletePost);
