@@ -4,8 +4,13 @@ const jwt = require('jsonwebtoken');
 const middleware = require('../middlewares/auth_middleware');
 const router = express.Router();
 const { Op } = require('sequelize');
-const cache = require('node-cache');
+const node_cache = require('node-cache');
+const my_cache = new node_cache({ stdTTL: 200, checkperiod: 600 });
+const axios = require('axios');
+const crypto = require('crypto-js');
+
 const cache_middleware = require('../middlewares/cache_middleware');
+
 require('dotenv').config();
 
 // 회원가입
@@ -61,7 +66,6 @@ router.post('/login', async (req, res) => {
       process.env.SECRET_KEY
     );
     res.cookie('authorization', `Bearer ${token}`);
-    my_cache.set(user.user_id, user, 10000);
     return res.status(200).json({ message: `로그인 성공 ${user.user_name}님 환영합니다.` });
   } catch (e) {
     console.log(e);
