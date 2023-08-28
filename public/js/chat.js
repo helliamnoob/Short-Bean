@@ -1,9 +1,8 @@
-const roomList = document.getElementById('roomList');
-const enterRoomForm = roomList.querySelector('button');
+// const enterRoomForm = roomList.querySelector('button');
 const userList = document.getElementById('userList');
 const chatBox = document.getElementById('chat');
 const availableRooms = document.getElementById('rooms');
-chatBox.hidden = true;
+// chatBox.hidden = true;
 let roomName;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -32,39 +31,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     socket.on('show_users', (data) => {
       userList.innerHTML = '';
-
       // data 배열을 순회하며 버튼을 생성하여 목록에 추가
       data.forEach((user) => {
-        // 사용자 이름을 표시하는 <span> 요소 생성
-        const span = document.createElement('span');
-        span.textContent = user.userName;
-        span.setAttribute('id', user.userId);
+        const h3 = document.createElement('h3');
+        h3.textContent = user.userName;
+        // span.setAttribute('id', user.userId);
 
         // "CHAT" 버튼 생성
         const button = document.createElement('button');
         button.textContent = '채팅하기';
+        button.classList.add('button'); // "box person" 클래스 추가
         button.addEventListener('click', handleRoomSubmit);
 
         // 사용자 이름 <span>과 "CHAT" 버튼을 포함하는 <div> 생성
         const userDiv = document.createElement('div');
-        userDiv.appendChild(span);
+        userDiv.setAttribute('id', user.userId);
+        userDiv.classList.add('box', 'person'); // "box person" 클래스 추가
+
+        userDiv.appendChild(h3);
         userDiv.appendChild(button);
 
         userList.appendChild(userDiv);
       });
     });
-
-    // enterRoomForm.addEventListener('click', handleRoomSubmit);
-
     function handleRoomSubmit(e) {
-      const targetUserId = e.target.closest('div').querySelector('span').getAttribute('id');
+      const targetUserId = e.target.closest('div').getAttribute('id');
       socket.emit('enter_room', targetUserId, showRoom);
-      // 이제 여기서 rommName과 조인을 어떻게할지 생각해보자
-      // 내정보와 타겟id를 보내서 소켓에서 roomName을 쓰자
     }
 
     function showRoom(user) {
-      roomList.hidden = true;
       userList.hidden = true;
       chatBox.hidden = false;
       const h3 = chatBox.querySelector('h3');

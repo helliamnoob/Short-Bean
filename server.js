@@ -38,7 +38,7 @@ app.use('/api', [
 ]);
 
 app.get('/', (_, res) => {
-  res.sendFile(__dirname + '/public/views/index.html');
+  res.sendFile(__dirname + '/public/views/new_chat.html');
 });
 app.get('/facechat', (_, res) => {
   res.sendFile(__dirname + '/public/views/facechat.html');

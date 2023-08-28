@@ -3245,3 +3245,47 @@ button:disabled,
     text-align: center;
   }
 }
+
+/* 이승준 */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+/* 채팅 목록 스타일 */
+.chat-list {
+  border-right: 1px solid #ccc;
+  padding-right: 20px;
+  /* 추가적인 스타일링 요소 */
+}
+
+/* 채팅 창 스타일 */
+.chat-window {
+  flex-grow: 1;
+  overflow-y: scroll;
+  padding: 20px;
+  /* 추가적인 스타일링 요소 */
+}
+
+/* 입력창 및 버튼 스타일 */
+.input-container {
+  display: flex;
+  align-items: center;
+  padding-top: 10px;
+}
+
+#chat-input {
+  flex-grow: 1;
+  padding: 5px;
+}
+
+#send-button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: point
