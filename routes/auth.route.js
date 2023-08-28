@@ -8,7 +8,6 @@ const node_cache = require('node-cache');
 const my_cache = new node_cache({ stdTTL: 200, checkperiod: 600 });
 const axios = require('axios');
 const crypto = require('crypto-js');
-const cache_middleware = require('../middlewares/cache_middleware');
 require('dotenv').config();
 
 // 회원가입
