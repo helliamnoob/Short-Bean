@@ -98,6 +98,22 @@ async function initCall() {
   await getMedia();
   makeConnection();
 }
+
+// 화상 채팅 초대 버튼 이벤트 리스너
+document.getElementById('inviteTutor').addEventListener('click', () => {
+  const tutorId = document.getElementById('inviteTutorIdInput').value;
+  socket.emit('invite_face_chat', tutorId);
+});
+
+// 초대 수신 시의 이벤트 처리
+socket.on("receive_invite", (userSocketId) => {
+  document.getElementById('inviteAlert').style.display = 'block';
+  document.getElementById('acceptInvite').addEventListener('click', () => {
+      socket.emit('accept_face_chat', userSocketId);
+      document.getElementById('inviteAlert').style.display = 'none';
+  });
+});
+
 async function handleWelcomeSubmit(event) {
   event.preventDefault();
   const input = welcomeForm.querySelector("input");
