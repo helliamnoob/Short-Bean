@@ -14,6 +14,7 @@ const postRouter = require('./routes/post.route');
 const likeRouter = require('./routes/like.route');
 const reportRouter = require('./routes/report.route');
 const useMarkRouter = require('./routes/userMark.route');
+const facechatRouter = require('./routes/facechat.route');
 
 const server = http.createServer(app);
 const io = SocketIO(server);
@@ -33,11 +34,19 @@ app.use('/api', [
   postRouter,
   reportRouter,
   useMarkRouter,
+  facechatRouter,
 ]);
 
 app.get('/', (_, res) => {
   res.sendFile(__dirname + '/public/views/index.html');
 });
+app.get('/facechat', (_, res) => {
+  res.sendFile(__dirname + '/public/views/facechat.html');
+});
+app.get('/api/login', (_, res) => {
+  res.sendFile(__dirname + '/public/views/zoom.html');
+});
+app.use(cookieParser());
 
 server.listen(port, () => {
   console.log(port, '포트로 서버가 열렸어요!');
