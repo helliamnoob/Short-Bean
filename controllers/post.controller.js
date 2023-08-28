@@ -63,15 +63,24 @@ class PostController {
     try {
       const { content, subject } = req.body;
       const { user_id } = res.locals.user;
+      console.log(user_id);
+      // console.log('user_id=');
+      let filePath = req.file ? req.file.location : null;
+      const image = filePath ? `<img src="${filePath}" class="image" alt="질문 이미지"/>` : '';
 
       if (!content || !subject) {
         return res.status(400).json({ error: '질문 내용, 과목 기입은 필수입니다.' });
       }
 
+      // if (image) {
+      //   postData.image = image;
+      // }
+
       const { code, message } = await this.postService.createPost({
         content,
         subject,
         user_id,
+        image,
       });
 
       return res.status(code).json({ message });
@@ -89,7 +98,10 @@ class PostController {
       const { user_id } = res.locals.user;
       const { post_id } = req.params;
 
-      if (!content && !subject) {
+      let filePath = req.file ? req.file.location : null;
+      const image = filePath ? `<img src="${filePath}" class="image" alt="질문 이미지"/>` : '';
+
+      if (!content || !subject) {
         return res.status(400).json({ error: '수정할 내용이 없습니다.' });
       }
 
@@ -98,6 +110,7 @@ class PostController {
         subject,
         user_id,
         post_id,
+        image,
       });
 
       return res.status(code).json({ message });
