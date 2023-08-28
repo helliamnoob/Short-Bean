@@ -1,24 +1,9 @@
-	// DOM이 로드된 후 실행
-  window.onload = function() {
-    const faceChatLinks = document.querySelectorAll('.facechat-link');
-
-    faceChatLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault(); // 기본 링크 동작을 방지
-        window.location.href = "/facechat";
-      });
-    });
-  };
-
 const socket = io();
 const myFace = document.getElementById("myFace");
 const muteBtn = document.getElementById("mute");
 const cameraBtn = document.getElementById("camera");
 const camerasSelect = document.getElementById("cameras");
 const call = document.getElementById("call");
-const welcome = document.getElementById("welcome");
-const welcomeForm = welcome.querySelector("form");
-const peerFace = document.getElementById("peerFace");
 
 call.hidden = true;
 
@@ -46,8 +31,6 @@ async function getCameras() {
     console.log(e);
   }
 }
-
-
 async function getMedia(deviceId) {
   const initialConstrains = {
     audio: true,
@@ -57,7 +40,6 @@ async function getMedia(deviceId) {
     audio: true,
     video: { deviceId: { exact: deviceId } },
   };
-  
   try {
     myStream = await navigator.mediaDevices.getUserMedia(
       deviceId ? cameraConstraints : initialConstrains
@@ -70,13 +52,10 @@ async function getMedia(deviceId) {
     console.log(e);
   }
 }
-
-getMedia();
-
 function handleMuteClick() {
   myStream
-  .getAudioTracks()
-  .forEach((track) => (track.enabled = !track.enabled));
+    .getAudioTracks()
+    .forEach((track) => (track.enabled = !track.enabled));
   if (!muted) {
     muteBtn.innerText = "Unmute";
     muted = true;
@@ -85,11 +64,10 @@ function handleMuteClick() {
     muted = false;
   }
 }
-
 function handleCameraClick() {
   myStream
-  .getVideoTracks()
-  .forEach((track) => (track.enabled = !track.enabled));
+    .getVideoTracks()
+    .forEach((track) => (track.enabled = !track.enabled));
   if (cameraOff) {
     cameraBtn.innerText = "Turn Camera Off";
     cameraOff = false;
@@ -98,24 +76,28 @@ function handleCameraClick() {
     cameraOff = true;
   }
 }
-
 async function handleCameraChange() {
   await getMedia(camerasSelect.value);
+  if (myPeerConnection) {
+    const videoTrack = myStream.getVideoTracks()[0];
+    const videoSender = myPeerConnection
+      .getSenders()
+      .find((sender) => sender.track.kind === "video");
+    videoSender.replaceTrack(videoTrack);
+  }
 }
-
-
 muteBtn.addEventListener("click", handleMuteClick);
 cameraBtn.addEventListener("click", handleCameraClick);
 camerasSelect.addEventListener("input", handleCameraChange);
-
-
+// Welcome Form (join a room)
+const welcome = document.getElementById("welcome");
+const welcomeForm = welcome.querySelector("form");
 async function initCall() {
   welcome.hidden = true;
   call.hidden = false;
   await getMedia();
   makeConnection();
 }
-
 async function handleWelcomeSubmit(event) {
   event.preventDefault();
   const input = welcomeForm.querySelector("input");
@@ -124,11 +106,8 @@ async function handleWelcomeSubmit(event) {
   roomName = input.value;
   input.value = "";
 }
-
 welcomeForm.addEventListener("submit", handleWelcomeSubmit);
-
 // Socket Code
-
 socket.on("welcome", async () => {
   const offer = await myPeerConnection.createOffer();
   myPeerConnection.setLocalDescription(offer);
@@ -156,9 +135,20 @@ socket.on("ice", (ice) => {
 });
 
 // RTC Code
-
 function makeConnection() {
-  myPeerConnection = new RTCPeerConnection();
+  myPeerConnection = new RTCPeerConnection({
+    iceServers: [
+      {
+        urls: [
+          "stun:stun.l.google.com:19302",
+          "stun:stun1.l.google.com:19302",
+          "stun:stun2.l.google.com:19302",
+          "stun:stun3.l.google.com:19302",
+          "stun:stun4.l.google.com:19302",
+        ],
+      },
+    ],
+  });
   myPeerConnection.addEventListener("icecandidate", handleIce);
   myPeerConnection.addEventListener("addstream", handleAddStream);
   myStream
