@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { Users } = require('../models');
 require('dotenv').config();
+const env = process.env;
 
 module.exports = async (req, res, next) => {
   try {
@@ -16,7 +17,7 @@ module.exports = async (req, res, next) => {
       return;
     }
 
-    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    const decodedToken = jwt.verify(token, env.SECRET_KEY);
     const user_id = decodedToken.user_id;
     const user = await Users.findOne({ where: { user_id } });
     if (!user) {
@@ -26,8 +27,7 @@ module.exports = async (req, res, next) => {
     res.locals.user = user;
     next();
   } catch (error) {
-    console.log(error);
-    res.status(401).json({ message: '비  정 상적인 접근입니다.' });
+    res.status(401).json({ message: error.message });
     return;
   }
 };
