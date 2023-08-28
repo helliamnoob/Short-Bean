@@ -40,6 +40,9 @@ app.use('/api', [
 app.get('/', (_, res) => {
   res.sendFile(__dirname + '/public/views/index.html');
 });
+app.get('/post', (_, res) => {
+  res.sendFile(__dirname + '/public/views/post.html');
+});
 app.get('/facechat', (_, res) => {
   res.sendFile(__dirname + '/public/views/facechat.html');
 });

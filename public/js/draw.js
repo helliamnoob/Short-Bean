@@ -1,14 +1,27 @@
-"use strict";
+const canvas = document.querySelector('canvas');
 
-var _fabric = require("fabric");
-document.addEventListener("DOMContentLoaded", function () {
-  // 캔버스 초기화
-  var canvas = new _fabric.fabric.Canvas('drawingCanvas');
+const ctx = canvas.getContext('2d');
 
-  // 그리기 모드 활성화
-  canvas.isDrawingMode = true;
-  canvas.freeDrawingBrush.width = 5;
-  canvas.freeDrawingBrush.color = "#000000";
+canvas.width = 800;
+canvas.height = 800;
 
-  // 추가적인 기능(예: 객체 추가, 수정 등)도 여기에 구현할 수 있습니다.
-});
+ctx.lineWidth = 2;
+let isPainting = false;
+
+function onMove(event) {
+  if (isPainting) {
+    ctx.lineTo(event.offsetX, event.offsetY);
+    ctx.stroke();
+    return;
+  }
+  ctx.moveTo(event.offsetX, event.offsetY);
+}
+function onMouseDown() {
+  isPainting = true;
+}
+function onMouseUp() {
+  isPainting = false;
+}
+canvas.addEventListener('mousemove', onMove);
+canvas.addEventListener('mousedown', onMouseDown);
+canvas.addEventListener('mouseup', onMouseUp);

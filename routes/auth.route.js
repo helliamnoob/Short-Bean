@@ -9,7 +9,7 @@ const my_cache = new node_cache({ stdTTL: 200, checkperiod: 600 });
 const axios = require('axios');
 const crypto = require('crypto-js');
 require('dotenv').config();
-
+const env = process.env;
 // 회원가입
 router.post('/signup', async (req, res) => {
   const { nickname, email, password, user_name, phone_number, birth_date } = req.body;
@@ -22,6 +22,7 @@ router.post('/signup', async (req, res) => {
       return;
     }
   } catch (error) {
+    console.log(req.body);
     res.status(500).json({ message: error });
     return;
   }
@@ -59,7 +60,7 @@ router.post('/login', async (req, res) => {
       });
     }
     const token = jwt.sign(
-      { userId: user.user_id, userName: user.user_name },
+      { user_id: user.user_id, userName: user.user_name },
       process.env.SECRET_KEY
     );
     res.cookie('authorization', `Bearer ${token}`);
@@ -112,7 +113,7 @@ router.put('/userInfo', middleware, async (req, res) => {
 //삭제
 router.delete('/signout', middleware, async (req, res) => {
   const { user_id } = res.locals.user;
-  res.locals.userId = userId;
+  res.locals.user_id = user_id;
   try {
     const user_find = await Users.findOne({ where: user_id });
     if (!user_find) {
@@ -147,9 +148,9 @@ router.get('/userInfo', middleware, async (req, res) => {
 
 //개인정보 가져오기(node-cache사용)
 router.get('/usertest', middleware, async (req, res) => {
-  const { userId } = res.locals.user;
+  const { user_id } = res.locals.user;
   try {
-    const user = cache.get(userId);
+    const user = cache.get(user_id);
     return res.status(200).json({ user });
   } catch {
     res.status(500).json({ message: 'server error.' });
