@@ -25,6 +25,10 @@ module.exports = {
           key: 'tutor_id',
         },
       },
+      facechat_room_id: {
+        allowNull: false,
+        type: Sequelize.BIGINT
+      },
       facechat_status: {
         allowNull: false,
         defaultValue: '채팅중',
