@@ -5,6 +5,8 @@ const app = express();
 const port = 3000;
 const http = require('http');
 const cookieParser = require('cookie-parser');
+const { mongoDB } = require('./config/mongo.config');
+
 const chatRouter = require('./routes/chat.route');
 const authRouter = require('./routes/auth.route');
 const commentRouter = require('./routes/comment.route');
@@ -16,10 +18,10 @@ const facechatRouter = require('./routes/facechat.route');
 
 const server = http.createServer(app);
 const io = SocketIO(server);
+mongoDB();
 
 app.use(express.json());
 app.use(cookieParser());
-
 app.set('view engine', 'html');
 app.set('views', __dirname + '/public/views');
 app.set('io', io);
@@ -50,7 +52,7 @@ server.listen(port, () => {
   console.log(port, '포트로 서버가 열렸어요!');
 });
 
-const socketLogic = require('./socket');
+const socketLogic = require('./chat.socket');
 socketLogic(io);
 
 // API 통신

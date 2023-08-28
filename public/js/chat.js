@@ -1,40 +1,102 @@
-const socket = io();
+const roomList = document.getElementById('roomList');
+const enterRoomForm = roomList.querySelector('button');
+const userList = document.getElementById('userList');
+const chatBox = document.getElementById('chat');
+const availableRooms = document.getElementById('rooms');
+chatBox.hidden = true;
+let roomName;
 
-// receiving a message
-socket.on('msg', function (data) {
-  var msgLine = document.createElement('div');
-  msgLine.className = 'msgLine';
+document.addEventListener('DOMContentLoaded', () => {
+  const jwtToken = getCookieValue('authorization');
+  if (!jwtToken) {
+    alert('로그인 후 이용가능한 서비스입니다.');
+    window.location.href = `/public/views/login.html`;
+  } else {
+    const socket = io({
+      auth: {
+        token: jwtToken,
+      },
+    });
 
-  var msgBox = document.createElement('div');
-  msgBox.className = 'msgBox';
-  msgBox.textContent = data;
-  msgBox.style.display = 'inline-block';
+    socket.on('welcome', (user) => {
+      const h3 = chatBox.querySelector('h3');
+      h3.innerText = `Room ${roomName}`;
+      addMessage(`${user} joined!!`);
+    });
 
-  msgLine.appendChild(msgBox);
-  document.getElementById('chatContent').appendChild(msgLine);
+    socket.on('new_message', addMessage); // argument 를 조정해줄 필요가 없어서 이렇게 써도 된다
 
-  var chatContent = document.getElementById('chatContent');
-  chatContent.scrollTop = chatContent.scrollHeight;
+    socket.on('bye', (user) => {
+      addMessage(`${user} left`);
+    });
+
+    socket.on('show_users', (data) => {
+      userList.innerHTML = '';
+
+      // data 배열을 순회하며 버튼을 생성하여 목록에 추가
+      data.forEach((user) => {
+        // 사용자 이름을 표시하는 <span> 요소 생성
+        const span = document.createElement('span');
+        span.textContent = user.userName;
+        span.setAttribute('id', user.userId);
+
+        // "CHAT" 버튼 생성
+        const button = document.createElement('button');
+        button.textContent = '채팅하기';
+        button.addEventListener('click', handleRoomSubmit);
+
+        // 사용자 이름 <span>과 "CHAT" 버튼을 포함하는 <div> 생성
+        const userDiv = document.createElement('div');
+        userDiv.appendChild(span);
+        userDiv.appendChild(button);
+
+        userList.appendChild(userDiv);
+      });
+    });
+
+    // enterRoomForm.addEventListener('click', handleRoomSubmit);
+
+    function handleRoomSubmit(e) {
+      const targetUserId = e.target.closest('div').querySelector('span').getAttribute('id');
+      socket.emit('enter_room', targetUserId, showRoom);
+      // 이제 여기서 rommName과 조인을 어떻게할지 생각해보자
+      // 내정보와 타겟id를 보내서 소켓에서 roomName을 쓰자
+    }
+
+    function showRoom(user) {
+      roomList.hidden = true;
+      userList.hidden = true;
+      chatBox.hidden = false;
+      const h3 = chatBox.querySelector('h3');
+      h3.innerText = `Room ${user}`;
+      const msg = chatBox.querySelector('#messageInput button');
+      msg.addEventListener('click', handleMessageSubmit);
+    }
+    function handleMessageSubmit() {
+      const input = chatBox.querySelector('#messageInput input');
+      socket.emit('new_message', input.value, roomName, () => {
+        addMessage(`myMessage: ${input.value}`);
+      });
+    }
+  }
 });
+function getCookieValue(cookieName) {
+  const cookieParts = document.cookie.split('; ');
 
-// Sending a message
-document.getElementById('myChat').addEventListener('submit', (event) => {
-  console.log('해치웠나?');
-  var msgLine = document.createElement('div');
-  msgLine.className = 'msgLine';
-  msgLine.style.textAlign = 'right';
+  for (const part of cookieParts) {
+    const [name, value] = part.split('=');
+    if (name === cookieName) {
+      return value;
+    }
+  }
+  return null;
+}
 
-  var msgBox = document.createElement('div');
-  msgBox.className = 'msgBox';
-  msgBox.textContent = this.value;
-  msgBox.style.display = 'inline-block';
+// 다시짜보자
 
-  msgLine.appendChild(msgBox);
-  document.getElementById('chatContent').appendChild(msgLine);
-
-  socket.emit('msg', this.value);
-  this.value = '';
-
-  var chatContent = document.getElementById('chatContent');
-  chatContent.scrollTop = chatContent.scrollHeight;
-});
+function addMessage(message) {
+  const ul = chatBox.querySelector('ul');
+  const li = document.createElement('li');
+  li.innerText = message;
+  ul.appendChild(li);
+}

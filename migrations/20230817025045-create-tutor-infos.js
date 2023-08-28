@@ -33,7 +33,7 @@ module.exports = {
       tutor_like: {
         allowNull: false,
         defaultValue: 0,
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
       },
       createdAt: {
         allowNull: false,
