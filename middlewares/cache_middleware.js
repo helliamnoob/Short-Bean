@@ -15,7 +15,7 @@ module.exports = async (req, res, next) => {
     }
     //저장 안되어있다면 캐쉬값 탐색후 반환
     else {
-      const cached_body = myCache.get(is_exit_cache.user_Id);
+      const cached_body = myCache.get(is_exit_cache.user_id);
       if (cached_body) {
         res.status(200).json({ cached_body });
         return;
