@@ -35,35 +35,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // data 배열을 순회하며 버튼을 생성하여 목록에 추가
       data.forEach((user) => {
+        // 사용자 이름을 표시하는 <span> 요소 생성
+        const span = document.createElement('span');
+        span.textContent = user.userName;
+        span.setAttribute('id', user.userId);
+
+        // "CHAT" 버튼 생성
         const button = document.createElement('button');
-        button.textContent = user.userName;
-        button.setAttribute('id', user.userId);
+        button.textContent = '채팅하기';
+        button.addEventListener('click', handleRoomSubmit);
 
-        button.addEventListener('click', () => {
-          // 버튼 클릭 시 동작을 여기에 추가
-          console.log(`Button ${user.userName} clicked with ID ${user.userId}`);
-        });
+        // 사용자 이름 <span>과 "CHAT" 버튼을 포함하는 <div> 생성
+        const userDiv = document.createElement('div');
+        userDiv.appendChild(span);
+        userDiv.appendChild(button);
 
-        userList.appendChild(button);
+        userList.appendChild(userDiv);
       });
     });
 
-    enterRoomForm.addEventListener('click', handleRoomSubmit);
+    // enterRoomForm.addEventListener('click', handleRoomSubmit);
 
-    function handleRoomSubmit(event) {
-      event.preventDefault();
-      const input = roomList.querySelector('input');
-      socket.emit('enter_room', input.value, showRoom);
-      roomName = input.value;
-      input.value = '';
+    function handleRoomSubmit(e) {
+      const targetUserId = e.target.closest('div').querySelector('span').getAttribute('id');
+      socket.emit('enter_room', targetUserId, showRoom);
+      // 이제 여기서 rommName과 조인을 어떻게할지 생각해보자
+      // 내정보와 타겟id를 보내서 소켓에서 roomName을 쓰자
     }
 
-    function showRoom() {
+    function showRoom(user) {
       roomList.hidden = true;
       userList.hidden = true;
       chatBox.hidden = false;
       const h3 = chatBox.querySelector('h3');
-      h3.innerText = `Room ${roomName}`;
+      h3.innerText = `Room ${user}`;
       const msg = chatBox.querySelector('#messageInput button');
       msg.addEventListener('click', handleMessageSubmit);
     }

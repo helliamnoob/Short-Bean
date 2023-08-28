@@ -1,5 +1,6 @@
 const { Users, Chats } = require('../models');
 const Chat = require('../schemas/chat');
+const { Op } = require('sequelize');
 
 class ChatRepository {
   getAllUsers = async () => {
@@ -17,7 +18,12 @@ class ChatRepository {
   getRooms = async (userId, targetId) => {
     return await Chats.findOne({
       attributes: ['chat_id', 'user_id', 'target_user_id'],
-      where: { user_id: userId, target_user_id: targetId },
+      where: {
+        [Op.or]: [
+          { user_id: userId, target_user_id: targetId },
+          { user_id: targetId, target_user_id: userId },
+        ],
+      },
     });
   };
 

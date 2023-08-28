@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/public/css/chat.css" />
+    <title>Chat App - Index</title>
+  </head>
+  <body>
+    <div id="roomList">
+      <form id="createRoomForm">
+        <input type="text" id="roomName" placeholder="Room name" required />
+        <button type="submit">Create Room</button>
+      </form>
+      <h2>Available Rooms</h2>
+      <ul id="rooms"></ul>
+    </div>
+    <div id="userList">
+      <h2>Connected Users</h2>
+      <ul id="users"></ul>
+    </div>
+    <div id="chat">
+      <h3></h3>
+      <div id="chatWindow"><ul></ul></div>
+      <div id="messageInput">
+        <input type="text" id="message" placeholder="Type your message..." />
+        <button type="button" id="sendButton">Send</button>
+      </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/public/js/chat.js"></script>
+  </body>
+</html>
