@@ -27,8 +27,7 @@ module.exports = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error);
-
-    res.status(401).json({ message: '비정상적인 접근입니다.' });
+    res.status(401).json({ message: '비  정 상적인 접근입니다.' });
     return;
   }
 };

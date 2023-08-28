@@ -17,11 +17,7 @@ class PostService {
 
   findPost = async ({ post_id }) => {
     try {
-      // console.log(post_id); // post_id 값을 확인
-
       const data = await this.postRepository.findPost({ post_id: parseInt(post_id) }); // 숫자로 변환하여 전달
-      // console.log(post_id);
-      // console.log(parseInt(post_id));
 
       return { code: 200, data };
     } catch (error) {
@@ -31,12 +27,13 @@ class PostService {
     }
   };
 
-  createPost = async ({ user_id, content, subject }) => {
+  createPost = async ({ user_id, content, subject, image }) => {
     try {
       await this.postRepository.createPost({
         user_id,
         content,
         subject,
+        image,
       });
       return { code: 200, message: '질문 작성이 완료되었습니다.' };
     } catch (error) {
@@ -46,13 +43,14 @@ class PostService {
     }
   };
 
-  updatePost = async ({ user_id, post_id, content, subject }) => {
+  updatePost = async ({ user_id, post_id, content, subject, image }) => {
     try {
       await this.postRepository.updatePost({
         user_id,
         post_id,
         content,
         subject,
+        image,
       });
       return { code: 200, message: '질문 수정이 완료되었습니다.' };
     } catch (error) {

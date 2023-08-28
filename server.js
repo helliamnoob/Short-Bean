@@ -1,6 +1,7 @@
 const SocketIO = require('socket.io');
 const express = require('express');
 const app = express();
+
 const port = 3000;
 const http = require('http');
 const cookieParser = require('cookie-parser');
@@ -33,10 +34,10 @@ app.use('/api', [
   reportRouter,
   useMarkRouter,
 ]);
+
 app.get('/', (_, res) => {
   res.sendFile(__dirname + '/public/views/index.html');
 });
-app.use(cookieParser());
 
 server.listen(port, () => {
   console.log(port, '포트로 서버가 열렸어요!');
