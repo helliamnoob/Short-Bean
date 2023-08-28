@@ -1,6 +1,7 @@
 const SocketIO = require('socket.io');
 const express = require('express');
 const app = express();
+
 const port = 3000;
 const http = require('http');
 const cookieParser = require('cookie-parser');
@@ -15,10 +16,10 @@ const facechatRouter = require('./routes/facechat.route');
 
 const server = http.createServer(app);
 const io = SocketIO(server);
-// const router = require("./routes");
 
 app.use(express.json());
-// app.use("/api", router);
+app.use(cookieParser());
+
 app.set('view engine', 'html');
 app.set('views', __dirname + '/public/views');
 app.set('io', io);
@@ -33,6 +34,7 @@ app.use('/api', [
   useMarkRouter,
   facechatRouter,
 ]);
+
 app.get('/', (_, res) => {
   res.sendFile(__dirname + '/public/views/index.html');
 });

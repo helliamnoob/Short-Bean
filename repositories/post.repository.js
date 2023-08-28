@@ -11,13 +11,13 @@ class PostRepository {
     return await Posts.findOne({ where: { post_id: parseInt(post_id) } });
   };
 
-  createPost = async ({ user_id, content, subject }) => {
-    return await Posts.create({ user_id, content, subject });
+  createPost = async ({ user_id, content, subject, image }) => {
+    return await Posts.create({ user_id, content, subject, image });
   };
 
-  updatePost = async ({ user_id, post_id, content, subject }) => {
+  updatePost = async ({ user_id, post_id, content, subject, image }) => {
     return await Posts.update(
-      { content, subject },
+      { content, subject, image },
       { where: { [Op.and]: [{ user_id }, { post_id }] } }
     );
   };
