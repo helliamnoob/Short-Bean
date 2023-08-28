@@ -17,6 +17,7 @@ const useMarkRouter = require('./routes/userMark.route');
 const facechatRouter = require('./routes/facechat.route');
 
 const server = http.createServer(app);
+const faceSocketController = require('./face.socket');  // 실제 경로에 따라 수정해야 합니다.
 const io = SocketIO(server);
 mongoDB();
 
@@ -25,6 +26,7 @@ app.use(cookieParser());
 app.set('view engine', 'html');
 app.set('views', __dirname + '/public/views');
 app.set('io', io);
+faceSocketController(io);
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/api', [
   authRouter,
@@ -55,8 +57,5 @@ server.listen(port, () => {
   console.log(port, '포트로 서버가 열렸어요!');
 });
 
-const socketLogic = require('./chat.socket');
-socketLogic(io);
-
-// API 통신
-// 소켓 통신
+// const socketLogic = require('./chat.socket');
+// socketLogic(io);
