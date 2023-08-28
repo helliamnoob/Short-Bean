@@ -3,46 +3,50 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Chats', {
-      chat_id: {
+      chatId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.BIGINT,
+        type: Sequelize.BIGINT
       },
-      user_id: {
+      UserId: {
         allowNull: false,
         type: Sequelize.BIGINT,
         references: {
-          model: 'Users',
-          key: 'user_id',
+          model: "Users",
+          key: "userId",
         },
       },
-      tutor_id: {
+      TutorId: {
         allowNull: false,
         type: Sequelize.BIGINT,
         references: {
-          model: 'TutorInfos',
-          key: 'tutor_id',
+          model: "TutorInfos",
+          key: "tutorId",
         },
       },
-      chat_status: {
+      chatRoomId: {
+        allowNull: false,
+        type: Sequelize.BIGINT
+      },
+      chatStatus: {
         allowNull: false,
         defaultValue: '채팅중',
-        type: Sequelize.ENUM('채팅중', '나가기'),
+        type: Sequelize.ENUM('채팅중','나가기')
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn('now'),
+        defaultValue: Sequelize.fn("now"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn('now'),
-      },
+        defaultValue: Sequelize.fn("now"),
+      }
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Chats');
-  },
+  }
 };

@@ -3,47 +3,41 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Posts', {
-      post_id: {
+      postId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.BIGINT,
+        type: Sequelize.BIGINT
       },
-      user_id: {
+      UserId: {
         allowNull: false,
         type: Sequelize.BIGINT,
         references: {
-          model: 'Users',
-          key: 'user_id',
+          model: "Users",
+          key: "userId",
         },
       },
       content: {
         allowNull: false,
-        type: Sequelize.STRING(200),
+        type: Sequelize.STRING(200)
       },
-
       subject: {
         allowNull: false,
-        type: Sequelize.ENUM('국어', '수학', '영어'),
-      },
-      post_like: {
-        allowNull: false,
-        defaultValue: 0,
-        type: Sequelize.BIGINT,
+        type: Sequelize.ENUM('국어', '수학','영어')
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn('now'),
+        defaultValue: Sequelize.fn("now"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn('now'),
-      },
+        defaultValue: Sequelize.fn("now"),
+      }
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Posts');
-  },
+  }
 };

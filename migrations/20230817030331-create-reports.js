@@ -3,46 +3,54 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Reports', {
-      report_id: {
+      reportId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.BIGINT,
+        type: Sequelize.BIGINT
       },
-      user_id: {
+      UserId: {
         allowNull: false,
         type: Sequelize.BIGINT,
         references: {
-          model: 'Users',
-          key: 'user_id',
+          model: "Users",
+          key: "userId",
         },
       },
-      report_content: {
+      AdminId: {
         allowNull: false,
-        type: Sequelize.STRING(200),
+        type: Sequelize.BIGINT,
+        references: {
+          model: "Admins",
+          key: "adminId",
+        },
       },
-      reported_user_id: {
+      reportContent: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(200)
       },
-      report_status: {
+      reportedUserID: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      reportStatus: {
         allowNull: false,
         defaultValue: '처리중',
-        type: Sequelize.ENUM('처리중', '처리완료', '처리취소'),
+        type: Sequelize.ENUM('처리중', '처리완료','처리취소')
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn('now'),
+        defaultValue: Sequelize.fn("now"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn('now'),
-      },
+        defaultValue: Sequelize.fn("now"),
+      }
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Reports');
-  },
+  }
 };
