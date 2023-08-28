@@ -9,18 +9,26 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.BIGINT
       },
-      user_id: {
+      post_id: {
         allowNull: false,
         type: Sequelize.BIGINT,
         references: {
           model: "Posts",
-          key: "postId",
+          key: "post_id",
+        },
+      },
+      user_id: {
+        allowNull: false,
+        type: Sequelize.BIGINT,
+        references: {
+          model: "Users",
+          key: "user_id",
         },
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn('now'),
+        defaultValue: Sequelize.fn("now"),
       },
       updatedAt: {
         allowNull: false,
@@ -31,5 +39,5 @@ module.exports = {
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Likes');
-  },
+  }
 };
