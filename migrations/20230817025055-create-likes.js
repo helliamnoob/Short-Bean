@@ -1,64 +1,43 @@
 'use strict';
-const { Model } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class Likes extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      this.belongsTo(models.Posts, {
-        //  1:N 관계 설정을 합니다.
-        targetKey: 'post_id',
-        foreignKey: 'post_id',
-      });
-      this.belongsTo(models.Users, {
-        //  1:N 관계 설정을 합니다.
-        targetKey: 'user_id',
-        foreignKey: 'user_id',
-      });
-    }
-  }
-  Likes.init(
-    {
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('Likes', {
       like_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.BIGINT,
+        type: Sequelize.BIGINT
       },
       post_id: {
         allowNull: false,
-        type: DataTypes.BIGINT,
+        type: Sequelize.BIGINT,
         references: {
-          model: 'Posts',
-          key: 'post_id',
+          model: "Posts",
+          key: "post_id",
         },
       },
       user_id: {
         allowNull: false,
-        type: DataTypes.BIGINT,
+        type: Sequelize.BIGINT,
         references: {
-          model: 'Users',
-          key: 'user_id',
+          model: "Users",
+          key: "user_id",
         },
       },
       createdAt: {
         allowNull: false,
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("now"),
       },
       updatedAt: {
         allowNull: false,
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-      },
-    },
-    {
-      sequelize,
-      modelName: 'Likes',
-    }
-  );
-  return Likes;
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("now"),
+      }
+    });
+  },
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('Likes');
+  }
 };
