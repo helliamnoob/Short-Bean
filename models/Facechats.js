@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class FaceChats extends Model {
     /**
@@ -10,44 +8,42 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.Users, { //  1:N 관계 설정을 합니다.
-        targetKey: 'userId', 
-        foreignKey: 'UserId', 
+      this.belongsTo(models.Users, {
+        //  1:N 관계 설정을 합니다.
+        targetKey: 'user_id',
+        foreignKey: 'user_id',
       });
-      this.belongsTo(models.TutorInfos, { //  1:N 관계 설정을 합니다.
-        targetKey: 'tutorId', 
-        foreignKey: 'TutorId', 
+      this.belongsTo(models.TutorInfos, {
+        //  1:N 관계 설정을 합니다.
+        targetKey: 'tutor_id',
+        foreignKey: 'tutor_id',
       });
     }
   }
   FaceChats.init({
-    chatId: {
+    facechat_id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.BIGINT
     },
-    UserId: {
+    user_id: {
       allowNull: false,
       type: DataTypes.BIGINT,
       references: {
         model: "Users",
-        key: "userId",
+        key: "user_id",
       },
     },
-    TutorId: {
+    tutor_id: {
       allowNull: false,
       type: DataTypes.BIGINT,
       references: {
         model: "TutorInfos",
-        key: "tutorId",
+        key: "tutor_id",
       },
     },
-    faceChatRoomId: {
-      allowNull: false,
-      type: DataTypes.BIGINT
-    },
-    faceChatStatus: {
+    facechat_status: {
       allowNull: false,
       defaultValue: '채팅중',
       type: DataTypes.ENUM('채팅중','나가기')

@@ -3,46 +3,51 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('TutorInfos', {
-      tutorId: {
+      tutor_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
       },
-      UserId: {
+      user_id: {
         allowNull: false,
         type: Sequelize.BIGINT,
         references: {
-          model: "Users",
-          key: "userId",
+          model: 'Users',
+          key: 'user_id',
         },
       },
-      schoolName: {
+      school_name: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       career: {
         allowNull: false,
-        type: Sequelize.STRING(200)
+        type: Sequelize.STRING(200),
       },
       status: {
         allowNull: false,
         defaultValue: '로그아웃',
-        type: Sequelize.ENUM('로그아웃','로그인')
+        type: Sequelize.ENUM('로그아웃', '로그인'),
+      },
+      tutor_like: {
+        allowNull: false,
+        defaultValue: 0,
+        type: Sequelize.BIGINT
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn("now"),
+        defaultValue: Sequelize.fn('now'),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn("now"),
-      }
+        defaultValue: Sequelize.fn('now'),
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('TutorInfos');
-  }
+  },
 };
