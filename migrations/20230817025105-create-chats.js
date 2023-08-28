@@ -25,10 +25,6 @@ module.exports = {
           key: 'tutor_id',
         },
       },
-      chat_room_id: {
-        allowNull: false,
-        type: Sequelize.BIGINT,
-      },
       chat_status: {
         allowNull: false,
         defaultValue: '채팅중',

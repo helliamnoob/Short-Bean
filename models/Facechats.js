@@ -44,10 +44,6 @@ module.exports = (sequelize, DataTypes) => {
           key: 'tutor_id',
         },
       },
-      facechat_room_id: {
-        allowNull: false,
-        type: DataTypes.BIGINT,
-      },
       facechat_status: {
         allowNull: false,
         defaultValue: '채팅중',

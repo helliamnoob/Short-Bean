@@ -49,10 +49,6 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: '채팅중',
         type: DataTypes.ENUM('채팅중', '나가기'),
       },
-      chat_room_id: {
-        allowNull: false,
-        type: DataTypes.BIGINT,
-      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
