@@ -15,6 +15,7 @@ const likeRouter = require('./routes/like.route');
 const reportRouter = require('./routes/report.route');
 const useMarkRouter = require('./routes/userMark.route');
 const facechatRouter = require('./routes/facechat.route');
+const tutorRouter = require('./routes/tutor.route');
 
 const server = http.createServer(app);
 const faceSocketController = require('./face.socket');  // 실제 경로에 따라 수정해야 합니다.
@@ -37,6 +38,7 @@ app.use('/api', [
   reportRouter,
   useMarkRouter,
   facechatRouter,
+  tutorRouter,
 ]);
 
 app.get('/', (_, res) => {
