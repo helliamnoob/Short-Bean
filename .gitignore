@@ -130,3 +130,6 @@ dist
 .pnp.*
 
 .config
+
+.package-lock.json
+.package.json
