@@ -10,12 +10,12 @@ document.body.addEventListener('click', (event) => {
 });
 
 // 초대 수신 시의 이벤트 처리
-socket.on("receive_invite", (inviterSocketId) => {
+socket.on("receive_invite", (inviterUserId) => {
     console.log("Received an invite!");
     document.getElementById('inviteAlert').style.display = 'block';
     
     document.getElementById('acceptInvite').addEventListener('click', () => {
-        socket.emit('accept_face_chat', inviterSocketId);
+        socket.emit('accept_face_chat', inviterUserId);
         document.getElementById('inviteAlert').style.display = 'none';
     });
 });
@@ -25,6 +25,5 @@ socket.on("accept_response", () => {
     console.log("Invitation accepted! Start the face chat.");
     // 화상 채팅 시작 로직 구현
 });
-
 
 
