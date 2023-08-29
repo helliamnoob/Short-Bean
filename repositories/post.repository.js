@@ -27,6 +27,14 @@ class PostRepository {
       where: { [Op.and]: [{ user_id }, { post_id }] },
     });
   };
+
+  updatePostLike = async ({ post_like, post_id }) => {
+    return await Posts.update({ post_like }, { where: { post_id: parseInt(post_id) } });
+  };
+
+  updatePostUnLike = async ({ post_like, post_id }) => {
+    return await Posts.update({ post_like }, { where: { post_id: parseInt(post_id) } });
+  };
 }
 
 module.exports = PostRepository;

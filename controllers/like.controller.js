@@ -19,10 +19,12 @@ class LikeController {
     try {
       const { post_id } = req.params;
       const { user_id } = res.locals.user;
+      console.log('userid:', user_id);
       const likes = await this.likeService.createLike({ post_id, user_id });
 
       res.status(201).json({ data: likes });
     } catch (error) {
+      console.log('컨트롤에러');
       return res.status(500).json({ message: error.message });
     }
   };
