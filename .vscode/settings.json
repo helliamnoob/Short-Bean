@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["middlewares"]
+  "cSpell.words": ["middlewares"],
+  "liveServer.settings.port": 5501
 }
