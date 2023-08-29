@@ -26,7 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('bye', (user) => {
       addMessage(`${user} left`);
     });
-    socket.on('enter_room', (room) => (roomId = room));
+    socket.on('enter_room', (room, exChatMessages) => {
+      roomId = room;
+      exChatMessages.forEach((chat) => {
+        addMessage(chat);
+      });
+    });
 
     socket.on('show_users', (data) => {
       userList.innerHTML = '';

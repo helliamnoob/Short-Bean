@@ -28,7 +28,10 @@ class ChatRepository {
   };
 
   getMessage = async (roomId) => {
-    return await Chat.find({ room_id: roomId }).sort({ created_at: -1 }).exec();
+    return await Chat.find({ room_id: roomId })
+      .sort({ created_at: -1 })
+      .select('is_send message_content created_at')
+      .exec();
   };
 
   getRoomsByRoomId = async (roomId) => {
