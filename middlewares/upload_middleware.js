@@ -31,5 +31,5 @@ try {
 } catch (error) {
   console.error(error);
 }
-console.log(upload);
+// console.log(upload);
 module.exports = upload;
