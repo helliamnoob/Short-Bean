@@ -43,10 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
           });
 
         // 초대 수신 시의 이벤트 처리
-socket.on("receive_invite", (inviterSocketId) => {
+socket.on("receive_invite", (inviteeId) => {
     const accept = confirm("화상 채팅 초대가 도착했습니다! 수락하시겠습니까?"); 
     if (accept) {
-        socket.emit('accept_face_chat', inviterSocketId);
+        socket.emit('accept_face_chat',inviteeId);
     }
 });
 
