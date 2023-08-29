@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noom</title>
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.1/fabric.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Noom</h1>
+    </header>
+    <main>
+        <div id="welcome">
+            <form>
+                <input placeholder="room name" required type="text">
+                <button>Enter room</button>
+            </form>
+        </div>
+
+        <div id="drawingCanvasContainer" style="text-align: center; margin-top: 30px;">
+            <canvas id="drawingCanvas" width="600" height="400" style="border:1px solid #000;"></canvas>
+        </div>
+
+        <div id="call">
+            <div id="myStream">
+                <video id="myFace" autoplay playsinline width="400" height="400"></video>
+                <button id="mute">Mute</button>
+                <button id="camera">Turn Camera Off</button>
+                <select id="cameras"></select>
+                <video id="peerFace" autoplay playsinline width="400" height="400"></video>
+            </div>
+        </div>
+    </main>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/public/js/facechat.js"></script>
+    <!-- <script>
+        const canvas = new fabric.Canvas('drawingCanvas', {
+            isDrawingMode: true
+        });
+        canvas.freeDrawingBrush.width = 5;  
+        canvas.freeDrawingBrush.color = "#000000";  
+    </script> -->
+</body>
+</html>
+
+

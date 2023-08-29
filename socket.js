@@ -1,77 +1,43 @@
-const jwt = require('jsonwebtoken');
-const { Users } = require('./models');
-require('dotenv').config();
+const SocketIO = require("socket.io");
+const express = require("express");
+const http = require("http");
 
-module.exports = (io) => {
-  io.on('connection', (socket) => {
-    socket['nickname'] = 'aa';
-    const authorization = socket.handshake.auth.token;
-    const [tokenType, token] = authorization.split('%');
-    console.log(token);
-    // const user = getUsers(token);
-    // console.log(user);
+module.exports = (server) => {
+  const app = express();
+  const httpServer = http.createServer(app);
+  const wsServer = SocketIO(httpServer);
 
-    // console.log(tokenType, token);
-    io.sockets.emit('room_change', publicRooms());
-    io.sockets.emit('show_users', getUser());
-    socket.onAny((event) => {
-      console.log(`socket Event : ${event}`);
+  wsServer.on('connection', (socket) => {
+    console.log('a user connected', socket.id);
+
+    socket.on('send-invite', (data) => {
+        // 다른 모든 클라이언트에게 초대 메세지 전송
+        socket.broadcast.emit('receive-invite', data);
     });
-    socket.on('enter_room', (roomName, done) => {
-      socket.join(roomName);
-      done();
-      socket.to(roomName).emit('welcome', socket.id, countRoom(roomName));
-      io.sockets.emit('room_change', publicRooms());
-    });
-    socket.on('disconnecting', () => {
-      socket.rooms.forEach((room) => socket.to(room).emit('bye', socket.id, countRoom(room) - 1));
-    });
+
     socket.on('disconnect', () => {
-      io.sockets.emit('room_change', publicRooms());
+        console.log('user disconnected');
+    });
+});
+
+  wsServer.on("connection", (socket) => {
+    socket.on("join_room", (roomName) => {
+      socket.join(roomName);
+      socket.to(roomName).emit("welcome");
     });
 
-    socket.on('new_message', (msg, room, done) => {
-      socket.to(room).emit('new_message', `${socket.id}: ${msg}`);
-      done();
+    socket.on("offer", (offer, roomName) => {
+      socket.to(roomName).emit("offer", offer);
     });
-    socket.on('nickname', (nickname) => {
-      socket['nickname'] = nickname;
+
+    socket.on("answer", (answer, roomName) => {
+      socket.to(roomName).emit("answer", answer);
+    });
+
+    socket.on("ice", (ice, roomName) => {
+      socket.to(roomName).emit("ice", ice);
     });
   });
 
-  function publicRooms() {
-    // const sids = io.sockets.adapter.sids;
-    // const rooms = io.sockets.adapter.rooms;
-    const {
-      sockets: {
-        adapter: { sids, rooms },
-      },
-    } = io;
-    const publicRooms = [];
-    rooms.forEach((_, key) => {
-      if (sids.get(key) === undefined) {
-        publicRooms.push(key);
-      }
-    });
-    return publicRooms;
-  }
-  function countRoom(roomName) {
-    return io.sockets.adapter.rooms.get(roomName)?.size;
-  }
-  function getUser() {
-    const users = [];
-    const sids = io.sockets.adapter.sids;
-    sids.forEach((_, sid) => {
-      users.push(sid);
-    });
-    return users;
-  }
-  async function getUsers(token) {
-    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
-    console.log(decodedToken);
-    const userId = decodedToken.user_id;
-    const user = await Users.findOne({ where: { user_id: userId } });
-    console.log(user);
-    return user;
-  }
+  return httpServer;
 };

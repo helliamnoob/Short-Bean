@@ -17,17 +17,13 @@ module.exports = {
           key: 'user_id',
         },
       },
-      tutor_id: {
+      target_user_id: {
         allowNull: false,
         type: Sequelize.BIGINT,
         references: {
-          model: 'TutorInfos',
-          key: 'tutor_id',
+          model: 'Users',
+          key: 'user_id',
         },
-      },
-      chat_room_id: {
-        allowNull: false,
-        type: Sequelize.BIGINT,
       },
       chat_status: {
         allowNull: false,

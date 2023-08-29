@@ -13,10 +13,10 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'user_id',
         foreignKey: 'user_id',
       });
-      this.belongsTo(models.TutorInfos, {
+      this.belongsTo(models.Users, {
         //  1:N 관계 설정을 합니다.
-        targetKey: 'tutor_id',
-        foreignKey: 'tutor_id',
+        targetKey: 'user_id',
+        foreignKey: 'user_id',
       });
     }
   }
@@ -36,22 +36,18 @@ module.exports = (sequelize, DataTypes) => {
           key: 'user_id',
         },
       },
-      tutor_id: {
+      target_user_id: {
         allowNull: false,
         type: DataTypes.BIGINT,
         references: {
-          model: 'TutorInfos',
-          key: 'tutor_id',
+          model: 'Users',
+          key: 'user_id',
         },
       },
       chat_status: {
         allowNull: false,
         defaultValue: '채팅중',
         type: DataTypes.ENUM('채팅중', '나가기'),
-      },
-      chat_room_id: {
-        allowNull: false,
-        type: DataTypes.BIGINT,
       },
       createdAt: {
         allowNull: false,
