@@ -3,6 +3,10 @@ const TutorRepository = require('../repositories/tutor.repository');
 class TutorService {
   tutorRepository = new TutorRepository();
 
+  getAllTutors = async () => {
+    return await this.tutorRepository.findAllTutor();
+}
+
   getTutor = async ({ tutor_id }) => {
     const tutorData = await this.tutorRepository.findTutor({ tutor_id });
     return tutorData;

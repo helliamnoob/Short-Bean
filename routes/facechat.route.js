@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/create', facechatController.createChat);
 router.put('/leave/:facechat_id', facechatController.leaveChat);
-router.get('/:facechat_id', facechatController.getChat);
+router.get('/facechat/:facechat_id', facechatController.getChat);
 
 //추가용
 
