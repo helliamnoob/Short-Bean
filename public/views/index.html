@@ -10,6 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="/public/css/main.css" />
+    <script src="/socket.io/socket.io.js"></script>
   </head>
   <body>
     <!-- Header -->
@@ -93,7 +94,8 @@
           <p>접속 중인 튜터님 status가 로그인 상태여야함</p>
         </header>
         <div class="flex flex-4">
-          <div class="box person">
+          <ul class="Tutors" id="Tutors">
+          <!-- <div class="box person">
             <div class="image round">
               <img src="/public/images/pic03.jpg" alt="Person 1" />
             </div>
@@ -101,7 +103,8 @@
             <p>Cipdum dolor</p>
             <button type="button" class="userMarkBtn" id="userMarkBtn" value="1">즐겨찾기</button>
             <button type="button" class="facechatBtn" id="facechatBtn">화상채팅</button>
-          </div>
+          </div> -->
+        </ul>
           <div class="box person">
             <div class="image round">
               <img src="/public/images/pic04.jpg" alt="Person 2" />
@@ -210,5 +213,6 @@
     <script src="/public/js/util.js"></script>
     <script src="/public/js/main.js"></script>
     <script src="/public/js/tutorinfo.js"></script>
+    <script src="/public/js/invite.js"></script>
   </body>
 </html>
