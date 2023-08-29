@@ -4,22 +4,35 @@ const faceSocketController = (io) => {
     io.on("connection", (socket) => {
         console.log('a user connected:', socket.id);
 
-        // 사용자가 연결될 때, userSockets 에 사용자 ID와 소켓 ID 저장
         socket.on("register", (userId) => {
             userSockets[userId] = socket.id;
+            console.log("Registered:", userId, "with socket ID:", socket.id);
+            console.log(userSockets);  
         });
+        
+        socket.on('invite_face_chat', (userId) => {
+            console.log("Invitation for user ID:", userId);
+            const invitedUserSocketId = userSockets[userId];
+            if (invitedUserSocketId) {
+                io.to(invitedUserSocketId).emit('receive_invite', socket.id); 
+            } else {
+                console.log("No socket ID found for user ID:", userId);
+            }
+        });
+
+      io.on('connection', (socket) => {
+    socket.on('accept_face_chat', (inviterSocketId) => {
+        // 초대를 수락한 사용자에게 이벤트 전송
+        socket.emit('start_face_chat');
+        
+        // 초대를 발송한 사용자에게 이벤트 전송
+        io.to(inviterSocketId).emit('start_face_chat');
+    });
+});
 
         socket.on("join_room", (roomName) => {
             socket.join(roomName);
             socket.to(roomName).emit("welcome");
-        });
-
-        // 유저에게 초대장 보내기
-        socket.on('invite_face_chat', (userId) => {
-            const invitedUserSocketId = userSockets[userId];
-            if (invitedUserSocketId) {
-                io.to(invitedUserSocketId).emit('receive_invite', socket.id);  // 초대한 사람의 소켓 ID 전송
-            }
         });
 
         socket.on("accept_face_chat", (inviterSocketId) => {
