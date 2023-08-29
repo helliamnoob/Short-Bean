@@ -3248,7 +3248,7 @@ button:disabled,
 
 /* 이승준 */
 .chat-container {
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   max-width: 800px;
   margin: 0 auto;
@@ -3288,4 +3288,5 @@ button:disabled,
   background-color: #007bff;
   color: #fff;
   border: none;
-  cursor: point
+  cursor: point;
+}

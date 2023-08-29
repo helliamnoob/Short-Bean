@@ -8,11 +8,12 @@ module.exports = (io) => {
   io.on('connection', (socket) => {
     const authorization = socket.handshake.auth.token;
     const [tokenType, token] = authorization.split('%20');
-    const { userId, userName } = jwt.verify(token, process.env.SECRET_KEY);
+    const { user_id, userName } = jwt.verify(token, process.env.SECRET_KEY);
 
     console.log(`${userName}님이 입장했습니다.`);
-    const user = { userId, userName, socketId: socket.id };
+    const user = { userId: user_id, userName, socketId: socket.id };
     connectedUsers.push(user);
+    console.log(user);
     // 새로운 사용자가 접속했음을 모든 클라이언트에 알림
     io.emit('show_users', connectedUsers);
 
@@ -23,23 +24,24 @@ module.exports = (io) => {
       io.emit('show_users', connectedUsers);
     });
 
-    socket.on('enter_room', async (targetUserId, done) => {
+    socket.on('enter_room', async (targetUserId, targetUserName, done) => {
       const roomInfo = await Chats.findOne({
         attributes: ['chat_id', 'user_id', 'target_user_id'],
         where: {
           [Op.or]: [
-            { user_id: userId, target_user_id: targetUserId },
-            { user_id: targetUserId, target_user_id: userId },
+            { user_id, target_user_id: targetUserId },
+            { user_id: targetUserId, target_user_id: user_id },
           ],
         },
       });
       // 에러처리 필요
       if (roomInfo) {
         const roomId = roomInfo.chat_id;
-        // console.log(roomId);
-        socket.join(roomInfo.chat_id);
-        done(userName);
+        console.log(roomId);
+        socket.join(roomId);
+        done(userName, targetUserName);
         socket.to(roomId).emit('welcome', userName);
+        socket.emit('enter_room', roomId);
       }
     });
 

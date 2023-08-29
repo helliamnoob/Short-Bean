@@ -1,9 +1,9 @@
-// const enterRoomForm = roomList.querySelector('button');
 const userList = document.getElementById('userList');
-const chatBox = document.getElementById('chat');
+const chatContainer = document.getElementById('chat');
+const chatBox = document.getElementById('chatBox');
 const availableRooms = document.getElementById('rooms');
-// chatBox.hidden = true;
-let roomName;
+chatContainer.hidden = true;
+let roomId;
 
 document.addEventListener('DOMContentLoaded', () => {
   const jwtToken = getCookieValue('authorization');
@@ -18,9 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     socket.on('welcome', (user) => {
-      const h3 = chatBox.querySelector('h3');
-      h3.innerText = `Room ${roomName}`;
-      addMessage(`${user} joined!!`);
+      addMessage(`${user}님이 입장했습니다!!`);
     });
 
     socket.on('new_message', addMessage); // argument 를 조정해줄 필요가 없어서 이렇게 써도 된다
@@ -28,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('bye', (user) => {
       addMessage(`${user} left`);
     });
+    socket.on('enter_room', (room) => (roomId = room));
 
     socket.on('show_users', (data) => {
       userList.innerHTML = '';
@@ -56,25 +55,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     function handleRoomSubmit(e) {
       const targetUserId = e.target.closest('div').getAttribute('id');
-      socket.emit('enter_room', targetUserId, showRoom);
+      const targetUserName = e.target.closest('div').querySelector('h3').textContent;
+      socket.emit('enter_room', targetUserId, targetUserName, showRoom);
     }
 
-    function showRoom(user) {
+    function showRoom(userName, targetUserName) {
       userList.hidden = true;
-      chatBox.hidden = false;
-      const h3 = chatBox.querySelector('h3');
-      h3.innerText = `Room ${user}`;
-      const msg = chatBox.querySelector('#messageInput button');
+      chatContainer.hidden = false;
+      const h3 = chatContainer.querySelector('h3');
+      h3.innerText = `${userName}님 ${targetUserName}님 의 채팅방`;
+      const msg = chatContainer.querySelector('#send-button');
       msg.addEventListener('click', handleMessageSubmit);
     }
     function handleMessageSubmit() {
-      const input = chatBox.querySelector('#messageInput input');
-      socket.emit('new_message', input.value, roomName, () => {
+      const input = chatContainer.querySelector('#chat-input');
+      socket.emit('new_message', input.value, roomId, () => {
         addMessage(`myMessage: ${input.value}`);
+        input.value = '';
       });
     }
   }
 });
+
 function getCookieValue(cookieName) {
   const cookieParts = document.cookie.split('; ');
 
@@ -86,12 +88,8 @@ function getCookieValue(cookieName) {
   }
   return null;
 }
-
-// 다시짜보자
-
 function addMessage(message) {
-  const ul = chatBox.querySelector('ul');
   const li = document.createElement('li');
   li.innerText = message;
-  ul.appendChild(li);
+  chatBox.appendChild(li);
 }
