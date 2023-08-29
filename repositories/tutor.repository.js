@@ -2,6 +2,11 @@ const { TutorInfos } = require('../models');
 const { Op } = require('sequelize');
 
 class TutorRepository {
+
+  findAllTutor = async() => {
+    return await TutorInfos.findAll();
+};
+
   createTutor = async ({ user_id, school_name, career }) => {
     const tutorData = await TutorInfos.create({
       user_id,

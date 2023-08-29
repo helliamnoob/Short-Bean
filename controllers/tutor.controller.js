@@ -3,6 +3,16 @@ const TutorService = require('../services/tutor.service');
 class TutorController {
   tutorService = new TutorService();
 
+  getAllTutors= async (req, res) => {
+    try {
+        const tutors = await this.tutorService.getAllTutors();
+        res.status(200).json(tutors);
+    } catch (error) {
+        console.error('Error getting tutors:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
   getTutor = async (req, res, next) => {
     try {
       const { user_id } = res.locals.user;
