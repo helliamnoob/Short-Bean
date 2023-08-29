@@ -1,0 +1,174 @@
+<!doctype html>
+<!--
+    Theory by TEMPLATED
+    templated.co @templatedco
+    Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+
+<head>
+  <title>Theory by TEMPLATED</title>
+  <!-- 문서의 메타 정보와 스타일, 스크립트 등을 정의하는 부분 -->
+
+  <!-- 문서 인코딩과 뷰포트 설정 -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- 외부 스타일 시트 불러오기 -->
+  <link rel="stylesheet" href="/public/css/main.css" />
+
+  <!-- Bootstrap CSS 링크 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Bootstrap JS와 jQuery 스크립트 -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+  <!-- 페이지 상단에 위치하는 헤더 -->
+  <header id="header">
+    <div class="inner">
+      <a href="index.html" class="logo">Theory</a>
+      <nav id="nav">
+        <a href="index.html">Home</a>
+        <a href="generic.html">Generic</a>
+        <a href="elements.html">Elements</a>
+      </nav>
+      <a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+    </div>
+  </header>
+
+  <!-- 메인 배너 부분 -->
+  <section id="banner">
+    <h1>Welcome to Theory</h1>
+    <p>A free responsive HTML5 website template by TEMPLATED.</p>
+  </section>
+
+  <!-- 게시글 페이지 -->
+  <div class="main_page">
+    <div class="main_title">
+      <h1>게시글 페이지</h1>
+    </div>
+
+    <!-- 게시글 작성란 -->
+    <!-- 게시글 이미지 첨부 부분 -->
+
+
+    <!-- 게시글 내용 작성 부분 -->
+
+    <!-- 게시글 관련 버튼 -->
+    <div class="card__inner container gray" id="cardList">
+      <button type="button" class="btn btn-dark" id="postCreate">게시글 작성</button>
+      <button type="button" class="btn btn-dark" id="postUpdate">게시글 수정</button>
+      <button type="button" class="btn btn-dark" id="postDelete">게시글 삭제</button>
+      <button type="button" class="btn btn-dark" id="postReport">게시글 신고하기</button>
+    </div>
+    <div>
+      <!-- 댓글 작성란 -->
+      <!-- <div class="input-group mb-3">
+        <input type="text" class="commentInput" placeholder="댓글 작성란" id="commentInput" /> -->
+      <!-- <button class="btn btn-outline-secondary" type="button" id="commentCreate">작성</button> -->
+    </div>
+    <!-- 댓글 내용 표시 -->
+    <div id="commentBox">
+      <div class="mypost">
+        <!-- 사용자의 닉네임 입력을 받는 부분 -->
+        <!-- <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="name" placeholder="url" />
+            <label for="floatingInput">닉네임</label>
+          </div> -->
+        <!-- 사용자의 응원 댓글을 입력 받는 부분 -->
+        <div class="form-floating">
+          <textarea class="form-control" placeholder="Leave a comment here" id="comment"
+            style="height: 100px"></textarea>
+          <!-- <label for="floatingTextarea2">댓글</label> -->
+        </div>
+        <!-- 댓글 남기기 버튼 -->
+        <button onclick="save_comment()" type="button" class="btn btn-dark">
+          댓글 남기기
+        </button>
+      </div>
+
+      <div class="mycards" id="comment-list">
+        <!-- 사용자들의 댓글을 보여주는 부분 -->
+        <div class="card">
+          <div class="card-body">
+            <blockquote class="blockquote mb-0">
+              <p>이거 다른 풀이도 궁금해요!</p>
+              <footer class="blockquote-footer">호빵맨</footer>
+            </blockquote>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <blockquote class="blockquote mb-0">
+              <p>나도 이거 궁금했는데. 풀이를 봐도 이해가 안 갔어요.</p>
+              <footer class="blockquote-footer">신짱구</footer>
+            </blockquote>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <blockquote class="blockquote mb-0">
+              <p>이 질문 너무 좋아요!</p>
+              <footer class="blockquote-footer">이유리</footer>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </div>
+
+  <!-- 페이지 하단에 위치하는 푸터 -->
+  <footer id="footer">
+    <div class="inner">
+      <div class="flex">
+        <ul class="icons">
+          <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+          <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+          <li><a href="#" class="icon fa-linkedin"><span class="label">linkedIn</span></a></li>
+          <li><a href="#" class="icon fa-pinterest-p"><span class="label">Pinterest</span></a></li>
+          <li><a href="#" class="icon fa-vimeo"><span class="label">Vimeo</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 게시글 신고하기 모달 -->
+  <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="reportModalLabel">신고하기</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="reportForm">
+            <div class="mb-3">
+              <label for="content" class="form-label">신고내용</label>
+              <input type="text" class="form-control" id="content" required />
+            </div>
+            <div class="mb-3">
+              <label for="userId" class="form-label">신고할 유저아이디</label>
+              <input type="text" class="form-control" id="userId" required />
+            </div>
+            <button type="submit" class="btn btn-primary">신고하기</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 사이트 제작 정보 -->
+  <div class="copyright">Site made with: <a href="https://templated.co/">TEMPLATED.CO</a></div>
+
+  <!-- 필요한 스크립트 파일 불러오기 -->
+  <script src="/public/js/jquery.min.js"></script>
+  <script src="/public/js/skel.min.js"></script>
+  <script src="/public/js/util.js"></script>
+  <script src="/public/js/post.js"></script>
+</body>
+
+</html>
