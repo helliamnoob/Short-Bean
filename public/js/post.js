@@ -36,3 +36,19 @@ loginForm.addEventListener('submit', function (event) {
       alert('신고를 실패하였습니다.');
     });
 });
+
+//---------------------------------------------------
+
+// 게시글 삭제
+// const requestedPostId = ...; // 클라이언트에서 요청하는 포스트 아이디 값
+
+// fetch('/delete-post/' + postId, {
+//   method: 'DELETE',
+//   body: JSON.stringify({ requested_post_id: requestedPostId }), // 요청 본문에 requested_post_id 추가
+//   headers: {
+//     'Content-Type': 'application/json'
+//   }
+// })
+// .then(response => response.json())
+// .then(data => console.log(data))
+// .catch(error => console.error('Error:', error));

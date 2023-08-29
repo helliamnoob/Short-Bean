@@ -18,7 +18,7 @@ const facechatRouter = require('./routes/facechat.route');
 const tutorRouter = require('./routes/tutor.route');
 
 const server = http.createServer(app);
-const faceSocketController = require('./face.socket');  // 실제 경로에 따라 수정해야 합니다.
+const faceSocketController = require('./face.socket'); // 실제 경로에 따라 수정해야 합니다.
 const io = SocketIO(server);
 mongoDB();
 
@@ -46,6 +46,12 @@ app.get('/', (_, res) => {
 });
 app.get('/post', (_, res) => {
   res.sendFile(__dirname + '/public/views/post.html');
+});
+app.get('/post', (_, res) => {
+  res.sendFile(__dirname + '/public/views/post-detail.html');
+});
+app.get('/post', (_, res) => {
+  res.sendFile(__dirname + '/public/views/post-list.html');
 });
 app.get('/facechat', (_, res) => {
   res.sendFile(__dirname + '/public/views/facechat.html');
