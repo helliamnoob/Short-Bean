@@ -5,7 +5,7 @@ const { Op } = require('sequelize');
 class ChatRepository {
   getAllUsers = async () => {
     return await Users.findAll({
-      attributes: ['user_id', 'nickname'],
+      attributes: ['user_id', 'nickname', 'user_name'],
     });
   };
 
