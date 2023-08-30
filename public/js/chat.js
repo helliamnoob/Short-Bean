@@ -1,11 +1,12 @@
-const userList = document.getElementById('userList');
+const connectedUserList = document.getElementById('connectedUserList');
 const chatContainer = document.getElementById('chat');
+const allUserList = document.getElementById('allUserList');
 const chatBox = document.getElementById('chatBox');
 const availableRooms = document.getElementById('rooms');
 chatContainer.hidden = true;
 let roomId;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const jwtToken = getCookieValue('authorization');
   if (!jwtToken) {
     alert('로그인 후 이용가능한 서비스입니다.');
@@ -43,13 +44,32 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('본인과 대화할 수 없습니다.');
     });
 
-    socket.on('show_users', (data) => {
-      userList.innerHTML = '';
-      renderConnectedUsers(data);
+    const allUser = await getAllUsers();
+    allUser.forEach((user) => {
+      const h3 = document.createElement('h3');
+      h3.textContent = user.user_name;
+
+      const button = document.createElement('button');
+      button.textContent = '채팅하기';
+      button.classList.add('button'); // "box person" 클래스 추가
+      button.addEventListener('click', handleRoomSubmit);
+
+      const userDiv = document.createElement('div');
+      userDiv.setAttribute('id', user.user_id);
+      userDiv.classList.add('box', 'person'); // "box person" 클래스 추가
+
+      userDiv.appendChild(h3);
+      userDiv.appendChild(button);
+
+      allUserList.appendChild(userDiv);
     });
 
-    function renderConnectedUsers(data) {
-      data.forEach((user) => {
+    socket.on('show_users', (socketUser) => {
+      connectedUserList.innerHTML = '';
+      renderConnectedUsers(socketUser);
+    });
+    function renderConnectedUsers(socketUser) {
+      socketUser.forEach((user) => {
         const h3 = document.createElement('h3');
         h3.textContent = user.userName;
 
@@ -65,8 +85,27 @@ document.addEventListener('DOMContentLoaded', () => {
         userDiv.appendChild(h3);
         userDiv.appendChild(button);
 
-        userList.appendChild(userDiv);
+        connectedUserList.appendChild(userDiv);
       });
+
+      // allUser.forEach((user) => {
+      //   const h3 = document.createElement('h3');
+      //   h3.textContent = user.user_name;
+
+      //   const button = document.createElement('button');
+      //   button.textContent = '채팅하기';
+      //   button.classList.add('button'); // "box person" 클래스 추가
+      //   button.addEventListener('click', handleRoomSubmit);
+
+      //   const userDiv = document.createElement('div');
+      //   userDiv.setAttribute('id', user.user_id);
+      //   userDiv.classList.add('box', 'person'); // "box person" 클래스 추가
+
+      //   userDiv.appendChild(h3);
+      //   userDiv.appendChild(button);
+
+      //   allUserList.appendChild(userDiv);
+      // });
     }
 
     function handleRoomSubmit(e) {
@@ -76,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showRoom(userName, targetUserName) {
-      userList.hidden = true;
+      connectedUserList.hidden = true;
       chatContainer.hidden = false;
       const h3 = chatContainer.querySelector('h3');
       h3.innerText = `${userName}님 ${targetUserName}님 의 채팅방`;
@@ -111,7 +150,6 @@ function addMessage(message) {
 }
 
 async function createRoom(targetUesrId) {
-  console.log(targetUesrId);
   try {
     const response = await fetch('/api/rooms', {
       method: 'POST',
@@ -126,6 +164,27 @@ async function createRoom(targetUesrId) {
     if (response.ok) {
       alert('방이 만들어졌습니다.');
       location.reload();
+    } else {
+      const data = await response.json();
+      alert(`fail : ${data.message}`);
+    }
+  } catch (error) {
+    console.error('Error:', error.message);
+  }
+}
+
+async function getAllUsers() {
+  try {
+    const response = await fetch('/api/users', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.data;
     } else {
       const data = await response.json();
       alert(`fail : ${data.message}`);
