@@ -39,6 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
         addMessage(chat);
       });
     });
+    socket.on('sameUser', () => {
+      alert('본인과 대화할 수 없습니다.');
+    });
 
     socket.on('show_users', (data) => {
       userList.innerHTML = '';

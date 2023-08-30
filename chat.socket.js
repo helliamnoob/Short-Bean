@@ -28,6 +28,10 @@ module.exports = (io) => {
 
     // 방에 입장할 때
     socket.on('enter_room', async (targetUserId, targetUserName, done) => {
+      if (user_id == targetUserId) {
+        socket.emit('sameUser');
+        return;
+      }
       // 현재 유저와 가져온 유저와의 채팅방이 있는지 확인
       const roomInfo = await Chats.findOne({
         attributes: ['chat_id', 'user_id', 'target_user_id'],
