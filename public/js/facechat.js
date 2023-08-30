@@ -6,6 +6,8 @@ const cameraBtn = document.getElementById("camera");
 const camerasSelect = document.getElementById("cameras");
 const call = document.getElementById("call");
 
+call.hidden = true;
+
 let myStream;
 let muted = false;
 let cameraOff = false;
@@ -50,11 +52,12 @@ async function getMedia(deviceId) {
       await getCameras();
     }
   } catch (e) {
-    console.log(e);
+    console.error("Error getting media:", e);
   }
-}
+  }
 
-function handleMuteClick() {
+
+  async function handleMuteClick() {
   myStream
     .getAudioTracks()
     .forEach((track) => (track.enabled = !track.enabled));
@@ -66,7 +69,7 @@ function handleMuteClick() {
     muted = false;
   }
 }
-function handleCameraClick() {
+async function handleCameraClick() {
   myStream
     .getVideoTracks()
     .forEach((track) => (track.enabled = !track.enabled));
@@ -103,7 +106,12 @@ async function initCall() {
   welcome.hidden = true;
   call.hidden = false;
   await getMedia();
-  makeConnection();
+  if (myStream) {
+    makeConnection();
+  } else {
+    console.error("Failed to get media stream");
+    return;
+  }
 }
 
 async function handleWelcomeSubmit(event) {
@@ -156,7 +164,7 @@ socket.on("ice", (ice) => {
 
 // RTC Code
 
-function makeConnection() {
+async function makeConnection() {
   myPeerConnection = new RTCPeerConnection({
     iceServers: [
       {
@@ -177,12 +185,12 @@ function makeConnection() {
     .forEach((track) => myPeerConnection.addTrack(track, myStream));
 }
 
-function handleIce(data) {
+async function handleIce(data) {
   console.log("sent candidate");
   socket.emit("ice", data.candidate, roomName);
 }
 
-function handleAddStream(data) {
+async function handleAddStream(data) {
   const peerFace = document.getElementById("peerFace");
   peerFace.srcObject = data.stream;
 }
