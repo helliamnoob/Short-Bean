@@ -1,4 +1,4 @@
-const { Users, Chats } = require('../models');
+const { Users, Chats, TutorInfos } = require('../models');
 const Chat = require('../schemas/chat');
 const { Op } = require('sequelize');
 
@@ -6,6 +6,11 @@ class ChatRepository {
   getAllUsers = async () => {
     return await Users.findAll({
       attributes: ['user_id', 'nickname', 'user_name'],
+      include: [
+        {
+          model: TutorInfos,
+        },
+      ],
     });
   };
 
@@ -58,6 +63,16 @@ class ChatRepository {
 
     await newChat.save();
     return;
+  };
+  getMyInfoById = async (userId) => {
+    return await Users.findOne({
+      include: [
+        {
+          model: TutorInfos,
+        },
+      ],
+      where: { user_id: userId },
+    });
   };
 }
 
