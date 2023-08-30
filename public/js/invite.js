@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
             },
         });
 
-        // JWT 토큰에서 사용자 ID 추출
+        // JWT 토큰에서 사용자 ID 추출 이부분은 나중에 수정할거다.
         const base64Url = jwtToken.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
         
