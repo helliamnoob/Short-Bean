@@ -53,6 +53,12 @@ app.get('/post', (_, res) => {
 app.get('/post', (_, res) => {
   res.sendFile(__dirname + '/public/views/post-list.html');
 });
+app.get('/post', (_, res) => {
+  res.sendFile(__dirname + '/public/views/user-main.html');
+});
+app.get('/post', (_, res) => {
+  res.sendFile(__dirname + '/public/views/tutor-main.html');
+});
 app.get('/facechat', (_, res) => {
   res.sendFile(__dirname + '/public/views/facechat.html');
 });
