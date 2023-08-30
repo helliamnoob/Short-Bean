@@ -25,7 +25,7 @@ window.onload = function () {
 function setupMyPageButton(user_id) {
   const myPageButton = document.getElementById('mypage-button');
   myPageButton.addEventListener('click', function () {
-    window.location.href = `/public/views/user-main.html?user_id=${user_id}`; // 마이페이지 URL로 이동
+    window.location.href = `/public/views/userInfo.html?user_id=${user_id}`; // 추후에 만들어진 마이페이지 URL로 이동
   });
 }
 
@@ -57,3 +57,36 @@ document.getElementById('chat-button').addEventListener('click', function () {
       console.error('사용자 정보를 가져오는 중 에러 발생:', error);
     });
 });
+
+// 인기 순으로 게시글 데이터를 받아와 화면에 표시하는 함수
+function displayPosts(posts) {
+  const postList = document.getElementById('post-list');
+
+  posts.forEach((post) => {
+    const postContainer = document.createElement('div');
+    postContainer.classList.add('post');
+
+    const image = document.createElement('img');
+    image.src = post.imageURL;
+    image.alt = post.title;
+
+    const title = document.createElement('h2');
+    title.textContent = post.title;
+
+    postContainer.appendChild(image);
+    postContainer.appendChild(title);
+
+    postList.appendChild(postContainer);
+  });
+}
+
+// API 엔드포인트에서 게시글 목록을 가져와 화면에 표시하는 함수 호출
+fetch('/api/posts') // API 엔드포인트에 요청을 보냅니다.
+  .then((response) => response.json())
+  .then((data) => {
+    const sortedPosts = data.posts.sort((a, b) => b.likes - a.likes); // 좋아요 순으로 정렬
+    displayPosts(sortedPosts); // 게시글 표시 함수 호출
+  })
+  .catch((error) => {
+    console.error('게시글 정보를 가져오는 중 에러 발생:', error);
+  });
