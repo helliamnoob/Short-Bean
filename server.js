@@ -47,6 +47,9 @@ app.get('/', (_, res) => {
 app.get('/post', (_, res) => {
   res.sendFile(__dirname + '/public/views/post.html');
 });
+app.get('/login', (_, res) => {
+  res.sendFile(__dirname + '/public/views/login.html');
+});
 app.get('/facechat', (_, res) => {
   res.sendFile(__dirname + '/public/views/facechat.html');
 });
