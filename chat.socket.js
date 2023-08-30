@@ -44,7 +44,7 @@ module.exports = (io) => {
       });
 
       if (!roomInfo) {
-        // 방 업을 시
+        // 방 없을 시
         socket.emit('no_room', targetUserId);
       } else {
         // 방이 존재할 시

@@ -55,17 +55,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         const h3 = document.createElement('h3');
         h3.textContent = user.userName;
 
-        const button = document.createElement('button');
-        button.textContent = '채팅하기';
-        button.classList.add('button'); // "box person" 클래스 추가
-        button.addEventListener('click', handleRoomSubmit);
+        const chatBtn = document.createElement('button');
+        chatBtn.textContent = '채팅하기';
+        chatBtn.classList.add('button'); // "box person" 클래스 추가
+        chatBtn.addEventListener('click', handleRoomSubmit);
 
         const userDiv = document.createElement('div');
         userDiv.setAttribute('id', user.userId);
         userDiv.classList.add('box', 'person'); // "box person" 클래스 추가
 
         userDiv.appendChild(h3);
-        userDiv.appendChild(button);
+        userDiv.appendChild(chatBtn);
 
         connectedUserList.appendChild(userDiv);
       });
