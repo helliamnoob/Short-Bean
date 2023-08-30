@@ -1,9 +1,7 @@
 const faceSocketController = (io) => {
     let userSockets = {}; // { userId: socketId }
-
     io.on("connection", (socket) => {
         console.log('a user connected:', socket.id);
-
         socket.on("register", (userId) => {
             userSockets[userId] = socket.id;
             console.log("Registered:", userId, "with socket ID:", socket.id);
@@ -27,28 +25,25 @@ const faceSocketController = (io) => {
         socket.on("accept_face_chat", (inviteeId) => {
             io.to(inviteeId).emit("start_face_chat");
         });
-    });
+    
         socket.on("join_room", (roomName) => {
             socket.join(roomName);
             socket.to(roomName).emit("welcome");
         });
 
-      
         socket.on("offer", (offer, roomName) => {
             socket.to(roomName).emit("offer", offer);
         });
-
         socket.on("answer", (answer, roomName) => {
             socket.to(roomName).emit("answer", answer);
         });
-
         socket.on("ice", (ice, roomName) => {
             socket.to(roomName).emit("ice", ice);
         });
-    
+    });
+
     });
 
 
 };
-
 module.exports = faceSocketController;
