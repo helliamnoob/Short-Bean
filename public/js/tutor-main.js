@@ -20,3 +20,15 @@ function fetchUserName() {
 window.onload = function () {
   fetchUserName();
 };
+
+// 선생님용 마이페이지 버튼 클릭 시 이동
+function setupMyPageButton(tutor_id) {
+  const myPageButton = document.getElementById('mypage-button');
+  myPageButton.addEventListener('click', function () {
+    window.location.href = '/mypage'; // 마이페이지 URL로 이동
+  });
+}
+
+// 실시간 화상 응답 클릭 시 이동
+
+// 1:1 메신저 응답 클릭 시 이동
