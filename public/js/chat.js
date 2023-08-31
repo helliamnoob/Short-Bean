@@ -209,6 +209,7 @@ function closeModal() {
 }
 
 function exitChatRoom() {
+  chatBox.innerHTML = '';
   chatContainer.hidden = true;
   connectedUserForm.style.display = 'block';
   allUserForm.style.display = 'block';
