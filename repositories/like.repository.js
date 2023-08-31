@@ -12,7 +12,7 @@ class LikeRepository {
 
   findLike = async ({ post_id, user_id }) => {
     const likeData = await Likes.findOne({
-      [Op.and]: [{ post_id: post_id }, { user_id: user_id }],
+      where: { [Op.and]: [{ post_id: post_id }, { user_id: user_id }] },
     });
     return likeData;
   };
