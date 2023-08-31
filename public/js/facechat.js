@@ -9,7 +9,6 @@ const call = document.getElementById("call");
 let myStream;
 let muted = false;
 let cameraOff = false;
-let roomName;
 let myPeerConnection;
 let myDataChannel;
 
@@ -95,18 +94,21 @@ muteBtn.addEventListener("click", handleMuteClick);
 cameraBtn.addEventListener("click", handleCameraClick);
 camerasSelect.addEventListener("input", handleCameraChange);
 
-
 const urlParams = new URLSearchParams(window.location.search);
-
-const roomFromUrl = urlParams.get('room');
-if (roomFromUrl) {
+const roomName = urlParams.get('room');
+if (roomName) {
     initCall();
-    socket.emit("join_room", roomFromUrl);
+    socket.emit("join_room", roomName);
 }
 
 async function initCall() {
   await getMedia();
+  
   if (myStream) {
+    // PeerConnection 초기화
+    const configuration = { "iceServers": [{ "urls": "stun:stun.l.google.com:19302" }] };
+    myPeerConnection = new RTCPeerConnection(configuration);
+  
     makeConnection();
   } else {
     console.error("Failed to get media stream");
@@ -114,36 +116,16 @@ async function initCall() {
   }
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  console.log("DOMContentLoaded event fired!"); // 페이지가 로드되었는지 확인하기 위한 로그
-
-  const urlParams = new URLSearchParams(window.location.search);
-  const roomFromUrl = urlParams.get('room');
-  
-  console.log("roomFromUrl value:", roomFromUrl); // roomFromUrl 값 로깅
-
-  if (roomFromUrl) {
-      initCall();
-      socket.emit("join_room", roomFromUrl);
-      roomName = roomFromUrl; 
-      console.log("Joined room:", roomName); // 방에 참가했는지 확인하기 위한 로그
-  }
-});
-
 let isConnectionMade = false; // 플래그 추가
 
 socket.on("user_joined", async (data) => {
-    console.log(`User ${data.userId} has joined the room ${data.roomName}`);
+  console.log(`User ${data.userId} has joined the room ${data.roomName}`);
 
-    if (socket.id === data.userId) {
-        // 플래그로 중복 호출 방지
-        if (!isConnectionMade) {
-            await makeConnection(); // 함수가 완전히 완료될 때까지 기다림
-            isConnectionMade = true;
-        }
-
-        initDataChannelAndSendOffer();
-    }
+  // 자신이 아닌 다른 사용자가 방에 들어올 때 offer 생성
+  if (socket.id !== data.userId) {
+      await makeConnection(); // PeerConnection 초기화
+      initDataChannelAndSendOffer(); // DataChannel 및 Offer 생성
+  }
 });
 
 async function initDataChannelAndSendOffer() {
@@ -168,24 +150,41 @@ socket.on("offer", async (offer) => {
       console.log(event.data)
     );
   });
-
   console.log("received the offer");
-  myPeerConnection.setRemoteDescription(offer);
+ try {
+  await myPeerConnection.setRemoteDescription(offer);
   const answer = await myPeerConnection.createAnswer();
-  myPeerConnection.setLocalDescription(answer);
+  await myPeerConnection.setLocalDescription(answer);
   socket.emit("answer", answer, roomName);
   console.log("sent the answer");
+} catch (error) {
+  console.error("Error handling the offer:", error);
+}
 });
 
-socket.on("answer", (answer) => {
-  console.log("received the answer");
-  myPeerConnection.setRemoteDescription(answer);
+socket.on("answer", async (answer) => {
+  try {
+      await myPeerConnection.setRemoteDescription(answer);
+      console.log("received the answer");
+  } catch (error) {
+      console.error("Error handling the answer:", error);
+  }
 });
+
+const iceCandidatesQueue = [];
 
 socket.on("ice", (ice) => {
-  console.log("received candidate");
-  myPeerConnection.addIceCandidate(ice);
+  if (myPeerConnection && myPeerConnection.remoteDescription && myPeerConnection.remoteDescription.type) {
+    myPeerConnection.addIceCandidate(ice);
+  } else {
+    iceCandidatesQueue.push(ice);
+  }
 });
+
+// setRemoteDescription 호출 이후
+for (let ice of iceCandidatesQueue) {
+  myPeerConnection.addIceCandidate(ice);
+}
 
 
 // RTC Code
@@ -205,21 +204,24 @@ async function makeConnection() {
     ],
   });
   myPeerConnection.addEventListener("icecandidate", handleIce);
-  myPeerConnection.addEventListener("track", handleAddStream);
+  myPeerConnection.addEventListener("track", handleTrack)
   myStream
     .getTracks()
     .forEach((track) => myPeerConnection.addTrack(track, myStream));
 }
 
 async function handleIce(data) {
-  console.log("sent candidate");
-  socket.emit("ice", data.candidate, roomName);
+  if (data.candidate) {
+      console.log("sent candidate");
+      socket.emit("ice", data.candidate, roomName);
+  }
 }
 
-async function handleAddStream(event) {
-  console.log("handleAddStream event triggered"); // 이 로그가 출력되는지 확인
-  const peerFace = document.getElementById("peerFace");
-  if (peerFace.srcObject) return;  
-  peerFace.srcObject = event.streams[0];
-}
+function handleTrack(data) {
+  console.log("handle track")
+  const peerFace = document.querySelector("#peerFace")
+  peerFace.srcObject = data.streams[0]
+  }
+
+
 

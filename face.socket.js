@@ -9,34 +9,35 @@ const faceSocketController = (io) => {
             console.log(userSockets);  
         });
         
-        socket.on('invite_face_chat', (userId) => {
-            console.log("Invitation for user ID:", userId);
-            const invitedUserSocketId = userSockets[userId];
+        socket.on('invite_face_chat', (inviteeId, inviterId, roomId) => {
+            console.log("Invitation for user ID:", inviteeId, "from user ID:", inviterId);
+            const invitedUserSocketId = userSockets[inviteeId];
             if (invitedUserSocketId) {
-                io.to(invitedUserSocketId).emit('receive_invite', userId, socket.id); 
+                io.to(invitedUserSocketId).emit('receive_invite', inviterId, roomId); 
             } else {
-                console.log("No socket ID found for user ID:", userId);
+                console.log("No socket ID found for user ID:", inviteeId);
             }
         });
         
-        socket.on('accept_face_chat', (inviterId) => {
+        socket.on('accept_face_chat', (inviterId, inviteeId, roomId) => {
+            console.log("Room ID:", roomId);
             const inviterSocketId = userSockets[inviterId];
-            const roomName = `${inviterSocketId}_${socket.id}`;  // 방 이름 생성
-            console.log("Creating room with name:", roomName);
-            
-            if(inviterSocketId) {
-                socket.join(roomName); // 초대를 수락한 사용자 (현재 소켓)을 방에 조인
-                io.sockets.sockets.get(inviterSocketId).join(roomName); // 초대를 보낸 사용자의 소켓을 방에 조인
-                console.log("Both users have joined the room:", roomName);
-                        
-                io.to(socket.id).emit('start_face_chat', roomName);
-                io.to(inviterSocketId).emit('start_face_chat', roomName); 
-                console.log("Sent 'start_face_chat' event to both users in room:", roomName);
+            const inviteeSocketId = userSockets[inviteeId];
+        
+            if(inviterSocketId && inviteeSocketId) {
+                try {
+                    socket.join(roomId); 
+                    io.sockets.sockets.get(inviterSocketId).join(roomId); 
+                    io.to(inviteeSocketId).emit('start_face_chat', roomId);
+                } catch (error) {
+                    console.error("Error while joining the room:", error);
+                    socket.emit('error_notification', 'Failed to join the chat room.');  // Error notification
+                }
             } else {
-                console.log("Inviter socket ID not found.");
+                console.log("Socket ID not found.");
+                socket.emit('error_notification', 'An error occurred while connecting. Please try again.');  // Error notification
             }
         });
-
         socket.on('join_room', (roomName) => {
             console.log(`[SERVER] User ${socket.id} is attempting to join room ${roomName}`);
             socket.join(roomName);
