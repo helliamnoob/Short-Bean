@@ -10,10 +10,16 @@ class UserMarkRepository {
     return markData;
   };
 
-  findMark = async (user_id) => {
+  findMarkAll = async (user_id) => {
     const markData = await UserMarks.findAll({
       where: { user_id: user_id },
       order: [['cratedAt']],
+    });
+    return markData;
+  };
+  findMark = async ({ tutor_id, user_id }) => {
+    const markData = await UserMarks.findOne({
+      where: { [Op.and]: [{ tutor_id: tutor_id }, { user_id: user_id }] },
     });
     return markData;
   };
@@ -26,9 +32,9 @@ class UserMarkRepository {
     return markData;
   };
 
-  deleteMark = async ({ user_mark_id, user_id }) => {
-    const markData = await UserMarks.findOne({
-      [Op.and]: [{ user_mark_id: user_mark_id }, { user_id: user_id }],
+  destroyMark = async ({ user_mark_id, user_id }) => {
+    const markData = await UserMarks.destroy({
+      where: { [Op.and]: [{ user_mark_id: user_mark_id }, { user_id: user_id }] },
     });
     return markData;
   };

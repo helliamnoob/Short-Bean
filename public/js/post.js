@@ -10,13 +10,7 @@ const loginForm = document.getElementById('reportForm');
 loginForm.addEventListener('submit', function (event) {
   event.preventDefault();
 
-  const content = document.getElementById('content').value;
-  const userId = document.getElementById('userId').value;
-
-  const formData = {
-    report_content: content,
-    reported_user_id: userId,
-  };
+  const postId = document.getElementById('postLike').value;
 
   fetch('/api/reports', {
     method: 'POST',
@@ -35,4 +29,10 @@ loginForm.addEventListener('submit', function (event) {
       console.error('신고 실패:', error);
       alert('신고를 실패하였습니다.');
     });
+});
+
+//좋아요 버튼
+const likeButton = document.querySelector('#postLike');
+reportButton.addEventListener('click', function () {
+  event.preventDefault();
 });

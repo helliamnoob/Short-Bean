@@ -31,10 +31,6 @@ class PostRepository {
   updatePostLike = async ({ post_like, post_id }) => {
     return await Posts.update({ post_like }, { where: { post_id: parseInt(post_id) } });
   };
-
-  updatePostUnLike = async ({ post_like, post_id }) => {
-    return await Posts.update({ post_like }, { where: { post_id: parseInt(post_id) } });
-  };
 }
 
 module.exports = PostRepository;
