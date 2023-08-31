@@ -38,6 +38,8 @@
             </nav>
             <a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
         </div>
+        <link rel="stylesheet" href="styles.css">
+
     </header>
 
     <!-- 메인 배너 부분 -->
@@ -52,16 +54,11 @@
     </div>
 
 
-
-
     <!-- 마이페이지 이동 버튼 -->
     <button id="mypage-button">마이페이지</button>
 
-
     <!-- 질문하기 이동 버튼 -->
     <button id="question-button">질문하기</button>
-
-
 
     <!-- 1:1 상담(채팅?) 이동 버튼 -->
     <button id="chat-button">1:1 상담</button>
@@ -71,11 +68,45 @@
     <!-- 인기 게시글: 좋아요 순 사진 & 제목만 보이게 하나씩 진열 -->
     <p>인기 질문</p>
     <!-- 게시글 분할, 전시 -->
-    <link rel="stylesheet" href="styles.css">
 
 
     <!-- 전체 게시글: 최신순 사진 & 제목만 보이게 하나씩 진열 -->
-    <p>전체 질문</p>
+    <!-- <p>전체 질문</p> -->
+    <div class="post-list-area">
+        <div class="area-title">
+            <h3 class="title">전체 질문</h3>
+            <a nocr onclick=" return goOtherCR(this, 'a=nco_x0a*A.castmore&r=1&i=1800009D_0000009C1258&u=' +
+                urlencode(this.href));" href="./post-list.html" class="more_link">
+                <span class="blind">더보기</span>
+            </a>
+        </div>
+        <div class="scroll-post-list-box">
+            <div class="post-list-info">
+                <div>
+                    <ol class="all-post-list">
+                        <li>
+                            <div class="post-card">
+                                <a nocr
+                                    onclick="return goOtherCR(this, 'a=nco_x0a*A.castmore&r=1&i=1800009D_0000009C1258&u=' + urlencode(this.href));"
+                                    href="/public/views/post.html?post_id=${post_id}" class="post-link-box">
+                                    <div class="title-box">
+                                        <strong class="name type_ell_2 _html_ellipsis"
+                                            style="max-height: fit-content;"></strong>
+                                        <a nocr
+                                            onclick="return goOtherCR(this, 'a=nco_x0a*A.castmore&r=1&i=1800009D_0000009C1258&u=' + urlencode(this.href));"
+                                            class="_text">`${post.title}`</a>
+                                        </strong>
+                                    </div>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <a nocr href="#" class="pre-visual-prev">이전</a>
+            <a nocr href="#" class="next-visual-next on">다음</a>
+        </div>
+    </div>
+
 
     <!-- 페이지 하단에 위치하는 푸터 -->
     <footer id="footer">
