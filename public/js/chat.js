@@ -3,6 +3,10 @@ const chatContainer = document.getElementById('chat');
 const allUserList = document.getElementById('allUserList');
 const chatBox = document.getElementById('chatBox');
 const availableRooms = document.getElementById('rooms');
+const faceChatBtn = document.getElementById('faceChatBtn').querySelector('button');
+const faceChatForm = document.getElementById('faceChatForm');
+
+faceChatForm.style.display = 'none';
 chatContainer.hidden = true;
 let roomId;
 
@@ -16,10 +20,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       auth: {
         token: jwtToken,
       },
-    });
-
-    socket.on('welcome', (user) => {
-      addMessage(`${user}님이 입장했습니다!!`);
     });
 
     socket.on('no_room', async (targetUesrId) => {
@@ -47,7 +47,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       connectedUserList.innerHTML = '';
       renderConnectedUsers(socketUser);
     });
-
+    faceChatBtn.addEventListener('click', () => {
+      faceChatForm.style.display = 'block';
+      socket.emit('show_tutor', handleFaceChatBtn);
+    });
+    // 수정;
     await getAllUsers();
 
     function renderConnectedUsers(socketUser) {
@@ -70,7 +74,32 @@ document.addEventListener('DOMContentLoaded', async () => {
         connectedUserList.appendChild(userDiv);
       });
     }
+    function handleFaceChatBtn(tutors) {
+      console.log(tutors);
+      const tutorList = document.getElementById('tutorList');
+      tutorList.innerHTML = '';
+      tutors.forEach((tutor) => {
+        const h3 = document.createElement('h3');
+        h3.textContent = `${tutor.userName} 선생님`;
 
+        const chatBtn = document.createElement('button');
+        chatBtn.textContent = '채팅하기';
+
+        const faceChatBtn = document.createElement('button');
+        faceChatBtn.textContent = '화상채팅하기';
+        // button.addEventListener('click', handleRoomSubmit);
+
+        const userDiv = document.createElement('div');
+        userDiv.setAttribute('id', tutor.userId);
+        userDiv.classList.add('box', 'person'); // "box person" 클래스 추가
+
+        userDiv.appendChild(h3);
+        userDiv.appendChild(faceChatBtn);
+        userDiv.appendChild(chatBtn);
+
+        tutorList.appendChild(userDiv);
+      });
+    }
     function handleRoomSubmit(e) {
       const targetUserId = e.target.closest('div').getAttribute('id');
       const targetUserName = e.target.closest('div').querySelector('h3').textContent;
@@ -172,4 +201,7 @@ async function createRoom(targetUesrId) {
   } catch (error) {
     console.error('Error:', error.message);
   }
+}
+function closeModal() {
+  faceChatForm.style.display = 'none';
 }

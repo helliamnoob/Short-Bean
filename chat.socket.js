@@ -1,19 +1,26 @@
 const jwt = require('jsonwebtoken');
-const { Chats } = require('./models');
+const { Chats, Users, TutorInfos } = require('./models');
 const Chat = require('./schemas/chat');
 const { Op } = require('sequelize');
 require('dotenv').config();
 
 const connectedUsers = []; // 현재 접속한 사용자 목록을 저장할 객체
 module.exports = (io) => {
-  io.on('connection', (socket) => {
+  io.on('connection', async (socket) => {
     // socket보낼 때 토큰을 같이 보냄
     const authorization = socket.handshake.auth.token;
     const [tokenType, token] = authorization.split('%20');
     const { user_id, userName } = jwt.verify(token, process.env.SECRET_KEY);
 
+    let isTutor;
+    const myInfo = await getMyInfo(user_id);
+    if (myInfo.dataValues.TutorInfo) {
+      isTutor = true;
+    } else {
+      isTutor = false;
+    }
     // 가져온 데이터로 새로운 유저객체 생성
-    const user = { userId: user_id, userName, socketId: socket.id };
+    const user = { userId: user_id, userName, isTutor, socketId: socket.id };
     connectedUsers.push(user);
 
     // 새로운 사용자가 접속했음을 모든 클라이언트에 알림
@@ -81,6 +88,11 @@ module.exports = (io) => {
     socket.on('disconnecting', () => {
       socket.rooms.forEach((room) => socket.to(room).emit('bye', userName));
     });
+    // 튜터만 보여주기
+    socket.on('show_tutor', (done) => {
+      const tutors = connectedUsers.filter((user) => user.isTutor === true);
+      done(tutors);
+    });
   });
 };
 
@@ -98,4 +110,17 @@ async function getMessage(roomId, userName, targetUserName, roomOwner) {
     messages.push(message);
   });
   return messages;
+}
+
+async function getMyInfo(user_id) {
+  const myInfo = await Users.findOne({
+    include: [
+      {
+        model: TutorInfos,
+      },
+    ],
+    where: { user_id },
+  });
+
+  return myInfo;
 }

@@ -68,8 +68,24 @@
     </section>
 
     <section class="wrapper style1 special">
-      <button>화상채팅하기</button>
+      <div id="faceChatBtn">
+        <button>화상채팅하기</button>
+      </div>
     </section>
+
+    <div id="faceChatForm" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>화상채팅 가능한 선생님</h2>
+        <div id="tutorList">
+          <div class="box person">
+            <h3>Magna</h3>
+            <button>화상대화하기</button>
+            <button>채팅하기</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Footer -->
 
     <footer id="footer">
