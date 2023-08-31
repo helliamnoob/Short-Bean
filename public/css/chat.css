@@ -2208,7 +2208,6 @@ textarea:focus {
 
 .select-wrapper {
   text-decoration: none;
-  display: block;
   position: relative;
 }
 
@@ -3327,6 +3326,14 @@ button:disabled,
   position: absolute;
   top: 0;
   right: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.exit {
+  position: relative; /* 위치를 절대적으로 설정합니다. */
+  top: 0;
+  left: 0; /* 왼쪽으로 붙이는 부분 */
   font-size: 24px;
   font-weight: bold;
   cursor: pointer;

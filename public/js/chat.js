@@ -5,6 +5,8 @@ const chatBox = document.getElementById('chatBox');
 const availableRooms = document.getElementById('rooms');
 const faceChatBtn = document.getElementById('faceChatBtn').querySelector('button');
 const faceChatForm = document.getElementById('faceChatForm');
+const connectedUserForm = document.getElementById('connectedUserForm');
+const allUserForm = document.getElementById('allUserForm');
 
 faceChatForm.style.display = 'none';
 chatContainer.hidden = true;
@@ -75,7 +77,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     }
     function handleFaceChatBtn(tutors) {
-      console.log(tutors);
       const tutorList = document.getElementById('tutorList');
       tutorList.innerHTML = '';
       tutors.forEach((tutor) => {
@@ -107,7 +108,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function showRoom(userName, targetUserName) {
-      connectedUserList.hidden = true;
+      connectedUserForm.style.display = 'none';
+      allUserForm.style.display = 'none';
       chatContainer.hidden = false;
       const h3 = chatContainer.querySelector('h3');
       h3.innerText = `${userName}님 ${targetUserName}님 의 채팅방`;
@@ -204,4 +206,10 @@ async function createRoom(targetUesrId) {
 }
 function closeModal() {
   faceChatForm.style.display = 'none';
+}
+
+function exitChatRoom() {
+  chatContainer.hidden = true;
+  connectedUserForm.style.display = 'block';
+  allUserForm.style.display = 'block';
 }
