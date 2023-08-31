@@ -105,10 +105,6 @@ async function initCall() {
   await getMedia();
   
   if (myStream) {
-    // PeerConnection 초기화
-    const configuration = { "iceServers": [{ "urls": "stun:stun.l.google.com:19302" }] };
-    myPeerConnection = new RTCPeerConnection(configuration);
-  
     makeConnection();
   } else {
     console.error("Failed to get media stream");
@@ -116,14 +112,14 @@ async function initCall() {
   }
 }
 
-let isConnectionMade = false; // 플래그 추가
-
 socket.on("user_joined", async (data) => {
   console.log(`User ${data.userId} has joined the room ${data.roomName}`);
 
   // 자신이 아닌 다른 사용자가 방에 들어올 때 offer 생성
   if (socket.id !== data.userId) {
-      await makeConnection(); // PeerConnection 초기화
+      if (!myPeerConnection) { 
+          await makeConnection(); // PeerConnection 초기화 
+      }
       initDataChannelAndSendOffer(); // DataChannel 및 Offer 생성
   }
 });
@@ -133,14 +129,18 @@ async function initDataChannelAndSendOffer() {
     console.error("myPeerConnection is not initialized yet!");
     return;
   }
+  
   myDataChannel = myPeerConnection.createDataChannel("chat");
-  myDataChannel.addEventListener("message", (event) => console.log(event.data));
-  console.log("Made data channel");
+  
+   myDataChannel.addEventListener("message", (event) => console.log(event.data));
+   console.log("Made data channel");
 
-  const offer = await myPeerConnection.createOffer();
-  myPeerConnection.setLocalDescription(offer);
-  console.log("Sent the offer");
-  socket.emit("offer", offer, roomName);
+   const offer = await myPeerConnection.createOffer();
+   await myPeerConnection.setLocalDescription(offer);
+   
+   console.log("Sent the offer");
+   
+   socket.emit("offer", offer, roomName);
 }
 
 socket.on("offer", async (offer) => {

@@ -57,9 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         socket.on("start_face_chat", (roomId) => {
             console.log("Invitation accepted! Attempting to open chat window for room:", roomId);
             window.open(`/facechat?room=${roomId}`, '_blank', 'width=800,height=600');
-        });
-      
-    
+        });   
 
      }
 });
