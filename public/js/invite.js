@@ -36,18 +36,18 @@ document.addEventListener('DOMContentLoaded', () => {
           });
 
         // 초대 수신 시의 이벤트 처리
-socket.on("receive_invite", (inviteeId) => {
-    const accept = confirm("화상 채팅 초대가 도착했습니다! 수락하시겠습니까?"); 
-    if (accept) {
-        socket.emit('accept_face_chat',inviteeId);
-    }
-});
+        socket.on("receive_invite", (inviteeId) => {
+            const accept = confirm("화상 채팅 초대가 도착했습니다! 수락하시겠습니까?");
+            if (accept) {
+                socket.emit('accept_face_chat', inviteeId);
+            }
+        });
+        
+        socket.on("start_face_chat", (roomName) => {
+            console.log("Invitation accepted! Joining room: ", roomName);
+            window.location.href = `/facechat?room=${roomName}`;
+        });
 
-// 초대가 수락되었을 때 처리하는 이벤트 핸들러
-socket.on("start_face_chat", () => {
-    console.log("Invitation accepted! Start the face chat.");
-    window.location.href = "/facechat";  // 화상 채팅 페이지 URL을 가정한 것입니다.
-});
      }
 });
 function getCookieValue(cookieName) {

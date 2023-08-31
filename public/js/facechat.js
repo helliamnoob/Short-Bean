@@ -6,8 +6,6 @@ const cameraBtn = document.getElementById("camera");
 const camerasSelect = document.getElementById("cameras");
 const call = document.getElementById("call");
 
-call.hidden = true;
-
 let myStream;
 let muted = false;
 let cameraOff = false;
@@ -99,12 +97,15 @@ camerasSelect.addEventListener("input", handleCameraChange);
 
 // Welcome Form (join a room)
 
-const welcome = document.getElementById("welcome");
-const welcomeForm = welcome.querySelector("form");
+const urlParams = new URLSearchParams(window.location.search);
+
+const roomFromUrl = urlParams.get('room');
+if (roomFromUrl) {
+    initCall();
+    socket.emit("join_room", roomFromUrl);
+}
 
 async function initCall() {
-  welcome.hidden = true;
-  call.hidden = false;
   await getMedia();
   if (myStream) {
     makeConnection();
@@ -114,20 +115,21 @@ async function initCall() {
   }
 }
 
-async function handleWelcomeSubmit(event) {
-  event.preventDefault();
-  const input = welcomeForm.querySelector("input");
-  await initCall();
-  socket.emit("join_room", input.value);
-  roomName = input.value;
-  input.value = "";
-}
+// 페이지 로딩 시 바로 initCall 함수 호출
+window.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const roomFromUrl = urlParams.get('room');
+    if (roomFromUrl) {
+        initCall();
+        socket.emit("join_room", roomFromUrl);
+        roomName = roomFromUrl; // 이 라인 추가
+    }
+});
 
-welcomeForm.addEventListener("submit", handleWelcomeSubmit);
 
 // Socket Code
 
-socket.on("welcome", async () => {
+socket.on("start_face_chat", async (roomName) => {
   myDataChannel = myPeerConnection.createDataChannel("chat");
   myDataChannel.addEventListener("message", (event) => console.log(event.data));
   console.log("made data channel");
@@ -179,7 +181,7 @@ async function makeConnection() {
     ],
   });
   myPeerConnection.addEventListener("icecandidate", handleIce);
-  myPeerConnection.addEventListener("addstream", handleAddStream);
+  myPeerConnection.addEventListener("track", handleAddStream);
   myStream
     .getTracks()
     .forEach((track) => myPeerConnection.addTrack(track, myStream));
@@ -190,7 +192,8 @@ async function handleIce(data) {
   socket.emit("ice", data.candidate, roomName);
 }
 
-async function handleAddStream(data) {
+async function handleAddStream(event) {
   const peerFace = document.getElementById("peerFace");
-  peerFace.srcObject = data.stream;
+  if (peerFace.srcObject) return;  // 이미 스트림이 설정되어 있으면 추가하지 않습니다.
+  peerFace.srcObject = event.streams[0];  // track 이벤트에서는 streams 속성을 사용하여 스트림에 접근합니다.
 }
