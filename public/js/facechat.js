@@ -95,7 +95,6 @@ muteBtn.addEventListener("click", handleMuteClick);
 cameraBtn.addEventListener("click", handleCameraClick);
 camerasSelect.addEventListener("input", handleCameraChange);
 
-// Welcome Form (join a room)
 
 const urlParams = new URLSearchParams(window.location.search);
 
@@ -115,29 +114,52 @@ async function initCall() {
   }
 }
 
-// 페이지 로딩 시 바로 initCall 함수 호출
 window.addEventListener("DOMContentLoaded", () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const roomFromUrl = urlParams.get('room');
-    if (roomFromUrl) {
-        initCall();
-        socket.emit("join_room", roomFromUrl);
-        roomName = roomFromUrl; // 이 라인 추가
+  console.log("DOMContentLoaded event fired!"); // 페이지가 로드되었는지 확인하기 위한 로그
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const roomFromUrl = urlParams.get('room');
+  
+  console.log("roomFromUrl value:", roomFromUrl); // roomFromUrl 값 로깅
+
+  if (roomFromUrl) {
+      initCall();
+      socket.emit("join_room", roomFromUrl);
+      roomName = roomFromUrl; 
+      console.log("Joined room:", roomName); // 방에 참가했는지 확인하기 위한 로그
+  }
+});
+
+let isConnectionMade = false; // 플래그 추가
+
+socket.on("user_joined", async (data) => {
+    console.log(`User ${data.userId} has joined the room ${data.roomName}`);
+
+    if (socket.id === data.userId) {
+        // 플래그로 중복 호출 방지
+        if (!isConnectionMade) {
+            await makeConnection(); // 함수가 완전히 완료될 때까지 기다림
+            isConnectionMade = true;
+        }
+
+        initDataChannelAndSendOffer();
     }
 });
 
-
-// Socket Code
-
-socket.on("start_face_chat", async (roomName) => {
+async function initDataChannelAndSendOffer() {
+  if (!myPeerConnection) {
+    console.error("myPeerConnection is not initialized yet!");
+    return;
+  }
   myDataChannel = myPeerConnection.createDataChannel("chat");
   myDataChannel.addEventListener("message", (event) => console.log(event.data));
-  console.log("made data channel");
+  console.log("Made data channel");
+
   const offer = await myPeerConnection.createOffer();
   myPeerConnection.setLocalDescription(offer);
-  console.log("sent the offer");
+  console.log("Sent the offer");
   socket.emit("offer", offer, roomName);
-});
+}
 
 socket.on("offer", async (offer) => {
   myPeerConnection.addEventListener("datachannel", (event) => {
@@ -146,6 +168,7 @@ socket.on("offer", async (offer) => {
       console.log(event.data)
     );
   });
+
   console.log("received the offer");
   myPeerConnection.setRemoteDescription(offer);
   const answer = await myPeerConnection.createAnswer();
@@ -163,6 +186,7 @@ socket.on("ice", (ice) => {
   console.log("received candidate");
   myPeerConnection.addIceCandidate(ice);
 });
+
 
 // RTC Code
 
@@ -193,7 +217,9 @@ async function handleIce(data) {
 }
 
 async function handleAddStream(event) {
+  console.log("handleAddStream event triggered"); // 이 로그가 출력되는지 확인
   const peerFace = document.getElementById("peerFace");
-  if (peerFace.srcObject) return;  // 이미 스트림이 설정되어 있으면 추가하지 않습니다.
-  peerFace.srcObject = event.streams[0];  // track 이벤트에서는 streams 속성을 사용하여 스트림에 접근합니다.
+  if (peerFace.srcObject) return;  
+  peerFace.srcObject = event.streams[0];
 }
+

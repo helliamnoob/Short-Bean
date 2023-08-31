@@ -32,11 +32,14 @@ document.addEventListener('DOMContentLoaded', () => {
                   }
                   socket.emit('invite_face_chat', inviteeId);
                   console.log(`Invitation sent to user with ID: ${inviteeId}`);
+  
+                  // 초대를 보내는 사람도 새 창을 미리 연다.
+                  const roomName = `${currentUserId}_${inviteeId}`;
+                  window.open(`/facechat?room=${roomName}`, '_blank', 'width=800,height=600');
               }
           });
 
-        // 초대 수신 시의 이벤트 처리
-        socket.on("receive_invite", (inviteeId) => {
+          socket.on("receive_invite", (inviteeId) => {
             const accept = confirm("화상 채팅 초대가 도착했습니다! 수락하시겠습니까?");
             if (accept) {
                 socket.emit('accept_face_chat', inviteeId);
@@ -44,9 +47,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         socket.on("start_face_chat", (roomName) => {
-            console.log("Invitation accepted! Joining room: ", roomName);
-            window.location.href = `/facechat?room=${roomName}`;
+            console.log("Invitation accepted! Attempting to open chat window for room:", roomName);
+            
+            // 초대를 받는 사람도 새 창을 열도록 수정
+            window.open(`/facechat?room=${roomName}`, '_blank', 'width=800,height=600');
         });
+    
+      
+    
 
      }
 });
