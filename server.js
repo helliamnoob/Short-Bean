@@ -15,8 +15,10 @@ const likeRouter = require('./routes/like.route');
 const reportRouter = require('./routes/report.route');
 const useMarkRouter = require('./routes/userMark.route');
 const facechatRouter = require('./routes/facechat.route');
+const tutorRouter = require('./routes/tutor.route');
 
 const server = http.createServer(app);
+const faceSocketController = require('./face.socket');
 const io = SocketIO(server);
 mongoDB();
 
@@ -25,6 +27,7 @@ app.use(cookieParser());
 app.set('view engine', 'html');
 app.set('views', __dirname + '/public/views');
 app.set('io', io);
+faceSocketController(io);
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/api', [
   authRouter,
@@ -35,6 +38,7 @@ app.use('/api', [
   reportRouter,
   useMarkRouter,
   facechatRouter,
+  tutorRouter,
 ]);
 
 app.get('/', (_, res) => {
@@ -42,6 +46,9 @@ app.get('/', (_, res) => {
 });
 app.get('/post', (_, res) => {
   res.sendFile(__dirname + '/public/views/post.html');
+});
+app.get('/login', (_, res) => {
+  res.sendFile(__dirname + '/public/views/login.html');
 });
 app.get('/facechat', (_, res) => {
   res.sendFile(__dirname + '/public/views/facechat.html');
@@ -55,8 +62,5 @@ server.listen(port, () => {
   console.log(port, '포트로 서버가 열렸어요!');
 });
 
-const socketLogic = require('./chat.socket');
-socketLogic(io);
-
-// API 통신
-// 소켓 통신
+// const socketLogic = require('./chat.socket');
+// socketLogic(io);

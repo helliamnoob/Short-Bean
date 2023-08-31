@@ -26,12 +26,12 @@ module.exports = (io) => {
     // 새로운 사용자가 접속했음을 모든 클라이언트에 알림
     io.emit('show_users', connectedUsers);
 
-    // 연결이 끊길 때 사용자 목록에서 제거
-    socket.on('disconnect', () => {
-      const disconnectedUser = connectedUsers.find((user) => user.socketId === socket.id);
-      if (disconnectedUser) connectedUsers.splice(connectedUsers.indexOf(disconnectedUser), 1);
-      io.emit('show_users', connectedUsers);
-    });
+    //     // 연결이 끊길 때 사용자 목록에서 제거
+    //     socket.on('disconnect', () => {
+    //       const disconnectedUser = connectedUsers.find((user) => user.socketId === socket.id);
+    //       if (disconnectedUser) connectedUsers.splice(connectedUsers.indexOf(disconnectedUser), 1);
+    //       io.emit('show_users', connectedUsers);
+    //     });
 
     // 방에 입장할 때
     socket.on('enter_room', async (targetUserId, targetUserName, done) => {
