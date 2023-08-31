@@ -10,13 +10,7 @@ const loginForm = document.getElementById('reportForm');
 loginForm.addEventListener('submit', function (event) {
   event.preventDefault();
 
-  const content = document.getElementById('content').value;
-  const userId = document.getElementById('userId').value;
-
-  const formData = {
-    report_content: content,
-    reported_user_id: userId,
-  };
+  const postId = document.getElementById('postLike').value;
 
   fetch('/api/reports', {
     method: 'POST',
@@ -37,18 +31,8 @@ loginForm.addEventListener('submit', function (event) {
     });
 });
 
-//---------------------------------------------------
-
-// 게시글 삭제
-// const requestedPostId = ...; // 클라이언트에서 요청하는 포스트 아이디 값
-
-// fetch('/delete-post/' + postId, {
-//   method: 'DELETE',
-//   body: JSON.stringify({ requested_post_id: requestedPostId }), // 요청 본문에 requested_post_id 추가
-//   headers: {
-//     'Content-Type': 'application/json'
-//   }
-// })
-// .then(response => response.json())
-// .then(data => console.log(data))
-// .catch(error => console.error('Error:', error));
+//좋아요 버튼
+const likeButton = document.querySelector('#postLike');
+reportButton.addEventListener('click', function () {
+  event.preventDefault();
+});

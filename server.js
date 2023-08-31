@@ -68,6 +68,9 @@ app.get('/facechat', (_, res) => {
 app.get('/api/login', (_, res) => {
   res.sendFile(__dirname + '/public/views/zoom.html');
 });
+app.get('/admin', (_, res) => {
+  res.sendFile(__dirname + '/public/views/admin.html');
+});
 app.use(cookieParser());
 
 server.listen(port, () => {

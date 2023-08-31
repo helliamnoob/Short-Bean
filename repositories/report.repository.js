@@ -18,6 +18,10 @@ class ReportRepository {
     });
     return reportData;
   };
+  findReportAll = async () => {
+    const reportData = await Reports.findAll();
+    return reportData;
+  };
 
   updateReport = async ({ report_id, user_id, report_content }) => {
     const reportData = await Reports.update(
