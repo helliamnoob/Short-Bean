@@ -6,6 +6,8 @@ require('dotenv').config();
 
 const connectedUsers = []; // 현재 접속한 사용자 목록을 저장할 객체
 module.exports = (io) => {
+  let userSockets = {}; // { userId: socketId }
+
   io.on('connection', async (socket) => {
     // socket보낼 때 토큰을 같이 보냄
     const authorization = socket.handshake.auth.token;
@@ -27,8 +29,7 @@ module.exports = (io) => {
       socketId: socket.id,
     };
     connectedUsers.push(user);
-    console.log(connectedUsers);
-    // 새로운 사용자가 접속했음을 모든 클라이언트에 알림
+    // 새로운 사용자가 접속했음을 모든  알림
     io.emit('show_users', connectedUsers);
 
     // 연결이 끊길 때 사용자 목록에서 제거
@@ -97,6 +98,47 @@ module.exports = (io) => {
     socket.on('show_tutor', (done) => {
       const tutors = connectedUsers.filter((user) => user.isTutor === true);
       done(tutors);
+    });
+    // 예림님쪽
+    console.log('a user connected:', socket.id);
+    socket.on('register', (userId) => {
+      userSockets[userId] = socket.id;
+      console.log('Registered:', userId, 'with socket ID:', socket.id);
+      console.log(userSockets);
+    });
+
+    socket.on('invite_face_chat', (userId) => {
+      console.log('Invitation for user ID:', userId);
+      const invitedUserSocketId = userSockets[userId];
+      if (invitedUserSocketId) {
+        io.to(invitedUserSocketId).emit('receive_invite', socket.id);
+      } else {
+        console.log('No socket ID found for user ID:', userId);
+      }
+    });
+
+    socket.on('accept_face_chat', (inviteeId) => {
+      io.to(socket.id).emit('start_face_chat');
+      io.to(inviteeId).emit('start_face_chat');
+
+      socket.on('accept_face_chat', (inviteeId) => {
+        io.to(inviteeId).emit('start_face_chat');
+      });
+
+      socket.on('join_room', (roomName) => {
+        socket.join(roomName);
+        socket.to(roomName).emit('welcome');
+      });
+
+      socket.on('offer', (offer, roomName) => {
+        socket.to(roomName).emit('offer', offer);
+      });
+      socket.on('answer', (answer, roomName) => {
+        socket.to(roomName).emit('answer', answer);
+      });
+      socket.on('ice', (ice, roomName) => {
+        socket.to(roomName).emit('ice', ice);
+      });
     });
   });
 };
