@@ -7,58 +7,61 @@ const career = document.getElementById('career');
 const tutor_like = document.getElementById('tutor_like');
 const infoupdate_btn = document.getElementById('infoupdate_btn');
 
-window.onload = info(),tutorinfo();
+(window.onload = info()), tutorinfo();
 
 async function tutorinfo() {
-    try {
-        const response = await fetch('http://localhost:3000/api/tutors', {
-        method: 'GET',
-      }).then(res => res.json()).then(data => {
+  try {
+    const response = await fetch('http://localhost:3000/api/tutors', {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((data) => {
         let rows = data[0];
-          school_name.textContent=rows['school_name'];
-          career.textContent=rows['career'];
-          tutor_like.textContent=rows['tutor_like'];
+        school_name.textContent = rows['school_name'];
+        career.textContent = rows['career'];
+        tutor_like.textContent = rows['tutor_like'];
       });
-    } catch (error) {
-      console.error('Error:', error.message);
-    }
-  };
+  } catch (error) {
+    console.error('Error:', error.message);
+  }
+}
 
 async function info() {
-    try {
-        const response = await fetch('http://localhost:3000/api/usertest', {
-        method: 'GET',
-        mode: 'cors',
-        credentials: 'same-origin' ,
-      }).then(res => res.json()).then(data => {
-          let rows = data['user']
-          user_name.textContent=rows.user_name;
+  try {
+    const response = await fetch('http://localhost:3000/api/usertest', {
+      method: 'GET',
+      mode: 'cors',
+      credentials: 'same-origin',
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        let rows = data['user'];
+        user_name.textContent = rows.user_name;
       });
-    } catch (error) {
-      console.error('Error:', error.message);
-    }
-  };
+  } catch (error) {
+    console.error('Error:', error.message);
+  }
+}
 
-  infoupdate_btn.addEventListener('click', async () => {
-    window.location.href = `/public/views/infoupdate.html`;
-  });
+infoupdate_btn.addEventListener('click', async () => {
+  window.location.href = `/public/views/infoupdate.html`;
+});
 document.addEventListener('DOMContentLoaded', async () => {
-    const tutorList = document.getElementById("Tutors");
+  const tutorList = document.getElementById('Tutors');
 
-    const response = await fetch("/api/tutors");
-    const tutors = await response.json();
+  const response = await fetch('/api/tutors');
+  const tutors = await response.json();
 
-    for (const tutor of tutors) {
-        const {
-            school_name: tutorName,
-            tutor_id: tutorId,
-            career: tutorCareer,
-            user_id: user_id,
-            
-        } = tutor;
+  for (const tutor of tutors) {
+    const {
+      school_name: tutorName,
+      tutor_id: tutorId,
+      career: tutorCareer,
+      user_id: user_id,
+    } = tutor;
 
-        const listTutor = document.createElement('li');
-        listTutor.innerHTML = `
+    const listTutor = document.createElement('li');
+    listTutor.innerHTML = `
             <li>
                 <div class="box person">
                     <div class="image round">
@@ -72,6 +75,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             </li>
         `;
 
-        tutorList.appendChild(listTutor);
-    }
+    tutorList.appendChild(listTutor);
+  }
 });
