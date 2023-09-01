@@ -42,7 +42,7 @@ app.use('/api', [
 ]);
 
 app.get('/', (_, res) => {
-  res.sendFile(__dirname + '/public/views/new_chat.html');
+  res.sendFile(__dirname + '/public/views/chat.html');
 });
 app.get('/post', (_, res) => {
   res.sendFile(__dirname + '/public/views/post.html');
