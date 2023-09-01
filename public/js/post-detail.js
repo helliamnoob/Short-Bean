@@ -113,6 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
           //   alert('질문 저장에 실패했습니다.');
           //   // 저장 실패 시의 처리
           console.log(data.message);
+          window.location.href = '/public/views/post.html';
         }
       })
       .catch((error) => {
