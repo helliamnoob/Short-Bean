@@ -47,56 +47,79 @@
     </section>
     <!-- 게시글 작성란 -->
     <!-- 질문 제목 작성 부분 -->
-    <div class="post_title">
-        <textarea class="post_title" id="post_title" style="width: 1000px; height: 60px;"></textarea>
+    <div class="post-title-container">
+        <textarea class="post_title" placeholder="title" id="post-title"
+            style="width: 1000px; height: 60px;"></textarea>
     </div>
+    <!-- <div class="post-card-container"></div>
+    <form id="new-post-form">
+        <label for="post-title">title:</label>
+        <input type="text" id="post-title" required><br>
+        <label for="post-content">Content:</label>
+        <textarea id="post-content" required></textarea><br>
+        <button type="submit">Create New Post</button>
+    </form> -->
 
     <!-- 질문 내용 작성 부분 -->
-    <div class="form-floating">
-        <textarea class="form-control" placeholder="posting here" id="post"
+    <!-- <div class="form-floating"> -->
+    <div class="post-content-container">
+        <textarea class="post-content" placeholder="posting here" id="post-content"
             style="width: 1000px; height: 500px"></textarea>
+    </div>
 
-        <!-- 이미지 업로드 내역 부분  -->
-        <!-- 이미지 삽입 -->
-        <div class="upload-container">
-            <div class="upload">
-                <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            </div>
+    <!-- 과목 선택 부분 -->
+    <div class="subject-container">
+        <label for="subject">과목 선택:</label>
+        <select id="subject">
+            <option value="국어">국어</option>
+            <option value="영어">영어</option>
+            <option value="수학">수학</option>
+        </select>
+    </div>
+
+
+    <!-- 이미지 업로드 내역 부분  -->
+    <!-- 이미지 삽입 -->
+    <div class="upload-container">
+        <div class="upload">
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
         </div>
-        <input class="upload-input" type="file" accept="image/jpeg, image/png, image/jpg, image/PNG, image/bmp">
-        <!-- 이미지 업로드하는 버튼 부분 -->
-        <!-- <button class="image-btn">업로드 사진 선택</button> -->
+    </div>
+    <input class="upload-input" type="file" accept="image/jpeg, image/png, image/jpg, image/PNG, image/bmp">
+    <!-- 이미지 업로드하는 버튼 부분 -->
+    <!-- <button class="image-btn">업로드 사진 선택</button> -->
 
-        <!-- 질문(게시글) 저장 버튼 -->
-        <div class="card__inner container gray" id="cardList">
-            <button type="button" class="btn btn-dark" id="postCreate">질문 저장</button>
+    <!-- 질문(게시글) 저장 버튼 -->
+    <div class="card__inner container gray" id="cardList">
+        <button type="button" class="btn btn-dark" id="postCreate">질문 저장</button>
 
 
-            <!-- 페이지 하단에 위치하는 푸터 -->
-            <footer id="footer">
-                <div class="inner">
-                    <div class="flex">
-                        <ul class="icons">
-                            <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-                            <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-                            <li><a href="#" class="icon fa-linkedin"><span class="label">linkedIn</span></a></li>
-                            <li><a href="#" class="icon fa-pinterest-p"><span class="label">Pinterest</span></a>
-                            </li>
-                            <li><a href="#" class="icon fa-vimeo"><span class="label">Vimeo</span></a></li>
-                        </ul>
-                    </div>
+        <!-- 페이지 하단에 위치하는 푸터 -->
+        <footer id="footer">
+            <div class="inner">
+                <div class="flex">
+                    <ul class="icons">
+                        <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+                        <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+                        <li><a href="#" class="icon fa-linkedin"><span class="label">linkedIn</span></a></li>
+                        <li><a href="#" class="icon fa-pinterest-p"><span class="label">Pinterest</span></a>
+                        </li>
+                        <li><a href="#" class="icon fa-vimeo"><span class="label">Vimeo</span></a></li>
+                    </ul>
                 </div>
-            </footer>
+            </div>
+        </footer>
 
 
-            <!-- 사이트 제작 정보 -->
-            <div class="copyright">Site made with: <a href="https://templated.co/">TEMPLATED.CO</a></div>
+        <!-- 사이트 제작 정보 -->
+        <div class="copyright">Site made with: <a href="https://templated.co/">TEMPLATED.CO</a></div>
 
-            <!-- 필요한 스크립트 파일 불러오기 -->
-            <script src="/public/js/jquery.min.js"></script>
-            <script src="/public/js/skel.min.js"></script>
-            <script src="/public/js/util.js"></script>
-            <!-- <script src="/public/js/post.js"></script> -->
+        <!-- 필요한 스크립트 파일 불러오기 -->
+        <script src="/public/js/jquery.min.js"></script>
+        <script src="/public/js/skel.min.js"></script>
+        <script src="/public/js/util.js"></script>
+        <script src="/public/js/post-detail.js"></script>
+        <!-- <script src="/public/js/post.js"></script> -->
 </body>
 
 </html>

@@ -71,14 +71,11 @@
 
 
     <!-- 전체 게시글: 최신순 사진 & 제목만 보이게 하나씩 진열 -->
-    <!-- <p>전체 질문</p> -->
-    <div class="post-list-area">
+    <p>전체 질문</p>
+    <!-- <div class="post-list-area">
         <div class="area-title">
             <h3 class="title">전체 질문</h3>
-            <a nocr onclick=" return goOtherCR(this, 'a=nco_x0a*A.castmore&r=1&i=1800009D_0000009C1258&u=' +
-                urlencode(this.href));" href="./post-list.html" class="more_link">
-                <span class="blind">더보기</span>
-            </a>
+
         </div>
         <div class="scroll-post-list-box">
             <div class="post-list-info">
@@ -88,15 +85,15 @@
                             <div class="post-card">
                                 <a nocr
                                     onclick="return goOtherCR(this, 'a=nco_x0a*A.castmore&r=1&i=1800009D_0000009C1258&u=' + urlencode(this.href));"
-                                    href="/public/views/post.html?post_id=${post_id}" class="post-link-box">
+                                    href="/public/views/post.html?post_id=1" class="post-link-box">
                                     <div class="title-box">
                                         <strong class="name type_ell_2 _html_ellipsis"
                                             style="max-height: fit-content;"></strong>
                                         <a nocr
                                             onclick="return goOtherCR(this, 'a=nco_x0a*A.castmore&r=1&i=1800009D_0000009C1258&u=' + urlencode(this.href));"
-                                            class="_text">`${post.title}`</a>
-                                        </strong>
+                                            class="_text">${post.title}</a>
                                     </div>
+                                </a>
                             </div>
                         </li>
                     </ol>
@@ -105,8 +102,48 @@
             <a nocr href="#" class="pre-visual-prev">이전</a>
             <a nocr href="#" class="next-visual-next on">다음</a>
         </div>
-    </div>
+    </div> -->
 
+
+    <!-- <div class="card-deck">
+        <div class="card">
+            <img class="card-img-top" src="..." alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
+                    content. This content is a little bit longer.</p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+        </div>
+        <div class="card">
+            <img class="card-img-top" src="..." alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+        </div>
+        <div class="card">
+            <img class="card-img-top" src="..." alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
+                    content. This card has even longer content than the first to show that equal height action.</p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+        </div>
+    </div> -->
+    <!-- <div class="post-card-container"></div>
+    <form id="new-post-form">
+        <label for="post-title">title:</label>
+        <input type="text" id="post-title" required><br>
+        <label for="post-content">Content:</label>
+        <textarea id="post-content" required></textarea><br>
+        <button type="submit">Create New Post</button>
+    </form> -->
+    <div class="posts">
+        <div class="row" id="posts-box"></div>
+    </div>
 
     <!-- 페이지 하단에 위치하는 푸터 -->
     <footer id="footer">
