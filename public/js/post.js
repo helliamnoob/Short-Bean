@@ -76,6 +76,7 @@ reportButton.addEventListener('click', function () {
 //   commentCreateBtn.addEventListener('click', async function () {
 //     const commentText = commentInput.value;
 
+// 댓글 작성: 이게 진짜
 const params = new URLSearchParams(window.location.search);
 const post_id = params.get('post_id');
 
@@ -103,6 +104,13 @@ document.getElementById('commentCreate').addEventListener('click', async functio
         //   alert('질문 저장에 실패했습니다.');
         //   // 저장 실패 시의 처리
         console.log(data.message);
+
+        // 댓글이 성공적으로 저장되면 화면에 추가
+        const commentList = document.getElementById('commentList');
+        const commentItem = document.createElement('div');
+        commentItem.className = 'comment-item';
+        commentItem.textContent = content;
+        commentList.appendChild(commentItem);
       }
     })
     .catch((error) => {
@@ -160,5 +168,28 @@ commentDeleteBtn.addEventListener('click', function () {
     .catch((error) => {
       console.error('Error:', error);
       alert('댓글 삭제 실패');
+    });
+});
+
+// 댓글 리스트
+window.addEventListener('DOMContentLoaded', async function () {
+  fetch('/api/post/:post_id/comment', {})
+    .then((response) => response.json())
+    .then((data) => {
+      let rows = data.data;
+      console.log(data);
+      const commentBox = document.getElementById('comments-box');
+      rows.forEach((comment) => {
+        let content = comment['content'];
+
+        let temp_html = `<div class="solo-card">
+      <div class="card w-75">
+      <div class="card-body">
+      <p class="card-text">${content}</p>
+      </div>
+      </div>
+      </div>`;
+        commentBox.insertAdjacentHTML('beforeend', temp_html);
+      });
     });
 });
