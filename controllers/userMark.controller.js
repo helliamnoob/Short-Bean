@@ -20,7 +20,7 @@ class UserMarkController {
       const { user_id } = res.locals.user;
       const marks = await this.userMarkService.creatMark({ tutor_id, user_id });
 
-      res.satus(201).json({ data: marks });
+      res.status(201).json({ data: marks });
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }

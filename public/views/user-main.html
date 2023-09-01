@@ -1,0 +1,176 @@
+<!doctype html>
+<!--
+    Theory by TEMPLATED
+    templated.co @templatedco
+    Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+
+<head>
+    <title>Theory by TEMPLATED</title>
+    <!-- 문서의 메타 정보와 스타일, 스크립트 등을 정의하는 부분 -->
+
+    <!-- 문서 인코딩과 뷰포트 설정 -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- 외부 스타일 시트 불러오기 -->
+    <link rel="stylesheet" href="/public/css/main.css" />
+
+    <!-- Bootstrap CSS 링크 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Bootstrap JS와 jQuery 스크립트 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    <!-- 페이지 상단에 위치하는 헤더 -->
+    <header id="header">
+        <div class="inner">
+            <a href="index.html" class="logo">Theory</a>
+            <nav id="nav">
+                <a href="index.html">Home</a>
+                <a href="generic.html">Generic</a>
+                <a href="elements.html">Elements</a>
+                <a href="post-list.html">Post</a>
+
+            </nav>
+            <a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+        </div>
+        <link rel="stylesheet" href="styles.css">
+
+    </header>
+
+    <!-- 메인 배너 부분 -->
+    <section id="banner">
+        <h1>Welcome to Theory</h1>
+        <p>A free responsive HTML5 website template by TEMPLATED.</p>
+    </section>
+
+    <!-- 학생 이름, 환영 문구 보이는 자리 -->
+    <div class="welcomeUser" id="user-box" style="display: block;">
+        <label id="welcome-label">Loading...</label>
+    </div>
+
+
+    <!-- 마이페이지 이동 버튼 -->
+    <button id="mypage-button">마이페이지</button>
+
+    <!-- 질문하기 이동 버튼 -->
+    <button id="question-button">질문하기</button>
+
+    <!-- 1:1 상담(채팅?) 이동 버튼 -->
+    <button id="chat-button">1:1 상담</button>
+
+
+
+    <!-- 인기 게시글: 좋아요 순 사진 & 제목만 보이게 하나씩 진열 -->
+    <p>인기 질문</p>
+    <!-- 게시글 분할, 전시 -->
+
+
+    <!-- 전체 게시글: 최신순 사진 & 제목만 보이게 하나씩 진열 -->
+    <p>전체 질문</p>
+    <!-- <div class="post-list-area">
+        <div class="area-title">
+            <h3 class="title">전체 질문</h3>
+
+        </div>
+        <div class="scroll-post-list-box">
+            <div class="post-list-info">
+                <div>
+                    <ol class="all-post-list">
+                        <li>
+                            <div class="post-card">
+                                <a nocr
+                                    onclick="return goOtherCR(this, 'a=nco_x0a*A.castmore&r=1&i=1800009D_0000009C1258&u=' + urlencode(this.href));"
+                                    href="/public/views/post.html?post_id=1" class="post-link-box">
+                                    <div class="title-box">
+                                        <strong class="name type_ell_2 _html_ellipsis"
+                                            style="max-height: fit-content;"></strong>
+                                        <a nocr
+                                            onclick="return goOtherCR(this, 'a=nco_x0a*A.castmore&r=1&i=1800009D_0000009C1258&u=' + urlencode(this.href));"
+                                            class="_text">${post.title}</a>
+                                    </div>
+                                </a>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <a nocr href="#" class="pre-visual-prev">이전</a>
+            <a nocr href="#" class="next-visual-next on">다음</a>
+        </div>
+    </div> -->
+
+
+    <!-- <div class="card-deck">
+        <div class="card">
+            <img class="card-img-top" src="..." alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
+                    content. This content is a little bit longer.</p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+        </div>
+        <div class="card">
+            <img class="card-img-top" src="..." alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+        </div>
+        <div class="card">
+            <img class="card-img-top" src="..." alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
+                    content. This card has even longer content than the first to show that equal height action.</p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+        </div>
+    </div> -->
+    <!-- <div class="post-card-container"></div>
+    <form id="new-post-form">
+        <label for="post-title">title:</label>
+        <input type="text" id="post-title" required><br>
+        <label for="post-content">Content:</label>
+        <textarea id="post-content" required></textarea><br>
+        <button type="submit">Create New Post</button>
+    </form> -->
+    <div class="posts">
+        <div class="row" id="posts-box"></div>
+    </div>
+
+    <!-- 페이지 하단에 위치하는 푸터 -->
+    <footer id="footer">
+        <div class="inner">
+            <div class="flex">
+                <ul class="icons">
+                    <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+                    <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+                    <li><a href="#" class="icon fa-linkedin"><span class="label">linkedIn</span></a></li>
+                    <li><a href="#" class="icon fa-pinterest-p"><span class="label">Pinterest</span></a>
+                    </li>
+                    <li><a href="#" class="icon fa-vimeo"><span class="label">Vimeo</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- 사이트 제작 정보 -->
+    <div class="copyright">Site made with: <a href="https://templated.co/">TEMPLATED.CO</a></div>
+
+    <!-- 필요한 스크립트 파일 불러오기 -->
+    <script src="/public/js/jquery.min.js"></script>
+    <script src="/public/js/skel.min.js"></script>
+    <script src="/public/js/util.js"></script>
+    <script src="../js/user-main.js"></script>
+    <!-- <script src="/public/js/post.js"></script> -->
+</body>
+
+</html>

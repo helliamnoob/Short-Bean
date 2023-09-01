@@ -46,20 +46,32 @@
         <p>A free responsive HTML5 website template by TEMPLATED.</p>
     </section>
 
-    <div id="signup">
-      <h1>email</h1>
-      <input type="text" id="email" />
-      <h1>password</h1>
-      <input type="text" id="password" />
-      <h1>nickname</h1>
-      <input typr="text" id = "nickname"/>
-      <h1>user_name</h1>
-      <input typr="text" id = "user_name"/>
-      <h1>phone_number</h1>
-      <input typr="text" id = "phone_number"/>
-      <h1>birth_date</h1>
-      <input typr="text" id = "birth_date"/>
-      <button type="button" id="signup_btn">signup</button>
+
+    <!-- 선생님 이름, 환영 문구 보이는 자리 -->
+    <div class="welcomeUser" id="tutor-box" style="display: block;">
+        <label id="welcome-label">Loading...</label>
+    </div>
+
+
+    <!-- 마이페이지 이동 버튼 -->
+    <button id="mypage-button">마이페이지</button>
+
+    <!-- 실시간 화상 응답으로 이동 버튼 -->
+    <button id="facechat-button">실시간 화상 응답</button>
+
+    <!-- 1:1 상담(채팅?) 이동 버튼 -->
+    <button id="chat-button">1:1 메신저 응답</button>
+
+
+    <!-- 인기 게시글: 좋아요 순 사진 & 제목만 보이게 하나씩 진열 -->
+    <div class="fameQuestion" id="question-box" style="display: block;">
+        <label id="fameQuestion-label">Loading...</label>
+    </div>
+
+    <!-- 전체 게시글: 최신순 사진 & 제목만 보이게 하나씩 진열 -->
+    <p>실시간 업로드 문제</p>
+    <div class="posts">
+        <div class="row" id="posts-box"></div>
     </div>
 
 
@@ -79,8 +91,6 @@
         </div>
     </footer>
 
-    
-
 
     <!-- 사이트 제작 정보 -->
     <div class="copyright">Site made with: <a href="https://templated.co/">TEMPLATED.CO</a></div>
@@ -89,8 +99,8 @@
     <script src="/public/js/jquery.min.js"></script>
     <script src="/public/js/skel.min.js"></script>
     <script src="/public/js/util.js"></script>
-    <script src="/public/js/singup.js"></script>
     <!-- <script src="/public/js/post.js"></script> -->
+    <script src="../js/tutor-main.js"></script>
 </body>
 
 </html>

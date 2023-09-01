@@ -52,17 +52,18 @@ class PostController {
   // 게시글 생성
   createPost = async (req, res) => {
     try {
-      const { content, subject } = req.body;
+      const { title, content, subject } = req.body;
       const { user_id } = res.locals.user;
 
       let filePath = req.file ? req.file.location : null;
       const image = filePath ? `<img src="${filePath}" class="image" alt="질문 이미지"/>` : '';
 
-      if (!content || !subject) {
-        return res.status(400).json({ error: '질문 내용, 과목 기입은 필수입니다.' });
+      if (!title || !content || !subject) {
+        return res.status(400).json({ error: '질문의 제목과 질문 내용, 과목 기입은 필수입니다.' });
       }
 
       const { code, message } = await this.postService.createPost({
+        title,
         content,
         subject,
         user_id,
@@ -80,7 +81,7 @@ class PostController {
   // 게시글 수정
   updatePost = async (req, res) => {
     try {
-      const { content, subject } = req.body;
+      const { title, content, subject } = req.body;
       const { user_id } = res.locals.user;
       const { post_id } = req.params;
 
@@ -92,6 +93,7 @@ class PostController {
       }
 
       const { code, message } = await this.postService.updatePost({
+        title,
         content,
         subject,
         user_id,
@@ -113,6 +115,10 @@ class PostController {
 
       if (!post_id) {
         return res.status(400).json({ error: '게시글 ID가 필요합니다.' });
+      }
+
+      if (post_id !== req.body.requested_post_id) {
+        return res.status(400).json({ error: '올바른 게시글 ID가 아닙니다.' });
       }
 
       const { code, message } = await this.postService.deletePost({

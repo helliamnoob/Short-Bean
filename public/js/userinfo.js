@@ -13,6 +13,7 @@ async function info() {
       const response = await fetch('http://localhost:3000/api/usertest', {
       method: 'GET',
     }).then(res => res.json()).then(data => {
+        console.log(data['user']);
         let rows = data['user']
         email.textContent=rows.email;
         nickname.textContent=rows.nickname;

@@ -14,7 +14,14 @@ class ReportController {
       return res.status(500).json({ message: error.message });
     }
   };
-
+  getReportAll = async (req, res, next) => {
+    try {
+      const report = await this.reportService.getReportAll();
+      res.status(200).json({ data: report });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  };
   creatReport = async (req, res, next) => {
     try {
       const { report_content, reported_user_id } = req.body;

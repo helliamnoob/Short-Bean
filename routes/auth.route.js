@@ -289,4 +289,21 @@ function makeSignature() {
   return hash.toString(crypto.enc.Base64);
 }
 
+// 유저 이름 불러오기: 프론트에 필요한 거에요 지우지 말아주세요
+router.get('/user', middleware, async (req, res) => {
+  const { user_id } = res.locals.user;
+
+  try {
+    const user = await Users.findOne({ where: { user_id } });
+    if (!user) {
+      return res.status(400).json({
+        message: '해당 유저가 존재하지 않습니다.',
+      });
+    }
+    return res.status(200).json({ userName: user.user_name });
+  } catch {
+    res.status(500).json({ message: 'server error.' });
+  }
+});
+
 module.exports = router;

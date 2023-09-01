@@ -25,7 +25,7 @@
 </head>
 
 <body>
-    <!-- 페이지 상단에 위치하는 헤더 -->
+    <!-- 페이지 상단에 위치하는 헤더: theory랑 카테고리 줄3개인 것 -->
     <header id="header">
         <div class="inner">
             <a href="index.html" class="logo">Theory</a>
@@ -39,6 +39,11 @@
             <a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
         </div>
     </header>
+    <style>
+        .header {
+            color: black;
+        }
+    </style>
 
     <!-- 메인 배너 부분 -->
     <section id="banner">
@@ -46,26 +51,60 @@
         <p>A free responsive HTML5 website template by TEMPLATED.</p>
     </section>
 
-    <div id="signup">
-      <h1>email</h1>
-      <input type="text" id="email" />
-      <h1>password</h1>
-      <input type="text" id="password" />
-      <h1>nickname</h1>
-      <input typr="text" id = "nickname"/>
-      <h1>user_name</h1>
-      <input typr="text" id = "user_name"/>
-      <h1>phone_number</h1>
-      <input typr="text" id = "phone_number"/>
-      <h1>birth_date</h1>
-      <input typr="text" id = "birth_date"/>
-      <button type="button" id="signup_btn">signup</button>
+    <!-- 검색창 부분 -->
+    <form class="search-form">
+        <input class="search-box">
+        <button type="button" class="btn btn-dark" id="search">검색</button>
+    </form>
+
+    <div class="sort">
+        <select id="select">
+            <option name="select" value="name">선택하세요</option>
+            <option name="select" value="title">제목</option>
+            <option name="select" value="subject">과목</option>
+        </select>
+        <button type="button" onclick="sort()" id="search">정렬</button>
+    </div>
+
+    <!-- 게시글 리스트(제목, userName 보이게) -->
+
+    <div class="posts">
+        <div class="row" id="posts-box"></div>
     </div>
 
 
+
+    <!-- <div class="input-group">
+        <nav>
+            <div class="category" id="popular-category">Popular</div>
+            <div class="category" id="nowplaying-category">Now Playing</div>
+            <div class="category" id="toprate-category">Top Rated</div>
+            <div class="category" id="upcoming-category">Upcoming</div>
+        </nav>
+        <div class="searchBbtn">
+            <input type="text" id="search-box" placeholder="영화 제목을 입력하세요" autofocus />
+            <button class="search-btn" id="click-btn" type="button">
+                <p>search</p>
+            </button>
+        </div>
+    </div> -->
     <!-- 페이지 하단에 위치하는 푸터 -->
     <footer id="footer">
         <div class="inner">
+            <!-- 페이지 넘기는 부분 -->
+            <section class="post-list"></section>
+            <div class="search" id="page">
+                <h4 style="margin-right: 20px;">page</h4>
+                <select id="page">
+                    <option name="page" value="1">1</option>
+                    <option name="page" value="2">2</option>
+                    <option name="page" value="3">3</option>
+                    <option name="page" value="4">4</option>
+                    <option name="page" value="5">5</option>
+                </select>
+                <button type="button" class="btn btn-dark" id="search-btn">이동</button>
+            </div>
+
             <div class="flex">
                 <ul class="icons">
                     <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
@@ -79,8 +118,6 @@
         </div>
     </footer>
 
-    
-
 
     <!-- 사이트 제작 정보 -->
     <div class="copyright">Site made with: <a href="https://templated.co/">TEMPLATED.CO</a></div>
@@ -89,7 +126,7 @@
     <script src="/public/js/jquery.min.js"></script>
     <script src="/public/js/skel.min.js"></script>
     <script src="/public/js/util.js"></script>
-    <script src="/public/js/singup.js"></script>
+    <script src="/public/js/post-list.js"></script>
     <!-- <script src="/public/js/post.js"></script> -->
 </body>
 
