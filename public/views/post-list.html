@@ -28,13 +28,10 @@
     <!-- 페이지 상단에 위치하는 헤더: theory랑 카테고리 줄3개인 것 -->
     <header id="header">
         <div class="inner">
-            <a href="index.html" class="logo">Theory</a>
+            <a href="/" class="logo">짧공</a>
             <nav id="nav">
-                <a href="index.html">Home</a>
-                <a href="generic.html">Generic</a>
-                <a href="elements.html">Elements</a>
-                <a href="post-list.html">Post</a>
-
+                <a href="/public/views/chat.html">채팅하기</a>
+                <a href="/public/views/user-main.html">홈페이지</a>
             </nav>
             <a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
         </div>
@@ -53,7 +50,7 @@
 
     <!-- 검색창 부분 -->
     <form class="search-form">
-        <input class="search-box">
+        <input class="search-box" />
         <button type="button" class="btn btn-dark" id="search">검색</button>
     </form>
 
@@ -73,8 +70,6 @@
     <div class="posts">
         <div class="row" id="posts-box"></div>
     </div>
-
-
 
     <!-- <div class="input-group">
         <nav>
@@ -96,7 +91,7 @@
             <!-- 페이지 넘기는 부분 -->
             <section class="post-list"></section>
             <div class="search" id="page">
-                <h4 style="margin-right: 20px;">page</h4>
+                <h4 style="margin-right: 20px">page</h4>
                 <select id="page">
                     <option name="page" value="1">1</option>
                     <option name="page" value="2">2</option>
@@ -109,17 +104,25 @@
 
             <div class="flex">
                 <ul class="icons">
-                    <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-                    <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-                    <li><a href="#" class="icon fa-linkedin"><span class="label">linkedIn</span></a></li>
-                    <li><a href="#" class="icon fa-pinterest-p"><span class="label">Pinterest</span></a>
+                    <li>
+                        <a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a>
                     </li>
-                    <li><a href="#" class="icon fa-vimeo"><span class="label">Vimeo</span></a></li>
+                    <li>
+                        <a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a>
+                    </li>
+                    <li>
+                        <a href="#" class="icon fa-linkedin"><span class="label">linkedIn</span></a>
+                    </li>
+                    <li>
+                        <a href="#" class="icon fa-pinterest-p"><span class="label">Pinterest</span></a>
+                    </li>
+                    <li>
+                        <a href="#" class="icon fa-vimeo"><span class="label">Vimeo</span></a>
+                    </li>
                 </ul>
             </div>
         </div>
     </footer>
-
 
     <!-- 사이트 제작 정보 -->
     <div class="copyright">Site made with: <a href="https://templated.co/">TEMPLATED.CO</a></div>

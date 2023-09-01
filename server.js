@@ -3,12 +3,10 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-
 const port = 3000;
 const http = require('http');
 const cookieParser = require('cookie-parser');
 const { mongoDB } = require('./config/mongo.config');
-
 
 const chatRouter = require('./routes/chat.route');
 const authRouter = require('./routes/auth.route');
@@ -25,10 +23,12 @@ const faceSocketController = require('./face.socket');
 const io = SocketIO(server);
 mongoDB();
 
-app.use(cors({
-  origin: '*',
-  credentials: 'include',
-}));
+app.use(
+  cors({
+    origin: '*',
+    credentials: 'include',
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 app.use(cookieParser());
@@ -49,25 +49,10 @@ app.use('/api', [
   tutorRouter,
 ]);
 
-
 app.get('/', (_, res) => {
-  res.sendFile(__dirname + '/public/views/chat.html');
+  res.sendFile(__dirname + '/public/views/login.html');
 });
-app.get('/post', (_, res) => {
-  res.sendFile(__dirname + '/public/views/post.html');
-});
-app.get('/post', (_, res) => {
-  res.sendFile(__dirname + '/public/views/post-detail.html');
-});
-app.get('/post', (_, res) => {
-  res.sendFile(__dirname + '/public/views/post-list.html');
-});
-app.get('/post', (_, res) => {
-  res.sendFile(__dirname + '/public/views/user-main.html');
-});
-app.get('/post', (_, res) => {
-  res.sendFile(__dirname + '/public/views/tutor-main.html');
-});
+
 app.get('/login', (_, res) => {
   res.sendFile(__dirname + '/public/views/login.html');
 });

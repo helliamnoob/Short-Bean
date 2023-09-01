@@ -1,34 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Noom</title>
-    <link rel="stylesheet" href="https://unpkg.com/mvp.css">
-</head>
-<body>
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css" />
+  </head>
+  <body>
     <header>
-        <h1>Noom</h1>
+      <h1>Noom</h1>
     </header>
     <main>
-     <div id="welcome">
-            <form>
-                <input placeholder="room name" required type="text">
-                <button>Enter room</button>
-            </form>
-        </div> 
-         <div id="call">
-            <div id="myStream">
-                <video id="myFace" autoplay playsinline width="400" height="400"></video>
-                <button id="mute">Mute</button>
-                <button id="camera">Turn Camera Off</button>
-                <select id="cameras"></select>         
-            <video id="peerFace" autoplay playsinline width="400" height="400"></video>
+      <div id="welcome">
+        <form>
+          <input placeholder="room name" required type="text" />
+          <button>Enter room</button>
+        </form>
+      </div>
+      <div id="call">
+        <div id="myStream">
+          <video id="myFace" autoplay playsinline width="400" height="400"></video>
+          <button id="mute">Mute</button>
+          <button id="camera">Turn Camera Off</button>
+          <select id="cameras"></select>
+          <video id="peerFace" autoplay playsinline width="400" height="400"></video>
         </div>
-        </div>
+      </div>
     </main>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/public/js/facechat.js"></script>
-</body>
-</html> 
+  </body>
+</html>
