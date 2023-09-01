@@ -62,7 +62,7 @@ class PostController {
         return res.status(400).json({ error: '질문의 제목과 질문 내용, 과목 기입은 필수입니다.' });
       }
 
-      const { code, message } = await this.postService.createPost({
+      const { code, message, data } = await this.postService.createPost({
         title,
         content,
         subject,
@@ -70,7 +70,7 @@ class PostController {
         image,
       });
 
-      return res.status(code).json({ message });
+      return res.status(code).json({ message, data });
     } catch (error) {
       console.error(error);
 
