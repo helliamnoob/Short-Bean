@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: 'post_id',
         foreignKey: 'post_id',
       });
+      this.hasMany(models.Likes, {
+        sourceKey: 'post_id',
+        foreignKey: 'post_id',
+      });
     }
   }
   Posts.init(
@@ -34,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
           model: 'Users',
           key: 'user_id',
         },
+      },
+      title: {
+        allowNull: false,
+        type: DataTypes.STRING(200),
       },
       content: {
         allowNull: false,
