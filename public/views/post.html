@@ -91,14 +91,17 @@
           </div> -->
         <!-- 사용자의 댓글을 입력 받는 부분 -->
         <div class="form-floating">
-          <textarea class="form-control" placeholder="Leave a comment here" id="comment"
+          <textarea class="form-control" placeholder="Leave a comment here" id="commentInput"
             style="width: 600; height: 100px"></textarea>
           <!-- <label for="floatingTextarea2">댓글</label> -->
         </div>
-        <!-- 댓글 남기기 버튼 -->
-        <button onclick="save_comment()" type="button" class="btn btn-dark">
+        <!-- 댓글 관련 버튼 -->
+        <!-- <button onclick="save_comment()" type="button" class="btn btn-dark">
           댓글 남기기
-        </button>
+        </button> -->
+        <button type="button" class="btn btn-dark" id="commentCreate">댓글 작성</button>
+        <button type="button" class="btn btn-dark" id="commentUpdate">댓글 수정</button>
+        <button type="button" class="btn btn-dark" id="commentDelete">댓글 삭제</button>
       </div>
 
       <div class="mycards" id="comment-list">
@@ -133,9 +136,6 @@
   </div>
   </div>
 
-  <!-- 댓글 수정 버튼 -->
-
-  <!-- 댓글 삭제 부분 -->
 
 
 
