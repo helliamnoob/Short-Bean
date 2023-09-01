@@ -35,7 +35,7 @@ app.use(cookieParser());
 app.set('view engine', 'html');
 app.set('views', __dirname + '/public/views');
 app.set('io', io);
-faceSocketController(io);
+// faceSocketController(io);
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/api', [
   authRouter,
@@ -51,7 +51,7 @@ app.use('/api', [
 
 
 app.get('/', (_, res) => {
-  res.sendFile(__dirname + '/public/views/index.html');
+  res.sendFile(__dirname + '/public/views/chat.html');
 });
 app.get('/post', (_, res) => {
   res.sendFile(__dirname + '/public/views/post.html');

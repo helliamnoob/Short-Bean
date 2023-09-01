@@ -53,25 +53,25 @@
   });
 })(jQuery);
 
-window.onload = function () {
-  // 즐겨찾기 api 요청
-  const userMarkBtn = document.querySelector('.userMarkBtn');
-  const tutorId = document.getElementById('userMarkBtn').value;
-  userMarkBtn.addEventListener('click', function () {
-    fetch(`/api/userMarks/${tutorId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('즐겨찾기 성공:', data);
-        alert('즐겨찾기에 등록되었습니다.');
-        location.reload();
-      })
-      .catch((error) => {
-        console.error({ message: error.message });
-      });
-  });
-};
+// window.onload = function () {
+//   // 즐겨찾기 api 요청
+//   const userMarkBtn = document.querySelector('.userMarkBtn');
+//   const tutorId = document.getElementById('userMarkBtn').value;
+//   userMarkBtn.addEventListener('click', function () {
+//     fetch(`/api/userMarks/${tutorId}`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//     })
+//       .then((response) => response.json())
+//       .then((data) => {
+//         console.log('즐겨찾기 성공:', data);
+//         alert('즐겨찾기에 등록되었습니다.');
+//         location.reload();
+//       })
+//       .catch((error) => {
+//         console.error({ message: error.message });
+//       });
+//   });
+// };

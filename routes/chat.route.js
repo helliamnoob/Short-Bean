@@ -14,6 +14,7 @@ router.post('/rooms', authMiddleware, chatController.createRooms);
 // 방 만들기
 router.post('/message', authMiddleware, chatController.sendMsg);
 // 오프라인 유저에게 메시지 보내기
+router.get('/myInfos', authMiddleware, chatController.getMyInfo);
 
 module.exports = router;
 
