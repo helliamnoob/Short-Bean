@@ -88,6 +88,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const faceChatBtn = document.createElement('button');
         faceChatBtn.textContent = '화상채팅하기';
+        faceChatBtn.classList.add('facechatBtn');
+        faceChatBtn.setAttribute('data-user-id', tutor.userId);
+
         // button.addEventListener('click', handleRoomSubmit);
 
         const userDiv = document.createElement('div');

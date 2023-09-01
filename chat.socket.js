@@ -10,7 +10,7 @@ module.exports = (io) => {
     // socket보낼 때 토큰을 같이 보냄
     const authorization = socket.handshake.auth.token;
     const [tokenType, token] = authorization.split('%20');
-    const { user_id, userName } = jwt.verify(token, process.env.SECRET_KEY);
+    const { user_id } = jwt.verify(token, process.env.SECRET_KEY);
     let isTutor;
     const myInfo = await getMyInfo(user_id);
     if (myInfo.dataValues.TutorInfo) {
@@ -18,9 +18,16 @@ module.exports = (io) => {
     } else {
       isTutor = false;
     }
+    const userName = myInfo.dataValues.user_name;
     // 가져온 데이터로 새로운 유저객체 생성
-    const user = { userId: user_id, userName, isTutor, socketId: socket.id };
+    const user = {
+      userId: user_id,
+      userName,
+      isTutor,
+      socketId: socket.id,
+    };
     connectedUsers.push(user);
+    console.log(connectedUsers);
     // 새로운 사용자가 접속했음을 모든 클라이언트에 알림
     io.emit('show_users', connectedUsers);
 
