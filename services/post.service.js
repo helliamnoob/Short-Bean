@@ -27,10 +27,11 @@ class PostService {
     }
   };
 
-  createPost = async ({ user_id, content, subject, image }) => {
+  createPost = async ({ user_id, title, content, subject, image }) => {
     try {
       await this.postRepository.createPost({
         user_id,
+        title,
         content,
         subject,
         image,
@@ -43,11 +44,12 @@ class PostService {
     }
   };
 
-  updatePost = async ({ user_id, post_id, content, subject, image }) => {
+  updatePost = async ({ user_id, post_id, title, content, subject, image }) => {
     try {
       await this.postRepository.updatePost({
         user_id,
         post_id,
+        title,
         content,
         subject,
         image,

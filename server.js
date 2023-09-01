@@ -47,6 +47,18 @@ app.get('/', (_, res) => {
 app.get('/post', (_, res) => {
   res.sendFile(__dirname + '/public/views/post.html');
 });
+app.get('/post', (_, res) => {
+  res.sendFile(__dirname + '/public/views/post-detail.html');
+});
+app.get('/post', (_, res) => {
+  res.sendFile(__dirname + '/public/views/post-list.html');
+});
+app.get('/post', (_, res) => {
+  res.sendFile(__dirname + '/public/views/user-main.html');
+});
+app.get('/post', (_, res) => {
+  res.sendFile(__dirname + '/public/views/tutor-main.html');
+});
 app.get('/login', (_, res) => {
   res.sendFile(__dirname + '/public/views/login.html');
 });
