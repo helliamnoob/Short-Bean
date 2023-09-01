@@ -112,16 +112,20 @@ document.getElementById('commentCreate').addEventListener('click', async functio
 });
 
 // 댓글 수정
-const commentUpdateBtn = document.getElementById('commentUpdate');
-commentUpdateBtn.addEventListener('click', function () {
-  const commentText = document.getElementById('comment').value;
-
-  const formData = new FormData();
-  formData.append('comment', commentText);
+// const commentUpdateBtn = document.getElementById('commentUpdate');
+// commentUpdateBtn.addEventListener('click', function () {
+//   const commentText = document.getElementById('comment').value;
+document.getElementById('commentUpdate').addEventListener('click', async function () {
+  const content = document.getElementById('commentInput').value;
 
   fetch('/api/post/:post_id/comment/:comment_id', {
     method: 'PUT',
-    body: formData,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      content,
+    }),
   })
     .then((response) => response.json())
     .then((data) => {
