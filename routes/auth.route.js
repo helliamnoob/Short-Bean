@@ -5,9 +5,9 @@ const middleware = require('../middlewares/auth_middleware');
 const router = express.Router();
 const { Op } = require('sequelize');
 const node_cache = require('node-cache');
-const my_cache = new node_cache({ stdTTL: 200, checkperiod: 600 });
+const my_cache = new node_cache({stdTTL: 200, checkperiod:600});
 const axios = require('axios');
-const crypto = require('crypto-js');
+const crypto= require('crypto-js')
 require('dotenv').config();
 const env = process.env;
 // 회원가입
@@ -22,7 +22,6 @@ router.post('/signup', async (req, res) => {
       return;
     }
   } catch (error) {
-    console.log(req.body);
     res.status(500).json({ message: error });
     return;
   }
@@ -59,14 +58,11 @@ router.post('/login', async (req, res) => {
         message: 'check email or password',
       });
     }
-    const token = jwt.sign(
-      { user_id: user.user_id, userName: user.user_name },
-      process.env.SECRET_KEY
-    );
+    const token = await jwt.sign({ user_id: user.user_id }, process.env.SECRET_KEY);
     res.cookie('authorization', `Bearer ${token}`);
-    my_cache.set(user.user_id, user, 10000);
+    my_cache.set(user.user_id, user,10000);
     return res.status(200).json({ message: `로그인 성공 ${user.user_name}님 환영합니다.` });
-  } catch (e) {
+  } catch(e) {
     console.log(e);
     res.status(500).json({ message: 'login server error.' });
   }
@@ -78,42 +74,41 @@ router.post('/logout', (req, res) => {
   return res.status(200).json({ message: '로그아웃 완료' });
 });
 
-//회원 정보 수정
-router.put('/userInfo', middleware, async (req, res) => {
-  const { user_id } = res.locals.user;
-  try {
-    const { email, password, nickname, phone_number } = req.body;
-
-    const userUpdateFind = await Users.findOne({ where: { user_id } });
-    const userEmailCheck = await Users.findOne({ where: { email } });
-    if (!userUpdateFind) {
-      return res.status(400).json({ message: '유저가 존재하지 않습니다.' });
-    } else if (userUpdateFind.user_id !== user_id) {
-      return res.status(400).json({ message: '권한이 없습니다.' });
-    }
-    if (userEmailCheck) {
-      return res.status(400).json({ message: '해당 이메일은 중복입니다.' });
-    }
-
-    await Users.update(
-      { email, password, nickname, phone_number },
-      {
-        where: {
-          [Op.and]: [{ user_id: user_id }],
-        },
+  //회원 정보 수정
+  router.put('/userInfo', middleware, async (req, res) => {
+    const { user_id } = res.locals.user;
+    try {
+      const { email, password, nickname, phone_number } = req.body;
+  
+      const userUpdateFind = await Users.findOne({ where: { user_id } });
+      const userEmailCheck = await Users.findOne({ where: { email } });
+      if (!userUpdateFind) {
+        return res.status(400).json({ message: '유저가 존재하지 않습니다.' });
+      } else if (userUpdateFind.user_id !== user_id) {
+        return res.status(400).json({ message: '권한이 없습니다.' });
       }
-    );
-    res.status(200).json({ message: '유저 정보를 수정합니다.' });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: 'server error.' });
-  }
-});
+      if (userEmailCheck) {
+        return res.status(400).json({ message: '해당 이메일은 중복입니다.' });
+      }
+  
+      await Users.update(
+        { email, password, nickname, phone_number},
+        {
+          where: {
+            [Op.and]: [{ user_id: user_id }],
+          },
+        },
+      );
+      res.status(200).json({ message: '유저 정보를 수정합니다.' });
+    } catch(error) {
+        console.log(error);
+      res.status(500).json({ message: 'server error.' });
+    }
+  });
 
 //삭제
 router.delete('/signout', middleware, async (req, res) => {
   const { user_id } = res.locals.user;
-  res.locals.user_id = user_id;
   try {
     const user_find = await Users.findOne({ where: user_id });
     if (!user_find) {
@@ -125,32 +120,33 @@ router.delete('/signout', middleware, async (req, res) => {
       },
     });
     res.status(200).json({ message: `${user_find.user_name}님 삭제가 완료되었습니다.` });
-  } catch {
+  } catch(e) {
+    console.log(e);
     res.status(500).json({ message: 'server error.' });
   }
 });
 
-//나의정보 조회
-router.get('/userInfo', middleware, async (req, res) => {
-  const { user_id } = res.locals.user;
-  try {
-    const user = await Users.findOne({ where: { user_id } });
-    if (!user) {
-      return res.status(400).json({
-        message: '해당 유저가 존재하지 않습니다.',
-      });
+  //나의정보 조회
+  router.get('/userInfo', middleware, async (req, res) => {
+    const { user_id } = res.locals.user;
+    try {
+      const user = await Users.findOne({ where: { user_id } });
+      if (!user) {
+        return res.status(400).json({
+          message: '해당 유저가 존재하지 않습니다.',
+        });
+      }
+      return res.status(200).json({ user });
+    } catch {
+      res.status(500).json({ message: 'server error.' });
     }
-    return res.status(200).json({ user });
-  } catch {
-    res.status(500).json({ message: 'server error.' });
-  }
-});
+  });
 
 //개인정보 가져오기(node-cache사용)
 router.get('/usertest', middleware, async (req, res) => {
   const { user_id } = res.locals.user;
   try {
-    const user = cache.get(user_id);
+    const user = my_cache.get(user_id);
     return res.status(200).json({ user });
   } catch {
     res.status(500).json({ message: 'server error.' });
@@ -162,13 +158,62 @@ router.post('/smsauth', middleware, async (req, res) => {
   const { user_id } = res.locals.user;
   try {
     const user = my_cache.get(user_id);
-    send_message(user.nickname, '01051257345');
+    send_message(user.nickname, user.phone_number);
     return res.status(200).json({ message: 'sucess' });
   } catch (e) {
     console.log(e);
     res.status(500).json({ message: 'server error.' });
   }
 });
+
+// 테스트용 코드
+router.get('/userfront', async (req, res) => {
+  const  user_id  = 1;
+  try {
+    const user = await Users.findOne({ where:  user_id  });
+    if (!user) {
+      return res.status(400).json({
+        message: '해당 유저가 존재하지 않습니다.',
+      });
+    }
+    return res.status(200).json({ user });
+  } catch {
+    res.status(500).json({ message: 'server error.' });
+  }
+});
+
+router.put('/usertestinfo', async (req, res) => {
+  const user_id  = 1;
+  try {
+    const { email, password, nickname, phone_number } = req.body;
+
+    const userUpdateFind = await Users.findOne({ where:  user_id  });
+    const userEmailCheck = await Users.findOne({ where:  {email}  });
+    if (!userUpdateFind) {
+      return res.status(400).json({ message: '유저가 존재하지 않습니다.' });
+    } else if (userUpdateFind.user_id !== user_id) {
+      return res.status(400).json({ message: '권한이 없습니다.' });
+    }
+    if (userEmailCheck) {
+      return res.status(400).json({ message: '해당 이메일은 중복입니다.' });
+    }
+
+    await Users.update(
+      { email, password, nickname, phone_number},
+      {
+        where: {
+          [Op.and]: [{ user_id: user_id }],
+        },
+      },
+    );
+    res.status(200).json({ message: '유저 정보를 수정합니다.' });
+  } catch(error) {
+      console.log(error);
+    res.status(500).json({ message: 'server error.' });
+  }
+});
+
+
 
 function send_message(nickname, phone) {
   var space = ' '; // one space
