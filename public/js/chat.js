@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const jwtToken = getCookieValue('authorization');
   if (!jwtToken) {
     alert('로그인 후 이용가능한 서비스입니다.');
-    window.location.href = `/public/views/login_demo.html`;
+    window.location.href = `/public/views/login.html`;
   } else {
     const socket = io({
       auth: {
