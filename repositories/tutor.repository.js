@@ -1,11 +1,11 @@
 const { TutorInfos } = require('../models');
+const { Users } = require('../models');
 const { Op } = require('sequelize');
 
 class TutorRepository {
-
-  findAllTutor = async() => {
-    return await TutorInfos.findAll();
-};
+  findAllTutor = async () => {
+    return await TutorInfos.findAll({ include: [{ model: Users }] });
+  };
 
   createTutor = async ({ user_id, school_name, career }) => {
     const tutorData = await TutorInfos.create({
@@ -30,6 +30,10 @@ class TutorRepository {
       { where: { [Op.and]: [{ tutor_id: tutor_id }, { user_id: user_id }] } }
     );
     return tutorData;
+  };
+
+  updateTutorLike = async ({ tutor_like, tutor_id }) => {
+    return await TutorInfos.update({ tutor_like }, { where: { tutor_id } });
   };
 
   deleteTutor = async ({ tutor_id, user_id }) => {
