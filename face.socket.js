@@ -46,6 +46,18 @@ const faceSocketController = (io) => {
             io.to(roomName).emit('user_joined', { userId: socket.id, roomName });
             console.log(`[SERVER] User ${socket.id} has joined room ${roomName} and 'user_joined' event emitted`);
         });
+        socket.on('disconnect', () => {
+            console.log('User disconnected:', socket.id);
+
+            // Find the disconnected user and remove from the tracking object
+            for(let userId in userSockets){
+                if(userSockets[userId] === socket.id){
+                    delete userSockets[userId];
+                    break;
+                }
+            }
+
+        });
         
         socket.on("offer", (offer, roomName) => {
             console.log(`[SERVER] Received an 'offer' from ${socket.id} for room ${roomName}`);
@@ -64,6 +76,8 @@ const faceSocketController = (io) => {
             socket.to(roomName).emit("ice", ice);
             console.log(`[SERVER] 'ice' event emitted to room ${roomName}`);
         });
+       
+        
     });
 
     

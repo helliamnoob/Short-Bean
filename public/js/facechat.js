@@ -186,6 +186,20 @@ for (let ice of iceCandidatesQueue) {
   myPeerConnection.addIceCandidate(ice);
 }
 
+socket.on('disconnect', () => { 
+  if (myPeerConnection) { 
+     myPeerConnection.close(); 
+     myPeerConnection = null; 
+  }
+
+  // Additional cleanup logic
+  if (myDataChannel) {
+    myDataChannel.close();
+    myDataChannel = null;
+  }
+  
+  iceCandidatesQueue.length = 0;
+});
 
 // RTC Code
 
