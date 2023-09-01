@@ -1,5 +1,6 @@
 const SocketIO = require('socket.io');
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 
@@ -8,7 +9,6 @@ const http = require('http');
 const cookieParser = require('cookie-parser');
 const { mongoDB } = require('./config/mongo.config');
 
-const { mongoDB } = require('./config/mongo.config');
 
 const chatRouter = require('./routes/chat.route');
 const authRouter = require('./routes/auth.route');
@@ -24,8 +24,11 @@ const server = http.createServer(app);
 const faceSocketController = require('./face.socket');  // 실제 경로에 따라 수정해야 합니다.
 const io = SocketIO(server);
 mongoDB();
-mongoDB();
 
+app.use(cors({
+  origin: '*',
+  credentials: 'include',
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cookieParser());
@@ -65,5 +68,5 @@ server.listen(port, () => {
   console.log(port, '포트로 서버가 열렸어요!');
 });
 
-// const socketLogic = require('./chat.socket');
-// socketLogic(io);
+const socketLogic = require('./chat.socket');
+socketLogic(io);

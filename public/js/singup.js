@@ -10,34 +10,30 @@ const birth_date_input = document.getElementById('birth_date');
 
 signup_btn.addEventListener('click', async () => {
   try {
-    if(pwd_input===confirm_password_input)
-    {
       const response = await fetch('http://localhost:3000/api/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: email_input.value,
-        password: pwd_input.value,
-        nickname : nickname_input.value,
-        user_name : user_name_input.value,
-        phone_number : phone_number_input.value,
-        birth_date : birth_date_input.value,
-      }),
-    });
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email_input.value,
+          password: pwd_input.value,
+          nickname : nickname_input.value,
+          user_name : user_name_input.value,
+          phone_number : phone_number_input.value,
+          birth_date : birth_date_input.value,
+        }),
+      });
 
-    if (response.ok) {
-      // 로그인 성공시 페이지 이동
-      alert('회원가입이 되었습니다.');
-      window.location.href = `/`;
-    } else {
-      const data = await response.json();
-      alert(`회원가입 실패: ${data.message}`);
-    }
-    }
-    alert('비밀번호가 일치하지 않습니다.');
-      return;
+      if (response.ok) {
+        // 로그인 성공시 페이지 이동
+        alert('회원가입이 되었습니다.');
+        window.location.href = `/`;
+      } else {
+        const data = await response.json();
+        alert(`회원가입 실패: ${data.message}`);
+      }
+    
   } catch (error) {
     console.error('Error:', error.message);
   }
