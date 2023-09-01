@@ -60,6 +60,15 @@ class ChatService {
       throw err;
     }
   };
+
+  getMyInfo = async (userId) => {
+    try {
+      const myInfo = await this.chatRepository.getMyInfoById(userId);
+      return { code: 200, data: myInfo };
+    } catch (err) {
+      throw err;
+    }
+  };
 }
 
 module.exports = ChatService;

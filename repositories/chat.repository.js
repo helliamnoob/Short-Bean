@@ -1,11 +1,16 @@
-const { Users, Chats } = require('../models');
+const { Users, Chats, TutorInfos } = require('../models');
 const Chat = require('../schemas/chat');
 const { Op } = require('sequelize');
 
 class ChatRepository {
   getAllUsers = async () => {
     return await Users.findAll({
-      attributes: ['user_id', 'nickname'],
+      attributes: ['user_id', 'nickname', 'user_name'],
+      include: [
+        {
+          model: TutorInfos,
+        },
+      ],
     });
   };
 
@@ -28,7 +33,10 @@ class ChatRepository {
   };
 
   getMessage = async (roomId) => {
-    return await Chat.find({ room_id: roomId }).sort({ created_at: -1 }).exec();
+    return await Chat.find({ room_id: roomId })
+      .sort({ created_at: -1 })
+      .select('is_send message_content created_at')
+      .exec();
   };
 
   getRoomsByRoomId = async (roomId) => {
@@ -55,6 +63,16 @@ class ChatRepository {
 
     await newChat.save();
     return;
+  };
+  getMyInfoById = async (userId) => {
+    return await Users.findOne({
+      include: [
+        {
+          model: TutorInfos,
+        },
+      ],
+      where: { user_id: userId },
+    });
   };
 }
 
