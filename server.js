@@ -27,7 +27,7 @@ app.use(cookieParser());
 app.set('view engine', 'html');
 app.set('views', __dirname + '/public/views');
 app.set('io', io);
-faceSocketController(io);
+// faceSocketController(io);
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/api', [
   authRouter,
@@ -62,5 +62,5 @@ server.listen(port, () => {
   console.log(port, '포트로 서버가 열렸어요!');
 });
 
-// const socketLogic = require('./chat.socket');
-// socketLogic(io);
+const socketLogic = require('./chat.socket');
+socketLogic(io);

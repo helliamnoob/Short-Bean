@@ -34,8 +34,8 @@
     <!-- Two -->
     <section id="connectedUserForm" class="wrapper style1 special">
       <div class="inner">
-        <button id="showEditModal" type="button">수정하기</button>
-        <button type="button">튜터신청하기</button>
+        <button id="showEditModalBtn" type="button">수정하기</button>
+        <button onclick="showRequestTutorModal()" type="button">튜터신청하기</button>
       </div>
     </section>
     <div id="editFormModal" class="modal">
@@ -48,6 +48,16 @@
         <input type="text" id="nicknameInput" placeholder="nickname" />
         <input type="tel" id="phoneNumberInput" placeholder="phoneNumber" />
         <button id="editButton">수정하기</button>
+      </div>
+    </div>
+
+    <div id="requestTutorFormModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>튜터신청하기</h2>
+        <input type="text" id="nativeInput" placeholder="출신대학" />
+        <textarea id="careerInput" placeholder="자기소개" rows="4" cols="50"></textarea>
+        <button id="requestTutorButton">신청하기</button>
       </div>
     </div>
     <!-- Footer -->

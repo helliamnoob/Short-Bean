@@ -11,7 +11,6 @@ module.exports = (io) => {
     const authorization = socket.handshake.auth.token;
     const [tokenType, token] = authorization.split('%20');
     const { user_id, userName } = jwt.verify(token, process.env.SECRET_KEY);
-    console.log('뭐야');
     let isTutor;
     const myInfo = await getMyInfo(user_id);
     if (myInfo.dataValues.TutorInfo) {
@@ -22,7 +21,6 @@ module.exports = (io) => {
     // 가져온 데이터로 새로운 유저객체 생성
     const user = { userId: user_id, userName, isTutor, socketId: socket.id };
     connectedUsers.push(user);
-    console.log(user);
     // 새로운 사용자가 접속했음을 모든 클라이언트에 알림
     io.emit('show_users', connectedUsers);
 
