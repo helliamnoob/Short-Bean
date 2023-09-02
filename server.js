@@ -8,18 +8,19 @@ const http = require('http');
 const cookieParser = require('cookie-parser');
 const { mongoDB } = require('./config/mongo.config');
 
-const chatRouter = require('./routes/chat.route');
-const authRouter = require('./routes/auth.route');
-const commentRouter = require('./routes/comment.route');
-const postRouter = require('./routes/post.route');
-const likeRouter = require('./routes/like.route');
-const reportRouter = require('./routes/report.route');
-const useMarkRouter = require('./routes/userMark.route');
-const facechatRouter = require('./routes/facechat.route');
-const tutorRouter = require('./routes/tutor.route');
+const {
+  chatRouter,
+  authRouter,
+  commentRouter,
+  postRouter,
+  likeRouter,
+  reportRouter,
+  useMarkRouter,
+  facechatRouter,
+  tutorRouter,
+} = require('./routes');
 
 const server = http.createServer(app);
-const faceSocketController = require('./face.socket');
 const io = SocketIO(server);
 mongoDB();
 
@@ -35,7 +36,6 @@ app.use(cookieParser());
 app.set('view engine', 'html');
 app.set('views', __dirname + '/public/views');
 app.set('io', io);
-// faceSocketController(io);
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/api', [
   authRouter,

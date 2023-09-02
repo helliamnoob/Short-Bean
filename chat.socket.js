@@ -7,28 +7,21 @@ require('dotenv').config();
 const connectedUsers = []; // 현재 접속한 사용자 목록을 저장할 객체
 module.exports = (io) => {
   let userSockets = {}; // { userId: socketId }
-
   io.on('connection', async (socket) => {
     // socket보낼 때 토큰을 같이 보냄
-    const authorization = socket.handshake.auth.token;
-    const [tokenType, token] = authorization.split('%20');
-    const { user_id } = jwt.verify(token, process.env.SECRET_KEY);
-    let isTutor;
-    const myInfo = await getMyInfo(user_id);
-    if (myInfo.dataValues.TutorInfo) {
-      isTutor = true;
-    } else {
-      isTutor = false;
-    }
-    const userName = myInfo.dataValues.user_name;
+    const userId = decodeJwt(socket);
+    const { isTutor, userName } = await getMyInfo(userId);
+
     // 가져온 데이터로 새로운 유저객체 생성
     const user = {
-      userId: user_id,
+      userId,
       userName,
       isTutor,
       socketId: socket.id,
     };
+
     connectedUsers.push(user);
+
     // 새로운 사용자가 접속했음을 모든  알림
     io.emit('show_users', connectedUsers);
 
@@ -41,27 +34,19 @@ module.exports = (io) => {
 
     // 방에 입장할 때
     socket.on('enter_room', async (targetUserId, targetUserName, done) => {
-      if (user_id == targetUserId) {
+      if (userId == targetUserId) {
         socket.emit('sameUser');
         return;
       }
       // 현재 유저와 가져온 유저와의 채팅방이 있는지 확인
-      const roomInfo = await Chats.findOne({
-        attributes: ['chat_id', 'user_id', 'target_user_id'],
-        where: {
-          [Op.or]: [
-            { user_id, target_user_id: targetUserId },
-            { user_id: targetUserId, target_user_id: user_id },
-          ],
-        },
-      });
+      const roomInfo = await getRoomInfo(userId, targetUserId);
 
       if (!roomInfo) {
         // 방 없을 시
         socket.emit('no_room', targetUserId);
       } else {
         // 방이 존재할 시
-        if (roomInfo.user_id == user_id) {
+        if (roomInfo.user_id == userId) {
           socket.roomOwner = true;
         } else {
           socket.roomOwner = false;
@@ -78,13 +63,7 @@ module.exports = (io) => {
 
     socket.on('new_message', async (msg, room, done) => {
       // 새로운 채팅데이터 생성
-      const newChat = new Chat({
-        room_id: room,
-        is_send: socket.roomOwner,
-        message_content: msg,
-      });
-      await newChat.save();
-
+      await saveMsg(room, socket, msg);
       // 룸에 있는 사용자에게 보내기
       // 시간 추가해야한다.
       socket.to(room).emit('new_message', `${userName}: ${msg}`);
@@ -143,6 +122,15 @@ module.exports = (io) => {
   });
 };
 
+async function saveMsg(room, socket, msg) {
+  const newChat = new Chat({
+    room_id: room,
+    is_send: socket.roomOwner,
+    message_content: msg,
+  });
+  await newChat.save();
+}
+
 async function getMessage(roomId, userName, targetUserName, roomOwner) {
   const messages = [];
 
@@ -160,6 +148,7 @@ async function getMessage(roomId, userName, targetUserName, roomOwner) {
 }
 
 async function getMyInfo(user_id) {
+  let isTutor;
   const myInfo = await Users.findOne({
     include: [
       {
@@ -168,6 +157,34 @@ async function getMyInfo(user_id) {
     ],
     where: { user_id },
   });
+  if (myInfo.dataValues.TutorInfo) {
+    isTutor = true;
+  } else {
+    isTutor = false;
+  }
 
-  return myInfo;
+  const userName = myInfo.dataValues.user_name;
+
+  return { isTutor, userName };
+}
+
+function decodeJwt(socket) {
+  const authorization = socket.handshake.auth.token;
+  const [tokenType, token] = authorization.split('%20');
+  const { user_id } = jwt.verify(token, process.env.SECRET_KEY);
+  return user_id;
+}
+
+async function getRoomInfo(user_id, targetUserId) {
+  const roomInfo = await Chats.findOne({
+    attributes: ['chat_id', 'user_id', 'target_user_id'],
+    where: {
+      [Op.or]: [
+        { user_id, target_user_id: targetUserId },
+        { user_id: targetUserId, target_user_id: user_id },
+      ],
+    },
+  });
+
+  return roomInfo;
 }
