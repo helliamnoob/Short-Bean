@@ -200,7 +200,7 @@ async function makeConnection() {
     ],
   });
   myPeerConnection.addEventListener('icecandidate', handleIce);
-  myPeerConnection.addEventListener('addstream', handleAddStream);
+  myPeerConnection.addEventListener("track", handleTrack)
   myStream.getTracks().forEach((track) => myPeerConnection.addTrack(track, myStream));
 }
 
@@ -209,7 +209,8 @@ async function handleIce(data) {
   socket.emit('ice', data.candidate, roomName);
 }
 
-async function handleAddStream(data) {
-  const peerFace = document.getElementById('peerFace');
-  peerFace.srcObject = data.stream;
-}
+function handleTrack(data) {
+  console.log("handle track")
+  const peerFace = document.querySelector("#peerFace")
+  peerFace.srcObject = data.streams[0]
+  }
