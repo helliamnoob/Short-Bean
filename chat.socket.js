@@ -13,6 +13,7 @@ module.exports = (io) => {
     const authorization = socket.handshake.auth.token;
     const [tokenType, token] = authorization.split('%20');
     const { user_id } = jwt.verify(token, process.env.SECRET_KEY);
+    console.log(user_id)
     let isTutor;
     const myInfo = await getMyInfo(user_id);
     if (myInfo.dataValues.TutorInfo) {
