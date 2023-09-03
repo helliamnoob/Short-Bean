@@ -62,6 +62,17 @@ class ChatController {
       return res.status(500).json({ err: err.message });
     }
   };
+  getMyInfo = async (req, res) => {
+    try {
+      const userId = res.locals.user.user_id;
+      const result = await this.chatService.getMyInfo(userId);
+      if (result.data) return res.status(result.code).json({ data: result.data });
+      return res.status(result.code).json({ message: result.message });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ err: err.message });
+    }
+  };
 }
 
 module.exports = ChatController;
