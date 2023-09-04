@@ -14,6 +14,8 @@ let roomId;
 
 document.addEventListener('DOMContentLoaded', async () => {
   const jwtToken = getCookieValue('authorization');
+  const currentUserId = getUserIdFromToken(jwtToken);
+
   if (!jwtToken) {
     alert('로그인 후 이용가능한 서비스입니다.');
     window.location.href = `/public/views/login_demo.html`;
@@ -57,6 +59,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await getAllUsers();
 
     function renderConnectedUsers(socketUser) {
+      console.log(socketUser);
       socketUser.forEach((user) => {
         const h3 = document.createElement('h3');
         h3.textContent = user.userName;
@@ -88,6 +91,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const faceChatBtn = document.createElement('button');
         faceChatBtn.textContent = '화상채팅하기';
+        faceChatBtn.classList.add('facechatBtn');
+        faceChatBtn.setAttribute('data-user-id', tutor.userId);
+
         // button.addEventListener('click', handleRoomSubmit);
 
         const userDiv = document.createElement('div');
@@ -161,6 +167,37 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error:', error.message);
       }
     }
+    // 에림님 코드
+    socket.emit('register', currentUserId);
+
+    document.body.addEventListener('click', (event) => {
+      if (event.target.classList.contains('facechatBtn')) {
+          const inviteeId = event.target.getAttribute('data-user-id');
+          if (inviteeId === String(currentUserId)) {
+              alert("자기 자신에게는 화상채팅을 할 수 없습니다.");
+              return;
+          }
+
+          const roomId = uuidv4();
+          console.log(`Generated room ID using UUID: ${roomId}`);
+
+          socket.emit('invite_face_chat', inviteeId, currentUserId, roomId);
+          console.log(`Invitation sent to user with ID: ${inviteeId}`);
+          window.open(`/facechat?room=${roomId}`, '_blank', 'width=800,height=600');
+      }
+  });
+
+  socket.on("receive_invite", (inviterId, roomId) => {
+      const accept = confirm("화상 채팅 초대가 도착했습니다! 수락하시겠습니까?");
+      if (accept) {
+          socket.emit('accept_face_chat', inviterId, currentUserId, roomId);
+      }
+  });
+
+  socket.on("start_face_chat", (roomId) => {
+    console.log("Invitation accepted! Attempting to open chat window for room:", roomId);
+    window.open(`/facechat?room=${roomId}`, '_blank', 'width=800,height=600');
+  });
   }
 });
 
@@ -213,4 +250,22 @@ function exitChatRoom() {
   chatContainer.hidden = true;
   connectedUserForm.style.display = 'block';
   allUserForm.style.display = 'block';
+}
+function getUserIdFromToken(token) {
+  // JWT 토큰에서 사용자 ID 추출
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+
+  console.log('base64:', base64); // 콘솔
+  const payloadObj = JSON.parse(window.atob(base64));
+
+  console.log('payloadObj:', payloadObj); // 콘솔
+  const currentUserId = payloadObj.user_id; // 현재 로그인한 사용자의 ID
+  return currentUserId;
+}
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+  });
 }
