@@ -3,27 +3,28 @@ const faceSocketController = (io) => {
     
     io.on("connection", (socket) => {
         console.log('a user connected:', socket.id);
-        socket.on("join_room", (roomName) => {
-            socket.join(roomName);
-            socket.to(roomName).emit("welcome");
-          });
+    
+        socket.on("join_room", (roomId) => {
+            socket.join(roomId);
+            socket.to(roomId).emit("user_joined", { userId: socket.id, roomId });
+        });
       
-        socket.on("offer", (offer, roomName) => {
-            console.log(`[SERVER] Received an 'offer' from ${socket.id} for room ${roomName}`);
-            socket.to(roomName).emit("offer", offer);
-            console.log(`[SERVER] 'offer' event emitted to room ${roomName}`);
+        socket.on("offer", (offer, roomId) => {
+            console.log(`[SERVER] Received an 'offer' from ${socket.id} for room ${roomId}`);
+            socket.to(roomId).emit("offer", offer);
+            console.log(`[SERVER] 'offer' event emitted to room ${roomId}`);
         });
         
-        socket.on("answer", (answer, roomName) => {
-            console.log(`[SERVER] Received an 'answer' from ${socket.id} for room ${roomName}`);
-            socket.to(roomName).emit("answer", answer);
-            console.log(`[SERVER] 'answer' event emitted to room ${roomName}`);
+        socket.on("answer", (answer, roomId) => {
+            console.log(`[SERVER] Received an 'answer' from ${socket.id} for room ${roomId}`);
+            socket.to(roomId).emit("answer", answer);
+            console.log(`[SERVER] 'answer' event emitted to room ${roomId}`);
         });
         
-        socket.on("ice", (ice, roomName) => {
-            console.log(`[SERVER] Received an 'ice' candidate from ${socket.id} for room ${roomName}`);
-            socket.to(roomName).emit("ice", ice);
-            console.log(`[SERVER] 'ice' event emitted to room ${roomName}`);
+        socket.on("ice", (ice, roomId) => {
+            console.log(`[SERVER] Received an 'ice' candidate from ${socket.id} for room ${roomId}`);
+            socket.to(roomId).emit("ice", ice);
+            console.log(`[SERVER] 'ice' event emitted to room ${roomId}`);
         });
 
         socket.on('disconnect', () => {
@@ -37,13 +38,9 @@ const faceSocketController = (io) => {
                 }
             }
 
-        });
-       
+        });      
         
     });
-
-    
-
 
 };
 module.exports = faceSocketController;

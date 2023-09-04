@@ -37,8 +37,8 @@ const inviteSocketController = (io) => {
                 console.log("Socket ID not found.");
                 socket.emit('error_notification', 'An error occurred while connecting. Please try again.');  // Error notification
             }
+        
         });
-       
         
     });
 
