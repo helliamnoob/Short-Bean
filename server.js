@@ -67,6 +67,9 @@ app.get('/api/login', (_, res) => {
 app.get('/admin', (_, res) => {
   res.sendFile(__dirname + '/public/views/admin.html');
 });
+app.get('/post', (_, res) => {
+  res.sendFile(__dirname + '/public/views/post.html');
+});
 app.use(cookieParser());
 
 server.listen(port, () => {
