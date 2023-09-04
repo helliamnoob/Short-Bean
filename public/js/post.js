@@ -118,8 +118,9 @@ document.getElementById('commentCreate').addEventListener('click', async functio
           commentItem.className = 'comment-item';
           commentItem.textContent = content;
           commentList.appendChild(commentItem);
-        } else {
-          console.error('commentList 요소를 찾을 수 없음');
+          // } else {
+          //   console.error(error);
+          // }
         }
       }
     })
@@ -188,11 +189,11 @@ window.addEventListener('DOMContentLoaded', async function () {
     .then((data) => {
       let rows = data.data;
       console.log(data);
-      const commentBox = document.getElementById('comments-box');
+      const commentBox = document.getElementById('comment-box');
       rows.forEach((comment) => {
         let content = comment['content'];
 
-        let temp_html = `<div class="solo-card">
+        let temp_html = `<div class="comment-list">
       <div class="card w-75">
       <div class="card-body">
       <p class="card-text">${content}</p>
@@ -249,27 +250,41 @@ async function fetchPostMain(post_id) {
 async function loadPostMain() {
   const params = new URLSearchParams(window.location.search);
   const post_id = params.get('post_id');
-
   try {
-    const postMain = await fetchPostMain(post_id);
+    const postMain = await fetch(`/api/post/${post_id}`).then((response) => response.json());
+    console.log(postMain.data.subject);
 
     // 프론트엔드에서 게시글 상세 정보를 화면에 표시: 이미지는 따로
     const postTitleElement = document.getElementById('postTitle');
     const postContentElement = document.getElementById('postContent');
     const postSubjectElement = document.getElementById('postSubject');
-    // const postImageElement = document.getElementById('postImage');
+    const postImageElement = document.getElementById('postImage');
 
     postTitleElement.textContent = postMain.data.title;
     postContentElement.textContent = postMain.data.content;
     postSubjectElement.textContent = postMain.data.subject;
-    // postImageElement.imageContent = postMain.data.image;
 
-    // ... 다른 요소들에 대한 정보도 표시
+    // 만약 imageFilename이 null이 아니라면, 즉 이미지가 있다면 해당 imageUrl을 img 태그의 src로 설정합니다.
+    if (postMain.data.imageFilename) {
+      // S3 버킷 경로와 파일 이름을 조합하여 전체 이미지 URL 생성
+      let imageUrl = `https://shortbean-imgdata.s3.ap-northeast-2.amazonaws.com/image/post/${postMain.data.imageFilename}`;
+      console.log(imageUrl);
+
+      let imgTag = document.createElement('img');
+      imgTag.src = imageUrl;
+
+      // img 태그를 문서에 추가합니다. 여기서는 body에 추가하였으나 필요에 따라 다른 위치에 추가할 수 있습니다.
+      document.body.appendChild(imgTag);
+    }
   } catch (error) {
     // 에러 처리
     console.error('게시글 상세 정보 로딩 오류:', error);
   }
 }
-
 // 페이지 로딩 시 게시글 상세 정보 로딩 함수 호출
 loadPostMain();
+// // 게시글 작성 버튼 눌렀을 때, 이동
+// const createPostButton = document.getElementById('createPostButton');
+// createPostButton.addEventListener('click', async () => {
+//   window.location.href = ``;
+// });
