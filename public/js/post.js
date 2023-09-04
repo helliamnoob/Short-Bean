@@ -189,17 +189,17 @@ window.addEventListener('DOMContentLoaded', async function () {
     .then((data) => {
       let rows = data.data;
       console.log(data);
-      const commentBox = document.getElementById('comment-box');
+      const commentBox = document.getElementById('commentBox');
       rows.forEach((comment) => {
         let content = comment['content'];
 
-        let temp_html = `<div class="comment-list">
-      <div class="card w-75">
-      <div class="card-body">
-      <p class="card-text">${content}</p>
-      </div>
-      </div>
-      </div>`;
+        let temp_html = `<div class="mypost">`;
+        //  <div class="card w-75">
+        // <div class="card-body">
+        // <p class="card-text">${content}</p>
+        // </div>
+        // </div>
+        // </div>`;
         commentBox.insertAdjacentHTML('beforeend', temp_html);
       });
     });
@@ -252,8 +252,8 @@ async function loadPostMain() {
   const post_id = params.get('post_id');
   try {
     const postMain = await fetch(`/api/post/${post_id}`).then((response) => response.json());
-    console.log(postMain.data.subject);
 
+    console.log(postMain.data);
     // 프론트엔드에서 게시글 상세 정보를 화면에 표시: 이미지는 따로
     const postTitleElement = document.getElementById('postTitle');
     const postContentElement = document.getElementById('postContent');
@@ -264,17 +264,20 @@ async function loadPostMain() {
     postContentElement.textContent = postMain.data.content;
     postSubjectElement.textContent = postMain.data.subject;
 
-    // 만약 imageFilename이 null이 아니라면, 즉 이미지가 있다면 해당 imageUrl을 img 태그의 src로 설정합니다.
-    if (postMain.data.imageFilename) {
+    // // 게시글 url?
+    // const bucketAddress = 'https://shortbean-imgdata.s3.ap-northeast-2.amazonaws.com/image/post/'; // AWS S3 버킷 주소
+    // // const imagePath = 'image/post/'; // 이미지 파일의 경로
+    // const imageName = `${}`; // 이미지 파일 이름
+
+    // const imageUrl = bucketAddress + imageName;
+    // 만약 image가 null이 아니라면, 즉 이미지가 있다면 해당 image 문자열을 img 태그의 src로 설정합니다.
+    if (postMain.data.image) {
       // S3 버킷 경로와 파일 이름을 조합하여 전체 이미지 URL 생성
-      let imageUrl = `https://shortbean-imgdata.s3.ap-northeast-2.amazonaws.com/image/post/${postMain.data.imageFilename}`;
+      let imageUrl = postMain.data.image;
       console.log(imageUrl);
 
-      let imgTag = document.createElement('img');
-      imgTag.src = imageUrl;
-
-      // img 태그를 문서에 추가합니다. 여기서는 body에 추가하였으나 필요에 따라 다른 위치에 추가할 수 있습니다.
-      document.body.appendChild(imgTag);
+      // img 태그를 문서에 추가합니다. 여기서는 'postImage' 요소 안에 추가합니다.
+      postImageElement.innerHTML = `<img src="${imageUrl}" />`;
     }
   } catch (error) {
     // 에러 처리
