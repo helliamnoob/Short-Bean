@@ -6,6 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Noom</title>
     <link rel="stylesheet" href="https://unpkg.com/mvp.css" />
+    <style>
+      /* 추가된 CSS 코드 */
+      #myStream {
+        position: absolute; /* 절대 위치 */
+        top: 0;
+        left: 20px;
+      }
+      #peerFace {
+        position: absolute; /* 절대 위치 */
+        bottom: 0;
+        right: 20px;
+      }
+    </style>
   </head>
   <body>
     <header>
@@ -14,12 +27,12 @@
     <main>
       <div id="call">
         <div id="myStream">
-          <video id="myFace" autoplay playsinline width="400" height="400"></video>
+          <video id="myFace" autoplay playsinline width="200" height="200"></video>
           <button id="mute">Mute</button>
           <button id="camera">Turn Camera Off</button>
           <select id="cameras"></select>
-          <video id="peerFace" autoplay playsinline width="400" height="400"></video>
         </div>
+        <video id="peerFace" autoplay playsinline width="200" height="200"></video>
       </div>
     </main>
     <script src="/socket.io/socket.io.js"></script>

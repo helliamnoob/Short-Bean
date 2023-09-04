@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
           socket.emit('invite_face_chat', inviteeId, currentUserId, roomId);
           console.log(`Invitation sent to user with ID: ${inviteeId}`);
-          window.open(`/facechat?room=${roomId}`, '_blank', 'width=800,height=600');
+          window.open(`/facechat?room=${roomId}`, '_blank', 'width=1800,height=1000');
       }
   });
 
@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   socket.on("start_face_chat", (roomId) => {
     console.log("Invitation accepted! Attempting to open chat window for room:", roomId);
-    window.open(`/facechat?room=${roomId}`, '_blank', 'width=800,height=600');
+    window.open(`/facechat?room=${roomId}`, '_blank', 'width=1800,height=1000');
   });
   }
 });

@@ -139,7 +139,7 @@ module.exports = (io) => {
       if (inviterSocketId && inviteeSocketId) {
         try {
           socket.join(roomId);
-          io.sockets.sockets.get(inviterSocketId).join(roomId);
+          // io.sockets.sockets.get(inviterSocketId).join(roomId);
           io.to(inviteeSocketId).emit('start_face_chat', roomId);
         } catch (error) {
           console.error('Error while joining the room:', error);
