@@ -47,6 +47,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     socket.on('sameUser', () => {
       alert('본인과 대화할 수 없습니다.');
     });
+
+    socket.on('welcome', (user) => {
+      addMessage(`${user}가 입장했습니다.`);
+    });
     socket.on('show_users', (socketUser) => {
       connectedUserList.innerHTML = '';
       renderConnectedUsers(socketUser);
