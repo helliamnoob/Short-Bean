@@ -48,15 +48,25 @@ document.getElementById('question-button').addEventListener('click', function ()
 // const chatButton = document.getElementById('chat-button');
 // chatButton.addEventListener('click', function () {
 document.getElementById('chat-button').addEventListener('click', function () {
-  fetch('/api/user') // 현재 로그인된 사용자의 정보를 가져옴
-    .then((response) => response.json())
-    .then((data) => {
-      const user_id = data.user_id; // 현재 로그인된 사용자의 user_id
-      window.location.href = `/public/views/chat.html?user_id=${user_id}`; // 채팅 페이지 URL
-    })
-    .catch((error) => {
-      console.error('사용자 정보를 가져오는 중 에러 발생:', error);
-    });
+  // fetch('/api/user') // 현재 로그인된 사용자의 정보를 가져옴
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     window.location.href = `/public/views/chat.html`; // 채팅 페이지 URL
+  //   })
+  //   .catch((error) => {
+  //     console.error('사용자 정보를 가져오는 중 에러 발생:', error);
+  //   });
+  // 쿠키로 검증해서 api호출 안해도 될듯해서 주석처리했습니다
+  // 패치쓰면 async await 안써도되나요???
+  window.location.href = `/public/views/chat.html`; // 채팅 페이지 URL
+});
+
+document.getElementById('mypage-button').addEventListener('click', function () {
+  window.location.href = `/public/views/userinfo.html`;
+});
+
+document.getElementById('all-question-button').addEventListener('click', function () {
+  window.location.href = `/public/views/post-list.html`;
 });
 
 // // 인기 순으로 게시글 데이터를 받아와 화면에 표시하는 함수

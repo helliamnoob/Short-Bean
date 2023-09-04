@@ -10,8 +10,13 @@ const loginForm = document.getElementById('reportForm');
 loginForm.addEventListener('submit', function (event) {
   event.preventDefault();
 
-  const postId = document.getElementById('postLike').value;
+  const content = document.getElementById('content').value;
+  const userId = document.getElementById('userId').value;
 
+  const formData = {
+    report_content: content,
+    reported_user_id: userId,
+  };
   fetch('/api/reports', {
     method: 'POST',
     headers: {

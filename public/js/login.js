@@ -16,11 +16,10 @@ loginbtn.addEventListener('click', async () => {
         password: pwdInput.value,
       }),
     });
-
     if (response.ok) {
       // 로그인 성공시 페이지 이동
       alert('로그인이 되었습니다.');
-      window.location.href = `/`;
+      window.location.href = `/public/views/user-main.html`;
     } else {
       const data = await response.json();
       alert(`로그인 실패: ${data.message}`);
@@ -32,4 +31,9 @@ loginbtn.addEventListener('click', async () => {
 
 function setCookie() {
   localStorage.setItem();
+}
+
+// 코드수정 -이승준
+function redircetSignUp() {
+  window.location.href = `/public/views/signup.html`;
 }
