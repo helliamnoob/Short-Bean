@@ -38,8 +38,8 @@ app.use(cookieParser());
 app.set('view engine', 'html');
 app.set('views', __dirname + '/public/views');
 app.set('io', io);
-faceSocketController(io);
-inviteSocketController(io);
+// faceSocketController(io);
+// inviteSocketController(io);
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/api', [
   authRouter,

@@ -79,45 +79,76 @@ module.exports = (io) => {
       done(tutors);
     });
     // 예림님쪽
-    console.log('a user connected:', socket.id);
+    socket.on('join_room', (roomId) => {
+      socket.join(roomId);
+      socket.to(roomId).emit('user_joined', { userId: socket.id, roomId });
+    });
+
+    socket.on('offer', (offer, roomId) => {
+      console.log(`[SERVER] Received an 'offer' from ${socket.id} for room ${roomId}`);
+      socket.to(roomId).emit('offer', offer);
+      console.log(`[SERVER] 'offer' event emitted to room ${roomId}`);
+    });
+
+    socket.on('answer', (answer, roomId) => {
+      console.log(`[SERVER] Received an 'answer' from ${socket.id} for room ${roomId}`);
+      socket.to(roomId).emit('answer', answer);
+      console.log(`[SERVER] 'answer' event emitted to room ${roomId}`);
+    });
+
+    socket.on('ice', (ice, roomId) => {
+      console.log(`[SERVER] Received an 'ice' candidate from ${socket.id} for room ${roomId}`);
+      socket.to(roomId).emit('ice', ice);
+      console.log(`[SERVER] 'ice' event emitted to room ${roomId}`);
+    });
+
+    // socket.on('disconnect', () => {
+    //   console.log('User disconnected:', socket.id);
+
+    //   // Find the disconnected user and remove from the tracking object
+    //   for (let userId in userSockets) {
+    //     if (userSockets[userId] === socket.id) {
+    //       delete userSockets[userId];
+    //       break;
+    //     }
+    //   }
+    // });
+
+    // 예림님쪽 invite
     socket.on('register', (userId) => {
       userSockets[userId] = socket.id;
       console.log('Registered:', userId, 'with socket ID:', socket.id);
       console.log(userSockets);
     });
 
-    socket.on('invite_face_chat', (userId) => {
-      console.log('Invitation for user ID:', userId);
-      const invitedUserSocketId = userSockets[userId];
+    socket.on('invite_face_chat', (inviteeId, inviterId, roomId) => {
+      console.log('Invitation for user ID:', inviteeId, 'from user ID:', inviterId);
+      const invitedUserSocketId = userSockets[inviteeId];
       if (invitedUserSocketId) {
-        io.to(invitedUserSocketId).emit('receive_invite', socket.id);
+        io.to(invitedUserSocketId).emit('receive_invite', inviterId, roomId);
       } else {
-        console.log('No socket ID found for user ID:', userId);
+        console.log('No socket ID found for user ID:', inviteeId);
       }
     });
 
-    socket.on('accept_face_chat', (inviteeId) => {
-      io.to(socket.id).emit('start_face_chat');
-      io.to(inviteeId).emit('start_face_chat');
+    socket.on('accept_face_chat', (inviterId, inviteeId, roomId) => {
+      console.log('Room ID:', roomId);
+      const inviterSocketId = userSockets[inviterId];
+      const inviteeSocketId = userSockets[inviteeId];
 
-      socket.on('accept_face_chat', (inviteeId) => {
-        io.to(inviteeId).emit('start_face_chat');
-      });
-
-      socket.on('join_room', (roomName) => {
-        socket.join(roomName);
-        socket.to(roomName).emit('welcome');
-      });
-
-      socket.on('offer', (offer, roomName) => {
-        socket.to(roomName).emit('offer', offer);
-      });
-      socket.on('answer', (answer, roomName) => {
-        socket.to(roomName).emit('answer', answer);
-      });
-      socket.on('ice', (ice, roomName) => {
-        socket.to(roomName).emit('ice', ice);
-      });
+      if (inviterSocketId && inviteeSocketId) {
+        try {
+          socket.join(roomId);
+          io.sockets.sockets.get(inviterSocketId).join(roomId);
+          io.to(inviteeSocketId).emit('start_face_chat', roomId);
+        } catch (error) {
+          console.error('Error while joining the room:', error);
+          socket.emit('error_notification', 'Failed to join the chat room.'); // Error notification
+        }
+      } else {
+        console.log('Socket ID not found.');
+        socket.emit('error_notification', 'An error occurred while connecting. Please try again.'); // Error notification
+      }
     });
   });
 };
@@ -188,3 +219,5 @@ async function getRoomInfo(user_id, targetUserId) {
 
   return roomInfo;
 }
+
+// 쓰레드분리
