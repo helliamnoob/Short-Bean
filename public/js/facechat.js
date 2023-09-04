@@ -22,12 +22,9 @@ const cameraBtn = document.getElementById('camera');
 const camerasSelect = document.getElementById('cameras');
 const call = document.getElementById('call');
 
-call.hidden = true;
-
 let myStream;
 let muted = false;
 let cameraOff = false;
-let roomName;
 let myPeerConnection;
 let myDataChannel;
 
@@ -114,9 +111,8 @@ const welcome = document.getElementById('welcome');
 const welcomeForm = welcome.querySelector('form');
 
 async function initCall() {
-  welcome.hidden = true;
-  call.hidden = false;
   await getMedia();
+  
   if (myStream) {
     makeConnection();
   } else {
@@ -169,6 +165,22 @@ socket.on('answer', (answer) => {
 socket.on('ice', (ice) => {
   console.log('received candidate');
   myPeerConnection.addIceCandidate(ice);
+});
+
+
+socket.on('disconnect', () => { 
+  if (myPeerConnection) { 
+     myPeerConnection.close(); 
+     myPeerConnection = null; 
+  }
+
+  // Additional cleanup logic
+  if (myDataChannel) {
+    myDataChannel.close();
+    myDataChannel = null;
+  }
+  
+  iceCandidatesQueue.length = 0;
 });
 
 // RTC Code

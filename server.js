@@ -20,6 +20,7 @@ const tutorRouter = require('./routes/tutor.route');
 
 const server = http.createServer(app);
 const faceSocketController = require('./face.socket');
+const inviteSocketController = require('./invite.socket');
 const io = SocketIO(server);
 mongoDB();
 
@@ -35,7 +36,8 @@ app.use(cookieParser());
 app.set('view engine', 'html');
 app.set('views', __dirname + '/public/views');
 app.set('io', io);
-// faceSocketController(io);
+faceSocketController(io);
+inviteSocketController(io);
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/api', [
   authRouter,
@@ -64,6 +66,9 @@ app.get('/api/login', (_, res) => {
 });
 app.get('/admin', (_, res) => {
   res.sendFile(__dirname + '/public/views/admin.html');
+});
+app.get('/post', (_, res) => {
+  res.sendFile(__dirname + '/public/views/post.html');
 });
 app.use(cookieParser());
 
