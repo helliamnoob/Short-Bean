@@ -106,10 +106,10 @@ cameraBtn.addEventListener('click', handleCameraClick);
 camerasSelect.addEventListener('input', handleCameraChange);
 
 const urlParams = new URLSearchParams(window.location.search);
-const roomName = urlParams.get('room');
-if (roomName) {
+const roomId = urlParams.get('room');
+if (roomId) {
   initCall().then(() => {
-    socket.emit("join_room", roomName);
+    socket.emit("join_room", roomId);
   });
 }
 
@@ -131,7 +131,7 @@ async function initCall() {
 let isConnectionMade = false; // 플래그 추가
 
 socket.on("user_joined", async (data) => {
-  console.log(`User ${data.userId} has joined the room ${data.roomName}`);
+  console.log(`User ${data.userId} has joined the room ${data.roomId}`);
   if (socket.id !== data.userId) {
       await makeConnection();
       initDataChannelAndSendOffer();
@@ -150,7 +150,7 @@ async function initDataChannelAndSendOffer() {
   const offer = await myPeerConnection.createOffer();
   myPeerConnection.setLocalDescription(offer);
   console.log("Sent the offer");
-  socket.emit("offer", offer, roomName);
+  socket.emit("offer", offer, roomId);
 }
 
 socket.on("offer", async (offer) => {
@@ -165,7 +165,7 @@ socket.on("offer", async (offer) => {
   await myPeerConnection.setRemoteDescription(offer);
   const answer = await myPeerConnection.createAnswer();
   await myPeerConnection.setLocalDescription(answer);
-  socket.emit("answer", answer, roomName);
+  socket.emit("answer", answer, roomId);
   console.log("sent the answer");
 } catch (error) {
   console.error("Error handling the offer:", error);
@@ -223,7 +223,7 @@ async function makeConnection() {
 async function handleIce(data) {
   if (data.candidate) {
       console.log("sent candidate");
-      socket.emit("ice", data.candidate, roomName);
+      socket.emit("ice", data.candidate, roomId);
   }
 }
 

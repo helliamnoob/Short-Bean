@@ -27,7 +27,7 @@ const inviteSocketController = (io) => {
             if(inviterSocketId && inviteeSocketId) {
                 try {
                     socket.join(roomId); 
-                    io.sockets.sockets.get(inviterSocketId).join(roomId); 
+                    // io.sockets.sockets.get(inviterSocketId).join(roomId); 
                     io.to(inviteeSocketId).emit('start_face_chat', roomId);
                 } catch (error) {
                     console.error("Error while joining the room:", error);
@@ -37,8 +37,8 @@ const inviteSocketController = (io) => {
                 console.log("Socket ID not found.");
                 socket.emit('error_notification', 'An error occurred while connecting. Please try again.');  // Error notification
             }
+        
         });
-       
         
     });
 
