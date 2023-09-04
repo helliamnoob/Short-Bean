@@ -54,8 +54,36 @@ function renderReportData(data) {
     const report_content = reportData['report_content'];
     const reported_user_id = reportData['reported_user_id'];
     const report_status = reportData['report_status'];
+    const report_id = reportData['report_id'];
 
-    const temp_html = `<li class="list-group-item">${report_content},${reported_user_id},${report_status}</li>`;
+    let labels = [];
+    labels.push(`${reported_user_id}`);
+
+    const temp_html = `<li class="list-group-item"><a href="admin/id=${report_id}" class="reportA">${report_content},${reported_user_id},${report_status} </a></li>`;
     reportListDiv.insertAdjacentHTML('beforeend', temp_html);
   });
+  return labels;
 }
+
+const ctx = document.getElementById('myChart');
+
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    datasets: [
+      {
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        borderWidth: 1,
+      },
+    ],
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  },
+});
