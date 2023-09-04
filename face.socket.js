@@ -3,10 +3,11 @@ const faceSocketController = (io) => {
     
     io.on("connection", (socket) => {
         console.log('a user connected:', socket.id);
+    
         socket.on("join_room", (roomName) => {
             socket.join(roomName);
-            socket.to(roomName).emit("welcome");
-          });
+            socket.to(roomName).emit("user_joined", { userId: socket.id, roomName });
+        });
       
         socket.on("offer", (offer, roomName) => {
             console.log(`[SERVER] Received an 'offer' from ${socket.id} for room ${roomName}`);

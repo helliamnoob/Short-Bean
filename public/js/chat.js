@@ -172,30 +172,32 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     document.body.addEventListener('click', (event) => {
       if (event.target.classList.contains('facechatBtn')) {
-        const inviteeId = event.target.getAttribute('data-user-id');
-        // 로그인한 사용자가 자기 자신에게 화상채팅을 걸 수 없도록 체크
-        if (inviteeId === String(currentUserId)) {
-          alert('자기 자신에게는 화상채팅을 할 수 없습니다.');
-          return;
-        }
-        socket.emit('invite_face_chat', inviteeId);
-        console.log(`Invitation sent to user with ID: ${inviteeId}`);
-      }
-    });
+          const inviteeId = event.target.getAttribute('data-user-id');
+          if (inviteeId === String(currentUserId)) {
+              alert("자기 자신에게는 화상채팅을 할 수 없습니다.");
+              return;
+          }
 
-    // 초대 수신 시의 이벤트 처리
-    socket.on('receive_invite', (inviteeId) => {
-      const accept = confirm('화상 채팅 초대가 도착했습니다! 수락하시겠습니까?');
+          const roomId = uuidv4();
+          console.log(`Generated room ID using UUID: ${roomId}`);
+
+          socket.emit('invite_face_chat', inviteeId, currentUserId, roomId);
+          console.log(`Invitation sent to user with ID: ${inviteeId}`);
+          window.open(`/facechat?room=${roomId}`, '_blank', 'width=800,height=600');
+      }
+  });
+
+  socket.on("receive_invite", (inviterId, roomId) => {
+      const accept = confirm("화상 채팅 초대가 도착했습니다! 수락하시겠습니까?");
       if (accept) {
-        socket.emit('accept_face_chat', inviteeId);
+          socket.emit('accept_face_chat', inviterId, currentUserId, roomId);
       }
-    });
+  });
 
-    // 초대가 수락되었을 때 처리하는 이벤트 핸들러
-    socket.on('start_face_chat', () => {
-      console.log('Invitation accepted! Start the face chat.');
-      window.location.href = '/facechat'; // 화상 채팅 페이지 URL을 가정한 것입니다.
-    });
+  socket.on("start_face_chat", (roomId) => {
+      console.log("Invitation accepted! Attempting to open chat window for room:", roomId);
+      window.open(`/facechat?room=${roomId}`, '_blank', 'width=800,height=600');
+  });
   }
 });
 
@@ -260,4 +262,10 @@ function getUserIdFromToken(token) {
   console.log('payloadObj:', payloadObj); // 콘솔
   const currentUserId = payloadObj.user_id; // 현재 로그인한 사용자의 ID
   return currentUserId;
+}
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+  });
 }
