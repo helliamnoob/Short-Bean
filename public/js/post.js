@@ -10,7 +10,7 @@ const loginForm = document.getElementById('reportForm');
 loginForm.addEventListener('submit', function (event) {
   event.preventDefault();
 
-  const postId = document.getElementById('postLike').value;
+  const post_id = document.getElementById('postLike').value;
 
   fetch('/api/reports', {
     method: 'POST',
@@ -70,7 +70,7 @@ reportButton.addEventListener('click', function () {
 
 // 댓글 작성
 // document.addEventListener('DOMContentLoaded', function (post_id) {
-//   const postId = String(post_id);
+//   const post_id = String(post_id);
 //   const commentCreateBtn = document.getElementById('commentCreate');
 //   const commentInput = document.getElementById('commentInput');
 //   commentCreateBtn.addEventListener('click', async function () {
@@ -193,3 +193,73 @@ window.addEventListener('DOMContentLoaded', async function () {
       });
     });
 });
+
+// // 게시글 상세 불러오기
+// async function getPost() {
+//   await fetch(`/api/post/${post_id}`, {
+//     method: 'GET',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//   })
+//     .then((response) => response.json())
+//     .then((data) => {
+//       console.log(data);
+//       const postContent = document.getElementById('post_content');
+//       rows.forEach((post) => {
+//         let image = post['image'];
+//         let title = post['title'];
+//         let content = post['content'];
+//         let subject = post['subject'];
+
+//         let temp_html = `<div class="post_content">
+//       </div>`;
+//         postContent.insertAdjacentElement('beforeend', temp_html);
+//       });
+//     });
+// }
+// getPost();
+
+// 프론트엔드에서 게시글 메인(상세) 띄우기
+async function fetchPostMain(post_id) {
+  try {
+    const response = await fetch(`/api/post/${post_id}`);
+    if (!response.ok) {
+      throw new Error('게시글을 불러오는 중 오류가 발생했습니다.');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('게시글 조회 오류:', error);
+    throw error;
+  }
+}
+
+// 페이지 로딩 시 게시글 상세 정보를 가져와서 화면에 표시
+async function loadPostMain() {
+  const params = new URLSearchParams(window.location.search);
+  const post_id = params.get('post_id');
+
+  try {
+    const postMain = await fetchPostMain(post_id);
+
+    // 프론트엔드에서 게시글 상세 정보를 화면에 표시
+    const postTitleElement = document.getElementById('postTitle');
+    const postContentElement = document.getElementById('postContent');
+    const postSubjectElement = document.getElementById('postSubject');
+    const postImageElement = document.getElementById('postImage');
+    // ... 다른 요소들에 대한 참조도 가져와서 표시
+
+    postTitleElement.textContent = postMain.data.title;
+    postContentElement.textContent = postMain.data.content;
+    postSubjectElement.textContent = postMain.data.subject;
+
+    // ... 다른 요소들에 대한 정보도 표시
+  } catch (error) {
+    // 에러 처리
+    console.error('게시글 상세 정보 로딩 오류:', error);
+  }
+}
+
+// 페이지 로딩 시 게시글 상세 정보 로딩 함수 호출
+loadPostMain();

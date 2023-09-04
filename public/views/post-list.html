@@ -54,22 +54,81 @@
         <button type="button" class="btn btn-dark" id="search">검색</button>
     </form>
 
-    <div class="sort">
+    <!-- 과목 선택 부분 -->
+    <!-- <div class="sort">
         <select id="select">
             <option name="select" value="name">선택하세요</option>
             <!-- <option name="select" value="title">제목</option> -->
-            <option name="select" value="subject">국어</option>
+    <!-- <option name="select" value="subject">국어</option>
             <option name="select" value="subject">영어</option>
             <option name="select" value="subject">수학</option>
-        </select>
-        <button type="button" onclick="sort()" id="search">조회</button>
+        </select>  -->
+    <button type="button" onclick="sort()" id="search">조회</button>
     </div>
+    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+        <option selected>과목을 선택하세요</option>
+        <option value="1">국어</option>
+        <option value="2">영어</option>
+        <option value="3">수학</option>
+    </select>
+
+
 
     <!-- 게시글 리스트(제목, userName 보이게) -->
 
     <div class="posts">
         <div class="row" id="posts-box"></div>
+
+        <!-- 카드 형식 -->
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card h-100">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
+                            additional content. This content is a little bit longer.</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Last updated 3 mins ago</small>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col">
+                <div class="card h-100">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">This card has supporting text below as a natural lead-in to additional
+                            content.</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Last updated 3 mins ago</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
+                            additional content. This card has even longer content than the first to show that equal
+                            height action.</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Last updated 3 mins ago</small>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+
+
     </div>
+
+
+
+
 
     <!-- <div class="input-group">
         <nav>
@@ -89,7 +148,25 @@
     <footer id="footer">
         <div class="inner">
             <!-- 페이지 넘기는 부분 -->
-            <section class="post-list"></section>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- <section class="post-list"></section>
             <div class="search" id="page">
                 <h4 style="margin-right: 20px">page</h4>
                 <select id="page">
@@ -100,7 +177,7 @@
                     <option name="page" value="5">5</option>
                 </select>
                 <button type="button" class="btn btn-dark" id="search-btn">이동</button>
-            </div>
+            </div> -->
 
             <div class="flex">
                 <ul class="icons">
