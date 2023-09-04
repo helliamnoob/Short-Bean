@@ -113,10 +113,14 @@ document.getElementById('commentCreate').addEventListener('click', async functio
 
         // 댓글이 성공적으로 저장되면 화면에 추가
         const commentList = document.getElementById('commentList');
-        const commentItem = document.createElement('div');
-        commentItem.className = 'comment-item';
-        commentItem.textContent = content;
-        commentList.appendChild(commentItem);
+        if (commentList) {
+          const commentItem = document.createElement('div');
+          commentItem.className = 'comment-item';
+          commentItem.textContent = content;
+          commentList.appendChild(commentItem);
+        } else {
+          console.error('commentList 요소를 찾을 수 없음');
+        }
       }
     })
     .catch((error) => {
@@ -249,16 +253,16 @@ async function loadPostMain() {
   try {
     const postMain = await fetchPostMain(post_id);
 
-    // 프론트엔드에서 게시글 상세 정보를 화면에 표시
+    // 프론트엔드에서 게시글 상세 정보를 화면에 표시: 이미지는 따로
     const postTitleElement = document.getElementById('postTitle');
     const postContentElement = document.getElementById('postContent');
     const postSubjectElement = document.getElementById('postSubject');
-    const postImageElement = document.getElementById('postImage');
-    // ... 다른 요소들에 대한 참조도 가져와서 표시
+    // const postImageElement = document.getElementById('postImage');
 
     postTitleElement.textContent = postMain.data.title;
     postContentElement.textContent = postMain.data.content;
     postSubjectElement.textContent = postMain.data.subject;
+    // postImageElement.imageContent = postMain.data.image;
 
     // ... 다른 요소들에 대한 정보도 표시
   } catch (error) {
