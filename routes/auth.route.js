@@ -5,7 +5,7 @@ const middleware = require('../middlewares/auth_middleware');
 const router = express.Router();
 const { Op } = require('sequelize');
 const node_cache = require('node-cache');
-const my_cache = new node_cache({ stdTTL: 200, checkperiod: 600 });
+const my_cache = new node_cache({stdTTL: 500, checkperiod:600});
 const axios = require('axios');
 const crypto = require('crypto-js');
 require('dotenv').config();
@@ -153,67 +153,31 @@ router.get('/usertest', middleware, async (req, res) => {
   }
 });
 
-// 문자 인증
-router.post('/smsauth', middleware, async (req, res) => {
-  const { user_id } = res.locals.user;
+// 문자 발송
+router.post('/smsauth', async (req, res) => {
+  const { name,phone } = req.body;
   try {
-    const user = my_cache.get(user_id);
-    send_message(user.nickname, user.phone_number);
+    send_message(name, phone);
     return res.status(200).json({ message: 'sucess' });
   } catch (e) {
     console.log(e);
     res.status(500).json({ message: 'server error.' });
   }
 });
-
-// 테스트용 코드
-router.get('/userfront', async (req, res) => {
-  const user_id = 1;
+// 문자 확인
+router.post('/smscheck', async (req, res) => {
+  const{phone} = req.body;
   try {
-    const user = await Users.findOne({ where: user_id });
-    if (!user) {
-      return res.status(400).json({
-        message: '해당 유저가 존재하지 않습니다.',
-      });
-    }
-    return res.status(200).json({ user });
-  } catch {
+    const data = my_cache.get(phone);
+    return res.status(200).json({ data : data });
+  } catch (e) {
+    console.log(e);
     res.status(500).json({ message: 'server error.' });
   }
 });
 
-router.put('/usertestinfo', async (req, res) => {
-  const user_id = 1;
-  try {
-    const { email, password, nickname, phone_number } = req.body;
 
-    const userUpdateFind = await Users.findOne({ where: user_id });
-    const userEmailCheck = await Users.findOne({ where: { email } });
-    if (!userUpdateFind) {
-      return res.status(400).json({ message: '유저가 존재하지 않습니다.' });
-    } else if (userUpdateFind.user_id !== user_id) {
-      return res.status(400).json({ message: '권한이 없습니다.' });
-    }
-    if (userEmailCheck) {
-      return res.status(400).json({ message: '해당 이메일은 중복입니다.' });
-    }
-
-    await Users.update(
-      { email, password, nickname, phone_number },
-      {
-        where: {
-          [Op.and]: [{ user_id: user_id }],
-        },
-      }
-    );
-    res.status(200).json({ message: '유저 정보를 수정합니다.' });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: 'server error.' });
-  }
-});
-
-function send_message(nickname, phone) {
+function send_message(name, phone) {
   var space = ' '; // one space
   var newLine = '\n'; // new line
   const method = 'POST';
@@ -226,10 +190,8 @@ function send_message(nickname, phone) {
 
   const signature = makeSignature();
   const randomnum = Math.random() * 1000000;
-  console.log(randomnum);
   const verfiy_code = Math.round(randomnum);
   my_cache.set(phone, verfiy_code);
-  console.log(timestamp);
   axios({
     method: method,
     // request는 uri였지만 axios는 url이다
@@ -244,9 +206,10 @@ function send_message(nickname, phone) {
     data: {
       type: 'SMS',
       countryCode: '82',
-      from: phone,
+      //sens api 에 저장된 번호로 부터 발송됩니다.
+      from: "01051257345",
       // 원하는 메세지 내용
-      content: `${nickname}님 ${verfiy_code} `,
+      content: `${name}님 ${verfiy_code} `,
       messages: [
         // 신청자의 전화번호
         { to: `${phone}` },
