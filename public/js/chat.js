@@ -133,10 +133,6 @@ async function createRoom(targetUesrId) {
 function closeModal() {
   faceChatForm.style.display = 'none';
 }
-
-function exitChatRoom() {
-  location.reload();
-}
 function handleFaceChatBtn(tutors) {
   const tutorListExceptMe = tutors.filter((tutor) => tutor.userId !== currentUserId);
 
