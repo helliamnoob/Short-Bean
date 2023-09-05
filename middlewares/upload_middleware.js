@@ -4,6 +4,7 @@ const aws = require('aws-sdk');
 require('dotenv').config();
 
 let upload; // 업로드 미들웨어 변수 정의
+let s3; // s3 객체 변수 정의
 
 try {
   // AWS 설정
@@ -20,6 +21,13 @@ try {
     contentType: multer_s3.AUTO_CONTENT_TYPE,
     acl: 'public-read-write',
     key: function (req, file, cb) {
+      if (!['image/jpeg', 'image/png', 'image/jpg', 'image/bmp'].includes(file.mimetype)) {
+        return cb(new Error('이미지 파일만 업로드 가능합니다.'));
+      }
+
+      if (file.size > 1024 * 1024) {
+        return cb(new Error('이미지 크기는 최대 1MB 입니다.'));
+      }
       cb(null, `image/post/${Date.now().toString()}-${file.originalname}`);
     },
   });
@@ -31,5 +39,20 @@ try {
 } catch (error) {
   console.error(error);
 }
+
+// // 이미지 삭제 함수
+// const deleteImage = async (filename) => {
+//   const objectParams_del = {
+//     Bucket: process.env.BUCKET_NAME,
+//     Key: filename,
+//   };
+//   try {
+//     await s3.deleteObject(objectParams_del).promise();
+//     console.log('이미지가 삭제되었습니다.');
+//   } catch (error) {
+//     console.log('이미지 삭제 중 오류 발생:', error);
+//   }
+// };
+
 // console.log(upload);
-module.exports = upload;
+module.exports = { upload };

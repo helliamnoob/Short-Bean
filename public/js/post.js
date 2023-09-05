@@ -242,7 +242,7 @@ async function fetchComments(post_id) {
 async function submitComment(event) {
   event.preventDefault();
   const commentText = document.getElementById('commentText').value;
-  const postId = getPostIdFromUrl();
+  const post_id = getPostIdFromUrl();
 
   try {
     const response = await fetch(`/api/post/${post_id}/comment`, {
@@ -274,8 +274,86 @@ fetchComments(post_id);
 // 댓글 작성 폼의 submit 이벤트 핸들러 등록
 document.getElementById('commentInput').addEventListener('submit', submitComment);
 
-// // 게시글 작성 버튼 눌렀을 때, 이동
-// const createPostButton = document.getElementById('createPostButton');
-// createPostButton.addEventListener('click', async () => {
-//   window.location.href = ``;
-// });
+// 게시글 작성 버튼 눌렀을 때, 이동
+const createPostButton = document.getElementById('createPostButton');
+createPostButton.addEventListener('click', async () => {
+  window.location.href = ``;
+});
+
+// 댓글 리스트 ..
+let currentPage = 1;
+const commentsPerPage = 10; // 한 페이지당 표시할 댓글 수
+
+window.addEventListener('DOMContentLoaded', async function () {
+  fetchComments(currentPage);
+
+  // 페이지네이션 버튼 클릭 시 다음 페이지 댓글 로드
+  const loadMoreButton = document.getElementById('loadMoreButton');
+  loadMoreButton.addEventListener('click', function () {
+    currentPage++;
+    fetchComments(currentPage);
+  });
+});
+
+async function fetchComments(page) {
+  try {
+    const response = await fetch(
+      `/api/post/${post_id}/comment?page=${page}&limit=${commentsPerPage}`
+    );
+    if (!response.ok) {
+      throw new Error('댓글을 불러오는 중 오류가 발생했습니다.');
+    }
+    const data = await response.json();
+    const comments = data.data.comments;
+
+    const commentList = document.getElementById('commentList');
+
+    if (page === 1) {
+      commentList.innerHTML = ''; // 첫 페이지일 때만 초기화
+    }
+
+    comments.forEach((comment) => {
+      const content = comment.content;
+      const li = document.createElement('li');
+      li.textContent = content;
+      commentList.appendChild(li);
+    });
+
+    // 페이지네이션 버튼 표시 여부 결정
+    const loadMoreButton = document.getElementById('loadMoreButton');
+    loadMoreButton.style.display = data.data.hasMorePages ? 'block' : 'none';
+  } catch (error) {
+    console.error('댓글 조회 오류:', error);
+  }
+}
+
+// 댓글 작성을 처리하는 함수
+async function submitComment(event) {
+  event.preventDefault();
+  const commentText = document.getElementById('commentText').value;
+
+  try {
+    const response = await fetch(`/api/post/${post_id}/comment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: commentText }),
+    });
+
+    if (!response.ok) {
+      throw new Error('댓글 작성 중 오류가 발생했습니다.');
+    }
+
+    // 댓글 작성 후, 현재 페이지의 댓글 목록을 다시 불러옴
+    fetchComments(currentPage);
+
+    // 댓글 작성 폼 초기화
+    document.getElementById('commentText').value = '';
+  } catch (error) {
+    console.error('댓글 작성 오류:', error);
+  }
+}
+
+// 댓글 작성 폼의 submit 이벤트 핸들러 등록
+document.getElementById('commentInput').addEventListener('submit', submitComment);
