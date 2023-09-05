@@ -98,6 +98,11 @@ module.exports = (io) => {
       console.log(`[SERVER] 'ice' event emitted to room ${roomId}`);
     });
 
+    socket.on('draw', (data, roomId) => {
+      socket.to(roomId).emit('draw', data);
+    });
+
+
     // socket.on('disconnect', () => {
     //   console.log('User disconnected:', socket.id);
 
