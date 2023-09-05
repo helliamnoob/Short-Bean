@@ -43,54 +43,12 @@ reportButton.addEventListener('click', function () {
   event.preventDefault();
 });
 
-// 댓글 작성
-// const commentCreateBtn = document.getElementById('commentCreate');
-// commentCreateBtn.addEventListener('click', function () {
-//   const commentText = document.getElementById('comment').value;
-
-//   const formData = new FormData();
-//   formData.append('comment', commentText);
-
-//   fetch('/api/post/:post_id/comment', {
-//     method: 'POST',
-//     body: formData,
-//   })
-//     .then((response) => response.json())
-//     .then((data) => {
-//       // if (data.message === '댓글 작성 성공')
-//       {
-//         console.log(data);
-
-//         alert('댓글이 작성되었습니다.');
-//         // 원하는 처리
-//         // } else {
-//         alert('댓글 작성 실패');
-//         // window.location.reload();
-//       }
-//     })
-//     .catch((error) => {
-//       console.error('Error:', error);
-//       alert('오류가 발생했습니다.');
-//     });
-// });
-
-// 댓글 작성
-// document.addEventListener('DOMContentLoaded', function (post_id) {
-//   const post_id = String(post_id);
-//   const commentCreateBtn = document.getElementById('commentCreate');
-//   const commentInput = document.getElementById('commentInput');
-//   commentCreateBtn.addEventListener('click', async function () {
-//     const commentText = commentInput.value;
-
 // 댓글 작성: 이게 진짜
 const params = new URLSearchParams(window.location.search);
 const post_id = params.get('post_id');
 
 document.getElementById('commentCreate').addEventListener('click', async function () {
   const content = document.getElementById('commentInput').value;
-
-  // const formData = new FormData();
-  // formData.append('comment', commentText);
 
   await fetch(`/api/post/${post_id}/comment`, {
     method: 'POST',
@@ -131,9 +89,6 @@ document.getElementById('commentCreate').addEventListener('click', async functio
 });
 
 // 댓글 수정
-// const commentUpdateBtn = document.getElementById('commentUpdate');
-// commentUpdateBtn.addEventListener('click', function () {
-//   const commentText = document.getElementById('comment').value;
 document.getElementById('commentUpdate').addEventListener('click', async function () {
   const content = document.getElementById('commentInput').value;
 
@@ -182,54 +137,28 @@ commentDeleteBtn.addEventListener('click', function () {
     });
 });
 
-// 댓글 리스트
-window.addEventListener('DOMContentLoaded', async function () {
-  fetch('/api/post/:post_id/comment', {})
-    .then((response) => response.json())
-    .then((data) => {
-      let rows = data.data;
-      console.log(data);
-      const commentBox = document.getElementById('commentBox');
-      rows.forEach((comment) => {
-        let content = comment['content'];
-
-        let temp_html = `<div class="mypost">`;
-        //  <div class="card w-75">
-        // <div class="card-body">
-        // <p class="card-text">${content}</p>
-        // </div>
-        // </div>
-        // </div>`;
-        commentBox.insertAdjacentHTML('beforeend', temp_html);
-      });
-    });
-});
-
-// // 게시글 상세 불러오기
-// async function getPost() {
-//   await fetch(`/api/post/${post_id}`, {
-//     method: 'GET',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//   })
+// // 댓글 리스트
+// window.addEventListener('DOMContentLoaded', async function () {
+//   fetch('/api/post/:post_id/comment', {})
 //     .then((response) => response.json())
 //     .then((data) => {
+//       let rows = data.data;
 //       console.log(data);
-//       const postContent = document.getElementById('post_content');
-//       rows.forEach((post) => {
-//         let image = post['image'];
-//         let title = post['title'];
-//         let content = post['content'];
-//         let subject = post['subject'];
+//       const commentBox = document.getElementById('commentBox');
+//       rows.forEach((comment) => {
+//         let content = comment['content'];
 
-//         let temp_html = `<div class="post_content">
-//       </div>`;
-//         postContent.insertAdjacentElement('beforeend', temp_html);
+//         let temp_html = `<div class="mypost">`;
+//         //  <div class="card w-75">
+//         // <div class="card-body">
+//         // <p class="card-text">${content}</p>
+//         // </div>
+//         // </div>
+//         // </div>`;
+//         commentBox.insertAdjacentHTML('beforeend', temp_html);
 //       });
 //     });
-// }
-// getPost();
+// });
 
 // 프론트엔드에서 게시글 메인(상세) 띄우기
 async function fetchPostMain(post_id) {
@@ -264,12 +193,6 @@ async function loadPostMain() {
     postContentElement.textContent = postMain.data.content;
     postSubjectElement.textContent = postMain.data.subject;
 
-    // // 게시글 url?
-    // const bucketAddress = 'https://shortbean-imgdata.s3.ap-northeast-2.amazonaws.com/image/post/'; // AWS S3 버킷 주소
-    // // const imagePath = 'image/post/'; // 이미지 파일의 경로
-    // const imageName = `${}`; // 이미지 파일 이름
-
-    // const imageUrl = bucketAddress + imageName;
     // 만약 image가 null이 아니라면, 즉 이미지가 있다면 해당 image 문자열을 img 태그의 src로 설정합니다.
     if (postMain.data.image) {
       // S3 버킷 경로와 파일 이름을 조합하여 전체 이미지 URL 생성
@@ -286,6 +209,71 @@ async function loadPostMain() {
 }
 // 페이지 로딩 시 게시글 상세 정보 로딩 함수 호출
 loadPostMain();
+
+// ---------------------------------------------------------------------
+
+// 게시글 ID를 가져오는 함수 (URL에서 추출)
+function getPostIdFromUrl() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('post_id');
+}
+
+// 댓글을 가져와서 화면에 표시하는 함수
+async function fetchComments(post_id) {
+  try {
+    const response = await fetch(`/api/post/${post_id}/comment`);
+    if (!response.ok) {
+      throw new Error('댓글을 불러오는 중 오류가 발생했습니다.');
+    }
+    const comments = await response.json();
+    const commentList = document.getElementById('commentList');
+    commentList.innerHTML = ''; // 이전 댓글 제거
+    comments.forEach((comment) => {
+      const li = document.createElement('li');
+      li.textContent = comment.text;
+      commentList.appendChild(li);
+    });
+  } catch (error) {
+    console.error('댓글 조회 오류:', error);
+  }
+}
+
+// 댓글 작성을 처리하는 함수
+async function submitComment(event) {
+  event.preventDefault();
+  const commentText = document.getElementById('commentText').value;
+  const postId = getPostIdFromUrl();
+
+  try {
+    const response = await fetch(`/api/post/${post_id}/comment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: commentText }),
+    });
+
+    if (!response.ok) {
+      throw new Error('댓글 작성 중 오류가 발생했습니다.');
+    }
+
+    // 댓글 작성 후, 다시 댓글 목록을 가져와서 표시
+    fetchComments(post_id);
+
+    // 댓글 작성 폼 초기화
+    document.getElementById('commentText').value = '';
+  } catch (error) {
+    console.error('댓글 작성 오류:', error);
+  }
+}
+
+// 페이지 로딩 시 댓글 목록을 가져와서 표시
+const postId = getPostIdFromUrl();
+fetchComments(post_id);
+
+// 댓글 작성 폼의 submit 이벤트 핸들러 등록
+document.getElementById('commentInput').addEventListener('submit', submitComment);
+
 // // 게시글 작성 버튼 눌렀을 때, 이동
 // const createPostButton = document.getElementById('createPostButton');
 // createPostButton.addEventListener('click', async () => {
