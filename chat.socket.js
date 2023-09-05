@@ -75,6 +75,7 @@ module.exports = (io) => {
       done(tutors);
     });
     // 예림님쪽
+    //화상채팅 
     socket.on('join_room', (roomId) => {
       socket.join(roomId);
       socket.to(roomId).emit('user_joined', { userId: socket.id, roomId });
@@ -102,10 +103,12 @@ module.exports = (io) => {
       socket.to(roomId).emit('draw', data);
     });
 
+    socket.on('clear', (roomId) => {
+      socket.to(roomId).emit('clear');
+    });
 
     // socket.on('disconnect', () => {
     //   console.log('User disconnected:', socket.id);
-
     //   // Find the disconnected user and remove from the tracking object
     //   for (let userId in userSockets) {
     //     if (userSockets[userId] === socket.id) {
@@ -115,7 +118,7 @@ module.exports = (io) => {
     //   }
     // });
 
-    // 예림님쪽 invite
+    // 화상채팅 초대
     socket.on('register', (userId) => {
       userSockets[userId] = socket.id;
       console.log('Registered:', userId, 'with socket ID:', socket.id);

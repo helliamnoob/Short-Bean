@@ -23,6 +23,7 @@ function onMouseUp() {
 }
 canvas.addEventListener('mousemove', onMove);
 canvas.addEventListener('mousedown', onMouseDown);
+canvas.addEventListener('mousemove', emitDrawingData);
 canvas.addEventListener('mouseup', onMouseUp);
 
 function emitDrawingData(event) {
@@ -32,7 +33,41 @@ function emitDrawingData(event) {
   socket.emit('draw', { x, y, isDrawing }, roomId);
 }
 
-// 서버로부터 그림 그리기 이벤트를 받음
+
+//모바일 터치기능도 추가
+function onTouchMove(event) {
+  const touch = event.touches[0];
+  const x = touch.clientX - canvas.offsetLeft;
+  const y = touch.clientY - canvas.offsetTop;
+  if (isPainting) {
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    return;
+  }
+  ctx.moveTo(x, y);
+}
+
+function onTouchStart() {
+  isPainting = true;
+}
+
+function onTouchEnd() {
+  isPainting = false;
+}
+
+function emitTouchDrawingData(event) {
+  const touch = event.touches[0];
+  const x = touch.clientX - canvas.offsetLeft;
+  const y = touch.clientY - canvas.offsetTop;
+  const isDrawing = isPainting;
+  socket.emit('draw', { x, y, isDrawing }, roomId);
+}
+
+canvas.addEventListener('touchmove', onTouchMove);
+canvas.addEventListener('touchstart', onTouchStart);
+canvas.addEventListener('touchend', onTouchEnd);
+canvas.addEventListener('touchmove', emitTouchDrawingData);
+
 socket.on('draw', (data) => {
   const { x, y, isDrawing } = data;
   if (isDrawing) {
@@ -43,8 +78,16 @@ socket.on('draw', (data) => {
   }
 });
 
-// 이벤트 리스너에 소켓 이벤트를 전송하는 함수 추가
-canvas.addEventListener('mousemove', onMove);
-canvas.addEventListener('mousemove', emitDrawingData); // 추가된 코드
-canvas.addEventListener('mousedown', onMouseDown);
-canvas.addEventListener('mouseup', onMouseUp);
+//지우기 기능 구현
+const clearBtn = document.getElementById('clear');
+
+function clearCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  socket.emit('clear', roomId); 
+}
+
+clearBtn.addEventListener('click', clearCanvas);
+
+socket.on('clear', () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+});
