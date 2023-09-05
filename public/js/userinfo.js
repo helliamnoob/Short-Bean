@@ -46,7 +46,6 @@ delete_btn.addEventListener('click', async () => {
       });
 
       if (response.ok) {
-        // 로그인 성공시 페이지 이동
         alert('탈퇴 되었습니다.');
       } else {
         const data = await response.json();

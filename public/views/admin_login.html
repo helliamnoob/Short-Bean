@@ -1,0 +1,96 @@
+<!doctype html>
+<!--
+    Theory by TEMPLATED
+    templated.co @templatedco
+    Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+  <head>
+    <title>Theory by TEMPLATED</title>
+    <!-- 문서의 메타 정보와 스타일, 스크립트 등을 정의하는 부분 -->
+
+    <!-- 문서 인코딩과 뷰포트 설정 -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- 외부 스타일 시트 불러오기 -->
+    <link rel="stylesheet" href="/public/css/main.css" />
+
+    <!-- Bootstrap CSS 링크 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap JS와 jQuery 스크립트 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </head>
+
+  <body>
+    <!-- 페이지 상단에 위치하는 헤더 -->
+    <header id="header">
+      <div class="inner">
+        <a href="index.html" class="logo">Theory</a>
+        <nav id="nav">
+          <!-- <a href="index.html">Home</a>
+          <a href="generic.html">Generic</a>
+          <a href="elements.html">Elements</a>
+          <a href="post-list.html">Post</a> -->
+        </nav>
+        <a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+      </div>
+    </header>
+
+    <!-- 메인 배너 부분 -->
+    <section id="banner">
+      <h1>Welcome to Theory</h1>
+      <p>A free responsive HTML5 website template by TEMPLATED.</p>
+    </section>
+
+    <!-- 페이지 하단에 위치하는 푸터 -->
+    <footer id="footer">
+      <div class="inner">
+        <div class="flex">
+          <ul class="icons">
+            <li>
+              <a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a>
+            </li>
+            <li>
+              <a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a>
+            </li>
+            <li>
+              <a href="#" class="icon fa-linkedin"><span class="label">linkedIn</span></a>
+            </li>
+            <li>
+              <a href="#" class="icon fa-pinterest-p"><span class="label">Pinterest</span></a>
+            </li>
+            <li>
+              <a href="#" class="icon fa-vimeo"><span class="label">Vimeo</span></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+
+    <div id="admin_login">
+      <h1>관리자로그인</h1>
+      <h2>email</h2>
+      <input type="text" id="email" />
+      <h2>password</h2>
+      <input type="text" id="password" />
+      <button type="button" id="admin_login_btn">LOGIN</button>
+      <button type="button" id="admin_signup_btn">SIGNUP</button>
+    </div>
+
+    <!-- 사이트 제작 정보 -->
+    <div class="copyright">Site made with: <a href="https://templated.co/">TEMPLATED.CO</a></div>
+
+    <!-- 필요한 스크립트 파일 불러오기 -->
+    <script src="/public/js/jquery.min.js"></script>
+    <script src="/public/js/skel.min.js"></script>
+    <script src="/public/js/util.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/public/js/admin_login.js"></script>
+    <!-- <script src="/public/js/post.js"></script> -->
+  </body>
+</html>
