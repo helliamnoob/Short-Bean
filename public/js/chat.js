@@ -145,9 +145,11 @@ function exitChatRoom() {
   location.reload();
 }
 function handleFaceChatBtn(tutors) {
+  const tutorListExceptMe = tutors.filter((tutor) => tutor.userId !== currentUserId);
+
   const tutorList = document.getElementById('tutorList');
   tutorList.innerHTML = '';
-  tutors.forEach((tutor) => {
+  tutorListExceptMe.forEach((tutor) => {
     const h3 = document.createElement('h3');
     h3.textContent = `${tutor.userName} 선생님`;
 
@@ -202,7 +204,8 @@ async function getAllUsers() {
     if (response.ok) {
       const data = await response.json();
       allUserList.innerHTML = '';
-      data.data.forEach((user) => {
+      const allUserExceptMe = data.data.filter((user) => user.user_id !== currentUserId);
+      allUserExceptMe.forEach((user) => {
         const h3 = document.createElement('h3');
         h3.textContent = user.user_name;
 
@@ -229,8 +232,9 @@ async function getAllUsers() {
   }
 }
 function renderConnectedUsers(socketUser) {
-  console.log(socketUser);
-  socketUser.forEach((user) => {
+  const socketUserExceptMe = socketUser.filter((user) => user.userId !== currentUserId);
+
+  socketUserExceptMe.forEach((user) => {
     const h3 = document.createElement('h3');
     h3.textContent = user.userName;
 
