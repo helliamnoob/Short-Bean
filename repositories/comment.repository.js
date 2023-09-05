@@ -6,6 +6,7 @@ class CommentRepository {
     return await Comments.findAll({
       where: { post_id },
       include: [{ model: Users }],
+      order: [['createdAt', 'DESC']], // 생성일자 내림차순
     });
   };
 
