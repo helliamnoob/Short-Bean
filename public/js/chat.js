@@ -11,199 +11,91 @@ const allUserForm = document.getElementById('allUserForm');
 faceChatForm.style.display = 'none';
 chatContainer.hidden = true;
 let roomId;
-
+let socket;
+let jwtToken;
+let currentUserId;
 document.addEventListener('DOMContentLoaded', async () => {
-  const jwtToken = getCookieValue('authorization');
-  const currentUserId = getUserIdFromToken(jwtToken);
-
+  jwtToken = getCookieValue('authorization');
+  currentUserId = getUserIdFromToken(jwtToken);
   if (!jwtToken) {
     alert('로그인 후 이용가능한 서비스입니다.');
-    window.location.href = `/public/views/login_demo.html`;
+    window.location.href = `/`;
   } else {
-    const socket = io({
+    socket = io({
       auth: {
         token: jwtToken,
       },
     });
-
-    socket.on('no_room', async (targetUesrId) => {
-      const prompt = confirm('방이 없습니다. 방을 만드시겠습니까?');
-      if (prompt) {
-        await createRoom(targetUesrId);
-      }
-    });
-
-    socket.on('new_message', addMessage); // argument 를 조정해줄 필요가 없어서 이렇게 써도 된다
-
-    socket.on('bye', (user) => {
-      addMessage(`${user}가 떠났습니다`);
-    });
-    socket.on('enter_room', (room, exChatMessages) => {
-      roomId = room;
-      exChatMessages.forEach((chat) => {
-        addMessage(chat);
-      });
-    });
-    socket.on('sameUser', () => {
-      alert('본인과 대화할 수 없습니다.');
-    });
-
-    socket.on('welcome', (user) => {
-      addMessage(`${user}가 입장했습니다.`);
-    });
-    socket.on('show_users', (socketUser) => {
-      connectedUserList.innerHTML = '';
-      renderConnectedUsers(socketUser);
-    });
-    faceChatBtn.addEventListener('click', () => {
-      faceChatForm.style.display = 'block';
-      socket.emit('show_tutor', handleFaceChatBtn);
-    });
-    // 수정;
-    await getAllUsers();
-
-    function renderConnectedUsers(socketUser) {
-      console.log(socketUser);
-      socketUser.forEach((user) => {
-        const h3 = document.createElement('h3');
-        h3.textContent = user.userName;
-
-        const chatBtn = document.createElement('button');
-        chatBtn.textContent = '채팅하기';
-        chatBtn.classList.add('button'); // "box person" 클래스 추가
-        chatBtn.addEventListener('click', handleRoomSubmit);
-
-        const userDiv = document.createElement('div');
-        userDiv.setAttribute('id', user.userId);
-        userDiv.classList.add('box', 'person'); // "box person" 클래스 추가
-
-        userDiv.appendChild(h3);
-        userDiv.appendChild(chatBtn);
-
-        connectedUserList.appendChild(userDiv);
-      });
-    }
-    function handleFaceChatBtn(tutors) {
-      const tutorList = document.getElementById('tutorList');
-      tutorList.innerHTML = '';
-      tutors.forEach((tutor) => {
-        const h3 = document.createElement('h3');
-        h3.textContent = `${tutor.userName} 선생님`;
-
-        const chatBtn = document.createElement('button');
-        chatBtn.textContent = '채팅하기';
-
-        const faceChatBtn = document.createElement('button');
-        faceChatBtn.textContent = '화상채팅하기';
-        faceChatBtn.classList.add('facechatBtn');
-        faceChatBtn.setAttribute('data-user-id', tutor.userId);
-
-        // button.addEventListener('click', handleRoomSubmit);
-
-        const userDiv = document.createElement('div');
-        userDiv.setAttribute('id', tutor.userId);
-        userDiv.classList.add('box', 'person'); // "box person" 클래스 추가
-
-        userDiv.appendChild(h3);
-        userDiv.appendChild(faceChatBtn);
-        userDiv.appendChild(chatBtn);
-
-        tutorList.appendChild(userDiv);
-      });
-    }
-    function handleRoomSubmit(e) {
-      const targetUserId = e.target.closest('div').getAttribute('id');
-      const targetUserName = e.target.closest('div').querySelector('h3').textContent;
-      socket.emit('enter_room', targetUserId, targetUserName, showRoom);
-    }
-
-    function showRoom(userName, targetUserName) {
-      connectedUserForm.style.display = 'none';
-      allUserForm.style.display = 'none';
-      chatContainer.hidden = false;
-      const h3 = chatContainer.querySelector('h3');
-      h3.innerText = `${userName}님 ${targetUserName}님 의 채팅방`;
-      const msg = chatContainer.querySelector('#send-button');
-      msg.addEventListener('click', handleMessageSubmit);
-    }
-    function handleMessageSubmit() {
-      const input = chatContainer.querySelector('#chat-input');
-      socket.emit('new_message', input.value, roomId, () => {
-        addMessage(`myMessage: ${input.value}`);
-        input.value = '';
-      });
-    }
-    async function getAllUsers() {
-      try {
-        const response = await fetch('/api/users', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          allUserList.innerHTML = '';
-          data.data.forEach((user) => {
-            const h3 = document.createElement('h3');
-            h3.textContent = user.user_name;
-
-            const button = document.createElement('button');
-            button.textContent = '채팅하기';
-            button.classList.add('button'); // "box person" 클래스 추가
-            button.addEventListener('click', handleRoomSubmit);
-
-            const userDiv = document.createElement('div');
-            userDiv.setAttribute('id', user.user_id);
-            userDiv.classList.add('box', 'person'); // "box person" 클래스 추가
-
-            userDiv.appendChild(h3);
-            userDiv.appendChild(button);
-
-            allUserList.appendChild(userDiv);
-          });
-        } else {
-          const data = await response.json();
-          alert(`fail : ${data.message}`);
-        }
-      } catch (error) {
-        console.error('Error:', error.message);
-      }
-    }
-    // 에림님 코드
+    socketOn();
     socket.emit('register', currentUserId);
 
-    document.body.addEventListener('click', (event) => {
-      if (event.target.classList.contains('facechatBtn')) {
-          const inviteeId = event.target.getAttribute('data-user-id');
-          if (inviteeId === String(currentUserId)) {
-              alert("자기 자신에게는 화상채팅을 할 수 없습니다.");
-              return;
-          }
-
-          const roomId = uuidv4();
-          console.log(`Generated room ID using UUID: ${roomId}`);
-
-          socket.emit('invite_face_chat', inviteeId, currentUserId, roomId);
-          console.log(`Invitation sent to user with ID: ${inviteeId}`);
-          window.open(`/facechat?room=${roomId}`, '_blank', 'width=1800,height=1000');
-      }
-  });
-
-  socket.on("receive_invite", (inviterId, roomId) => {
-      const accept = confirm("화상 채팅 초대가 도착했습니다! 수락하시겠습니까?");
+    socket.on('receive_invite', (inviterId, roomId) => {
+      const accept = confirm('화상 채팅 초대가 도착했습니다! 수락하시겠습니까?');
       if (accept) {
-          socket.emit('accept_face_chat', inviterId, currentUserId, roomId);
+        socket.emit('accept_face_chat', inviterId, currentUserId, roomId);
       }
-  });
+    });
 
-  socket.on("start_face_chat", (roomId) => {
-    console.log("Invitation accepted! Attempting to open chat window for room:", roomId);
-    window.open(`/facechat?room=${roomId}`, '_blank', 'width=1800,height=1000');
-  });
+    socket.on('start_face_chat', (roomId) => {
+      console.log('Invitation accepted! Attempting to open chat window for room:', roomId);
+      window.open(`/facechat?room=${roomId}`, '_blank', 'width=800,height=600');
+    });
   }
 });
+document.body.addEventListener('click', (event) => {
+  if (event.target.classList.contains('facechatBtn')) {
+    const inviteeId = event.target.getAttribute('data-user-id');
+    if (inviteeId === String(currentUserId)) {
+      alert('자기 자신에게는 화상채팅을 할 수 없습니다.');
+      return;
+    }
+
+    const roomId = uuidv4();
+    console.log(`Generated room ID using UUID: ${roomId}`);
+
+    socket.emit('invite_face_chat', inviteeId, currentUserId, roomId);
+    console.log(`Invitation sent to user with ID: ${inviteeId}`);
+    window.open(`/facechat?room=${roomId}`, '_blank', 'width=800,height=600');
+  }
+});
+
+async function socketOn() {
+  socket.on('no_room', async (targetUesrId) => {
+    const prompt = confirm('방이 없습니다. 방을 만드시겠습니까?');
+    if (prompt) {
+      await createRoom(targetUesrId);
+    }
+  });
+
+  socket.on('new_message', addMessage); // argument 를 조정해줄 필요가 없어서 이렇게 써도 된다
+
+  socket.on('bye', (user) => {
+    addMessage(`${user}가 떠났습니다`);
+  });
+  socket.on('enter_room', (room, exChatMessages) => {
+    roomId = room;
+    exChatMessages.forEach((chat) => {
+      addMessage(chat);
+    });
+  });
+  socket.on('sameUser', () => {
+    alert('본인과 대화할 수 없습니다.');
+  });
+
+  socket.on('welcome', (user) => {
+    addMessage(`${user}가 입장했습니다.`);
+  });
+  socket.on('show_users', (socketUser) => {
+    connectedUserList.innerHTML = '';
+    renderConnectedUsers(socketUser);
+  });
+  faceChatBtn.addEventListener('click', () => {
+    faceChatForm.style.display = 'block';
+    socket.emit('show_tutor', handleFaceChatBtn);
+  });
+  // 수정;
+  await getAllUsers();
+}
 
 function getCookieValue(cookieName) {
   const cookieParts = document.cookie.split('; ');
@@ -250,10 +142,34 @@ function closeModal() {
 }
 
 function exitChatRoom() {
-  chatBox.innerHTML = '';
-  chatContainer.hidden = true;
-  connectedUserForm.style.display = 'block';
-  allUserForm.style.display = 'block';
+  location.reload();
+}
+function handleFaceChatBtn(tutors) {
+  const tutorList = document.getElementById('tutorList');
+  tutorList.innerHTML = '';
+  tutors.forEach((tutor) => {
+    const h3 = document.createElement('h3');
+    h3.textContent = `${tutor.userName} 선생님`;
+
+    const chatBtn = document.createElement('button');
+    chatBtn.textContent = '채팅하기';
+
+    const faceChatBtn = document.createElement('button');
+    faceChatBtn.textContent = '화상채팅하기';
+    faceChatBtn.classList.add('facechatBtn');
+    faceChatBtn.setAttribute('data-user-id', tutor.userId);
+
+    // button.addEventListener('click', handleRoomSubmit);
+    const userDiv = document.createElement('div');
+    userDiv.setAttribute('id', tutor.userId);
+    userDiv.classList.add('box', 'person'); // "box person" 클래스 추가
+
+    userDiv.appendChild(h3);
+    userDiv.appendChild(faceChatBtn);
+    userDiv.appendChild(chatBtn);
+
+    tutorList.appendChild(userDiv);
+  });
 }
 function getUserIdFromToken(token) {
   // JWT 토큰에서 사용자 ID 추출
@@ -268,8 +184,91 @@ function getUserIdFromToken(token) {
   return currentUserId;
 }
 function uuidv4() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0,
+      v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+async function getAllUsers() {
+  try {
+    const response = await fetch('/api/users', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      allUserList.innerHTML = '';
+      data.data.forEach((user) => {
+        const h3 = document.createElement('h3');
+        h3.textContent = user.user_name;
+
+        const button = document.createElement('button');
+        button.textContent = '채팅하기';
+        button.classList.add('button'); // "box person" 클래스 추가
+        button.addEventListener('click', handleRoomSubmit);
+
+        const userDiv = document.createElement('div');
+        userDiv.setAttribute('id', user.user_id);
+        userDiv.classList.add('box', 'person'); // "box person" 클래스 추가
+
+        userDiv.appendChild(h3);
+        userDiv.appendChild(button);
+
+        allUserList.appendChild(userDiv);
+      });
+    } else {
+      const data = await response.json();
+      alert(`fail : ${data.message}`);
+    }
+  } catch (error) {
+    console.error('Error:', error.message);
+  }
+}
+function renderConnectedUsers(socketUser) {
+  console.log(socketUser);
+  socketUser.forEach((user) => {
+    const h3 = document.createElement('h3');
+    h3.textContent = user.userName;
+
+    const chatBtn = document.createElement('button');
+    chatBtn.textContent = '채팅하기';
+    chatBtn.classList.add('button'); // "box person" 클래스 추가
+    chatBtn.addEventListener('click', handleRoomSubmit);
+
+    const userDiv = document.createElement('div');
+    userDiv.setAttribute('id', user.userId);
+    userDiv.classList.add('box', 'person'); // "box person" 클래스 추가
+
+    userDiv.appendChild(h3);
+    userDiv.appendChild(chatBtn);
+
+    connectedUserList.appendChild(userDiv);
+  });
+}
+
+function handleRoomSubmit(e) {
+  const targetUserId = e.target.closest('div').getAttribute('id');
+  const targetUserName = e.target.closest('div').querySelector('h3').textContent;
+  socket.emit('enter_room', targetUserId, targetUserName, showRoom);
+}
+
+function showRoom(userName, targetUserName) {
+  connectedUserForm.style.display = 'none';
+  allUserForm.style.display = 'none';
+  chatContainer.hidden = false;
+  const h3 = chatContainer.querySelector('h3');
+  h3.innerText = `${userName}님 ${targetUserName}님 의 채팅방`;
+  const msg = chatContainer.querySelector('#send-button');
+  msg.addEventListener('click', handleMessageSubmit);
+}
+function handleMessageSubmit() {
+  const input = chatContainer.querySelector('#chat-input');
+  socket.emit('new_message', input.value, roomId, () => {
+    addMessage(`myMessage: ${input.value}`);
+    input.value = '';
   });
 }
