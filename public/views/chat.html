@@ -29,44 +29,33 @@
       <h1>짧은 공부</h1>
       <p>당신 마음대로 채팅이나 해보시져?</p>
     </section>
-    <!-- Two -->
-    <section id="connectedUserForm" class="wrapper style1 special">
-      <div class="inner">
-        <header>
-          <h2>현재 접속한 인원</h2>
-        </header>
-        <div id="connectedUserList" class="flex flex-4">
-          <div class="box person">
-            <h3>Magna</h3>
-            <button>대화하기</button>
-            <button>정보보기</button>
-          </div>
+    <div class="container">
+      <div class="user-list">
+        <h2>사용자 목록</h2>
+        <ul id="user-list">
+          <li data-userid="1" data-username="User1" data-status="online">🌞User1</li>
+          <li data-userid="2" data-username="User2" data-status="offline">🌫️User2</li>
+          <li>
+            <div class="user-item" data-userid="1" data-username="User1" data-status="online">
+              🌞User1
+              <button class="user-button">버튼1</button>
+              <button class="user-button">버튼2</button>
+            </div>
+          </li>
+        </ul>
+        <!-- 여기에 사용자 목록을 동적으로 추가하세요 -->
+      </div>
+      <div class="chat" id="chat">
+        <h2>채팅</h2>
+        <div class="chat-box" id="chatBox">
+          <!-- 여기에 채팅 내용을 표시하세요 -->
+        </div>
+        <div class="chat-input">
+          <input type="text" id="message" placeholder="메시지를 입력하세요" />
+          <button id="send">전송</button>
         </div>
       </div>
-    </section>
-
-    <!-- Two -->
-    <section id="allUserForm" class="wrapper style1 special">
-      <div class="inner">
-        <header>
-          <h2>모든 인원</h2>
-        </header>
-        <div id="allUserList" class="flex flex-4"></div>
-      </div>
-    </section>
-    <!-- 채팅창 -->
-    <section class="wrapper special">
-      <div id="chat" class="chat-container">
-        <h3></h3>
-        <div id="chatBox" class="chat-window"></div>
-        <div class="input-container">
-          <input type="text" id="chat-input" placeholder="메시지를 입력하세요" />
-          <button id="send-button">보내기</button>
-        </div>
-        <button onclick="exitChatRoom()">⬅️나가기</button>
-      </div>
-    </section>
-
+    </div>
     <section class="wrapper style1 special">
       <div id="faceChatBtn">
         <button>화상채팅하기</button>
