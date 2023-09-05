@@ -39,6 +39,9 @@ module.exports = (sequelize, DataTypes) => {
           key: 'user_id',
         },
       },
+      image: {
+        type: DataTypes.STRING(200),
+      },
       title: {
         allowNull: false,
         type: DataTypes.STRING(200),
