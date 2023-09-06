@@ -3,6 +3,7 @@ const ctx = canvas.getContext('2d');
 const colorBtns = document.querySelectorAll(".pallet button");
 const eraserBtn = document.querySelector('#eraser');
 const downloadBtn = document.querySelector('#download');
+const clearCanvasBtn = document.querySelector('#clearCanvas');
 
 canvas.width = 1200;
 canvas.height = 700;
@@ -57,7 +58,6 @@ function changeColor(e) {
     }
   }); eraserBtn.classList.remove("selected");
 
-  socket.emit('colorChange', {newColor});
 }
 
 
@@ -75,6 +75,13 @@ function downlodeCanvas(){
   linkEl.href= image;
   linkEl.download = "paintApp";
   linkEl.click();
+}
+
+function clearCanvas() {
+  ctx.clearRect(0, 0, 1000, 700);
+  colorBtns.forEach((button) => button.classList.remove("selected"));
+
+  socket.emit('clearCanvas');
 }
 
 //소켓 코드
@@ -103,10 +110,6 @@ socket.on('mouseup', () => {
   ctx.closePath();
 });
 
-socket.on('colorChange', (data) => {
-  ctx.strokeStyle = data.newColor;
-});
-
 socket.on('startErasing', () => {
   isErasing = true;
   colorBtns.forEach((button) => button.classList.remove("selected"));
@@ -118,6 +121,10 @@ socket.on('stopErasing', () => {
   eraserBtn.classList.remove("selected");
 });
 
+socket.on('clearCanvas', () => {
+  ctx.clearRect(0, 0, 1000, 700);
+});
+
 
 canvas.addEventListener('mousedown', startDrawing);
 canvas.addEventListener('mousemove', drawing);
@@ -125,6 +132,7 @@ canvas.addEventListener('mouseup', stopDrawing);
 colorBtns.forEach((button) => button.addEventListener("click", changeColor));
 eraserBtn.addEventListener('click', startErasing);
 downloadBtn.addEventListener("click", downlodeCanvas);
+clearCanvasBtn.addEventListener('click', clearCanvas);
 
 //모바일 터치기능도 추가
 function startDrawingTouch(e) {
