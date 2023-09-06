@@ -1,6 +1,7 @@
 const express = require('express');
 const { Users } = require('../models');
 const { Admins } = require('../models');
+const {TutorInfos} = require('../models');
 const jwt = require('jsonwebtoken');
 const middleware = require('../middlewares/auth_middleware');
 const router = express.Router();
@@ -337,6 +338,39 @@ router.delete('/admin/signout', middleware, async (req, res) => {
     res.status(200).json({ message: `${admin_find.admin_name}님 삭제가 완료되었습니다.` });
   } catch (e) {
     console.log(e);
+    res.status(500).json({ message: 'server error.' });
+  }
+});
+//cookie 구별
+router.get('/usercheck', middleware, async (req, res) => {
+  if(!res.locals.user){
+    return res.status(200).json({ data: false });
+  }
+  if(!res.locals.admin){
+    return res.status(200).json({ data: false });
+  }
+  const { admin_id } = res.locals.admin;
+  try {
+    if (!admin_id) {
+      return res.status(200).json({
+        data: true,
+      });
+    }
+    return res.status(200).json({ data: false });
+  } catch {
+    res.status(500).json({ message: 'server error.' });
+  }
+});
+//tutor 연결
+router.get('/usercheck/tutor', middleware, async (req, res) => {
+  const { user_id } = res.locals.user;
+  try {
+    const find_tutor = await TutorInfos.findOne({where : { user_id}});
+    if(!find_tutor){
+      return res.status(200).json({ data : false });
+    }
+    return res.status(200).json({ data: find_tutor });
+  } catch {
     res.status(500).json({ message: 'server error.' });
   }
 });
