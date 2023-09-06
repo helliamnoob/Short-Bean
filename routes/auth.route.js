@@ -321,6 +321,25 @@ router.post('/admin/login', async (req, res) => {
     res.status(500).json({ message: 'login server error.' });
   }
 });
+// admin 삭제
+router.delete('/admin/signout', middleware, async (req, res) => {
+  const { admin_id } = res.locals.user;
+  try {
+    const admin_find = await Users.findOne({ where: admin_id });
+    if (!admin_find) {
+      res.status(400).json({ message: '회원이 조회되지 않습니다.' });
+    }
+    await Users.destroy({
+      where: {
+        [Op.and]: [{ admin_id: admin_id }],
+      },
+    });
+    res.status(200).json({ message: `${admin_find.admin_name}님 삭제가 완료되었습니다.` });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ message: 'server error.' });
+  }
+});
 
 // 유저 이름 불러오기: 프론트에 필요한 거에요 지우지 말아주세요
 router.get('/user', middleware, async (req, res) => {
