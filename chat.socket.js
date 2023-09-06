@@ -21,7 +21,7 @@ module.exports = (io) => {
     };
 
     connectedUsers.push(user);
-
+    socket.emit('getName', userName);
     // 새로운 사용자가 접속했음을 모든  알림
     io.emit('show_users', connectedUsers);
 
@@ -168,7 +168,7 @@ async function getMessage(roomId, userName, targetUserName, roomOwner) {
 
   chatData.forEach((chat) => {
     const senderName = chat.is_send === roomOwner ? userName : targetUserName;
-    const message = `${senderName} : ${chat.message_content}`;
+    const message = `${senderName}: ${chat.message_content}`;
     messages.push(message);
   });
   return messages;

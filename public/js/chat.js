@@ -8,7 +8,7 @@ let roomId;
 let socket;
 let jwtToken;
 let currentUserId;
-
+let userName;
 faceChatForm.style.display = 'none';
 document.addEventListener('DOMContentLoaded', async () => {
   jwtToken = getCookieValue('authorization');
@@ -62,6 +62,7 @@ async function socketOn() {
       await createRoom(targetUesrId);
     }
   });
+  socket.on('getName', (name) => (userName = name));
 
   socket.on('new_message', addMessage); // argument 를 조정해줄 필요가 없어서 이렇게 써도 된다
 
@@ -103,6 +104,16 @@ function getCookieValue(cookieName) {
 }
 function addMessage(message) {
   const li = document.createElement('li');
+
+  const [sender, content] = message.split(':');
+  if (sender == userName) {
+    li.classList.add('right-message');
+  } else if (!content) {
+    li.classList.add('notice-message');
+  } else {
+    li.classList.add('left-message');
+  }
+
   li.innerText = message;
   chatBox.appendChild(li);
 }
@@ -211,32 +222,30 @@ async function renderUsers(socketUser) {
     (alluser) => !socketUserExceptMe.some((connectUser) => connectUser.userId === alluser.user_id)
   );
   socketUserExceptMe.forEach((user) => {
-    const li = document.createElement('li');
     const div = document.createElement('div');
     div.setAttribute('data-user-id', user.userId);
     div.setAttribute('data-user-name', user.userName);
+    div.classList.add('userInterface');
     div.textContent = `🌞${user.userName}`;
     const chatBtn = document.createElement('button');
-    chatBtn.textContent = '채팅';
-    chatBtn.classList.add('button');
+    chatBtn.textContent = '채팅하기';
+    chatBtn.classList.add('button-chat');
     chatBtn.addEventListener('click', handleRoomSubmit);
     div.appendChild(chatBtn);
-    li.appendChild(div);
-    userList.appendChild(li);
+    userList.appendChild(div);
   });
   offlineUser.forEach((user) => {
-    const li = document.createElement('li');
     const div = document.createElement('div');
     div.setAttribute('data-user-id', user.user_id);
     div.setAttribute('data-user-name', user.user_name);
     div.textContent = `🌫️${user.user_name}`;
+    div.classList.add('userInterface');
     const chatBtn = document.createElement('button');
-    chatBtn.textContent = '채팅';
-    chatBtn.classList.add('button');
+    chatBtn.textContent = '채팅하기';
+    chatBtn.classList.add('button-chat');
     chatBtn.addEventListener('click', handleRoomSubmit);
     div.appendChild(chatBtn);
-    li.appendChild(div);
-    userList.appendChild(li);
+    userList.appendChild(div);
   });
 }
 
@@ -255,7 +264,7 @@ function showRoom(targetUserName) {
 function handleMessageSubmit() {
   const input = chatContainer.querySelector('#message');
   socket.emit('new_message', input.value, roomId, () => {
-    addMessage(`myMessage: ${input.value}`);
+    addMessage(`${userName}: ${input.value}`);
     input.value = '';
   });
 }
