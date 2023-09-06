@@ -324,9 +324,9 @@ router.post('/admin/login', async (req, res) => {
 });
 // admin 삭제
 router.delete('/admin/signout', middleware, async (req, res) => {
-  const { admin_id } = res.locals.user;
+  const { admin_id } = res.locals.admin;
   try {
-    const admin_find = await Users.findOne({ where: admin_id });
+    const admin_find = await Admins.findOne({ where: admin_id });
     if (!admin_find) {
       res.status(400).json({ message: '회원이 조회되지 않습니다.' });
     }
