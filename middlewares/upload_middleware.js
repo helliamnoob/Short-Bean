@@ -40,19 +40,4 @@ try {
   console.error(error);
 }
 
-// // 이미지 삭제 함수
-// const deleteImage = async (filename) => {
-//   const objectParams_del = {
-//     Bucket: process.env.BUCKET_NAME,
-//     Key: filename,
-//   };
-//   try {
-//     await s3.deleteObject(objectParams_del).promise();
-//     console.log('이미지가 삭제되었습니다.');
-//   } catch (error) {
-//     console.log('이미지 삭제 중 오류 발생:', error);
-//   }
-// };
-
-// console.log(upload);
 module.exports = { upload };

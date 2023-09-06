@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
     formData.append('content', content);
     formData.append('subject', subject);
 
-    // //이미지를 첨부하지 않아도 질문할 수 있게 이 부분을 삭제함
+    // 이미지
     const imageInput = document.querySelector('.upload-input');
     // if (imageInput.files.length > 0) {
     formData.append('image', imageInput.files[0]);
