@@ -99,13 +99,31 @@ module.exports = (io) => {
       console.log(`[SERVER] 'ice' event emitted to room ${roomId}`);
     });
 
-    socket.on('draw', (data, roomId) => {
-      socket.to(roomId).emit('draw', data);
-    });
+    //캔버스 화면 공유
+  socket.on('drawing', (data) => {
+    socket.broadcast.emit('drawing', data);
+  });
 
-    socket.on('clear', (roomId) => {
-      socket.to(roomId).emit('clear');
-    });
+  socket.on('colorChange', (data) => {
+    socket.broadcast.emit('colorChange', data);
+  });
+
+  socket.on('mousedown', (data) => {
+    socket.broadcast.emit('mousedown', data);
+  });
+
+  socket.on('mouseup', () => {
+    socket.broadcast.emit('mouseup');
+  });
+
+  socket.on('startErasing', () => {
+    socket.broadcast.emit('startErasing');
+  });
+
+  socket.on('stopErasing', () => {
+    socket.broadcast.emit('stopErasing');
+  });
+
 
     // socket.on('disconnect', () => {
     //   console.log('User disconnected:', socket.id);

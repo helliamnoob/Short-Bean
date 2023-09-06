@@ -4,37 +4,57 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Noom</title>
-    <link rel="stylesheet" href="https://unpkg.com/mvp.css" />
-    <style>
-      /* 추가된 CSS 코드 */
-      #myStream {
-        position: absolute; /* 절대 위치 */
-        top: 0;
-        left: 20px;
-      }
-      #peerFace {
-        position: absolute; /* 절대 위치 */
-        bottom: 0;
-        right: 20px;
-      }
-    </style>
+    <title>공부방</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/public/css/draw.css" />
   </head>
   <body>
     <header>
-      <h1>Noom</h1>
     </header>
     <main>
       <div id="call">
         <div id="myStream">
           <video id="myFace" autoplay playsinline width="200" height="200"></video>
-          <button id="mute">Mute</button>
-          <button id="camera">Turn Camera Off</button>
-          <select id="cameras"></select>
+          <aside>
+            <select id="cameras"></select>
+          <button class="divice-btn" id="camera">
+            <i id="cameraIcon" class="fa-solid fa-camera-retro"></i>
+          </button>
+          <button class="divice-btn" id="mute">
+            <i id="muteIcon" class="fa-solid fa-microphone"></i>
+          </button>
+        </aside>
         </div>
-        <div>
-        <canvas id="sharedCanvas" width="1200" height="700"></canvas>
-        <button id="clear">지우기</button>
+        <div id="myCanvas">
+        <aside>
+          <ul class="pallet">
+            <li>
+              <button class="black selected" data-color="black">black</button>
+            </li>
+            <li>
+              <button class="red" data-color="red">red</button>
+            </li>
+            <li>
+              <button class="blue" data-color="blue">blue</button>
+            </li>
+            <li>
+              <button class="green" data-color="green">green</button>
+            </li>          
+          </ul>
+          <ul>
+            <li>
+            <button class="control-btn" id="eraser">
+              <i class="fa-solid fa-eraser"></i>
+            </button>
+          </li>
+          <li>
+            <button class="control-btn" id="download">
+              <i class="fa-solid fa-download"></i>
+            </button>
+          </li>
+          </ul>
+        </aside>
+        <canvas id="sharedCanvas" width="1000" height="700"></canvas>
         </div>
         <video id="peerFace" autoplay playsinline width="200" height="200"></video>
       </div>

@@ -71,21 +71,26 @@ async function getMedia(deviceId) {
 
 async function handleMuteClick() {
   myStream.getAudioTracks().forEach((track) => (track.enabled = !track.enabled));
+  const muteIcon = document.getElementById('muteIcon');
+
   if (!muted) {
-    muteBtn.innerText = 'Unmute';
+    muteIcon.style.color = 'red'; 
     muted = true;
   } else {
-    muteBtn.innerText = 'Mute';
+    muteIcon.style.color = 'black';
     muted = false;
   }
 }
+
 async function handleCameraClick() {
   myStream.getVideoTracks().forEach((track) => (track.enabled = !track.enabled));
+  const cameraIcon = document.getElementById('cameraIcon');
+
   if (cameraOff) {
-    cameraBtn.innerText = 'Turn Camera Off';
+    cameraIcon.style.color = 'black';
     cameraOff = false;
   } else {
-    cameraBtn.innerText = 'Turn Camera On';
+    cameraIcon.style.color = 'red'; 
     cameraOff = true;
   }
 }

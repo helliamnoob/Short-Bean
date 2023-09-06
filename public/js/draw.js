@@ -1,93 +1,168 @@
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
+const colorBtns = document.querySelectorAll(".pallet button");
+const eraserBtn = document.querySelector('#eraser');
+const downloadBtn = document.querySelector('#download');
 
 canvas.width = 1200;
 canvas.height = 700;
 
+let isDrawing = false;
+let isErasing = false;
+
 ctx.lineWidth = 2;
-let isPainting = false;
+ctx.strokeStyle ="black";
 
-function onMove(event) {
-  if (isPainting) {
-    ctx.lineTo(event.offsetX, event.offsetY);
+function drawing(e) {
+  if (!isDrawing) return; 
+  
+  const x = e.offsetX;
+  const y = e.offsetY;
+
+  if (isErasing) {
+    ctx.clearRect(x, y, 20, 20);
+    socket.emit('drawing', {isErasing: true, x, y});
+  } else {
+    ctx.lineTo(x, y);
     ctx.stroke();
-    return;
+    socket.emit('drawing', {isErasing: false, x, y, color: ctx.strokeStyle});
   }
-  ctx.moveTo(event.offsetX, event.offsetY);
-}
-function onMouseDown() {
-  isPainting = true;
-}
-function onMouseUp() {
-  isPainting = false;
-}
-canvas.addEventListener('mousemove', onMove);
-canvas.addEventListener('mousedown', onMouseDown);
-canvas.addEventListener('mousemove', emitDrawingData);
-canvas.addEventListener('mouseup', onMouseUp);
-
-function emitDrawingData(event) {
-  const x = event.offsetX;
-  const y = event.offsetY;
-  const isDrawing = isPainting;
-  socket.emit('draw', { x, y, isDrawing }, roomId);
 }
 
+function startDrawing(e) {
+  isDrawing = true;
+  const x = e.offsetX;
+  const y = e.offsetY;
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+  socket.emit('mousedown', {x, y, color: ctx.strokeStyle});
+}
+
+function stopDrawing() {
+  isDrawing = false;
+  ctx.closePath();
+  socket.emit('mouseup');
+}
+
+function changeColor(e) {
+  isErasing = false;
+  const newColor = e.currentTarget.dataset.color;
+  ctx.strokeStyle = newColor;
+
+  colorBtns.forEach((button) => {
+    if (button === e.currentTarget) {
+      button.classList.add("selected");
+    } else {
+      button.classList.remove("selected");
+    }
+  }); eraserBtn.classList.remove("selected");
+
+  socket.emit('colorChange', {newColor});
+}
+
+
+function startErasing(e) {
+  isErasing = true;
+  colorBtns.forEach((button) => button.classList.remove("selected"));
+  e.currentTarget.classList.add("selected");
+
+  socket.emit('startErasing');
+}
+
+function downlodeCanvas(){
+  const image = canvas.toDataURL("image/jpeg", 1.0);
+  const linkEl= document.createElement("a");
+  linkEl.href= image;
+  linkEl.download = "paintApp";
+  linkEl.click();
+}
+
+//소켓 코드
+
+socket.on('drawing', (data) => {
+  if (data.isErasing) {
+    ctx.clearRect(data.x, data.y, 20, 20);
+  } else {
+    const currentStrokeStyle = ctx.strokeStyle;
+    ctx.strokeStyle = data.color;
+    ctx.lineTo(data.x, data.y);
+    ctx.stroke();
+    ctx.strokeStyle = currentStrokeStyle;
+  }
+});
+
+socket.on('mousedown', (data) => {
+  const currentStrokeStyle = ctx.strokeStyle;
+  ctx.strokeStyle = data.color;
+  ctx.beginPath();
+  ctx.moveTo(data.x, data.y);
+  ctx.strokeStyle = currentStrokeStyle;
+});
+
+socket.on('mouseup', () => {
+  ctx.closePath();
+});
+
+socket.on('colorChange', (data) => {
+  ctx.strokeStyle = data.newColor;
+});
+
+socket.on('startErasing', () => {
+  isErasing = true;
+  colorBtns.forEach((button) => button.classList.remove("selected"));
+  eraserBtn.classList.add("selected");
+});
+
+socket.on('stopErasing', () => {
+  isErasing = false;
+  eraserBtn.classList.remove("selected");
+});
+
+
+canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('mousemove', drawing);
+canvas.addEventListener('mouseup', stopDrawing);
+colorBtns.forEach((button) => button.addEventListener("click", changeColor));
+eraserBtn.addEventListener('click', startErasing);
+downloadBtn.addEventListener("click", downlodeCanvas);
 
 //모바일 터치기능도 추가
-function onTouchMove(event) {
-  const touch = event.touches[0];
-  const x = touch.clientX - canvas.offsetLeft;
-  const y = touch.clientY - canvas.offsetTop;
-  if (isPainting) {
-    ctx.lineTo(x, y);
-    ctx.stroke();
-    return;
-  }
+function startDrawingTouch(e) {
+  isDrawing = true;
+  const x = e.touches[0].clientX;
+  const y = e.touches[0].clientY;
+  ctx.beginPath();
   ctx.moveTo(x, y);
+  socket.emit('mousedown', {x, y, color: ctx.strokeStyle});
 }
 
-function onTouchStart() {
-  isPainting = true;
-}
+function drawingTouch(e) {
+  if (!isDrawing) return;
 
-function onTouchEnd() {
-  isPainting = false;
-}
+  const x = e.touches[0].clientX;
+  const y = e.touches[0].clientY;
 
-function emitTouchDrawingData(event) {
-  const touch = event.touches[0];
-  const x = touch.clientX - canvas.offsetLeft;
-  const y = touch.clientY - canvas.offsetTop;
-  const isDrawing = isPainting;
-  socket.emit('draw', { x, y, isDrawing }, roomId);
-}
-
-canvas.addEventListener('touchmove', onTouchMove);
-canvas.addEventListener('touchstart', onTouchStart);
-canvas.addEventListener('touchend', onTouchEnd);
-canvas.addEventListener('touchmove', emitTouchDrawingData);
-
-socket.on('draw', (data) => {
-  const { x, y, isDrawing } = data;
-  if (isDrawing) {
+  if (isErasing) {
+    ctx.clearRect(x, y, 20, 20);
+    socket.emit('drawing', {isErasing: true, x, y});
+  } else {
     ctx.lineTo(x, y);
     ctx.stroke();
-  } else {
-    ctx.moveTo(x, y);
+    socket.emit('drawing', {isErasing: false, x, y, color: ctx.strokeStyle});
   }
-});
-
-//지우기 기능 구현
-const clearBtn = document.getElementById('clear');
-
-function clearCanvas() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  socket.emit('clear', roomId); 
 }
 
-clearBtn.addEventListener('click', clearCanvas);
+function stopDrawingTouch() {
+  isDrawing = false;
+  ctx.closePath();
+  socket.emit('mouseup');
+}
 
-socket.on('clear', () => {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-});
+// 터치 이벤트 리스너 등록
+canvas.addEventListener('touchstart', startDrawingTouch);
+canvas.addEventListener('touchmove', drawingTouch);
+canvas.addEventListener('touchend', stopDrawingTouch);
+
+
+
+
