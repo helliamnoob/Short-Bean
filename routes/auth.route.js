@@ -330,7 +330,7 @@ router.delete('/admin/signout', middleware, async (req, res) => {
     if (!admin_find) {
       res.status(400).json({ message: '회원이 조회되지 않습니다.' });
     }
-    await Users.destroy({
+    await Admins.destroy({
       where: {
         [Op.and]: [{ admin_id: admin_id }],
       },
