@@ -258,12 +258,14 @@ function handleRoomSubmit(e) {
 function showRoom(targetUserName) {
   const h2 = chatContainer.querySelector('h2');
   h2.innerText = `${targetUserName}님 과 채팅`;
+  h2.setAttribute('data-user-name', targetUserName); // 1
   const msg = chatContainer.querySelector('#send');
   msg.addEventListener('click', handleMessageSubmit);
 }
 function handleMessageSubmit() {
+  const targetUserName = chatContainer.querySelector('h2').getAttribute('data-user-name');
   const input = chatContainer.querySelector('#message');
-  socket.emit('new_message', input.value, roomId, () => {
+  socket.emit('new_message', input.value, roomId, targetUserName, () => {
     addMessage(`${userName}: ${input.value}`);
     input.value = '';
   });
