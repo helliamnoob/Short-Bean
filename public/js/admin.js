@@ -26,8 +26,9 @@ function renderTutorData(data) {
     const school_name = tutorData['school_name'];
     const career = tutorData['career'];
     const status = tutorData['status'];
+    const tutor_id = tutorData['tutor_id'];
 
-    const temp_html = `<li class="list-group-item">${user_name},${school_name},${career},${status}</li>`;
+    const temp_html = `<li class="list-group-item"><a href="admin/tutors/id=${tutor_id}" class="reportA">${user_name},${school_name},${career},${status}</a></li>`;
     tutorListDiv.insertAdjacentHTML('beforeend', temp_html);
   });
 }
@@ -43,6 +44,7 @@ function loadReportList() {
     .then((data) => {
       console.log(data);
       renderReportData(data);
+      showReportData(data);
     })
     .catch((error) => {
       console.error('리포트 조회 실패:', error);
@@ -62,28 +64,45 @@ function renderReportData(data) {
     const temp_html = `<li class="list-group-item"><a href="admin/id=${report_id}" class="reportA">${report_content},${reported_user_id},${report_status} </a></li>`;
     reportListDiv.insertAdjacentHTML('beforeend', temp_html);
   });
-  return labels;
 }
 
-const ctx = document.getElementById('myChart');
+function showReportData(data) {
+  let arr = [];
+  data.data.forEach((reportData) => {
+    const reported_user_id = reportData['reported_user_id'];
 
-new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    datasets: [
-      {
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1,
-      },
-    ],
-  },
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true,
+    arr.push(`${reported_user_id}`);
+  });
+  const result = arr.reduce((accu, curr) => {
+    accu[curr] = (accu[curr] || 0) + 1;
+    return accu;
+  }, {});
+
+  JSON.stringify(result);
+  let keys = Object.keys(result);
+  let value = Object.values(result);
+  console.log(keys);
+  console.log(value);
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: keys,
+      datasets: [
+        {
+          label: '# of report',
+          data: value,
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
       },
     },
-  },
-});
+  });
+}

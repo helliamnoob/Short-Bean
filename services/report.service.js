@@ -27,6 +27,13 @@ class ReportService {
     });
     return reportData;
   };
+  updateStatus = async ({ report_id, report_status }) => {
+    const reportData = await this.reportRepository.updateStatus({
+      report_id,
+      report_status,
+    });
+    return reportData;
+  };
   deleteReport = async ({ report_id, user_id }) => {
     const reportData = await this.reportRepository.deleteReport({ report_id, user_id });
     return reportData;

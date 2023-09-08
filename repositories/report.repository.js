@@ -31,6 +31,11 @@ class ReportRepository {
     return reportData;
   };
 
+  updateStatus = async ({ report_id, report_status }) => {
+    const reportData = await Reports.update({ report_status }, { where: { report_id: report_id } });
+    return reportData;
+  };
+
   deleteReport = async ({ report_id, user_id }) => {
     const reportData = await Reports.destroy({
       where: {
