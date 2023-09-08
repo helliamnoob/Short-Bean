@@ -15,7 +15,7 @@ window.onload = function () {
   const acceptBtn = document.querySelector('#accept');
   acceptBtn.addEventListener('click', function (event) {
     event.preventDefault();
-    let status = '로그인';
+    let status = '수리';
     const formData = {
       status: status,
     };
@@ -44,7 +44,7 @@ window.onload = function () {
   const cancelBtn = document.querySelector('#cancel');
   cancelBtn.addEventListener('click', function (event) {
     event.preventDefault();
-    let status = '로그아웃';
+    let status = '반려';
     const formData = {
       status: status,
     };
