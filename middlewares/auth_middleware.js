@@ -5,6 +5,9 @@ const env = process.env;
 
 module.exports = async (req, res, next) => {
   const { authorization } = req.cookies;
+  console.log(authorization);
+  console.log(req.cookies);
+
   if (!authorization) {
     return res.status(400).json({ message: '토큰이 없습니다. 로그인을 해주시길 바랍니다.' });
   }

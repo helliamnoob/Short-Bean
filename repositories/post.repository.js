@@ -2,9 +2,13 @@ const { Posts, Users } = require('../models');
 const { Op } = require('sequelize');
 
 class PostRepository {
-  findAllPost = async () => {
+  findAllPostWithId = async () => {
     // include Users 생략할까? 결과값이 쓸데없이 자세한 것 같은데..
-    return await Posts.findAll({ include: [{ model: Users }], order: [['updatedAt', 'DESC']] });
+    return await Posts.findAll({
+      include: [{ model: Users }],
+      order: [['updatedAt', 'DESC']],
+      attributes: ['post_id', 'title', 'content', 'subject'],
+    });
   };
 
   findPost = async ({ post_id }) => {
