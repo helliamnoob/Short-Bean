@@ -9,6 +9,11 @@ let socket;
 let jwtToken;
 let currentUserId;
 let userName;
+
+const screenWidth = window.screen.width;
+const screenHeight = window.screen.height;
+
+
 faceChatForm.style.display = 'none';
 document.addEventListener('DOMContentLoaded', async () => {
   jwtToken = getCookieValue('authorization');
@@ -25,16 +30,42 @@ document.addEventListener('DOMContentLoaded', async () => {
     socketOn();
     socket.emit('register', currentUserId);
 
-    socket.on('receive_invite', (inviterId, roomId) => {
+    socket.on('receive_invite', async (inviterId, roomId) => {
       const accept = confirm('화상 채팅 초대가 도착했습니다! 수락하시겠습니까?');
       if (accept) {
-        socket.emit('accept_face_chat', inviterId, currentUserId, roomId);
+        try {
+          // API에 POST 요청을 보낼 데이터 설정
+          const data = {
+            target_user_id: currentUserId, // 현재 유저의 ID
+            user_id: inviterId, // 초대한 사람의 ID
+            facechat_room_id: roomId // 방 ID
+          };
+          
+          // API에 POST 요청을 보냄
+          const response = await fetch('/api/facechat', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+          });
+          
+          if (response.status === 200 || response.status === 201) {
+            console.log('API POST successful');
+            socket.emit('accept_face_chat', inviterId, currentUserId, roomId);
+          } else {
+            console.error('API POST failed', response);
+            console.error('Failed response details:', response.statusText);
+          }
+        } catch (error) {
+          console.error('An error occurred while making a POST request', error);
+        }
       }
     });
 
     socket.on('start_face_chat', (roomId) => {
       console.log('Invitation accepted! Attempting to open chat window for room:', roomId);
-      window.open(`/facechat?room=${roomId}`, '_blank', 'width=800,height=600');
+      window.open(`/facechat?room=${roomId}`, '_blank', `width=${screenWidth},height=${screenHeight}`);
     });
   }
 });

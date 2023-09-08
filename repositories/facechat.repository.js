@@ -1,11 +1,9 @@
 const { FaceChats } = require('../models'); 
 
 class FacechatRepository {
-    createChat = async (user_id, tutor_id) => {
+    createChat = async (user_id, target_user_id,facechat_room_id) => {
         return await FaceChats.create({
-            user_id,
-            tutor_id,
-            facechat_room_id,
+            user_id, target_user_id,facechat_room_id
         });
     };
 
