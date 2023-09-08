@@ -51,6 +51,17 @@ class ReportController {
       return res.status(500).json({ message: error.message });
     }
   };
+  updateStatus = async (req, res, next) => {
+    try {
+      const { report_id } = req.params;
+      const { report_status } = req.body;
+      const report = await this.reportService.updateStatus({ report_id, report_status });
+
+      res.status(200).json({ data: report });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  };
   deleteReport = async (req, res, next) => {
     try {
       const { user_id } = res.locals.user;

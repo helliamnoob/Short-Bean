@@ -5,7 +5,7 @@ class TutorService {
 
   getAllTutors = async () => {
     return await this.tutorRepository.findAllTutor();
-}
+  };
 
   getTutor = async ({ tutor_id }) => {
     const tutorData = await this.tutorRepository.findTutor({ tutor_id });
@@ -28,6 +28,14 @@ class TutorService {
     });
     return tutorData;
   };
+  updateStatus = async ({ tutor_id, status }) => {
+    const tutorData = await this.tutorRepository.updateStatus({
+      tutor_id,
+      status,
+    });
+    return tutorData;
+  };
+
   deleteReport = async ({ tutor_id, user_id }) => {
     const tutorData = await this.tutorRepository.deleteTutor({ tutor_id, user_id });
     return tutorData;
