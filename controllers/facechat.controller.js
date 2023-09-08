@@ -15,7 +15,7 @@ class FacechatController {
 
     leaveChat = async(req, res) => {
         try {
-            const { facechat_id } = req.params;  // ID를 URL 파라미터에서 가져옵니다.
+            const { facechat_id } = req.params; 
             const chat = await this.facechatService.leaveChat(facechat_id);
             res.status(200).send(chat);
         } catch (error) {

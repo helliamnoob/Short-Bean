@@ -196,11 +196,68 @@ socket.on("ice", (ice) => {
   }
 });
 
-// setRemoteDescription 호출 이후
 for (let ice of iceCandidatesQueue) {
   myPeerConnection.addIceCandidate(ice);
 }
 
+let facechat_id;
+
+// Fetch the facechat_id when the page loads
+window.addEventListener("load", fetchFacechatId);
+
+async function fetchFacechatId() {
+  try {
+    const response = await fetch('/api/facechat'); // Assuming the API endpoint returns facechat_id in a JSON object
+    const data = await response.json();
+
+    if (response.ok) {
+      facechat_id = data.facechat_id;
+      console.log(`Successfully fetched facechat_id: ${facechat_id}`);
+    } else {
+      console.log(`Failed to fetch facechat_id: ${data.message}`);
+    }
+  } catch (error) {
+    console.error(`An error occurred while fetching facechat_id: ${error}`);
+  }
+}
+
+document.getElementById("leaveButton").addEventListener("click", async function() {
+  // Do the resource cleanup here
+  if (myStream) {
+    let tracks = myStream.getTracks();
+    tracks.forEach(track => track.stop());
+  }
+
+  if (myPeerConnection) {
+    myPeerConnection.close();
+  }
+
+  // Notify other users via socket event
+  socket.emit('leave_room', roomId);
+
+  // Make the API call to change the state
+  if (facechat_id) {
+    try {
+      const response = await fetch(`/api/facechat/leave/${facechat_id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200) {
+        console.log('Successfully left the chat room');
+        alert('채팅방을 성공적으로 나갔습니다.');
+      } else {
+        console.log('Failed to leave the chat room');
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  } else {
+    console.error('facechat_id is not set. Cannot leave the chat room.');
+  }
+});
 
 // RTC Code
 
@@ -223,6 +280,13 @@ async function makeConnection() {
   myStream
     .getTracks()
     .forEach((track) => myPeerConnection.addTrack(track, myStream));
+}
+
+async function handleIce(data) {
+  if (data.candidate) {
+    console.log("sent candidate");
+    socket.emit("ice", data.candidate, roomId);
+  }
 }
 
 async function handleIce(data) {

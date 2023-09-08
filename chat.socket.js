@@ -99,6 +99,12 @@ module.exports = (io) => {
       socket.to(roomId).emit('ice', ice);
       console.log(`[SERVER] 'ice' event emitted to room ${roomId}`);
     });
+    //종료
+    socket.on('leave_room', (roomId) => {
+      console.log(`User ${socket.id} has left room ${roomId}`);
+      socket.leave(roomId);
+      socket.to(roomId).emit('user_left');
+    });
 
     //캔버스 화면 공유
 
