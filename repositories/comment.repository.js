@@ -11,7 +11,7 @@ class CommentRepository {
   };
 
   findComment = async ({ comment_id }) => {
-    return await Comments.findOne({ where: { comment_id } });
+    return await Comments.findOne({ where: { comment_id }, order: [['createdAt', 'DESC']] });
   };
 
   createComment = async ({ user_id, post_id, content }) => {

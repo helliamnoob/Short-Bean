@@ -48,12 +48,9 @@
     <h1 id="postTitle">게시글 제목</h1>
     <div id="postContent"> </div>
     <div id="postSubject"></div>
-    <div id="postIma"></div>
+    <div id="postImage"></div>
     <!-- 게시글 내용 -->
 
-
-    <div id="postImage">
-      <!-- 이미지 표시를 위한 요소 -->
 
   </section>
 
@@ -66,70 +63,88 @@
     <button type="button" class="btn btn-dark" id="postReport">게시글 신고하기</button>
     <button type="button" class="btn btn-dark" id="postLike" value=1>게시글 좋아요</button>
   </div>
-  <div>
-    <!-- 댓글 작성란 -->
-    <!-- <div class="input-group mb-3">
-        <input type="text" class="commentInput" placeholder="댓글 작성란" id="commentInput" /> -->
-    <!-- <button class="btn btn-outline-secondary" type="button" id="commentCreate">작성</button> -->
+
+
+
+  <!-- 사용자의 댓글을 입력 받는 부분 -->
+  <div class="form-floating">
+    <textarea class="form-control" placeholder="댓글을 남겨주세요" id="commentInput"
+      style="width: 600px; height: 100px"></textarea>
   </div>
-  <!-- 댓글 내용 표시 -->
-  <div class="mypost">
 
-    <div id="commentBox">
+  <!-- 댓글 관련 버튼 -->
+  <button type="button" class="btn btn-dark" id="commentCreate">댓글 작성</button>
+  <button type="button" class="btn btn-dark" id="commentUpdate">댓글 수정</button>
+  <button type="button" class="btn btn-dark" id="commentDelete">댓글 삭제</button>
 
-      <!-- 사용자의 댓글을 입력 받는 부분 -->
-      <div class="form-floating">
-        <textarea class="form-control" placeholder="Leave a comment here" id="commentInput"
-          style="width: 600; height: 100px"></textarea>
-        <!-- <label for="floatingTextarea2">댓글</label> -->
-      </div>
-      <!-- 댓글 관련 버튼 -->
-      <!-- <button onclick="save_comment()" type="button" class="btn btn-dark">
-          댓글 남기기
-        </button> -->
-      <button type="button" class="btn btn-dark" id="commentCreate">댓글 작성</button>
-      <button type="button" class="btn btn-dark" id="commentUpdate">댓글 수정</button>
-      <button type="button" class="btn btn-dark" id="commentDelete">댓글 삭제</button>
-    </div>
+  <!-- 댓글 목록 표시 -->
+  <ul id="commentList">
+    <!-- 댓글들이 여기에 동적으로 추가됩니다. -->
+  </ul>
 
-    <div class="mycards" id="comment-list">
-      <!-- 사용자들의 댓글을 보여주는 부분 -->
-      <div class="card">
 
-        <div class="card-body">
-          <blockquote class="blockquote mb-0">
-            <p>이거 다른 풀이도 궁금해요!</p>
-            <footer class="blockquote-footer">호빵맨</footer>
-          </blockquote>
+
+  <!-- 댓글 관련 버튼
+  <button type="button" class="btn btn-dark" id="commentUpdate">댓글 수정</button> -->
+
+  <!-- 댓글 수정 모달 -->
+  <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="commentModalLabel">댓글 수정</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-body">
-          <blockquote class="blockquote mb-0">
-            <p>나도 이거 궁금했는데. 풀이를 봐도 이해가 안 갔어요.</p>
-            <footer class="blockquote-footer">신짱구</footer>
-          </blockquote>
+        <div class="modal-body">
+          <textarea class="form-control" id="editCommentText"></textarea>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-body">
-          <blockquote class="blockquote mb-0">
-            <p>이 질문 너무 좋아요!</p>
-            <footer class="blockquote-footer">이유리</footer>
-          </blockquote>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+          <button type="button" class="btn btn-primary" id="saveComment">저장</button>
         </div>
       </div>
     </div>
+  </div>
 
 
 
 
-    <!-- 사용자들의 댓글 리스트 -->
-    <div class="comment">
-      <div class="row" id="comment-list"></div>
+
+  <!-- "더 보기" 버튼 -->
+  <button id="loadMoreButton">더 보기</button>
+
+  <!-- 사용자들의 댓글을 보여주는 부분
+  <div class="card">
+
+    <div class="card-body">
+      <blockquote class="blockquote mb-0">
+        <p>이거 다른 풀이도 궁금해요!</p>
+        <footer class="blockquote-footer">호빵맨</footer>
+      </blockquote>
     </div>
   </div>
+  <div class="card">
+    <div class="card-body">
+      <blockquote class="blockquote mb-0">
+        <p>나도 이거 궁금했는데. 풀이를 봐도 이해가 안 갔어요.</p>
+        <footer class="blockquote-footer">신짱구</footer>
+      </blockquote>
+    </div>
   </div>
+  <div class="card">
+    <div class="card-body">
+      <blockquote class="blockquote mb-0">
+        <p>이 질문 너무 좋아요!</p>
+        <footer class="blockquote-footer">이유리</footer>
+      </blockquote>
+    </div>
+  </div>
+  </div> -->
+
+
+
+
+
 
 
 
