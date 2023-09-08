@@ -3,16 +3,15 @@ const chatBox = document.getElementById('chatBox');
 const faceChatBtn = document.getElementById('faceChatBtn').querySelector('button');
 const faceChatForm = document.getElementById('faceChatForm');
 const userList = document.getElementById('user-list');
+import { socket } from '../util/socket.util.js';
 
 let roomId;
-let socket;
 let jwtToken;
 let currentUserId;
 let userName;
 
 const screenWidth = window.screen.width;
 const screenHeight = window.screen.height;
-
 
 faceChatForm.style.display = 'none';
 document.addEventListener('DOMContentLoaded', async () => {
@@ -22,11 +21,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     alert('로그인 후 이용가능한 서비스입니다.');
     window.location.href = `/`;
   } else {
-    socket = io({
-      auth: {
-        token: jwtToken,
-      },
-    });
     socketOn();
     socket.emit('register', currentUserId);
 
@@ -38,18 +32,18 @@ document.addEventListener('DOMContentLoaded', async () => {
           const data = {
             target_user_id: currentUserId, // 현재 유저의 ID
             user_id: inviterId, // 초대한 사람의 ID
-            facechat_room_id: roomId // 방 ID
+            facechat_room_id: roomId, // 방 ID
           };
-          
+
           // API에 POST 요청을 보냄
           const response = await fetch('/api/facechat', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
           });
-          
+
           if (response.status === 200 || response.status === 201) {
             console.log('API POST successful');
             socket.emit('accept_face_chat', inviterId, currentUserId, roomId);
@@ -65,7 +59,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     socket.on('start_face_chat', (roomId) => {
       console.log('Invitation accepted! Attempting to open chat window for room:', roomId);
-      window.open(`/facechat?room=${roomId}`, '_blank', `width=${screenWidth},height=${screenHeight}`);
+      window.open(
+        `/facechat?room=${roomId}`,
+        '_blank',
+        `width=${screenWidth},height=${screenHeight}`
+      );
     });
   }
 });
@@ -319,7 +317,8 @@ function getCurrentTime() {
   const minutes = now.getMinutes(); // 현재 시간(분) 가져오기
 
   // 현재 시간을 시:분:초 형식으로 반환
-  const currentTime = `${hours}:${minutes}`;
+  const minutesWith0 = minutes < 10 ? `0${minutes}` : minutes;
+  const currentTime = `${hours}:${minutesWith0}`;
 
   return currentTime;
 }

@@ -6,8 +6,6 @@ const env = process.env;
 
 module.exports = async (req, res, next) => {
   const { authorization } = req.cookies;
-  console.log(authorization);
-  console.log(req.cookies);
 
   if (!authorization) {
     return res.status(400).json({ message: '토큰이 없습니다. 로그인을 해주시길 바랍니다.' });
@@ -21,7 +19,7 @@ module.exports = async (req, res, next) => {
   }
   try {
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
-    if (!decodedToken.user_id){
+    if (!decodedToken.user_id) {
       const admin_id = decodedToken.admin_id;
       const admin = await Admins.findOne({ where: { admin_id } });
       if (!admin) {
