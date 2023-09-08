@@ -21,10 +21,9 @@ module.exports = (io) => {
     };
 
     connectedUsers.push(user);
-
+    socket.emit('getName', userName);
     // 새로운 사용자가 접속했음을 모든  알림
     io.emit('show_users', connectedUsers);
-
     // 연결이 끊길 때 사용자 목록에서 제거
     socket.on('disconnect', () => {
       const disconnectedUser = connectedUsers.find((user) => user.socketId === socket.id);
@@ -57,12 +56,14 @@ module.exports = (io) => {
       }
     });
 
-    socket.on('new_message', async (msg, room, done) => {
-      // 새로운 채팅데이터 생성
+    socket.on('new_message', async (msg, room, targetUserName, done) => {
       await saveMsg(room, socket, msg);
-      // 룸에 있는 사용자에게 보내기
-      // 시간 추가해야한다.
+      const findUser = connectedUsers.find((user) => user.userName === targetUserName);
+
       socket.to(room).emit('new_message', `${userName}: ${msg}`);
+      if (findUser) {
+        io.to(findUser.socketId).emit('notice_message', `${userName}: ${msg}`);
+      }
       done();
     });
     // 나갈 때 알림
@@ -168,8 +169,11 @@ async function getMessage(roomId, userName, targetUserName, roomOwner) {
 
   chatData.forEach((chat) => {
     const senderName = chat.is_send === roomOwner ? userName : targetUserName;
-    const message = `${senderName} : ${chat.message_content}`;
-    messages.push(message);
+    const messageObj = {
+      message: `${senderName}: ${chat.message_content}`,
+      createdAt: chat.created_at,
+    };
+    messages.push(messageObj);
   });
   return messages;
 }

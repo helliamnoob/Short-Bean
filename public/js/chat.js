@@ -8,7 +8,7 @@ let roomId;
 let socket;
 let jwtToken;
 let currentUserId;
-
+let userName;
 faceChatForm.style.display = 'none';
 document.addEventListener('DOMContentLoaded', async () => {
   jwtToken = getCookieValue('authorization');
@@ -62,8 +62,9 @@ async function socketOn() {
       await createRoom(targetUesrId);
     }
   });
+  socket.on('getName', (name) => (userName = name));
 
-  socket.on('new_message', addMessage); // argument 를 조정해줄 필요가 없어서 이렇게 써도 된다
+  socket.on('new_message', (msg) => addMessage(msg, getCurrentTime())); // argument 를 조정해줄 필요가 없어서 이렇게 써도 된다
 
   socket.on('bye', (user) => {
     addMessage(`${user}가 떠났습니다`);
@@ -71,9 +72,12 @@ async function socketOn() {
   socket.on('enter_room', (room, exChatMessages) => {
     chatBox.innerHTML = '';
     roomId = room;
+
     exChatMessages.forEach((chat) => {
-      addMessage(chat);
+      chat.createdAt = formatTime(chat.createdAt);
+      addMessage(chat.message, chat.createdAt);
     });
+    scrollToBottom();
   });
   socket.on('welcome', (user) => {
     addMessage(`${user}가 입장했습니다.`);
@@ -101,10 +105,27 @@ function getCookieValue(cookieName) {
   }
   return null;
 }
-function addMessage(message) {
-  const li = document.createElement('li');
-  li.innerText = message;
-  chatBox.appendChild(li);
+function addMessage(message, createdAt) {
+  const div = document.createElement('div');
+
+  const [sender, content] = message.split(':');
+  if (sender == userName) {
+    div.classList.add('right-message');
+  } else if (!content) {
+    div.classList.add('notice-message');
+  } else {
+    div.classList.add('left-message');
+  }
+
+  div.innerText = message;
+
+  const createdAtSpan = document.createElement('span');
+  createdAtSpan.classList.add('createdAt');
+  createdAtSpan.textContent = createdAt;
+
+  div.appendChild(createdAtSpan);
+
+  chatBox.appendChild(div);
 }
 
 async function createRoom(targetUesrId) {
@@ -211,32 +232,30 @@ async function renderUsers(socketUser) {
     (alluser) => !socketUserExceptMe.some((connectUser) => connectUser.userId === alluser.user_id)
   );
   socketUserExceptMe.forEach((user) => {
-    const li = document.createElement('li');
     const div = document.createElement('div');
     div.setAttribute('data-user-id', user.userId);
     div.setAttribute('data-user-name', user.userName);
+    div.classList.add('userInterface');
     div.textContent = `🌞${user.userName}`;
     const chatBtn = document.createElement('button');
-    chatBtn.textContent = '채팅';
-    chatBtn.classList.add('button');
+    chatBtn.textContent = '채팅하기';
+    chatBtn.classList.add('button-chat');
     chatBtn.addEventListener('click', handleRoomSubmit);
     div.appendChild(chatBtn);
-    li.appendChild(div);
-    userList.appendChild(li);
+    userList.appendChild(div);
   });
   offlineUser.forEach((user) => {
-    const li = document.createElement('li');
     const div = document.createElement('div');
     div.setAttribute('data-user-id', user.user_id);
     div.setAttribute('data-user-name', user.user_name);
     div.textContent = `🌫️${user.user_name}`;
+    div.classList.add('userInterface');
     const chatBtn = document.createElement('button');
-    chatBtn.textContent = '채팅';
-    chatBtn.classList.add('button');
+    chatBtn.textContent = '채팅하기';
+    chatBtn.classList.add('button-chat');
     chatBtn.addEventListener('click', handleRoomSubmit);
     div.appendChild(chatBtn);
-    li.appendChild(div);
-    userList.appendChild(li);
+    userList.appendChild(div);
   });
 }
 
@@ -249,13 +268,40 @@ function handleRoomSubmit(e) {
 function showRoom(targetUserName) {
   const h2 = chatContainer.querySelector('h2');
   h2.innerText = `${targetUserName}님 과 채팅`;
+  h2.setAttribute('data-user-name', targetUserName); // 1
   const msg = chatContainer.querySelector('#send');
   msg.addEventListener('click', handleMessageSubmit);
 }
 function handleMessageSubmit() {
+  const targetUserName = chatContainer.querySelector('h2').getAttribute('data-user-name');
   const input = chatContainer.querySelector('#message');
-  socket.emit('new_message', input.value, roomId, () => {
-    addMessage(`myMessage: ${input.value}`);
+  socket.emit('new_message', input.value, roomId, targetUserName, () => {
+    addMessage(`${userName}: ${input.value}`, getCurrentTime());
     input.value = '';
+    scrollToBottom();
   });
+}
+
+function getCurrentTime() {
+  const now = new Date(); // 현재 날짜와 시간을 생성
+  const hours = now.getHours(); // 현재 시간(시) 가져오기
+  const minutes = now.getMinutes(); // 현재 시간(분) 가져오기
+
+  // 현재 시간을 시:분:초 형식으로 반환
+  const currentTime = `${hours}:${minutes}`;
+
+  return currentTime;
+}
+function formatTime(dateString) {
+  const date = new Date(dateString);
+  date.setUTCHours(date.getUTCHours());
+
+  const hours = date.getHours().toString().padStart(2, '0'); // 시
+  const minutes = date.getMinutes().toString().padStart(2, '0'); // 분
+
+  const formattedTime = `${hours}:${minutes}`;
+  return formattedTime;
+}
+function scrollToBottom() {
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
