@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { Users } = require('../models');
+const { Admins } = require('../models');
 require('dotenv').config();
 const env = process.env;
 
@@ -20,6 +21,17 @@ module.exports = async (req, res, next) => {
   }
   try {
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    if (!decodedToken.user_id){
+      const admin_id = decodedToken.admin_id;
+      const admin = await Admins.findOne({ where: { admin_id } });
+      if (!admin) {
+        res.status(401).json({ message: '토큰에 해당하는 사용자가 존재하지 않습니다.' });
+        return;
+      }
+      res.locals.admin = admin;
+      next();
+      return;
+    }
     const user_id = decodedToken.user_id;
     const user = await Users.findOne({ where: { user_id } });
     if (!user) {
