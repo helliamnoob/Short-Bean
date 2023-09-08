@@ -21,10 +21,6 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: 'tutor_id',
         foreignKey: 'tutor_id',
       });
-      this.hasMany(models.FaceChats, {
-        sourceKey: 'tutor_id',
-        foreignKey: 'tutor_id',
-      });
     }
   }
   TutorInfos.init(

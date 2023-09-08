@@ -3,7 +3,7 @@ const FacechatController = require('../controllers/facechat.controller');
 const facechatController = new FacechatController();
 const router = express.Router();
 
-router.post('/create', facechatController.createChat);
+router.post('/facechat', facechatController.createChat);
 router.put('/leave/:facechat_id', facechatController.leaveChat);
 router.get('/facechat/:facechat_id', facechatController.getChat);
 

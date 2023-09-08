@@ -13,11 +13,6 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'user_id',
         foreignKey: 'user_id',
       });
-      this.belongsTo(models.TutorInfos, {
-        //  1:N 관계 설정을 합니다.
-        targetKey: 'tutor_id',
-        foreignKey: 'tutor_id',
-      });
     }
   }
   FaceChats.init({
@@ -35,13 +30,17 @@ module.exports = (sequelize, DataTypes) => {
         key: "user_id",
       },
     },
-    tutor_id: {
+    target_user_id: {
       allowNull: false,
       type: DataTypes.BIGINT,
       references: {
-        model: "TutorInfos",
-        key: "tutor_id",
+        model: "Users",
+        key: "user_id",
       },
+    },
+    facechat_room_id: {
+      allowNull: false,
+      type: DataTypes.STRING,
     },
     facechat_status: {
       allowNull: false,
