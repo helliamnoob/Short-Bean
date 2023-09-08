@@ -1,17 +1,16 @@
-const a = [
-  { id: 1, name: 'aaaa' },
-  { id: 2, name: 'bbbb' },
-  { id: 3, name: 'cccc' },
-];
-const b = [
-  { id: 1, password: '1212', name: 'aaaa' },
-  { id: 2, password: '1212', name: 'bbbb' },
-  { id: 3, password: '1212', name: 'cccc' },
-  { id: 4, password: '1212', name: 'dddd' },
-  { id: 5, password: '1212', name: 'eeee' },
-];
+const originTime = '2023-09-07T08:32:36.686Z';
 
-// a 배열의 id와 b 배열의 id가 일치하지 않는 항목만 추출하여 새로운 배열 c를 생성
-const c = b.filter((itemB) => !a.some((itemA) => itemA.id === itemB.id));
+function formatTimeToKorean(dateString) {
+  const date = new Date(dateString);
+  date.setUTCHours(date.getUTCHours());
 
-console.log(c);
+  const hours = date.getHours().toString().padStart(2, '0'); // 시
+  const minutes = date.getMinutes().toString().padStart(2, '0'); // 분
+
+  // 형식화된 시간을 "시:분" 형식으로 반환
+  const formattedTime = `${hours}:${minutes}`;
+  return formattedTime;
+}
+
+const cur = formatTimeToKorean(originTime);
+console.log(cur);

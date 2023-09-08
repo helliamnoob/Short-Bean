@@ -1,3 +1,29 @@
+import { socket } from '../util/socket.util.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (Notification.permission !== 'granted') {
+    Notification.requestPermission().then((permission) => {
+      if (permission === 'granted') {
+        console.log(Notification.permission);
+      } else {
+        console.log(Notification.permission);
+      }
+    });
+  }
+});
+
+socket.on('notice_message', (msg) => {
+  if (Notification.permission === 'granted') {
+    const notification = new Notification('새 메시지', {
+      body: msg,
+    });
+
+    notification.onclick = () => {
+      window.location.href = `/public/views/chat.html`;
+      notification.close();
+    };
+  }
+});
 // 유저 환영 문구 불러오기
 function displayWelcomeMessage(userName) {
   var welcomeLabel = document.getElementById('welcome-label');
