@@ -37,12 +37,6 @@ loginForm.addEventListener('submit', function (event) {
     });
 });
 
-//좋아요 버튼
-const likeButton = document.querySelector('#postLike');
-reportButton.addEventListener('click', function () {
-  event.preventDefault();
-});
-
 // 댓글 작성: 이게 진짜
 const params = new URLSearchParams(window.location.search);
 const post_id = params.get('post_id');
@@ -99,6 +93,37 @@ document.getElementById('commentCreate').addEventListener('click', async functio
     });
 });
 
+//좋아요 버튼
+const likeButton = document.querySelector('#postLike');
+likeButton.addEventListener('click', function (event) {
+  event.preventDefault();
+  console.log('버튼눌림');
+  fetch(`/api/post/${post_id}/likes`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.data === true) {
+        console.log('좋아요 성공:', data);
+        alert('좋아요 완료되었습니다.');
+        location.reload();
+      } else if (data.data === false) {
+        console.log('좋아요 취소:', data);
+        alert('좋아요가 취소되었습니다.');
+        location.reload();
+      } else {
+        console.log(data);
+        location.reload();
+      }
+    })
+    .catch((error) => {
+      console.error('신고 실패:', error);
+      alert('좋아요 실패하였습니다.');
+    });
+});
 // // 댓글 수정: 예림님이랑!
 // document.getElementById('commentUpdate').addEventListener('click', async function () {
 //   const content = document.getElementById('commentInput').value;

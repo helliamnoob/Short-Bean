@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: 'tutor_id',
         foreignKey: 'tutor_id',
       });
+      this.hasMany(models.FaceChats, {
+        sourceKey: 'tutor_id',
+        foreignKey: 'tutor_id',
+      });
     }
   }
   TutorInfos.init(
@@ -49,8 +53,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
         allowNull: false,
-        defaultValue: '로그아웃',
-        type: DataTypes.ENUM('로그아웃', '로그인'),
+        defaultValue: '처리중',
+        type: DataTypes.ENUM('처리중', '수리', '반려'),
       },
       tutor_like: {
         allowNull: false,
