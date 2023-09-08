@@ -24,7 +24,6 @@ module.exports = (io) => {
     socket.emit('getName', userName);
     // 새로운 사용자가 접속했음을 모든  알림
     io.emit('show_users', connectedUsers);
-    console.log(socket.id);
     // 연결이 끊길 때 사용자 목록에서 제거
     socket.on('disconnect', () => {
       const disconnectedUser = connectedUsers.find((user) => user.socketId === socket.id);
@@ -170,8 +169,11 @@ async function getMessage(roomId, userName, targetUserName, roomOwner) {
 
   chatData.forEach((chat) => {
     const senderName = chat.is_send === roomOwner ? userName : targetUserName;
-    const message = `${senderName}: ${chat.message_content}`;
-    messages.push(message);
+    const messageObj = {
+      message: `${senderName}: ${chat.message_content}`,
+      createdAt: chat.created_at,
+    };
+    messages.push(messageObj);
   });
   return messages;
 }

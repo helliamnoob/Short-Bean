@@ -64,7 +64,7 @@ async function socketOn() {
   });
   socket.on('getName', (name) => (userName = name));
 
-  socket.on('new_message', addMessage); // argument 를 조정해줄 필요가 없어서 이렇게 써도 된다
+  socket.on('new_message', (msg) => addMessage(msg, getCurrentTime())); // argument 를 조정해줄 필요가 없어서 이렇게 써도 된다
 
   socket.on('bye', (user) => {
     addMessage(`${user}가 떠났습니다`);
@@ -72,9 +72,12 @@ async function socketOn() {
   socket.on('enter_room', (room, exChatMessages) => {
     chatBox.innerHTML = '';
     roomId = room;
+
     exChatMessages.forEach((chat) => {
-      addMessage(chat);
+      chat.createdAt = formatTime(chat.createdAt);
+      addMessage(chat.message, chat.createdAt);
     });
+    scrollToBottom();
   });
   socket.on('welcome', (user) => {
     addMessage(`${user}가 입장했습니다.`);
@@ -102,20 +105,27 @@ function getCookieValue(cookieName) {
   }
   return null;
 }
-function addMessage(message) {
-  const li = document.createElement('li');
+function addMessage(message, createdAt) {
+  const div = document.createElement('div');
 
   const [sender, content] = message.split(':');
   if (sender == userName) {
-    li.classList.add('right-message');
+    div.classList.add('right-message');
   } else if (!content) {
-    li.classList.add('notice-message');
+    div.classList.add('notice-message');
   } else {
-    li.classList.add('left-message');
+    div.classList.add('left-message');
   }
 
-  li.innerText = message;
-  chatBox.appendChild(li);
+  div.innerText = message;
+
+  const createdAtSpan = document.createElement('span');
+  createdAtSpan.classList.add('createdAt');
+  createdAtSpan.textContent = createdAt;
+
+  div.appendChild(createdAtSpan);
+
+  chatBox.appendChild(div);
 }
 
 async function createRoom(targetUesrId) {
@@ -266,7 +276,32 @@ function handleMessageSubmit() {
   const targetUserName = chatContainer.querySelector('h2').getAttribute('data-user-name');
   const input = chatContainer.querySelector('#message');
   socket.emit('new_message', input.value, roomId, targetUserName, () => {
-    addMessage(`${userName}: ${input.value}`);
+    addMessage(`${userName}: ${input.value}`, getCurrentTime());
     input.value = '';
+    scrollToBottom();
   });
+}
+
+function getCurrentTime() {
+  const now = new Date(); // 현재 날짜와 시간을 생성
+  const hours = now.getHours(); // 현재 시간(시) 가져오기
+  const minutes = now.getMinutes(); // 현재 시간(분) 가져오기
+
+  // 현재 시간을 시:분:초 형식으로 반환
+  const currentTime = `${hours}:${minutes}`;
+
+  return currentTime;
+}
+function formatTime(dateString) {
+  const date = new Date(dateString);
+  date.setUTCHours(date.getUTCHours());
+
+  const hours = date.getHours().toString().padStart(2, '0'); // 시
+  const minutes = date.getMinutes().toString().padStart(2, '0'); // 분
+
+  const formattedTime = `${hours}:${minutes}`;
+  return formattedTime;
+}
+function scrollToBottom() {
+  chatBox.scrollTop = chatBox.scrollHeight;
 }

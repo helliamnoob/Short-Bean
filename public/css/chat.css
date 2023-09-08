@@ -3453,7 +3453,7 @@ header {
 /* 왼쪽 메시지 스타일 */
 .left-message {
   background-color: #f0f0f0; /* 배경색 지정 */
-  color: #000; /* 텍스트 색상 지정 */
+  color: #262626; /* 텍스트 색상 지정 */
   padding: 10px; /* 내부 여백 지정 */
   border-radius: 10px; /* 모서리를 둥글게 만듭니다. */
   margin-bottom: 10px; /* 아래쪽 여백 지정 */
@@ -3464,8 +3464,8 @@ header {
 
 /* 오른쪽 메시지 스타일 */
 .right-message {
-  background-color: #007aff; /* 배경색 지정 */
-  color: #fff; /* 텍스트 색상 지정 */
+  background-color: #ffeb33; /* 배경색 지정 */
+  color: #262626; /* 텍스트 색상 지정 */
   padding: 10px; /* 내부 여백 지정 */
   border-radius: 10px; /* 모서리를 둥글게 만듭니다. */
   margin-bottom: 10px; /* 아래쪽 여백 지정 */
@@ -3477,7 +3477,7 @@ header {
 /* 공지 메시지 스타일 */
 .notice-message {
   background-color: #607488; /* 배경색 지정 */
-  color: #fff; /* 텍스트 색상 지정 */
+  color: #262626; /* 텍스트 색상 지정 */
   padding: 10px; /* 내부 여백 지정 */
   border-radius: 10px; /* 모서리를 둥글게 만듭니다. */
   margin-bottom: 10px; /* 아래쪽 여백 지정 */
@@ -3485,4 +3485,11 @@ header {
   clear: both; /* float을 해제합니다. */
   float: none;
   text-align: center; /* 가운데 정렬 */
+}
+
+.createdAt {
+  font-size: 12px; /* createdAt 스타일 */
+  color: #888; /* 원하는 색상 지정 */
+  display: block; /* 블록 요소로 설정하여 메시지 아래에 위치 */
+  margin-top: 2px; /* 원하는 상단 여백 지정 */
 }
