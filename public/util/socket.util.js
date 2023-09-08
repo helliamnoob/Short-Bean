@@ -12,7 +12,7 @@ function getCookieValue(cookieName) {
   return null;
 }
 
-export function initializeSocket() {
+function initializeSocket() {
   const jwtToken = getCookieValue('authorization');
   const socket = io({
     auth: {
@@ -21,3 +21,5 @@ export function initializeSocket() {
   });
   return socket;
 }
+
+export const socket = initializeSocket();

@@ -1,4 +1,4 @@
-import { initializeSocket } from '../util/socket.util.js';
+import { socket } from '../util/socket.util.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   if (Notification.permission !== 'granted') {
@@ -11,8 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
-
-const socket = initializeSocket();
 
 socket.on('notice_message', (msg) => {
   if (Notification.permission === 'granted') {
