@@ -421,7 +421,7 @@ fetchComments();
 
 // 게시글 작성 버튼 클릭 이벤트 리스너 추가
 document.getElementById('postCreate').addEventListener('click', function () {
-  window.location.href = `http://localhost:3000/public/views/post-detail.html`; // 여기에 게시글 작성 페이지의 URL을 넣으세요.
+  window.location.href = `/public/views/post-detail.html`; // 여기에 게시글 작성 페이지의 URL을 넣으세요.
 });
 
 // // 버튼 클릭 이벤트 리스너 추가
@@ -429,73 +429,98 @@ document.getElementById('postCreate').addEventListener('click', function () {
 //   window.location.href = `/public/views/post.html?post_id=${data.data.post_id}`; // 여기에 게시글 작성 페이지의 URL을 넣으세요.
 // });
 
-document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById('postUpdate').addEventListener('click', function () {
-    const postUpdateBtn = document.getElementById('postUpdate'); // 게시글 수정 버튼
-    const postTitle = document.getElementById('post-title');
-    const postContent = document.getElementById('post-content');
-    const subjectSelect = document.getElementById('subject');
-    /* 여기에 현재 게시글의 ID를 가져오는 코드 추가 */
-    // const post_id = ${post_id};
+// 게시글 수정
+// 게시글 수정 버튼 클릭 이벤트 리스너
+const postUpdateBtn = document.getElementById('postUpdate');
 
-    // 게시글 수정 버튼 클릭 이벤트 리스너
-    postUpdateBtn.addEventListener('click', function () {
-      // 현재 게시글의 내용을 불러오는 요청 보내기
-      fetch(`/api/post/${post_id}`, {
-        method: 'PUT',
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.success) {
-            // 서버에서 받아온 게시글 데이터 사용
-            const { title, content, subject } = data.post;
+postUpdateBtn.addEventListener('click', function () {
+  window.location.href = `/public/views/post-detail.html?post_id=${post_id}`;
 
-            // 게시글 수정 폼에 데이터 채우기
-            postTitle.value = title;
-            postContent.value = content;
-            subjectSelect.value = subject;
-
-            // 게시글 수정 요청 보내기
-            const formData = new FormData();
-            formData.append('title', title);
-            formData.append('content', content);
-            formData.append('subject', subject);
-
-            // 이미지 업로드 기능 추가
-            // const imageInput = document.querySelector('.upload-input');
-            // if (imageInput.files.length > 0) {
-            //   formData.append('image', imageInput.files[0]);
-            // }
-
-            // 수정된 내용을 서버로 보내 게시글 업데이트
-            fetch(`/api/post/${post_id}`, {
-              method: 'PUT',
-              body: formData,
-            })
-              .then((response) => response.json())
-              .then((updateData) => {
-                if (updateData.success) {
-                  alert('게시글이 수정되었습니다.');
-                  window.location.href = `/public/views/post.html?post_id=${post_id}`;
-                } else {
-                  alert('게시글 수정에 실패했습니다.');
-                  console.error(updateData.message);
-                }
-              })
-              .catch((error) => {
-                console.error('Error:', error);
-                alert('오류가 발생했습니다.');
-              });
-          } else {
-            alert('게시글을 불러오는데 실패했습니다.');
-            console.error(data.message);
-          }
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-          alert('오류가 발생했습니다.');
-        });
+  // 게시글 내용 불러오기
+  fetch(`/api/post/${post_id}`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.code === 200) {
+        const { title, content, subject } = data.data;
+        postTitle.value = title;
+        postContent.value = content;
+        postSubject.value = subject;
+      } else {
+        console.error(data);
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      alert('게시글을 불러오는 중 오류가 발생했습니다.');
     });
-  });
+  // });
+
+  const title = postTitle.value;
+  const content = postContent.value;
+  const subject = postSubject.value;
+
+  const formData = new FormData();
+  formData.append('title', title);
+  formData.append('content', content);
+  formData.append('subject', subject);
+
+  // 이미지
+  const imageInput = document.querySelector('.upload-input');
+
+  if (imageInput && imageInput.files && imageInput.files.length > 0) {
+    // 파일이 선택된 경우에만 실행
+    formData.append('image', imageInput.files[0]);
+  }
+
+  fetch(`/api/post/${post_id}`, {
+    method: 'POST',
+    body: formData,
+    // headers: { 'Content-Type': 'multipart/form-data' },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.code === 200) {
+        alert('게시글이 수정되었습니다.');
+        window.location.reload(); // 현재 페이지 새로고침
+      } else {
+        console.error(data);
+        alert('게시글 수정에 실패했습니다.');
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      alert('오류가 발생했습니다.');
+    });
 });
+
+// document.addEventListener('DOMContentLoaded', function () {
+//   const postTitle = document.getElementById('postTitle');
+//   const postContent = document.getElementById('postContent');
+//   const subjectSelect = document.getElementById('postSubject');
+
+// 현재 페이지의 post_id 값을 가져옴 (URL에서 추출하거나 다른 방법으로 설정)
+const postId = extractPostIdFromUrl(); // 예: /public/views/post.html?post_id=123
+
+// // 게시글 내용 불러오기
+// fetch(`/api/post/${post_id}`)
+//   .then((response) => response.json())
+//   .then((data) => {
+//     if (data.code === 200) {
+//       const { title, content, subject } = data.data;
+//       postTitle.value = title;
+//       postContent.value = content;
+//       postSubject.value = subject;
+//     } else {
+//       console.error(data);
+//     }
+//   })
+//   .catch((error) => {
+//     console.error('Error:', error);
+//     alert('게시글을 불러오는 중 오류가 발생했습니다.');
+//   });
+// });
+
+function extractPostIdFromUrl() {
+  var urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('post_id');
+}

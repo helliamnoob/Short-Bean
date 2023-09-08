@@ -34,7 +34,6 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
-app.use(cookieParser());
 app.set('view engine', 'html');
 app.set('views', __dirname + '/public/views');
 app.set('io', io);
@@ -72,7 +71,6 @@ app.get('/admin', (_, res) => {
 app.get('/post', (_, res) => {
   res.sendFile(__dirname + '/public/views/post.html');
 });
-app.use(cookieParser());
 
 server.listen(port, () => {
   console.log(port, '포트로 서버가 열렸어요!');

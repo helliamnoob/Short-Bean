@@ -106,15 +106,13 @@ document.addEventListener('DOMContentLoaded', function () {
     })
       .then((response) => response.json())
       .then((data) => {
-        {
-          alert('질문이 저장되었습니다.');
-          // 저장 성공 시의 처리
-          // } else {
-          //   alert('질문 저장에 실패했습니다.');
-          //   // 저장 실패 시의 처리
-          console.log(data.message);
-          window.location.href = `/public/views/post.html?post_id=${data.data.post_id}`;
-        }
+        alert('질문이 저장되었습니다.');
+        // 저장 성공 시의 처리
+        // } else {
+        //   alert('질문 저장에 실패했습니다.');
+        //   // 저장 실패 시의 처리
+        console.log(data.message);
+        window.location.href = `/public/views/post.html?post_id=${data.data.post_id}`;
       })
       .catch((error) => {
         console.error('Error:', error);
