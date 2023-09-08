@@ -34,7 +34,6 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
-app.use(cookieParser());
 app.set('view engine', 'html');
 app.set('views', __dirname + '/public/views');
 app.set('io', io);

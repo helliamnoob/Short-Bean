@@ -20,6 +20,13 @@ class PostController {
       if (code === 404) {
         res.status(404).json({ errorMessage: '존재하는 게시글이 없습니다.' });
       }
+
+      const rows = data.map((post) => ({
+        title: post.title,
+        content: post.content,
+        subject: post.subject,
+        post_id: post.post_id,
+      }));
       return res.status(code).json({ data });
     } catch (error) {
       return this.handleError(res, error);
