@@ -7,32 +7,23 @@ require('dotenv').config();
 const connectedUsers = []; // 현재 접속한 사용자 목록을 저장할 객체
 module.exports = (io) => {
   let userSockets = {}; // { userId: socketId }
-
   io.on('connection', async (socket) => {
     // socket보낼 때 토큰을 같이 보냄
-    const authorization = socket.handshake.auth.token;
-    const [tokenType, token] = authorization.split('%20');
-    const { user_id } = jwt.verify(token, process.env.SECRET_KEY);
-    console.log(user_id)
-    let isTutor;
-    const myInfo = await getMyInfo(user_id);
-    if (myInfo.dataValues.TutorInfo) {
-      isTutor = true;
-    } else {
-      isTutor = false;
-    }
-    const userName = myInfo.dataValues.user_name;
+    const userId = decodeJwt(socket);
+    const { isTutor, userName } = await getMyInfo(userId);
+
     // 가져온 데이터로 새로운 유저객체 생성
     const user = {
-      userId: user_id,
+      userId,
       userName,
       isTutor,
       socketId: socket.id,
     };
+
     connectedUsers.push(user);
+    socket.emit('getName', userName);
     // 새로운 사용자가 접속했음을 모든  알림
     io.emit('show_users', connectedUsers);
-
     // 연결이 끊길 때 사용자 목록에서 제거
     socket.on('disconnect', () => {
       const disconnectedUser = connectedUsers.find((user) => user.socketId === socket.id);
@@ -42,27 +33,15 @@ module.exports = (io) => {
 
     // 방에 입장할 때
     socket.on('enter_room', async (targetUserId, targetUserName, done) => {
-      if (user_id == targetUserId) {
-        socket.emit('sameUser');
-        return;
-      }
       // 현재 유저와 가져온 유저와의 채팅방이 있는지 확인
-      const roomInfo = await Chats.findOne({
-        attributes: ['chat_id', 'user_id', 'target_user_id'],
-        where: {
-          [Op.or]: [
-            { user_id, target_user_id: targetUserId },
-            { user_id: targetUserId, target_user_id: user_id },
-          ],
-        },
-      });
+      const roomInfo = await getRoomInfo(userId, targetUserId);
 
       if (!roomInfo) {
         // 방 없을 시
         socket.emit('no_room', targetUserId);
       } else {
         // 방이 존재할 시
-        if (roomInfo.user_id == user_id) {
+        if (roomInfo.user_id == userId) {
           socket.roomOwner = true;
         } else {
           socket.roomOwner = false;
@@ -73,22 +52,18 @@ module.exports = (io) => {
         socket.to(roomId).emit('welcome', userName);
 
         socket.emit('enter_room', roomId, exChatMessages);
-        done(userName, targetUserName);
+        done(targetUserName);
       }
     });
 
-    socket.on('new_message', async (msg, room, done) => {
-      // 새로운 채팅데이터 생성
-      const newChat = new Chat({
-        room_id: room,
-        is_send: socket.roomOwner,
-        message_content: msg,
-      });
-      await newChat.save();
+    socket.on('new_message', async (msg, room, targetUserName, done) => {
+      await saveMsg(room, socket, msg);
+      const findUser = connectedUsers.find((user) => user.userName === targetUserName);
 
-      // 룸에 있는 사용자에게 보내기
-      // 시간 추가해야한다.
       socket.to(room).emit('new_message', `${userName}: ${msg}`);
+      if (findUser) {
+        io.to(findUser.socketId).emit('notice_message', `${userName}: ${msg}`);
+      }
       done();
     });
     // 나갈 때 알림
@@ -101,48 +76,88 @@ module.exports = (io) => {
       done(tutors);
     });
     // 예림님쪽
-    console.log('a user connected:', socket.id);
+    socket.on('join_room', (roomId) => {
+      socket.join(roomId);
+      socket.to(roomId).emit('user_joined', { userId: socket.id, roomId });
+    });
+
+    socket.on('offer', (offer, roomId) => {
+      console.log(`[SERVER] Received an 'offer' from ${socket.id} for room ${roomId}`);
+      socket.to(roomId).emit('offer', offer);
+      console.log(`[SERVER] 'offer' event emitted to room ${roomId}`);
+    });
+
+    socket.on('answer', (answer, roomId) => {
+      console.log(`[SERVER] Received an 'answer' from ${socket.id} for room ${roomId}`);
+      socket.to(roomId).emit('answer', answer);
+      console.log(`[SERVER] 'answer' event emitted to room ${roomId}`);
+    });
+
+    socket.on('ice', (ice, roomId) => {
+      console.log(`[SERVER] Received an 'ice' candidate from ${socket.id} for room ${roomId}`);
+      socket.to(roomId).emit('ice', ice);
+      console.log(`[SERVER] 'ice' event emitted to room ${roomId}`);
+    });
+
+    // socket.on('disconnect', () => {
+    //   console.log('User disconnected:', socket.id);
+
+    //   // Find the disconnected user and remove from the tracking object
+    //   for (let userId in userSockets) {
+    //     if (userSockets[userId] === socket.id) {
+    //       delete userSockets[userId];
+    //       break;
+    //     }
+    //   }
+    // });
+
+    // 예림님쪽 invite
     socket.on('register', (userId) => {
       userSockets[userId] = socket.id;
       console.log('Registered:', userId, 'with socket ID:', socket.id);
       console.log(userSockets);
     });
 
-    socket.on('invite_face_chat', (userId) => {
-      console.log('Invitation for user ID:', userId);
-      const invitedUserSocketId = userSockets[userId];
+    socket.on('invite_face_chat', (inviteeId, inviterId, roomId) => {
+      console.log('Invitation for user ID:', inviteeId, 'from user ID:', inviterId);
+      const invitedUserSocketId = userSockets[inviteeId];
       if (invitedUserSocketId) {
-        io.to(invitedUserSocketId).emit('receive_invite', socket.id);
+        io.to(invitedUserSocketId).emit('receive_invite', inviterId, roomId);
       } else {
-        console.log('No socket ID found for user ID:', userId);
+        console.log('No socket ID found for user ID:', inviteeId);
       }
     });
 
-    socket.on('accept_face_chat', (inviteeId) => {
-      io.to(socket.id).emit('start_face_chat');
-      io.to(inviteeId).emit('start_face_chat');
+    socket.on('accept_face_chat', (inviterId, inviteeId, roomId) => {
+      console.log('Room ID:', roomId);
+      const inviterSocketId = userSockets[inviterId];
+      const inviteeSocketId = userSockets[inviteeId];
 
-      socket.on('accept_face_chat', (inviteeId) => {
-        io.to(inviteeId).emit('start_face_chat');
-      });
-
-      socket.on('join_room', (roomName) => {
-        socket.join(roomName);
-        socket.to(roomName).emit('welcome');
-      });
-
-      socket.on('offer', (offer, roomName) => {
-        socket.to(roomName).emit('offer', offer);
-      });
-      socket.on('answer', (answer, roomName) => {
-        socket.to(roomName).emit('answer', answer);
-      });
-      socket.on('ice', (ice, roomName) => {
-        socket.to(roomName).emit('ice', ice);
-      });
+      if (inviterSocketId && inviteeSocketId) {
+        try {
+          socket.join(roomId);
+          io.sockets.sockets.get(inviterSocketId).join(roomId);
+          io.to(inviteeSocketId).emit('start_face_chat', roomId);
+        } catch (error) {
+          console.error('Error while joining the room:', error);
+          socket.emit('error_notification', 'Failed to join the chat room.'); // Error notification
+        }
+      } else {
+        console.log('Socket ID not found.');
+        socket.emit('error_notification', 'An error occurred while connecting. Please try again.'); // Error notification
+      }
     });
   });
 };
+
+async function saveMsg(room, socket, msg) {
+  const newChat = new Chat({
+    room_id: room,
+    is_send: socket.roomOwner,
+    message_content: msg,
+  });
+  await newChat.save();
+}
 
 async function getMessage(roomId, userName, targetUserName, roomOwner) {
   const messages = [];
@@ -154,13 +169,17 @@ async function getMessage(roomId, userName, targetUserName, roomOwner) {
 
   chatData.forEach((chat) => {
     const senderName = chat.is_send === roomOwner ? userName : targetUserName;
-    const message = `${senderName} : ${chat.message_content}`;
-    messages.push(message);
+    const messageObj = {
+      message: `${senderName}: ${chat.message_content}`,
+      createdAt: chat.created_at,
+    };
+    messages.push(messageObj);
   });
   return messages;
 }
 
 async function getMyInfo(user_id) {
+  let isTutor;
   const myInfo = await Users.findOne({
     include: [
       {
@@ -169,6 +188,36 @@ async function getMyInfo(user_id) {
     ],
     where: { user_id },
   });
+  if (myInfo.dataValues.TutorInfo) {
+    isTutor = true;
+  } else {
+    isTutor = false;
+  }
 
-  return myInfo;
+  const userName = myInfo.dataValues.user_name;
+
+  return { isTutor, userName };
 }
+
+function decodeJwt(socket) {
+  const authorization = socket.handshake.auth.token;
+  const [tokenType, token] = authorization.split('%20');
+  const { user_id } = jwt.verify(token, process.env.SECRET_KEY);
+  return user_id;
+}
+
+async function getRoomInfo(user_id, targetUserId) {
+  const roomInfo = await Chats.findOne({
+    attributes: ['chat_id', 'user_id', 'target_user_id'],
+    where: {
+      [Op.or]: [
+        { user_id, target_user_id: targetUserId },
+        { user_id: targetUserId, target_user_id: user_id },
+      ],
+    },
+  });
+
+  return roomInfo;
+}
+
+// 쓰레드분리
