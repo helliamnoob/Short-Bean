@@ -3,15 +3,15 @@ const TutorService = require('../services/tutor.service');
 class TutorController {
   tutorService = new TutorService();
 
-  getAllTutors= async (req, res) => {
+  getAllTutors = async (req, res) => {
     try {
-        const tutors = await this.tutorService.getAllTutors();
-        res.status(200).json(tutors);
+      const tutors = await this.tutorService.getAllTutors();
+      res.status(200).json(tutors);
     } catch (error) {
-        console.error('Error getting tutors:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
+      console.error('Error getting tutors:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
     }
-}
+  };
 
   getTutor = async (req, res, next) => {
     try {
@@ -49,6 +49,17 @@ class TutorController {
       const { tutor_id } = req.params;
       const { school_name } = req.body;
       const tutor = await this.tutorService.updateTutor({ tutor_id, user_id, school_name });
+
+      res.status(200).json({ data: tutor });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  };
+  updateStatus = async (req, res, next) => {
+    try {
+      const { tutor_id } = req.params;
+      const { status } = req.body;
+      const tutor = await this.tutorService.updateStatus({ tutor_id, status });
 
       res.status(200).json({ data: tutor });
     } catch (error) {

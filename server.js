@@ -71,6 +71,13 @@ app.get('/admin', (_, res) => {
 app.get('/post', (_, res) => {
   res.sendFile(__dirname + '/public/views/post.html');
 });
+app.get('/admin/id=:id', (req, res) => {
+  res.sendFile(__dirname + '/public/views/report-detail.html');
+});
+app.get('/admin/tutors/id=:id', (req, res) => {
+  res.sendFile(__dirname + '/public/views/tutor-detail.html');
+});
+app.use(cookieParser());
 
 server.listen(port, () => {
   console.log(port, '포트로 서버가 열렸어요!');

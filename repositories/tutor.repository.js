@@ -31,7 +31,10 @@ class TutorRepository {
     );
     return tutorData;
   };
-
+  updateStatus = async ({ tutor_id, status }) => {
+    const tutorData = await TutorInfos.update({ status }, { where: { tutor_id: tutor_id } });
+    return tutorData;
+  };
   updateTutorLike = async ({ tutor_like, tutor_id }) => {
     return await TutorInfos.update({ tutor_like }, { where: { tutor_id } });
   };
