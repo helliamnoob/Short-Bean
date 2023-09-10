@@ -25,12 +25,12 @@
 
   <script>
     function openPopup(url, width, height) {
-        let left = (window.screen.width - width) / 2;
-        let top = (window.screen.height - height) / 2;
-        let options = 'resizable=yes, width=' + width + ', height=' + height + ', top=' + top + ', left=' + left;
-        window.open(url, '_blank', options);
+      let left = (window.screen.width - width) / 2;
+      let top = (window.screen.height - height) / 2;
+      let options = 'resizable=yes, width=' + width + ', height=' + height + ', top=' + top + ', left=' + left;
+      window.open(url, '_blank', options);
     }
-</script>
+  </script>
 </head>
 
 <body>
@@ -44,6 +44,7 @@
       </nav>
       <a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
     </div>
+    <div id="cardInfo" class="cardInfo">작성자 | 작성일자 | 수정 | 삭제</div>
   </header>
 
   <!-- 메인 배너 부분 -->
@@ -66,10 +67,10 @@
     <button type="button" class="btn btn-dark" id="postCreate">게시글 작성</button>
     <div class="btn">
       <a type="button" href="post-edit.html" onclick="openPopup(this.href, 1000, 700); return false;"
-          class="btn btn-dark">
-          게시글 수정
+        class="btn btn-dark">
+        게시글 수정
       </a>
-  </div>
+    </div>
     <button type="button" class="btn btn-dark" id="postDelete">게시글 삭제</button>
     <button type="button" class="btn btn-dark" id="postReport">게시글 신고하기</button>
     <button type="button" class="btn btn-dark" id="postLike">게시글 좋아요</button>
@@ -86,6 +87,7 @@
   <!-- <button type="button" class="btn btn-dark" id="commentUpdate">댓글 수정</button> -->
   <button type="button" class="btn btn-dark" id="commentDelete">댓글 삭제</button>
 
+  <div id="cardTitle" class="cardTitle">카드 제목이 들어갑니다</div>
   <button type="button" class="btn btn-sm btn-primary comment-update-button" data-comment-id="${comment.id}"
     data-comment-text="${comment.content}">
     수정
@@ -121,7 +123,7 @@
 
 
   <!-- "더 보기" 버튼 -->
-  <button id="loadMoreButton">더 보기</button>
+  <!-- <button id="loadMoreButton">더 보기</button> -->
 
   <!-- 사용자들의 댓글을 보여주는 부분
   <div class="card">

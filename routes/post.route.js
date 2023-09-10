@@ -19,7 +19,7 @@ router.get('/post/:post_id', postController.getPost);
 router.post('/post', auth, upload.array('image'), postController.createPost);
 
 // 게시글 수정
-router.post('/post/:post_id', auth, upload.array('image'), postController.updatePost);
+router.put('/post/:post_id', auth, upload.array('image'), postController.updatePost);
 
 // 게시글 삭제
 router.delete('/post/:post_id', auth, postController.deletePost);

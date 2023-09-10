@@ -232,118 +232,121 @@ async function fetchComments(page) {
 }
 
 // ------------------------------------버전1-----------------밑의 거로 최대한 했으나 안됐음..---------------
-// 게시글 수정 버튼 클릭 이벤트 리스너
-const postUpdateBtn = document.getElementById('postUpdate');
+// // 게시글 수정 버튼 클릭 이벤트 리스너
+// const postUpdateBtn = document.getElementById('postUpdate');
 
-if (postUpdateBtn) {
-  postUpdateBtn.addEventListener('click', function () {
-    // 현재 페이지의 post_id 값을 가져옴 (URL에서 추출하거나 다른 방법으로 설정)
-    const post_id = extractPostIdFromUrl(); // 예: /public/views/post.html?post_id=123
+// if (postUpdateBtn) {
+//   postUpdateBtn.addEventListener('click', function () {
+//     // 현재 페이지의 post_id 값을 가져옴 (URL에서 추출하거나 다른 방법으로 설정)
+//     const post_id = extractPostIdFromUrl(); // 예: /public/views/post.html?post_id=123
 
-    function extractPostIdFromUrl() {
-      var urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get('post_id');
-    }
+//     function extractPostIdFromUrl() {
+//       var urlParams = new URLSearchParams(window.location.search);
+//       return urlParams.get('post_id');
+//     }
 
-    // 게시글 내용 불러오기
-    // fetch(`/api/post/${post_id}`)
-    fetch(`/api/post/${post_id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        // body: formData,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.code === 200 && data.data) {
-          // 데이터가 존재하는 경우에만 처리
-          const { image, title, content, subject } = data.data;
+//     // 게시글 내용 불러오기
+//     // fetch(`/api/post/${post_id}`)
+//     fetch(`/api/post/${post_id}`, {
+//       method: 'GET',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         // body: formData,
+//       },
+//     })
+//       .then((response) => response.json())
+//       .then((data) => {
+//         if (data.code === 200 && data.data) {
+//           // 데이터가 존재하는 경우에만 처리
+//           const { image, title, content, subject } = data.data;
 
-          // 이미지
-          const imageInput = document.querySelector('.upload-input');
-          if (imageInput && imageInput.files && imageInput.files.length > 0) {
-            formData.append('image', imageInput.files[0]);
-          }
+//           // 이미지
+//           const imageInput = document.querySelector('.upload-input');
+//           if (imageInput && imageInput.files && imageInput.files.length > 0) {
+//             formData.append('image', imageInput.files[0]);
+//           }
 
-          formData.append('image', image);
-          formData.append('title', title);
-          formData.append('content', content);
-          formData.append('subject', subject);
+//           formData.append('image', image);
+//           formData.append('title', title);
+//           formData.append('content', content);
+//           formData.append('subject', subject);
 
-          // 게시글 수정
-          fetch(`/api/post/${post_id}`, {
-            method: 'PUT',
-            body: formData,
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.code === 200) {
-                alert('게시글이 수정되었습니다.');
-                window.location.href = `/public/views/post.html?post_id=${post_id}`;
-              } else {
-                console.error(data);
-                alert('게시글 수정에 실패했습니다.');
-              }
-            })
-            .catch((error) => {
-              console.error(error);
-              alert('게시글을 수정하는 중 오류가 발생했습니다.');
-            });
-          // } else {
-          //   console.error(data);
-          //   alert('게시글을 불러오는 중 오류가 발생.');
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        alert('게시글을 불러오는 중 오류가 발생했습니다.');
-      });
+//           // 게시글 수정
+//           fetch(`/api/post/${post_id}`, {
+//             method: 'PUT',
+//             body: formData,
+//           });
+//           console
+//             .log(formData)
 
-    // 페이지 이동은 이 부분에서 실행되어야 합니다.
-    // 여기서 페이지 이동 처리를 추가합니다.
-    window.location.href = `/public/views/post-edit.html?post_id=${post_id}`;
-  });
-}
+//             .then((response) => response.json())
+//             .then((data) => {
+//               if (data.code === 200) {
+//                 alert('게시글이 수정되었습니다.');
+//                 window.location.href = `/public/views/post.html?post_id=${post_id}`;
+//               } else {
+//                 console.error(data);
+//                 alert('게시글 수정에 실패했습니다.');
+//               }
+//             })
+//             .catch((error) => {
+//               console.error(error);
+//               alert('게시글을 수정하는 중 오류가 발생했습니다.');
+//             });
+//           // } else {
+//           //   console.error(data);
+//           //   alert('게시글을 불러오는 중 오류가 발생.');
+//         }
+//       })
+//       .catch((error) => {
+//         console.error(error);
+//         alert('게시글을 불러오는 중 오류가 발생했습니다.');
+//       });
 
-// 기존 게시글 수정 요청
-function updatePost(post_id, updatedData) {
-  fetch(`/api/post/${post_id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(updatedData),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      // 성공적으로 업데이트된 데이터 처리
-      console.log('게시글이 성공적으로 업데이트되었습니다.', data);
-    })
-    .catch((error) => {
-      // 오류 처리
-      console.error('게시글 업데이트 중 오류가 발생했습니다.', error);
-    });
-}
+//     // 페이지 이동은 이 부분에서 실행되어야 합니다.
+//     // 여기서 페이지 이동 처리를 추가합니다.
+//     window.location.href = `/public/views/post-edit.html?post_id=${post_id}`;
+//   });
+// }
 
-// 기존 게시글 수정 버튼 클릭 시 호출되는 함수
-function handleUpdateButtonClick() {
-  const post_id = '${post_id}';
+// // 기존 게시글 수정 요청
+// function updatePost(post_id, updatedData) {
+//   fetch(`/api/post/${post_id}`, {
+//     method: 'PUT',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify(updatedData),
+//   })
+//     .then((response) => response.json())
+//     .then((data) => {
+//       // 성공적으로 업데이트된 데이터 처리
+//       console.log('게시글이 성공적으로 업데이트되었습니다.', data);
+//     })
+//     .catch((error) => {
+//       // 오류 처리
+//       console.error('게시글 업데이트 중 오류가 발생했습니다.', error);
+//     });
+// }
 
-  // 수정할 데이터 준비
-  const updatedData = {
-    title: 'updatedData.title',
-    content: 'updatedData.content',
-    subject: 'updatedData.subject',
-    image: 'updatedData.image',
-  };
+// // 기존 게시글 수정 버튼 클릭 시 호출되는 함수
+// function handleUpdateButtonClick() {
+//   const post_id = '${post_id}';
 
-  // 서버에 수정 요청 보내기
-  updatePost(post_id, updatedData);
-}
+//   // 수정할 데이터 준비
+//   const updatedData = {
+//     title: 'updatedData.title',
+//     content: 'updatedData.content',
+//     subject: 'updatedData.subject',
+//     image: 'updatedData.image',
+//   };
 
-// 버튼 클릭 이벤트 리스너 등록 (예시로 document의 버튼을 대상으로 등록)
-document.querySelector('#postUpdate').addEventListener('click', handleUpdateButtonClick);
+//   // 서버에 수정 요청 보내기
+//   updatePost(post_id, updatedData);
+// }
+
+// // 버튼 클릭 이벤트 리스너 등록 (예시로 document의 버튼을 대상으로 등록)
+// document.querySelector('#postUpdate').addEventListener('click', handleUpdateButtonClick);
 // ---------------------------------버전2-----------------------
 // // 기존 게시글 수정 요청
 // function updatePost(post_id, updatedData) {
@@ -388,44 +391,184 @@ document.querySelector('#postUpdate').addEventListener('click', handleUpdateButt
 // button.addEventListener('click', handleUpdateButtonClick);
 // document.body.appendChild(button);
 //  -----------------------------------------------------new
-const commentUpdateButtons = document.querySelectorAll('.comment-update-button');
+// const commentUpdateButtons = document.querySelectorAll('.comment-update-button');
 
-commentUpdateButtons.forEach((button) => {
-  button.addEventListener('click', async () => {
-    // 댓글 수정 모달 열기
-    const comment_id = button.dataset.comment_id;
-    const commentText = button.dataset.commentText;
-    const editCommentText = document.getElementById('editCommentText');
-    editCommentText.value = commentText;
+// commentUpdateButtons.forEach((button) => {
+//   button.addEventListener('click', async () => {
+//     // 댓글 수정 모달 열기
+//     const comment_id = button.dataset.comment_id;
+//     const commentText = button.dataset.commentText;
+//     const editCommentText = document.getElementById('editCommentText');
+//     editCommentText.value = commentText;
 
-    // 모달 열기
-    const commentModal = new bootstrap.Modal(document.getElementById('commentModal'));
-    commentModal.show();
+//     // 모달 열기
+//     const commentModal = new bootstrap.Modal(document.getElementById('commentModal'));
+//     commentModal.show();
 
-    // "저장" 버튼 클릭 이벤트 핸들러 추가
-    const saveCommentButton = document.getElementById('saveComment');
-    saveCommentButton.addEventListener('click', async () => {
-      const updatedCommentText = editCommentText.value;
-      // 서버로 댓글 수정 요청 보내기
-      try {
-        const response = await fetch(`/api/post/${post_id}/comment/${comment_id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            content: updatedCommentText,
-          }),
-        });
-        if (!response.ok) {
-          throw new Error('댓글 수정에 실패했습니다.');
-        }
-        // 댓글 수정 모달 닫기
-        commentModal.hide();
-        // 페이지 새로고침 또는 댓글 목록 업데이트 로직 추가
-      } catch (error) {
-        console.error('댓글 수정 오류:', error);
-      }
+//     // "저장" 버튼 클릭 이벤트 핸들러 추가
+//     const saveCommentButton = document.getElementById('saveComment');
+//     saveCommentButton.addEventListener('click', async () => {
+//       const updatedCommentText = editCommentText.value;
+//       // 서버로 댓글 수정 요청 보내기
+//       try {
+//         const response = await fetch(`/api/post/${post_id}/comment/${comment_id}`, {
+//           method: 'PUT',
+//           headers: {
+//             'Content-Type': 'application/json',
+//           },
+//           body: JSON.stringify({
+//             content: updatedCommentText,
+//           }),
+//         });
+//         if (!response.ok) {
+//           throw new Error('댓글 수정에 실패했습니다.');
+//         }
+//         // 댓글 수정 모달 닫기
+//         commentModal.hide();
+//         // 페이지 새로고침 또는 댓글 목록 업데이트 로직 추가
+//       } catch (error) {
+//         console.error('댓글 수정 오류:', error);
+//       }
+//     });
+//   });
+// });
+
+// ---------예림님이 주신 것---------
+document.addEventListener('DOMContentLoaded', () => {
+  const commentForm = document.getElementById('comment-form');
+  const commentInput = document.getElementById('comment-input');
+  const commentList = document.getElementById('comment-list');
+
+  const cardContainer = document.querySelector('.card');
+  const cardId = parseInt(cardContainer.dataset.cardId, 10);
+  console.log('cardId:', cardId);
+
+  commentForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const content = commentInput.value.trim();
+    if (!content) return;
+
+    createComment(content).then(() => {
+      commentInput.value = '';
+      loadComments();
     });
   });
+
+  commentList.addEventListener('click', async (e) => {
+    if (
+      e.target.classList.contains('edit-comment-btn') ||
+      e.target.classList.contains('delete-comment-btn')
+    ) {
+      const commentElement = e.target.closest('li.list-group-item');
+      const comment_idAttr = commentElement.getAttribute('data-comment-id');
+      const comment_id = comment_idAttr ? parseInt(comment_idAttr, 10) : null;
+
+      if (e.target.classList.contains('edit-comment-btn')) {
+        const content = prompt('수정할 내용을 입력해주세요');
+        if (content !== null && comment_id !== null) {
+          await updateComment(comment_id, content);
+          await loadComments();
+        }
+      } else if (e.target.classList.contains('delete-comment-btn')) {
+        if (confirm('댓글을 삭제하시겠습니까?')) {
+          if (comment_id) {
+            await deleteComment(comment_id);
+            await loadComments();
+          } else {
+            console.error('댓글을 삭제할 수 없습니다. comment_id가 정의되지 않았습니다.');
+          }
+        }
+      }
+    }
+  });
+
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    const formatter = new Intl.DateTimeFormat('ko-KR', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    return formatter.format(date);
+  };
+
+  const loadComments = async () => {
+    const comments = await getComments();
+    commentList.innerHTML = comments
+      .map(
+        (comment) =>
+          `<li class="list-group-item" data-comment-id="${comment.comment_id}">
+  ${comment.name}: ${comment.content}
+  <span class="text-muted">${formatDate(comment.updatedAt)}</span>
+  <button class="btn btn-sm btn-outline-secondary edit-comment-btn">수정</button>
+  <button class="btn btn-sm btn-outline-danger delete-comment-btn">삭제</button>
+  </li>`
+      )
+      .join('');
+
+    console.log('Generated HTML:', commentList.innerHTML);
+  };
+
+  const getComments = async () => {
+    const response = await fetch(`api/cards/${cardId}/comments`);
+    const data = await response.json();
+    console.log('comments data:', data);
+    return data.data;
+  };
+
+  const createComment = async (content) => {
+    const response = await fetch(`/api/cards/${cardId}/comments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content }),
+    });
+
+    if (!response.ok) {
+      console.error(`Error: ${response.status} ${response.statusText}`);
+      const responseText = await response.text();
+      console.error(`Response Text: ${responseText}`);
+      throw new Error('Error creating comment');
+    }
+
+    const newComment = await response.json();
+    return newComment.id;
+  };
+
+  const updateComment = async (comment_id, content) => {
+    const response = await fetch(`/api/comments/${comment_id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content }),
+    });
+
+    if (!response.ok) {
+      console.error(`Error: ${response.status} ${response.statusText}`);
+      const responseText = await response.text();
+      console.error(`Response Text: ${responseText}`);
+      throw new Error('Error updating comment');
+    }
+
+    const updatedComment = await response.json();
+    return updatedComment;
+  };
+
+  const deleteComment = async (comment_id) => {
+    const response = await fetch(`/api/comments/${comment_id}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      console.error(`Error: ${response.status} ${response.statusText}`);
+      const responseText = await response.text();
+      console.error(`Response Text: ${responseText}`);
+      throw new Error('Error deleting comment');
+    }
+
+    return response.json();
+  };
+
+  loadComments();
 });
