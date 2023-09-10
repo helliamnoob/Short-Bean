@@ -45,14 +45,20 @@ class CommentService {
 
   updateComment = async ({ user_id, comment_id, content }) => {
     try {
+      const comment = await this.commentRepository.findComment({ comment_id, user_id });
+  
+      if (!comment) {
+        return { code: 404, message: '댓글을 찾을 수 없습니다.' };
+      }
+  
       await this.commentRepository.updateComment({
         user_id,
         comment_id,
         content,
       });
+  
       return { code: 200, message: '댓글을 수정하였습니다.' };
     } catch (error) {
-      console.error(error);
       return { code: 500, message: '댓글 수정 중 오류가 발생했습니다.' };
     }
   };

@@ -182,8 +182,10 @@ document.addEventListener('DOMContentLoaded', async function () {
 });
 
 document.getElementById('commentCreate').addEventListener('click', async function () {
+  const commentList = document.getElementById('commentList'); // 댓글 리스트 DOM 요소를 미리 가져옵니다.
+  const content = document.getElementById('commentInput').value;
+
   try {
-    const content = document.getElementById('commentInput').value;
     const response = await fetch(`/api/post/${post_id}/comment`, {
       method: 'POST',
       headers: {
@@ -193,19 +195,24 @@ document.getElementById('commentCreate').addEventListener('click', async functio
         content,
       }),
     });
-    
+
     const data = await response.json();
-    
-    if (response.ok && data && data.newComment) {
+
+    if (response.ok && data && data.success) { 
       alert('댓글이 저장되었습니다.');
-      const commentList = document.getElementById('commentList');
-      addCommentToDOM(commentList, data.newComment.content, data.newComment.comment_id);
+
+    
+      const newCommentId = data.commentId;
+
+      // 새 댓글을 DOM에 추가합니다.
+      addCommentToDOM(commentList, content, newCommentId);
+
     } else {
-      console.error(`Failed to create comment: ${response.status}`);
-      alert('댓글 저장에 실패했습니다.');
+      alert('댓글 생성에 실패했습니다.');
+      console.log(data.message);
     }
   } catch (error) {
-    console.error('An error occurred:', error);
+    console.error('Error:', error);
     alert('오류가 발생했습니다.');
   }
 });
