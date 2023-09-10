@@ -124,7 +124,7 @@ likeButton.addEventListener('click', function (event) {
       alert('좋아요 실패하였습니다.');
     });
 });
-// // 댓글 수정: 예림님이랑!
+// // 댓글 수정
 // document.getElementById('commentUpdate').addEventListener('click', async function () {
 //   const content = document.getElementById('commentInput').value;
 
@@ -152,7 +152,7 @@ likeButton.addEventListener('click', function (event) {
 //     });
 // });
 
-// // 댓글 삭제: 예림님께 배우기
+// // 댓글 삭제
 // const commentDeleteBtn = document.getElementById('commentDelete');
 // commentDeleteBtn.addEventListener('click', function () {
 //   fetch('/api/post/:post_id/comment/:comment_id', {
@@ -226,89 +226,6 @@ loadPostMain();
 
 // ---------------------------------------------------------------------
 
-// // 게시글 ID를 가져오는 함수 (URL에서 추출)
-// function getpost_idFromUrl() {
-//   const urlParams = new URLSearchParams(window.location.search);
-//   return urlParams.get('post_id');
-// }
-
-// // 댓글을 가져와서 화면에 표시하는 함수
-// async function fetchComments(post_id) {
-//   try {
-//     const response = await fetch(`/api/post/${post_id}/comment`);
-//     if (!response.ok) {
-//       throw new Error('댓글을 불러오는 중 오류가 발생했습니다.');
-//     }
-//     const comments = await response.json();
-//     const commentList = document.getElementById('commentList');
-//     commentList.innerHTML = ''; // 이전 댓글 제거
-//     comments.forEach((comment) => {
-//       const li = document.createElement('li');
-//       li.textContent = comment.text;
-//       commentList.appendChild(li);
-//     });
-//   } catch (error) {
-//     console.error('댓글 조회 오류:', error);
-//   }
-// }
-
-// // 댓글 작성을 처리하는 함수
-// async function submitComment(event) {
-//   event.preventDefault();
-//   const commentText = document.getElementById('commentText').value;
-//   const post_id = getPostIdFromUrl();
-
-//   try {
-//     const response = await fetch(`/api/post/${post_id}/comment`, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({ text: commentText }),
-//     });
-
-//     if (!response.ok) {
-//       throw new Error('댓글 작성 중 오류가 발생했습니다.');
-//     }
-
-//     // 댓글 작성 후, 다시 댓글 목록을 가져와서 표시
-//     fetchComments(post_id);
-
-//     // 댓글 작성 폼 초기화
-//     document.getElementById('commentText').value = '';
-//   } catch (error) {
-//     console.error('댓글 작성 오류:', error);
-//   }
-// }
-
-// // 페이지 로딩 시 댓글 목록을 가져와서 표시
-// const post_id = getPostIdFromUrl();
-// fetchComments(post_id);
-
-// // 댓글 작성 폼의 submit 이벤트 핸들러 등록
-// document.getElementById('commentInput').addEventListener('submit', submitComment);
-
-// // 게시글 작성 버튼 눌렀을 때, 이동
-// const createPostButton = document.getElementById('createPostButton');
-// createPostButton.addEventListener('click', async () => {
-//   window.location.href = ``;
-// });
-
-// // 댓글 리스트 ..
-// let currentPage = 1;
-// const commentsPerPage = 10; // 한 페이지당 표시할 댓글 수
-
-// window.addEventListener('DOMContentLoaded', async function () {
-//   fetchComments(currentPage);
-
-//   // 페이지네이션 버튼 클릭 시 다음 페이지 댓글 로드
-//   const loadMoreButton = document.getElementById('loadMoreButton');
-//   loadMoreButton.addEventListener('click', function () {
-//     currentPage++;
-//     fetchComments(currentPage);
-//   });
-// });
-
 async function fetchComments(page) {
   try {
     const response = await fetch(`/api/post/${post_id}/comment`);
@@ -327,9 +244,31 @@ async function fetchComments(page) {
 
     comments.forEach((comment) => {
       const content = comment.content;
+      const userName = comment.user.userName; // 작성자 이름 추가
+      const comment_id = comment.comment_id; // 댓글 ID 추가
+
       const li = document.createElement('li');
-      li.textContent = content;
+      li.innerHTML = `
+        <span>${userName}: ${content}</span>
+        <button class="edit-comment" data-comment-id="${comment_id}">수정</button>
+        <button class="delete-comment" data-comment-id="${comment_id}">삭제</button>
+      `;
+
       commentList.appendChild(li);
+
+      // 수정 버튼 클릭 이벤트 리스너 추가
+      li.querySelector('.edit-comment').addEventListener('click', function () {
+        const comment_id = this.getAttribute('data-comment-id');
+        // 댓글 수정 모달을 여는 함수를 호출하도록 수정
+        openEditCommentModal(comment_id);
+      });
+
+      // 삭제 버튼 클릭 이벤트 리스너 추가
+      li.querySelector('.delete-comment').addEventListener('click', function () {
+        const comment_id = this.getAttribute('data-comment-id');
+        // 댓글 삭제 함수를 호출하도록 수정
+        deleteComment(comment_id);
+      });
     });
 
     // 페이지네이션 버튼 표시 여부 결정
@@ -339,216 +278,7 @@ async function fetchComments(page) {
     console.error('댓글 조회 오류:', error);
   }
 }
-fetchComments();
 
-// // 댓글 작성을 처리하는 함수
-// async function submitComment(event) {
-//   event.preventDefault();
-//   const commentText = document.getElementById('commentText').value;
-
-//   try {
-//     const response = await fetch(`/api/post/${post_id}/comment`, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({ text: commentText }),
-//     });
-
-//     if (!response.ok) {
-//       throw new Error('댓글 작성 중 오류가 발생했습니다.');
-//     }
-
-//     // 댓글 작성 후, 현재 페이지의 댓글 목록을 다시 불러옴
-//     fetchComments(currentPage);
-
-//     // 댓글 작성 폼 초기화
-//     document.getElementById('commentText').value = '';
-//   } catch (error) {
-//     console.error('댓글 작성 오류:', error);
-//   }
-// }
-
-// 댓글 작성 폼의 submit 이벤트 핸들러 등록
-// document.getElementById('commentInput').addEventListener('submit', submitComment);
-
-// // ---------------------------------------
-
-// // 게시글 수정 버튼 클릭 이벤트 리스너 추가
-// document.getElementById('postUpdate').addEventListener('click', function () {
-//   // 예를 들어, 모달을 열거나 수정할 게시글의 ID를 얻어와서 해당 게시글 수정 페이지로 이동할 수 있습니다.
-// });
-
-// // 게시글 삭제 버튼 클릭 이벤트 리스너 추가
-// document.getElementById('postDelete').addEventListener('click', function () {
-//   // 게시글 삭제 로직을 여기에 추가
-//   // 예를 들어, 확인 대화상자를 띄우고 확인 시 게시글을 삭제할 수 있습니다.
-// });
-
-// -----------------------------------------------
-
-// // 모달
-// const modal = document.getElementById('modal');
-// function modalOn() {
-//   modal.classList.add('on');
-// }
-// function modalOff() {
-//   modal.classList.remove('on');
-// }
-// const btnModal = document.getElementById('commentModal');
-// btnModal.addEventListener('click', modalOn);
-
-// const closeBtn = modal.querySelector('.close-area');
-// modal.addEventListener('click', function (e) {
-//   if (e.target === this) {
-//     modalOff();
-//   }
-// });
-// closeBtn.addEventListener('click', modalOff);
-
-// ---------------------wkfwhagkwk-------------------
-// // 댓글 수정 모달 열기
-// const commentEditButton = document.querySelector('#commentEdit');
-// commentEditButton.addEventListener('click', function () {
-//   // 선택한 댓글의 내용을 가져옵니다.
-//   const selectedComment = getSelectedComment(); // 이 함수는 선택한 댓글을 가져오는 로직을 구현해야 합니다.
-
-//   // 모달 창에 댓글 내용을 채웁니다.
-//   document.getElementById('editCommentText').value = selectedComment;
-
-//   // 모달을 열어줍니다.
-//   const commentEditModal = new bootstrap.Modal(document.getElementById('commentEditModal'));
-//   commentEditModal.show();
-// });
-
-// // 댓글 수정 버튼 클릭 이벤트 리스너 추가
-// document.getElementById('saveComment').addEventListener('click', function () {
-//   // 수정된 댓글 내용을 가져옵니다.
-//   const updatedComment = document.getElementById('editCommentText').value;
-
-//   // 서버에 수정된 댓글을 저장하는 함수 호출
-//   saveUpdatedComment(updatedComment); // 이 함수는 서버에 수정된 댓글을 보내는 로직을 구현해야 합니다.
-
-//   // 모달을 닫습니다.
-//   const commentEditModal = new bootstrap.Modal(document.getElementById('commentEditModal'));
-//   commentEditModal.hide();
-// });
-
-// // 선택한 댓글을 가져오는 함수 (예시로 선택한 댓글을 하드코딩으로 반환)
-// function getSelectedComment() {
-//   return '선택한 댓글 내용'; // 실제로 선택한 댓글 내용을 가져오는 로직을 구현해야 합니다.
-// }
-
-// // 서버에 수정된 댓글을 저장하는 함수 (실제로 서버로 보내는 코드를 추가해야 합니다)
-// function saveUpdatedComment(updatedComment) {
-//   // 여기에 서버로 수정된 댓글을 전송하는 로직을 추가합니다.
-// }
-
-// 게시글 작성 버튼 클릭 이벤트 리스너 추가
-document.getElementById('postCreate').addEventListener('click', function () {
-  window.location.href = `/public/views/post-detail.html`; // 여기에 게시글 작성 페이지의 URL을 넣으세요.
-});
-
-// // 버튼 클릭 이벤트 리스너 추가
-// document.getElementById('postUpdate').addEventListener('click', function () {
-//   window.location.href = `/public/views/post.html?post_id=${data.data.post_id}`; // 여기에 게시글 작성 페이지의 URL을 넣으세요.
-// });
-
-// // 게시글 수정
-// // 게시글 수정 버튼 클릭 이벤트 리스너
-// const postUpdateBtn = document.getElementById('postUpdate');
-
-// postUpdateBtn.addEventListener('click', function () {
-//   window.location.href = `/public/views/post-detail.html?post_id=${post_id}`;
-
-//   // 게시글 내용 불러오기
-//   fetch(`/api/post/${post_id}`)
-//     .then((response) => response.json())
-//     .then((data) => {
-//       if (data.code === 200) {
-//         const { title, content, subject } = data.data;
-//         postTitle.value = title;
-//         postContent.value = content;
-//         postSubject.value = subject;
-//       } else {
-//         console.error(data);
-//       }
-//     })
-//     .catch((error) => {
-//       console.error('Error:', error);
-//       alert('게시글을 불러오는 중 오류가 발생했습니다.');
-//     });
-//   // });
-
-//   const title = postTitle.value;
-//   const content = postContent.value;
-//   const subject = postSubject.value;
-
-//   const formData = new FormData();
-//   formData.append('title', title);
-//   formData.append('content', content);
-//   formData.append('subject', subject);
-
-//   // 이미지
-//   const imageInput = document.querySelector('.upload-input');
-
-//   if (imageInput && imageInput.files && imageInput.files.length > 0) {
-//     // 파일이 선택된 경우에만 실행
-//     formData.append('image', imageInput.files[0]);
-//   }
-
-//   fetch(`/api/post/${post_id}`, {
-//     method: 'POST',
-//     body: formData,
-//     // headers: { 'Content-Type': 'multipart/form-data' },
-//   })
-//     .then((response) => response.json())
-//     .then((data) => {
-//       if (data.code === 200) {
-//         alert('게시글이 수정되었습니다.');
-//         window.location.reload(); // 현재 페이지 새로고침
-//       } else {
-//         console.error(data);
-//         alert('게시글 수정에 실패했습니다.');
-//       }
-//     })
-//     .catch((error) => {
-//       console.error('Error:', error);
-//       alert('오류가 발생했습니다.');
-//     });
-// });
-
-// // document.addEventListener('DOMContentLoaded', function () {
-// //   const postTitle = document.getElementById('postTitle');
-// //   const postContent = document.getElementById('postContent');
-// //   const subjectSelect = document.getElementById('postSubject');
-
-// // 현재 페이지의 post_id 값을 가져옴 (URL에서 추출하거나 다른 방법으로 설정)
-// const postId = extractPostIdFromUrl(); // 예: /public/views/post.html?post_id=123
-
-// // // 게시글 내용 불러오기
-// // fetch(`/api/post/${post_id}`)
-// //   .then((response) => response.json())
-// //   .then((data) => {
-// //     if (data.code === 200) {
-// //       const { title, content, subject } = data.data;
-// //       postTitle.value = title;
-// //       postContent.value = content;
-// //       postSubject.value = subject;
-// //     } else {
-// //       console.error(data);
-// //     }
-// //   })
-// //   .catch((error) => {
-// //     console.error('Error:', error);
-// //     alert('게시글을 불러오는 중 오류가 발생했습니다.');
-// //   });
-// // });
-
-// function extractPostIdFromUrl() {
-//   var urlParams = new URLSearchParams(window.location.search);
-//   return urlParams.get('post_id');
-// }
 // ------------------------------------버전1-----------------밑의 거로 최대한 했으나 안됐음..---------------
 // // 게시글 수정 버튼 클릭 이벤트 리스너
 // const postUpdateBtn = document.getElementById('postUpdate');
@@ -705,3 +435,45 @@ document.getElementById('postCreate').addEventListener('click', function () {
 // button.textContent = '게시글 수정';
 // button.addEventListener('click', handleUpdateButtonClick);
 // document.body.appendChild(button);
+//  -----------------------------------------------------new
+const commentUpdateButtons = document.querySelectorAll('.comment-update-button');
+
+commentUpdateButtons.forEach((button) => {
+  button.addEventListener('click', async () => {
+    // 댓글 수정 모달 열기
+    const comment_id = button.dataset.comment_id;
+    const commentText = button.dataset.commentText;
+    const editCommentText = document.getElementById('editCommentText');
+    editCommentText.value = commentText;
+
+    // 모달 열기
+    const commentModal = new bootstrap.Modal(document.getElementById('commentModal'));
+    commentModal.show();
+
+    // "저장" 버튼 클릭 이벤트 핸들러 추가
+    const saveCommentButton = document.getElementById('saveComment');
+    saveCommentButton.addEventListener('click', async () => {
+      const updatedCommentText = editCommentText.value;
+      // 서버로 댓글 수정 요청 보내기
+      try {
+        const response = await fetch(`/api/post/${post_id}/comment/${comment_id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            content: updatedCommentText,
+          }),
+        });
+        if (!response.ok) {
+          throw new Error('댓글 수정에 실패했습니다.');
+        }
+        // 댓글 수정 모달 닫기
+        commentModal.hide();
+        // 페이지 새로고침 또는 댓글 목록 업데이트 로직 추가
+      } catch (error) {
+        console.error('댓글 수정 오류:', error);
+      }
+    });
+  });
+});

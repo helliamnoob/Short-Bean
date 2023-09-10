@@ -11,8 +11,6 @@ window.addEventListener('DOMContentLoaded', async function () {
         let content = post['content'];
         let subject = post['subject'];
 
-        //   let temp_html = `<div class="solo-card">
-        // <div class="card w-75">
         let temp_html = `<div class="solo-card">
         <div class="card w-75">
       <div class="card">
@@ -88,63 +86,63 @@ const getTotalPageCount = () => {
 //   container.innerHTML = html;
 // };
 
-// 검색 기능
-window.onload = function () {
-  //실행될 코드
-  let allQuestionList;
+// // 검색 기능
+// window.onload = function () {
+//   //실행될 코드
+//   let allQuestionList;
 
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization:
-        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZTExODAzMzVhNGE2NzMxMTJlOTg1ZDQzZTUxMjMyYyIsInN1YiI6IjY0NzU3YWViOTI0Y2U2MDExNmM1ZmM3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.LsITjGVhhqpYuf7KH_NEVSX7r45y_7tMtZ7OFN3UgCk',
-    },
-  };
+//   const options = {
+//     method: 'GET',
+//     headers: {
+//       accept: 'application/json',
+//       Authorization:
+//         'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZTExODAzMzVhNGE2NzMxMTJlOTg1ZDQzZTUxMjMyYyIsInN1YiI6IjY0NzU3YWViOTI0Y2U2MDExNmM1ZmM3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.LsITjGVhhqpYuf7KH_NEVSX7r45y_7tMtZ7OFN3UgCk',
+//     },
+//   };
 
-  fetch('/api/post', {}).then((response) => {
-    return response.json();
-  });
-  // .then((data) => {
-  //   //가져온 데이터 사용
-  //   let movies = data.results;
-  //   globalMovies = data.results;
+//   fetch('/api/post', {}).then((response) => {
+//     return response.json();
+//   });
+//   // .then((data) => {
+//   //   //가져온 데이터 사용
+//   //   let movies = data.results;
+//   //   globalMovies = data.results;
 
-  //   renderMovieCards(movies);
+//   //   renderMovieCards(movies);
 
-  let rows = data.data;
-  console.log(data);
-  const postBox = document.getElementById('posts-box');
-  rows.forEach((post) => {
-    let title = post['title'];
-    let content = post['content'];
-    let subject = post['subject'];
-    let image = post['image'];
+//   let rows = data.data;
+//   console.log(data);
+//   const postBox = document.getElementById('posts-box');
+//   rows.forEach((post) => {
+//     let title = post['title'];
+//     let content = post['content'];
+//     let subject = post['subject'];
+//     let image = post['image'];
 
-    //검색어 입력값 가져오기
-    var searchInput = document.getElementById('search-input');
-    console.log('searchInput:', searchInput);
+//     //검색어 입력값 가져오기
+//     var searchInput = document.getElementById('search-input');
+//     console.log('searchInput:', searchInput);
 
-    var searchBtn = document.getElementById('search-btn');
+//     var searchBtn = document.getElementById('search-btn');
 
-    // movies = movies.filter(movie => movie.title.includes(searchInput))
-    // renderMovieCards(movies);
+//     // movies = movies.filter(movie => movie.title.includes(searchInput))
+//     // renderMovieCards(movies);
 
-    //영화 검색, 대소문자 구분 안함
-    //영화 검색, 대소문자 구분 안함
-    //영화 검색, 대소문자 구분 안함 => alt + shift + 아래 화살표 키
+//     //영화 검색, 대소문자 구분 안함
+//     //영화 검색, 대소문자 구분 안함
+//     //영화 검색, 대소문자 구분 안함 => alt + shift + 아래 화살표 키
 
-    searchInput.addEventListener('change', (e) => {
-      console.log(e.target.value);
-      const searchInputvalue = e.target.value;
-      var searchResults = movies.filter((post) => {
-        return post.title.toLowerCase().includes(searchInputvalue.toLowerCase());
-      });
-      renderMovieCards(searchResults);
-    });
-    // renderMovieCards(searchResults);
-  });
-};
+//     searchInput.addEventListener('change', (e) => {
+//       console.log(e.target.value);
+//       const searchInputvalue = e.target.value;
+//       var searchResults = movies.filter((post) => {
+//         return post.title.toLowerCase().includes(searchInputvalue.toLowerCase());
+//       });
+//       renderMovieCards(searchResults);
+//     });
+//     // renderMovieCards(searchResults);
+//   });
+// };
 //영화 카드 리스트 UI 업데이트
 //searchResults배열은 검색어와 일치하는 영화
 // renderMovieCards(searchResults);
@@ -216,3 +214,137 @@ window.onload = function () {
 // };
 
 // -------------------------------------
+// // 검색 기능
+// function search() {
+//   const searchInput = document.getElementById('searchInput').value;
+//   fetch(`/api/search?q=${searchInput}`)
+//     .then((response) => response.json())
+//     .then((data) => {
+//       displayResults(data);
+//     })
+//     .catch((error) => {
+//       console.error('검색 요청 오류:', error);
+//     });
+// }
+
+// function displayResults(results) {
+//   const searchResults = document.getElementById('searchResults');
+//   searchResults.innerHTML = '';
+
+//   results.forEach((result) => {
+//     const resultElement = document.createElement('p');
+//     resultElement.textContent = result.title;
+//     searchResults.appendChild(resultElement);
+//   });
+// }
+
+// // 검색 버튼 클릭 시 서버에 검색 요청 보내기
+// searchButton.addEventListener('click', async function () {
+//   const searchInputValue = searchInput.value;
+//   try {
+//     const response = await fetch(`/api/search?q=${searchInputValue}`);
+//     if (response.ok) {
+//       const data = await response.json();
+//       // 검색 결과를 처리하고 페이지에 표시하는 로직을 추가
+//       // 예를 들어, 검색 결과를 화면에 출력하거나 데이터를 다룰 수 있음
+//       console.log(data);
+//     } else {
+//       console.error('검색 요청 실패:', response.statusText);
+//     }
+//   } catch (error) {
+//     console.error('검색 요청 오류:', error);
+//   }
+// });
+
+// // 검색 기능
+// const searchButton = document.getElementById('search-button');
+// const searchInput = document.getElementById('search-input');
+
+// const urlParams = new URLSearchParams(window.location.search);
+// const search_data = urlParams.get('search_data');
+
+// searchInput.addEventListener('keyup', function (event) {
+//   if (event.key === 'Enter') {
+//     const searchInputValue = searchInput.value;
+//     window.location.href = `post-list.html?search_data=${searchInputValue}`;
+//   }
+// });
+
+// searchButton.addEventListener('click', function () {
+//   const searchInputValue = searchInput.value;
+//   window.location.href = `post-list.html?search_data=${searchInputValue}`;
+// });
+
+// 검색 input
+let searchInput = document.getElementById('searchInput');
+// 검색 버튼
+let searchBtn = document.getElementById('searchButton');
+
+// 검색 버튼 클릭 시 이벤트 리스너
+searchBtn.addEventListener('click', async () => {
+  document.getElementById('grid').innerHTML = '';
+  const searchInputValue = searchInput.value;
+
+  // 검색어를 서버에 보내고 관련된 포스트 정보를 가져오는 함수 호출
+  const posts = await searchPosts(searchInputValue);
+
+  // 가져온 포스트 정보를 화면에 표시하는 함수 호출
+  renderPosts(posts);
+});
+
+// 서버로부터 검색 결과를 가져오는 함수
+async function searchPosts(searchInputValue) {
+  try {
+    // 서버 API 엔드포인트를 호출하여 검색 결과를 가져옴
+    const response = await fetch(`/api/search_post?title=${searchInputValue}`);
+    if (!response.ok) {
+      throw new Error('서버에서 검색 결과를 가져오는데 실패했습니다.');
+    }
+
+    // JSON 형식의 응답 데이터를 파싱
+    const data = await response.json();
+    return data.data; // 가져온 포스트 데이터를 반환
+  } catch (error) {
+    console.error('검색 오류:', error);
+    return []; // 오류 발생 시 빈 배열 반환
+  }
+}
+
+// 포스트 정보를 화면에 표시하는 함수
+function renderPosts(posts) {
+  const grid = document.getElementById('grid');
+
+  if (posts.length === 0) {
+    // 검색 결과가 없을 때 메시지 표시
+    grid.innerHTML = '검색 결과가 없습니다.';
+  } else {
+    // 검색 결과를 화면에 표시
+    posts.forEach((post) => {
+      const postElement = createPostElement(post);
+      grid.appendChild(postElement);
+    });
+  }
+}
+
+// 포스트 하나의 요소를 생성하는 함수
+function createPostElement(post) {
+  const { title, content, subject } = post;
+
+  const postElement = document.createElement('div');
+  postElement.classList.add('post');
+
+  const titleElement = document.createElement('h2');
+  titleElement.textContent = `제목: ${title}`;
+
+  const contentElement = document.createElement('p');
+  contentElement.textContent = `내용: ${content}`;
+
+  const subjectElement = document.createElement('p');
+  subjectElement.textContent = `과목: ${subject}`;
+
+  postElement.appendChild(titleElement);
+  postElement.appendChild(contentElement);
+  postElement.appendChild(subjectElement);
+
+  return postElement;
+}

@@ -86,6 +86,13 @@ class CommentController {
         return res.status(400).json({ error: '수정할 내용이 없습니다.' });
       }
 
+      // 댓글 ID와 사용자 ID로 댓글을 찾습니다.
+      const comment = await Comments.findOne({ where: { comment_id, user_id } });
+
+      if (!comment) {
+        return res.status(404).json({ error: '댓글을 찾을 수 없습니다.' });
+      }
+
       const { code, message } = await this.commentService.updateComment({
         user_id,
         comment_id,
@@ -105,6 +112,13 @@ class CommentController {
 
       if (!comment_id) {
         return res.status(400).json({ error: '댓글 ID가 필요합니다.' });
+      }
+
+      // 댓글 ID와 사용자 ID로 댓글을 찾습니다.
+      const comment = await Comments.findOne({ where: { comment_id, user_id } });
+
+      if (!comment) {
+        return res.status(404).json({ error: '댓글을 찾을 수 없습니다.' });
       }
 
       const { code, message } = await this.commentService.deleteComment({

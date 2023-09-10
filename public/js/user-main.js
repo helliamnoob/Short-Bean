@@ -320,3 +320,45 @@ window.addEventListener('DOMContentLoaded', async function () {
       });
     });
 });
+
+window.addEventListener('DOMContentLoaded', async function () {
+  try {
+    const response = await fetch('/api/post', {
+      method: 'GET',
+
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      order: [['post_like', 'DESC']],
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      displayPosts(data);
+    } else {
+      console.error('게시글 조회 실패:', response.statusText);
+      alert('게시글 조회에 실패했습니다.');
+    }
+  } catch (error) {
+    console.error('게시글 조회 오류:', error);
+    alert('게시글 조회 중 오류가 발생했습니다.');
+  }
+});
+
+function displayPosts(posts) {
+  postsContainer.innerHTML = ''; // 이전 결과를 지우고 새로운 결과 표시
+
+  if (posts.length === 0) {
+    postsContainer.textContent = '게시글이 없습니다.';
+  } else {
+    const ulElement = document.createElement('ul');
+
+    posts.forEach((post) => {
+      const liElement = document.createElement('li');
+      liElement.textContent = `제목: ${post.title}, 내용: ${post.content}`;
+      ulElement.appendChild(liElement);
+    });
+
+    postsContainer.appendChild(ulElement);
+  }
+}
