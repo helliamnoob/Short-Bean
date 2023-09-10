@@ -27,13 +27,13 @@ class LikeService {
         });
         await this.postRepository.updatePostLike({ post_like: post.post_like + 1, post_id });
         console.log('좋아요');
-        return like;
+        return true;
       } else {
         await this.postRepository.updatePostLike({ post_like: post.post_like - 1, post_id });
 
         await this.likeRepository.destoryLike({ post_id, user_id });
         console.log('좋아요취소');
-        return like;
+        return false;
       }
     }
   };

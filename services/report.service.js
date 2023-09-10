@@ -11,6 +11,11 @@ class ReportService {
     const reportData = await this.reportRepository.findReportAll();
     return reportData;
   };
+
+  getReportaWeek = async () => {
+    const reportData = await this.reportRepository.findaWeek();
+    return reportData;
+  };
   creatReport = async ({ user_id, report_content, reported_user_id }) => {
     const reportData = await this.reportRepository.createReport({
       user_id,
