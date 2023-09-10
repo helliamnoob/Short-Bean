@@ -182,30 +182,33 @@ document.addEventListener('DOMContentLoaded', async function () {
 });
 
 document.getElementById('commentCreate').addEventListener('click', async function () {
-  const content = document.getElementById('commentInput').value;
-
-  await fetch(`/api/post/${post_id}/comment`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      content,
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      {
-        alert('댓글이 저장되었습니다.');
-        // 저장 성공 시의 처리
-        // } else {
-        //   alert('질문 저장에 실패했습니다.');
-        //   // 저장 실패 시의 처리
-        console.log(data.message);
-
-      }}
-    )
+  try {
+    const content = document.getElementById('commentInput').value;
+    const response = await fetch(`/api/post/${post_id}/comment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        content,
+      }),
     });
+    
+    const data = await response.json();
+    
+    if (response.ok && data && data.newComment) {
+      alert('댓글이 저장되었습니다.');
+      const commentList = document.getElementById('commentList');
+      addCommentToDOM(commentList, data.newComment.content, data.newComment.comment_id);
+    } else {
+      console.error(`Failed to create comment: ${response.status}`);
+      alert('댓글 저장에 실패했습니다.');
+    }
+  } catch (error) {
+    console.error('An error occurred:', error);
+    alert('오류가 발생했습니다.');
+  }
+});
 
 //좋아요 버튼
 const likeButton = document.querySelector('#postLike');

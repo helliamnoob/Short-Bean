@@ -59,6 +59,12 @@ class CommentService {
 
   deleteComment = async ({ comment_id, user_id }) => {
     try {
+      const comment = await this.commentRepository.findComment({ comment_id, user_id });
+      
+      if (!comment) {
+        return { code: 404, message: '댓글을 찾을 수 없습니다.' };
+      }
+  
       await this.commentRepository.deleteComment({ user_id, comment_id });
       return { code: 200, message: '댓글을 삭제하였습니다.' };
     } catch (error) {
