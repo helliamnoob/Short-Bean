@@ -84,7 +84,7 @@ window.addEventListener('DOMContentLoaded', async function () {
       <div class="card">
       <div class="card-body">
     
-      <h5 class="card-title"> ${image}</h5>
+    
       <h5 class="card-title">제목: ${title}</h5>
       <p class="card-text">${content}</p>
       <p class="card-text">과목: ${subject}</p>
