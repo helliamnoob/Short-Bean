@@ -77,7 +77,9 @@ app.get('/admin/id=:id', (req, res) => {
 app.get('/admin/tutors/id=:id', (req, res) => {
   res.sendFile(__dirname + '/public/views/tutor-detail.html');
 });
-
+app.get('/public/tutorlist', (req, res) => {
+  res.sendFile(__dirname + '/public/views/tutor-list.html');
+});
 server.listen(port, () => {
   console.log(port, '포트로 서버가 열렸어요!');
 });

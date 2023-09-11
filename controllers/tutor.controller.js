@@ -30,8 +30,6 @@ class TutorController {
       const { school_name, career } = req.body;
       const { user_id } = res.locals.user;
 
-      console.log(user_id, school_name, career);
-
       const tutor = await this.tutorService.creatTutor({
         user_id,
         school_name,

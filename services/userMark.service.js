@@ -13,7 +13,6 @@ class UserMarkService {
   creatMark = async ({ tutor_id, user_id }) => {
     const tutor = await this.tutorRepository.findTutor({ tutor_id });
     const userMark = await this.userMarkRepository.findMark({ tutor_id, user_id });
-    console.log('Mark:', userMark);
     if (!tutor) {
       return console.log('튜터없음');
     } else {
@@ -24,13 +23,13 @@ class UserMarkService {
         });
         await this.tutorRepository.updateTutorLike({ tutor_like: tutor.tutor_like + 1, tutor_id });
         console.log('즐겨찾기');
-        return userMark;
+        return true;
       } else {
         await this.tutorRepository.updateTutorLike({ tutor_like: tutor.tutor_like - 1, tutor_id });
 
         await this.userMarkRepository.destroyMark({ user_mark_id: userMark.user_mark_id, user_id });
         console.log('즐겨찾기취소');
-        return userMark;
+        return false;
       }
     }
   };
