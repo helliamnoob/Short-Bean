@@ -461,23 +461,25 @@ document.getElementById('postCreate').addEventListener('click', function () {
 // 게시글 수정
 // 게시글 수정 버튼 클릭 이벤트 리스너
 const postUpdateBtn = document.getElementById('postUpdate');
+// 모달창 생성
 const updatePostModal = document.getElementById('updatePostModal');
 
 postUpdateBtn.addEventListener('click', function () {
   updatePostModal.style.display = 'block';
 
+  // 각각의 인풋 값 가져오기
+  // 제목이랑 본문은 페이지 렌더링할 때 위에서 이미 선언했습니다
+  // db접근 최소화 시키려고
   const subjectInput = document.getElementById('subjectSelect');
   const imageInput = document.getElementById('imageUpload');
   const editButton = document.getElementById('editButton');
 
+  //수정하기 버튼을 눌러야 실행됩니다.
   editButton.addEventListener('click', () => {
     const formData = new FormData();
     formData.append('title', titleInput.value);
     formData.append('content', contentInput.value);
     formData.append('subject', subjectInput.value);
-
-    console.log(formData);
-    // 이미지
 
     if (imageInput && imageInput.files && imageInput.files.length > 0) {
       // 파일이 선택된 경우에만 실행
