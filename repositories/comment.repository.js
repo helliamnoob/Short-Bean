@@ -19,13 +19,11 @@ class CommentRepository {
   };
 
   updateComment = async ({ user_id, comment_id, content }) => {
-    await Comments.update({ content }, { where: { comment_id, user_id: user_id } });
+    await Comments.update({ content }, { where: { comment_id, user_id } });
   };
-
+  
   deleteComment = async ({ user_id, comment_id }) => {
-    await Comments.destroy({
-      where: { comment_id, user_id: user_id },
-    });
+    await Comments.destroy({ where: { comment_id, user_id } });
   };
 }
 

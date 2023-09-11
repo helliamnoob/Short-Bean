@@ -71,6 +71,10 @@ app.get('/admin', (_, res) => {
 app.get('/post', (_, res) => {
   res.sendFile(__dirname + '/public/views/post.html');
 });
+
+
+
+
 // // 검색 기능
 // app.get('/api/search', (req, res) => {
 //   // 검색 로직을 구현해야 합니다.

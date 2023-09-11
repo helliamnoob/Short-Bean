@@ -37,60 +37,179 @@ loginForm.addEventListener('submit', function (event) {
     });
 });
 
-// 댓글 작성: 이게 진짜
+//댓글
 const params = new URLSearchParams(window.location.search);
 const post_id = params.get('post_id');
 
+//댓글 조회
+function addCommentToDOM(commentList, content, commentId) {
+  const commentElement = document.createElement('div');
+  commentElement.classList.add('comment');
+  commentElement.dataset.id = commentId;
+  const comment_id = commentId;
+
+  const commentText = document.createElement('span');
+  commentText.classList.add('comment-text');
+  commentText.textContent = content;
+
+  commentElement.appendChild(commentText);
+  commentList.appendChild(commentElement);
+
+  // 현재 날짜 및 시간 정보 가져오기
+  const currentDate = new Date();
+
+  // 댓글 아이템에 생성일자 추가
+  const commentDate = document.createElement('div');
+  commentDate.className = 'comment-date';
+  commentDate.textContent = `작성 시간: ${currentDate.toLocaleDateString()}`;
+  commentElement.appendChild(commentDate);
+
+  // 댓글 수정 버튼 추가
+  const updateButton = document.createElement('button');
+  updateButton.type = 'button';
+  updateButton.className = 'btn btn-dark';
+  updateButton.id = 'commentUpdate';
+  updateButton.textContent = '댓글 수정';
+  commentElement.appendChild(updateButton);
+  updateButton.addEventListener('click', async function () {
+    console.log('Update button clicked.'); // 버튼 클릭 로그
+
+    const newContent = window.prompt('댓글을 수정하세요:', content);
+    if (newContent) {
+      console.log(`New content: ${newContent}`); // 새로운 댓글 내용 로그
+      console.log(`Post ID: ${post_id}, Comment ID: ${comment_id}`); // 포스트 ID와 댓글 ID 로그
+
+      try {
+        const response = await fetch(`/api/post/${post_id}/comment/${comment_id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            content: newContent,
+          }),
+        });
+
+        console.log('Fetch request made.'); // Fetch 요청 로그
+        console.log(`Response status: ${response.status}, Response ok: ${response.ok}`); // 응답 상태 로그
+
+        const data = await response.json();
+        console.log('Response data:', data); // 응답 데이터 로그
+
+        if (data && data.success) {
+          commentElement.textContent = newContent;
+          commentElement.appendChild(updateButton);
+          alert('댓글이 수정되었습니다.');
+        } else {
+          alert('댓글 수정에 실패했습니다.');
+        }
+      } catch (error) {
+        console.error('An error occurred:', error); // 에러 로그
+        alert('오류가 발생했습니다.');
+      }
+    }
+  });
+  // 댓글 삭제 버튼 추가
+  const deleteButton = document.createElement('button');
+  deleteButton.type = 'button';
+  deleteButton.className = 'btn btn-dark';
+  deleteButton.id = 'commentDelete';
+  deleteButton.textContent = '댓글 삭제';
+  commentElement.appendChild(deleteButton);
+
+  deleteButton.addEventListener('click', async function () {
+    // 사용자에게 댓글을 삭제할 것인지 물어봅니다.
+    const isConfirmed = window.confirm('이 댓글을 삭제하시겠습니까?');
+    if (isConfirmed) {
+      try {
+        // 서버에 DELETE 요청을 보냅니다.
+        const response = await fetch(`/api/post/${post_id}/comment/${comment_id}`, {
+          method: 'DELETE',
+        });
+
+        // 요청의 결과를 확인합니다.
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.success) {
+            // 성공적으로 삭제되면, DOM에서도 댓글을 제거합니다.
+            commentElement.remove();
+            alert('댓글이 삭제되었습니다.');
+          } else {
+            alert('댓글 삭제에 실패했습니다.');
+          }
+        } else {
+          console.error(`Failed to delete comment: ${response.status}`);
+          alert('댓글 삭제에 실패했습니다.');
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+        alert('오류가 발생했습니다.');
+      }
+    }
+  });
+
+  // 댓글 아이템을 최상단에 추가
+  commentList.insertBefore(commentElement, commentList.firstChild);
+}
+
+document.addEventListener('DOMContentLoaded', async function () {
+  const commentList = document.getElementById('commentList');
+
+  // GET 요청으로 댓글 데이터 가져오기
+  try {
+    const response = await fetch(`/api/post/${post_id}/comment`);
+    if (response.ok) {
+      const comments = await response.json();
+      console.log(comments);
+
+      if (Array.isArray(comments.data)) {
+        comments.data.forEach((comment) => {
+          addCommentToDOM(commentList, comment.content, comment.comment_id);
+        });
+      } else {
+        console.warn('Received data is not an array');
+      }
+    } else {
+      console.error(`Failed to fetch comments: ${response.status}`);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('댓글을 가져오는 데 실패했습니다.');
+  }
+});
+
 document.getElementById('commentCreate').addEventListener('click', async function () {
+  const commentList = document.getElementById('commentList'); // 댓글 리스트 DOM 요소를 미리 가져옵니다.
   const content = document.getElementById('commentInput').value;
 
-  await fetch(`/api/post/${post_id}/comment`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      content,
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      {
-        alert('댓글이 저장되었습니다.');
-        // 저장 성공 시의 처리
-        // } else {
-        //   alert('질문 저장에 실패했습니다.');
-        //   // 저장 실패 시의 처리
-        console.log(data.message);
-
-        // 댓글이 성공적으로 저장되면 화면에 추가
-        const commentList = document.getElementById('commentList');
-        if (commentList) {
-          const commentItem = document.createElement('div');
-          commentItem.className = 'comment-item';
-          commentItem.textContent = content;
-
-          // 현재 날짜 및 시간 정보 가져오기
-          const currentDate = new Date();
-
-          // 댓글 아이템에 생성일자 추가
-          const commentDate = document.createElement('div');
-          commentDate.className = 'comment-date';
-          commentDate.textContent = `작성 시간: ${currentDate.toLocaleDateString()}`;
-          commentItem.appendChild(commentDate);
-
-          // 댓글 아이템을 최상단에 추가
-          commentList.insertBefore(commentItem, commentList.firstChild);
-          // } else {
-          //   console.error(error);
-          // }
-        }
-      }
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      alert('오류가 발생했습니다.');
+  try {
+    const response = await fetch(`/api/post/${post_id}/comment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        content,
+      }),
     });
+
+    const data = await response.json();
+
+    if (response.ok && data && data.success) {
+      alert('댓글이 저장되었습니다.');
+
+      const newCommentId = data.commentId;
+
+      // 새 댓글을 DOM에 추가합니다.
+      addCommentToDOM(commentList, content, newCommentId);
+    } else {
+      alert('댓글 생성에 실패했습니다.');
+      console.log(data.message);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('오류가 발생했습니다.');
+  }
 });
 
 //좋아요 버튼
