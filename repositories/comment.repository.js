@@ -11,7 +11,11 @@ class CommentRepository {
   };
 
   findComment = async ({ comment_id }) => {
-    return await Comments.findOne({ where: { comment_id }, order: [['createdAt', 'DESC']] });
+    return await Comments.findOne({
+      where: { comment_id },
+      order: [['createdAt', 'DESC']],
+      attribute: ['userName'],
+    });
   };
 
   createComment = async ({ user_id, post_id, content }) => {
@@ -21,7 +25,7 @@ class CommentRepository {
   updateComment = async ({ user_id, comment_id, content }) => {
     await Comments.update({ content }, { where: { comment_id, user_id } });
   };
-  
+
   deleteComment = async ({ user_id, comment_id }) => {
     await Comments.destroy({ where: { comment_id, user_id } });
   };

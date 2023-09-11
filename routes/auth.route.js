@@ -1,13 +1,13 @@
 const express = require('express');
 const { Users } = require('../models');
 const { Admins } = require('../models');
-const {TutorInfos} = require('../models');
+const { TutorInfos } = require('../models');
 const jwt = require('jsonwebtoken');
 const middleware = require('../middlewares/auth_middleware');
 const router = express.Router();
 const { Op } = require('sequelize');
 const node_cache = require('node-cache');
-const my_cache = new node_cache({stdTTL: 500, checkperiod:600});
+const my_cache = new node_cache({ stdTTL: 500, checkperiod: 600 });
 const axios = require('axios');
 const crypto = require('crypto-js');
 require('dotenv').config();
@@ -62,7 +62,8 @@ router.post('/login', async (req, res) => {
     }
     const token = await jwt.sign({ user_id: user.user_id }, process.env.SECRET_KEY);
     res.cookie('authorization', `Bearer ${token}`);
-    my_cache.set(user.user_id, user, 10000);
+    console.log(token);
+    // my_cache.set(user.user_id, user, 10000);
     return res.status(200).json({ message: `로그인 성공 ${user.user_name}님 환영합니다.` });
   } catch (e) {
     console.log(e);
@@ -157,7 +158,7 @@ router.get('/usertest', middleware, async (req, res) => {
 
 // 문자 발송
 router.post('/smsauth', async (req, res) => {
-  const { name,phone } = req.body;
+  const { name, phone } = req.body;
   try {
     send_message(name, phone);
     return res.status(200).json({ message: 'sucess' });
@@ -168,16 +169,15 @@ router.post('/smsauth', async (req, res) => {
 });
 // 문자 확인
 router.post('/smscheck', async (req, res) => {
-  const{phone} = req.body;
+  const { phone } = req.body;
   try {
     const data = my_cache.get(phone);
-    return res.status(200).json({ data : data });
+    return res.status(200).json({ data: data });
   } catch (e) {
     console.log(e);
     res.status(500).json({ message: 'server error.' });
   }
 });
-
 
 function send_message(name, phone) {
   var space = ' '; // one space
@@ -209,7 +209,7 @@ function send_message(name, phone) {
       type: 'SMS',
       countryCode: '82',
       //sens api 에 저장된 번호로 부터 발송됩니다.
-      from: "01051257345",
+      from: '01051257345',
       // 원하는 메세지 내용
       content: `${name}님 ${verfiy_code} `,
       messages: [
@@ -253,8 +253,8 @@ function makeSignature() {
 }
 // admin 회원가입
 router.post('/admin', async (req, res) => {
-  const { admin_name,password,email } = req.body;
-  
+  const { admin_name, password, email } = req.body;
+
   try {
     const isExitstEmail = await Admins.findOne({ where: { email } });
     //이미 db에 이메일이 있다면
@@ -269,7 +269,7 @@ router.post('/admin', async (req, res) => {
 
   try {
     // 사용자 테이블에 데이터 삽입
-    await Admins.create({ admin_name,password,email });
+    await Admins.create({ admin_name, password, email });
     // 사용자 정보 테이블에 데이터를 삽입
     res.status(201).json({ message: '회원가입이 완료되었습니다' });
   } catch (error) {
@@ -343,10 +343,10 @@ router.delete('/admin/signout', middleware, async (req, res) => {
 });
 //cookie 구별
 router.get('/usercheck', middleware, async (req, res) => {
-  if(!res.locals.user){
+  if (!res.locals.user) {
     return res.status(200).json({ data: false });
   }
-  if(!res.locals.admin){
+  if (!res.locals.admin) {
     return res.status(200).json({ data: false });
   }
   const { admin_id } = res.locals.admin;
@@ -365,9 +365,9 @@ router.get('/usercheck', middleware, async (req, res) => {
 router.get('/usercheck/tutor', middleware, async (req, res) => {
   const { user_id } = res.locals.user;
   try {
-    const find_tutor = await TutorInfos.findOne({where : { user_id}});
-    if(!find_tutor){
-      return res.status(200).json({ data : false });
+    const find_tutor = await TutorInfos.findOne({ where: { user_id } });
+    if (!find_tutor) {
+      return res.status(200).json({ data: false });
     }
     return res.status(200).json({ data: find_tutor });
   } catch {
