@@ -120,7 +120,7 @@ async function socketOn() {
     socket.emit('show_tutor', handleFaceChatBtn);
   });
   // 수정;
-  await getAllUsers();
+  // await getAllUsers();
 }
 
 function getCookieValue(cookieName) {
@@ -180,9 +180,10 @@ async function createRoom(targetUesrId) {
     console.error('Error:', error.message);
   }
 }
-function closeModal() {
+const closeBtn = document.querySelector('.close');
+closeBtn.addEventListener('click', () => {
   faceChatForm.style.display = 'none';
-}
+});
 function handleFaceChatBtn(tutors) {
   const tutorListExceptMe = tutors.filter((tutor) => tutor.userId !== currentUserId);
 
@@ -265,7 +266,7 @@ async function renderUsers(socketUser) {
     div.setAttribute('data-user-id', user.userId);
     div.setAttribute('data-user-name', user.userName);
     div.classList.add('userInterface');
-    div.textContent = `🌞${user.userName}`;
+    div.textContent = `🟢${user.userName}`;
     const chatBtn = document.createElement('button');
     chatBtn.textContent = '채팅하기';
     chatBtn.classList.add('button-chat');
@@ -277,7 +278,7 @@ async function renderUsers(socketUser) {
     const div = document.createElement('div');
     div.setAttribute('data-user-id', user.user_id);
     div.setAttribute('data-user-name', user.user_name);
-    div.textContent = `🌫️${user.user_name}`;
+    div.textContent = `🔴${user.user_name}`;
     div.classList.add('userInterface');
     const chatBtn = document.createElement('button');
     chatBtn.textContent = '채팅하기';
