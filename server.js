@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-const port = 3000;
+const port = 80;
 const http = require('http');
 const cookieParser = require('cookie-parser');
 const { mongoDB } = require('./config/mongo.config');
