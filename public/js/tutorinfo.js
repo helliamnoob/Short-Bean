@@ -11,7 +11,7 @@ const infoupdate_btn = document.getElementById('infoupdate_btn');
 
 async function tutorinfo() {
   try {
-    const response = await fetch('http://localhost:3000/api/tutors', {
+    const response = await fetch('/api/tutors', {
       method: 'GET',
     })
       .then((res) => res.json())
@@ -28,7 +28,7 @@ async function tutorinfo() {
 
 async function info() {
   try {
-    const response = await fetch('http://localhost:3000/api/usertest', {
+    const response = await fetch('/api/usertest', {
       method: 'GET',
       mode: 'cors',
       credentials: 'same-origin',

@@ -21,6 +21,7 @@ module.exports = (io) => {
     };
 
     connectedUsers.push(user);
+    console.log(user);
     socket.emit('getName', userName);
     // 새로운 사용자가 접속했음을 모든  알림
     io.emit('show_users', connectedUsers);

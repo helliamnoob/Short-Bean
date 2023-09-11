@@ -7,7 +7,7 @@ const admin_signup_btn = document.getElementById('admin_signup_btn');
 
 admin_signup_btn.addEventListener('click', async () => {
   try {
-      const response = await fetch('http://localhost:3000/api/admin', {
+      const response = await fetch('/api/admin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

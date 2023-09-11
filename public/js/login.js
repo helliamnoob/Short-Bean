@@ -8,7 +8,7 @@ window.onload = user_cookie_check();
 
 loginbtn.addEventListener('click', async () => {
   try {
-    const response = await fetch('http://localhost:3000/api/login', {
+    const response = await fetch('/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -34,35 +34,33 @@ loginbtn.addEventListener('click', async () => {
 
 async function user_cookie_check() {
   console.log('start');
-  if(cookie){
-    if(cookie_check()){
+  if (cookie) {
+    if (cookie_check()) {
       return;
-    }
-    else{
-      console.log("user totur check")
+    } else {
+      console.log('user totur check');
       console.log(tutor_check());
       return;
     }
-  }
-  else
-    return console.log("end");
+  } else return console.log('end');
 }
 
 async function tutor_check() {
   try {
-    const response = await fetch('http://localhost:3000/api/usercheck/tutor', {
+    const response = await fetch('/api/usercheck/tutor', {
       method: 'GET',
     })
-    .then(res => res.json()).then(data => {
-      if(data['data']==false){
-        console.log("user");
-        window.location.href = `/public/views/user-main.html`;
+      .then((res) => res.json())
+      .then((data) => {
+        if (data['data'] == false) {
+          console.log('user');
+          window.location.href = `/public/views/user-main.html`;
+          return;
+        }
+        window.location.href = `/public/views/tutor-main.html`;
+        console.log('tutor');
         return;
-      }
-      window.location.href = `/public/views/tutor-main.html`;
-      console.log("tutor");
-      return;
-  });
+      });
   } catch (error) {
     console.error('Error:', error.message);
     return;
@@ -70,20 +68,19 @@ async function tutor_check() {
 }
 async function cookie_check() {
   try {
-    const response = await fetch('http://localhost:3000/api/usercheck', {
+    const response = await fetch('/api/usercheck', {
       method: 'GET',
     })
-    .then(res => res.json()).then(data => {
-      console.log(data);
-      return data;
-  });
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        return data;
+      });
   } catch (error) {
     console.error('Error:', error.message);
     return;
   }
 }
-
-
 
 // 코드수정 -이승준
 function redircetSignUp() {

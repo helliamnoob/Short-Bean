@@ -375,6 +375,17 @@ router.get('/usercheck/tutor', middleware, async (req, res) => {
   }
 });
 
+//tutor 연결
+router.get('/usercheck/admin', async (req, res) => {
+  const admin = req.session.admin;
+  console.log(admin);
+  try {
+    return res.status(200).json({ data: amdin });
+  } catch {
+    res.status(500).json({ message: 'server error.' });
+  }
+});
+
 // 유저 이름 불러오기: 프론트에 필요한 거에요 지우지 말아주세요
 router.get('/user', middleware, async (req, res) => {
   const { user_id } = res.locals.user;

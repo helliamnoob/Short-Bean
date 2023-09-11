@@ -110,7 +110,7 @@ class PostController {
 
       return res.status(code).json({ message });
     } catch (error) {
-      return this.handleError(res, error);
+      return res.status(400).json({ error: error.message });
     }
   };
 
@@ -124,9 +124,9 @@ class PostController {
         return res.status(400).json({ error: '게시글 ID가 필요합니다.' });
       }
 
-      if (post_id !== req.body.requested_post_id) {
-        return res.status(400).json({ error: '올바른 게시글 ID가 아닙니다.' });
-      }
+      // if (post_id !== req.body.requested_post_id) {
+      //   return res.status(400).json({ error: '올바른 게시글 ID가 아닙니다.' });
+      // }
 
       const { code, message } = await this.postService.deletePost({
         post_id,
@@ -135,7 +135,7 @@ class PostController {
 
       return res.status(code).json({ message });
     } catch (error) {
-      return this.handleError(res, error);
+      return res.status(400).json({ error: error.message });
     }
   };
 

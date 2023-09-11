@@ -362,3 +362,8 @@ function displayPosts(posts) {
     postsContainer.appendChild(ulElement);
   }
 }
+// 튜터리스트 페이지 이동
+const reportButton = document.querySelector('#tutor-button');
+reportButton.addEventListener('click', function () {
+  window.location.href = '../tutorlist';
+});

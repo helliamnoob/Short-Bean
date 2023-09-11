@@ -260,6 +260,8 @@ async function fetchPostMain(post_id) {
   }
 }
 
+const titleInput = document.getElementById('titleInput');
+const contentInput = document.getElementById('contentInput');
 // 페이지 로딩 시 게시글 상세 정보를 가져와서 화면에 표시
 async function loadPostMain() {
   const params = new URLSearchParams(window.location.search);
@@ -278,6 +280,8 @@ async function loadPostMain() {
     postContentElement.textContent = postMain.data.content;
     postSubjectElement.textContent = postMain.data.subject;
 
+    titleInput.value = postMain.data.title;
+    contentInput.value = postMain.data.content;
     // 만약 image가 null이 아니라면, 즉 이미지가 있다면 해당 image 문자열을 img 태그의 src로 설정합니다.
     if (postMain.data.image) {
       // S3 버킷 경로와 파일 이름을 조합하여 전체 이미지 URL 생성
@@ -494,4 +498,154 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   loadComments();
+//     // 댓글 작성 폼 초기화
+//     document.getElementById('commentText').value = '';
+//   } catch (error) {
+//     console.error('댓글 작성 오류:', error);
+//   }
+// }
+
+// 댓글 작성 폼의 submit 이벤트 핸들러 등록
+// document.getElementById('commentInput').addEventListener('submit', submitComment);
+
+// // ---------------------------------------
+
+// -----------------------------------------------
+
+// // 모달
+// const modal = document.getElementById('modal');
+// function modalOn() {
+//   modal.classList.add('on');
+// }
+// function modalOff() {
+//   modal.classList.remove('on');
+// }
+// const btnModal = document.getElementById('commentModal');
+// btnModal.addEventListener('click', modalOn);
+
+// const closeBtn = modal.querySelector('.close-area');
+// modal.addEventListener('click', function (e) {
+//   if (e.target === this) {
+//     modalOff();
+//   }
+// });
+// closeBtn.addEventListener('click', modalOff);
+
+// ---------------------wkfwhagkwk-------------------
+// // 댓글 수정 모달 열기
+// const commentEditButton = document.querySelector('#commentEdit');
+// commentEditButton.addEventListener('click', function () {
+//   // 선택한 댓글의 내용을 가져옵니다.
+//   const selectedComment = getSelectedComment(); // 이 함수는 선택한 댓글을 가져오는 로직을 구현해야 합니다.
+
+//   // 모달 창에 댓글 내용을 채웁니다.
+//   document.getElementById('editCommentText').value = selectedComment;
+
+//   // 모달을 열어줍니다.
+//   const commentEditModal = new bootstrap.Modal(document.getElementById('commentEditModal'));
+//   commentEditModal.show();
+// });
+
+// // 댓글 수정 버튼 클릭 이벤트 리스너 추가
+// document.getElementById('saveComment').addEventListener('click', function () {
+//   // 수정된 댓글 내용을 가져옵니다.
+//   const updatedComment = document.getElementById('editCommentText').value;
+
+//   // 서버에 수정된 댓글을 저장하는 함수 호출
+//   saveUpdatedComment(updatedComment); // 이 함수는 서버에 수정된 댓글을 보내는 로직을 구현해야 합니다.
+
+//   // 모달을 닫습니다.
+//   const commentEditModal = new bootstrap.Modal(document.getElementById('commentEditModal'));
+//   commentEditModal.hide();
+// });
+
+// // 선택한 댓글을 가져오는 함수 (예시로 선택한 댓글을 하드코딩으로 반환)
+// function getSelectedComment() {
+//   return '선택한 댓글 내용'; // 실제로 선택한 댓글 내용을 가져오는 로직을 구현해야 합니다.
+// }
+
+// // 서버에 수정된 댓글을 저장하는 함수 (실제로 서버로 보내는 코드를 추가해야 합니다)
+// function saveUpdatedComment(updatedComment) {
+//   // 여기에 서버로 수정된 댓글을 전송하는 로직을 추가합니다.
+// }
+
+// 게시글 작성 버튼 클릭 이벤트 리스너 추가
+document.getElementById('postCreate').addEventListener('click', function () {
+  window.location.href = `/public/views/post-detail.html`; // 여기에 게시글 작성 페이지의 URL을 넣으세요.
+});
+
+// // 버튼 클릭 이벤트 리스너 추가
+// document.getElementById('postUpdate').addEventListener('click', function () {
+//   window.location.href = `/public/views/post.html?post_id=${data.data.post_id}`; // 여기에 게시글 작성 페이지의 URL을 넣으세요.
+// });
+
+const postUpdateBtn = document.getElementById('postUpdate');
+const updatePostModal = document.getElementById('updatePostModal');
+
+postUpdateBtn.addEventListener('click', function () {
+  updatePostModal.style.display = 'block';
+
+  // 각각의 인풋 값 가져오기
+  // 제목이랑 본문은 페이지 렌더링할 때 위에서 이미 선언했습니다
+  // db접근 최소화 시키려고
+  const subjectInput = document.getElementById('subjectSelect');
+  const imageInput = document.getElementById('imageUpload');
+  const editButton = document.getElementById('editButton');
+
+  //수정하기 버튼을 눌러야 실행됩니다.
+  editButton.addEventListener('click', () => {
+    const formData = new FormData();
+    formData.append('title', titleInput.value);
+    formData.append('content', contentInput.value);
+    formData.append('subject', subjectInput.value);
+
+    if (imageInput && imageInput.files && imageInput.files.length > 0) {
+      // 파일이 선택된 경우에만 실행
+      formData.append('image', imageInput.files[0]);
+    }
+    fetch(`/api/post/${post_id}`, {
+      method: 'POST',
+      body: formData,
+      // headers: { 'Content-Type': 'multipart/form-data' },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        alert(data.message);
+        location.reload();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        alert('오류가 발생했습니다.');
+      });
+  });
+});
+function closeModal() {
+  updatePostModal.style.display = 'none';
+}
+
+const deleteBtn = document.getElementById('postDelete');
+// 게시글 삭제 버튼 클릭 이벤트 리스너 추가
+deleteBtn.addEventListener('click', async function () {
+  const prompt = confirm('정말 삭제하시겠습니까?');
+  if (prompt) {
+    try {
+      const response = await fetch(`/api/post/${post_id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        alert('게시글이 삭제되었습니다.');
+        window.location.href = `/public/views/user-main.html`;
+      } else {
+        const data = await response.json();
+        alert(`fail : ${data.error}`);
+        location.reload();
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  }
 });
