@@ -10,7 +10,7 @@ const delete_btn = document.getElementById('delete_btn');
 window.onload = info();
 async function info() {
   try {
-      const response = await fetch('http://localhost:3000/api/usertest', {
+      const response = await fetch('/api/usertest', {
       method: 'GET',
     }).then(res => res.json()).then(data => {
         console.log(data['user']);
@@ -38,7 +38,7 @@ infoupdate_btn.addEventListener('click', async () => {
 
 delete_btn.addEventListener('click', async () => {
   try {
-      const response = await fetch('http://localhost:3000/api/signout', {
+      const response = await fetch('/api/signout', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

@@ -1,5 +1,7 @@
 const SocketIO = require('socket.io');
 const express = require('express');
+const session = require('express-session');
+const sql_store = require('express-mysql-session');
 const cors = require('cors');
 const app = express();
 
@@ -18,6 +20,7 @@ const {
   useMarkRouter,
   facechatRouter,
   tutorRouter,
+  adminRouter,
 } = require('./routes');
 
 const server = http.createServer(app);
@@ -51,6 +54,7 @@ app.use('/api', [
   useMarkRouter,
   facechatRouter,
   tutorRouter,
+  adminRouter,
 ]);
 
 app.get('/', (_, res) => {
@@ -73,6 +77,22 @@ app.get('/post', (_, res) => {
   res.sendFile(__dirname + '/public/views/post.html');
 });
 app.use(cookieParser());
+
+// app.use(cookieParser(process.env.COOKIE_SECRET));
+
+const options = {
+    host: process.env.MYSQL_HOST,
+    port : process.env.MYSQL_PORT,
+    user :process.env.MYSQL_USERNAME,
+    password :process.env.MYSQL_PASSWORD,
+    database :process.env.MYSQL_DATABASE
+}
+
+app.use(session({                                            
+    secret:"asdfasffdas",
+    resave:true,
+    saveUninitialized:true,                                    
+  }));
 
 server.listen(port, () => {
   console.log(port, '포트로 서버가 열렸어요!');

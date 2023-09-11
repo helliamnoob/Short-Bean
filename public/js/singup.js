@@ -13,7 +13,7 @@ const auth_input = document.getElementById('auth');
 
 signup_btn.addEventListener('click', async () => {
   try {
-      const response = await fetch('http://localhost:3000/api/signup', {
+      const response = await fetch('/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ signup_btn.addEventListener('click', async () => {
 
 sms_auth.addEventListener('click', async () => {
   try {
-      const response = await fetch('http://localhost:3000/api/smsauth', {
+      const response = await fetch('/api/smsauth', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ sms_auth.addEventListener('click', async () => {
 sms_check.addEventListener('click', async () => {
   try {
     let code = 0;
-      const response = await fetch('http://localhost:3000/api/smscheck', {
+      const response = await fetch('/api/smscheck', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -88,6 +88,7 @@ sms_check.addEventListener('click', async () => {
         if(auth_input.value == code)
         {
           alert('인증 성공');
+          signup_btn.disabled = false;
           return;
         }
         alert(`인증 실패`);

@@ -8,7 +8,7 @@ window.onload = user_cookie_check();
 
 loginbtn.addEventListener('click', async () => {
   try {
-    const response = await fetch('http://localhost:3000/api/login', {
+    const response = await fetch('/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ async function user_cookie_check() {
 
 async function tutor_check() {
   try {
-    const response = await fetch('http://localhost:3000/api/usercheck/tutor', {
+    const response = await fetch('/api/usercheck/tutor', {
       method: 'GET',
     })
     .then(res => res.json()).then(data => {
@@ -70,7 +70,7 @@ async function tutor_check() {
 }
 async function cookie_check() {
   try {
-    const response = await fetch('http://localhost:3000/api/usercheck', {
+    const response = await fetch('/api/usercheck', {
       method: 'GET',
     })
     .then(res => res.json()).then(data => {
