@@ -14,8 +14,8 @@
   <body>
     <!-- Header -->
     <header id="header">
-      <div class="inner">
-        <a href="/" class="logo">짧공</a>
+      <div class="inner" style="color: black">
+        <a href="/public/views/user-main.html" class="logo">짧공</a>
         <nav id="nav">
           <a href="/public/views/chat.html">채팅하기</a>
           <a href="/public/views/user-main.html">홈페이지</a>
@@ -33,11 +33,11 @@
       <div class="user-list">
         <h2>사용자 목록</h2>
         <ul id="user-list">
-          <li data-userid="1" data-username="User1" data-status="online">🌞User1</li>
-          <li data-userid="2" data-username="User2" data-status="offline">🌫️User2</li>
+          <li data-userid="1" data-username="User1" data-status="online">🟢User1</li>
+          <li data-userid="2" data-username="User2" data-status="offline">🔴User2</li>
           <li>
             <div class="user-item" data-userid="1" data-username="User1" data-status="online">
-              🌞User1
+              🟢User1
               <button class="user-button">버튼1</button>
               <button class="user-button">버튼2</button>
             </div>
@@ -64,7 +64,7 @@
 
     <div id="faceChatForm" class="modal">
       <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
+        <span class="close">&times;</span>
         <h2>화상채팅 가능한 선생님</h2>
         <div id="tutorList">
           <div class="box person">
@@ -84,7 +84,7 @@
     <script src="/public/js/util.js"></script>
     <script src="/public/js/main.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/public/js/chat.js"></script>
+    <script type="module" src="/public/js/chat.js"></script>
     <!-- <script src="/public/js/invite.js"></script> -->
   </body>
 </html>

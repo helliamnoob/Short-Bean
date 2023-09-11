@@ -14,7 +14,7 @@ requestTutorButton.addEventListener('click', requestTutor);
 window.onload = info();
 async function info() {
   try {
-    const response = await fetch('http://localhost:3000/api/usertest', {
+      const response = await fetch('/api/usertest', {
       method: 'GET',
     })
       .then((res) => res.json())
@@ -44,12 +44,12 @@ infoupdate_btn.addEventListener('click', async () => {
 
 delete_btn.addEventListener('click', async () => {
   try {
-    const response = await fetch('http://localhost:3000/api/signout', {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+      const response = await fetch('/api/signout', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
     if (response.ok) {
       alert('탈퇴 되었습니다.');

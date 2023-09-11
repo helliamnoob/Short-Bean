@@ -3,16 +3,15 @@ const chatBox = document.getElementById('chatBox');
 const faceChatBtn = document.getElementById('faceChatBtn').querySelector('button');
 const faceChatForm = document.getElementById('faceChatForm');
 const userList = document.getElementById('user-list');
+import { socket } from '../util/socket.util.js';
 
 let roomId;
-let socket;
 let jwtToken;
 let currentUserId;
 let userName;
 
 const screenWidth = window.screen.width;
 const screenHeight = window.screen.height;
-
 
 faceChatForm.style.display = 'none';
 document.addEventListener('DOMContentLoaded', async () => {
@@ -22,11 +21,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     alert('로그인 후 이용가능한 서비스입니다.');
     window.location.href = `/`;
   } else {
-    socket = io({
-      auth: {
-        token: jwtToken,
-      },
-    });
     socketOn();
     socket.emit('register', currentUserId);
 
@@ -38,18 +32,18 @@ document.addEventListener('DOMContentLoaded', async () => {
           const data = {
             target_user_id: currentUserId, // 현재 유저의 ID
             user_id: inviterId, // 초대한 사람의 ID
-            facechat_room_id: roomId // 방 ID
+            facechat_room_id: roomId, // 방 ID
           };
-          
+
           // API에 POST 요청을 보냄
           const response = await fetch('/api/facechat', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
           });
-          
+
           if (response.status === 200 || response.status === 201) {
             console.log('API POST successful');
             socket.emit('accept_face_chat', inviterId, currentUserId, roomId);
@@ -65,7 +59,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     socket.on('start_face_chat', (roomId) => {
       console.log('Invitation accepted! Attempting to open chat window for room:', roomId);
-      window.open(`/facechat?room=${roomId}`, '_blank', `width=${screenWidth},height=${screenHeight}`);
+      window.open(
+        `/facechat?room=${roomId}`,
+        '_blank',
+        `width=${screenWidth},height=${screenHeight}`
+      );
     });
   }
 });
@@ -122,7 +120,7 @@ async function socketOn() {
     socket.emit('show_tutor', handleFaceChatBtn);
   });
   // 수정;
-  await getAllUsers();
+  // await getAllUsers();
 }
 
 function getCookieValue(cookieName) {
@@ -182,9 +180,10 @@ async function createRoom(targetUesrId) {
     console.error('Error:', error.message);
   }
 }
-function closeModal() {
+const closeBtn = document.querySelector('.close');
+closeBtn.addEventListener('click', () => {
   faceChatForm.style.display = 'none';
-}
+});
 function handleFaceChatBtn(tutors) {
   const tutorListExceptMe = tutors.filter((tutor) => tutor.userId !== currentUserId);
 
@@ -267,7 +266,7 @@ async function renderUsers(socketUser) {
     div.setAttribute('data-user-id', user.userId);
     div.setAttribute('data-user-name', user.userName);
     div.classList.add('userInterface');
-    div.textContent = `🌞${user.userName}`;
+    div.textContent = `🟢${user.userName}`;
     const chatBtn = document.createElement('button');
     chatBtn.textContent = '채팅하기';
     chatBtn.classList.add('button-chat');
@@ -279,7 +278,7 @@ async function renderUsers(socketUser) {
     const div = document.createElement('div');
     div.setAttribute('data-user-id', user.user_id);
     div.setAttribute('data-user-name', user.user_name);
-    div.textContent = `🌫️${user.user_name}`;
+    div.textContent = `🔴${user.user_name}`;
     div.classList.add('userInterface');
     const chatBtn = document.createElement('button');
     chatBtn.textContent = '채팅하기';
@@ -319,7 +318,8 @@ function getCurrentTime() {
   const minutes = now.getMinutes(); // 현재 시간(분) 가져오기
 
   // 현재 시간을 시:분:초 형식으로 반환
-  const currentTime = `${hours}:${minutes}`;
+  const minutesWith0 = minutes < 10 ? `0${minutes}` : minutes;
+  const currentTime = `${hours}:${minutesWith0}`;
 
   return currentTime;
 }

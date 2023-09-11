@@ -20,15 +20,18 @@ class PostRepository {
   };
 
   updatePost = async ({ user_id, post_id, title, content, subject, image }) => {
-    return await Posts.update(
-      { title, content, subject, image },
-      { where: { [Op.and]: [{ user_id }, { post_id }] } }
-    );
+    return await Posts.update({ title, content, subject, image }, { where: { post_id } });
   };
 
-  deletePost = async ({ user_id, post_id }) => {
+  deletePost = async (post_id) => {
     return await Posts.destroy({
-      where: { [Op.and]: [{ user_id }, { post_id }] },
+      where: { post_id },
+    });
+  };
+
+  getPostById = async (post_id) => {
+    return await Posts.findOne({
+      where: { post_id },
     });
   };
 

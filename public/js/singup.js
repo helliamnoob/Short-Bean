@@ -13,39 +13,37 @@ const auth_input = document.getElementById('auth');
 
 signup_btn.addEventListener('click', async () => {
   try {
-      const response = await fetch('http://localhost:3000/api/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email_input.value,
-          password: pwd_input.value,
-          nickname : nickname_input.value,
-          user_name : user_name_input.value,
-          phone_number : phone_number_input.value,
-          birth_date : birth_date_input.value,
-        }),
-      });
+    const response = await fetch('/api/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email_input.value,
+        password: pwd_input.value,
+        nickname: nickname_input.value,
+        user_name: user_name_input.value,
+        phone_number: phone_number_input.value,
+        birth_date: birth_date_input.value,
+      }),
+    });
 
-      if (response.ok) {
-        // 로그인 성공시 페이지 이동
-        alert('회원가입이 되었습니다.');
-        window.location.href = `/`;
-      } else {
-        const data = await response.json();
-        alert(`회원가입 실패: ${data.message}`);
-      }
-    
+    if (response.ok) {
+      // 로그인 성공시 페이지 이동
+      alert('회원가입이 되었습니다.');
+      window.location.href = `/`;
+    } else {
+      const data = await response.json();
+      alert(`회원가입 실패: ${data.message}`);
+    }
   } catch (error) {
     console.error('Error:', error.message);
   }
 });
 
-
 sms_auth.addEventListener('click', async () => {
   try {
-      const response = await fetch('http://localhost:3000/api/smsauth', {
+      const response = await fetch('/api/smsauth', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,13 +54,12 @@ sms_auth.addEventListener('click', async () => {
         }),
       });
 
-      if (response.ok) {
-        alert('전송 되었습니다.');
-      } else {
-        const data = await response.json();
-        alert(`전송 실패: ${data.message}`);
-      }
-    
+    if (response.ok) {
+      alert('전송 되었습니다.');
+    } else {
+      const data = await response.json();
+      alert(`전송 실패: ${data.message}`);
+    }
   } catch (error) {
     console.error('Error:', error.message);
   }
@@ -71,23 +68,26 @@ sms_auth.addEventListener('click', async () => {
 sms_check.addEventListener('click', async () => {
   try {
     let code = 0;
-      const response = await fetch('http://localhost:3000/api/smscheck', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          phone : phone_number_input.value,
-        })
-      }).then(res => res.json()).then(data => {
+    const response = await fetch('/api/smscheck', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        phone: phone_number_input.value,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
         let rows = data;
-          code=rows['data'];
+        code = rows['data'];
       });
     
         console.log(code);
         if(auth_input.value == code)
         {
           alert('인증 성공');
+          signup_btn.disabled = false;
           return;
         }
         alert(`인증 실패`);
