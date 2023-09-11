@@ -81,22 +81,27 @@ app.get('/admin/id=:id', (req, res) => {
 app.get('/admin/tutors/id=:id', (req, res) => {
   res.sendFile(__dirname + '/public/views/tutor-detail.html');
 });
+app.get('/public/tutorlist', (req, res) => {
+  res.sendFile(__dirname + '/public/views/tutor-list.html');
+});
 
 // app.use(cookieParser(process.env.COOKIE_SECRET));
 
 const options = {
-    host: process.env.MYSQL_HOST,
-    port : process.env.MYSQL_PORT,
-    user :process.env.MYSQL_USERNAME,
-    password :process.env.MYSQL_PASSWORD,
-    database :process.env.MYSQL_DATABASE
-}
+  host: process.env.MYSQL_HOST,
+  port: process.env.MYSQL_PORT,
+  user: process.env.MYSQL_USERNAME,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
+};
 
-app.use(session({                                            
-    secret:"asdfasffdas",
-    resave:true,
-    saveUninitialized:true,                                    
-  }));
+app.use(
+  session({
+    secret: 'asdfasffdas',
+    resave: true,
+    saveUninitialized: true,
+  })
+);
 
 server.listen(port, () => {
   console.log(port, '포트로 서버가 열렸어요!');
