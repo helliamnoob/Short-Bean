@@ -98,3 +98,6 @@ async function requestTutor() {
 function showRequestTutorModal() {
   requestTutorFormModal.style.display = 'block';
 }
+function closeModal() {
+  requestTutorFormModal.style.display = 'none';
+}
