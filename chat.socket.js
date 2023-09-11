@@ -75,26 +75,26 @@ module.exports = (io) => {
       const tutors = connectedUsers.filter((user) => user.isTutor === true);
       done(tutors);
     });
-    // 예림님쪽 화상채팅 
+    // 예림님쪽 화상채팅
 
     //룸 들어가기
     socket.on('join_room', (roomId) => {
       socket.join(roomId);
       socket.to(roomId).emit('user_joined', { userId: socket.id, roomId });
     });
- //들어가는 순간 offer 생성
+    //들어가는 순간 offer 생성
     socket.on('offer', (offer, roomId) => {
       console.log(`[SERVER] Received an 'offer' from ${socket.id} for room ${roomId}`);
       socket.to(roomId).emit('offer', offer);
       console.log(`[SERVER] 'offer' event emitted to room ${roomId}`);
     });
-//응답
+    //응답
     socket.on('answer', (answer, roomId) => {
       console.log(`[SERVER] Received an 'answer' from ${socket.id} for room ${roomId}`);
       socket.to(roomId).emit('answer', answer);
       console.log(`[SERVER] 'answer' event emitted to room ${roomId}`);
     });
-//연결
+    //연결
     socket.on('ice', (ice, roomId) => {
       console.log(`[SERVER] Received an 'ice' candidate from ${socket.id} for room ${roomId}`);
       socket.to(roomId).emit('ice', ice);
@@ -109,30 +109,30 @@ module.exports = (io) => {
 
     //캔버스 화면 공유
 
-  //그리기  
-  socket.on('drawing', (data) => {
-    socket.broadcast.emit('drawing', data);
-  });
- //마우스 누르고 시작하는 지점
-  socket.on('mousedown', (data) => {
-    socket.broadcast.emit('mousedown', data);
-  });
-//마우스 때고 끝내는 지점
-  socket.on('mouseup', () => {
-    socket.broadcast.emit('mouseup');
-  });
-//지우기
-  socket.on('startErasing', () => {
-    socket.broadcast.emit('startErasing');
-  });
-//지우는걸 멈추기
-  socket.on('stopErasing', () => {
-    socket.broadcast.emit('stopErasing');
-  });
-//전체 지우기
-  socket.on('clearCanvas', () => {
-    socket.broadcast.emit('clearCanvas');
-  });
+    //그리기
+    socket.on('drawing', (data) => {
+      socket.broadcast.emit('drawing', data);
+    });
+    //마우스 누르고 시작하는 지점
+    socket.on('mousedown', (data) => {
+      socket.broadcast.emit('mousedown', data);
+    });
+    //마우스 때고 끝내는 지점
+    socket.on('mouseup', () => {
+      socket.broadcast.emit('mouseup');
+    });
+    //지우기
+    socket.on('startErasing', () => {
+      socket.broadcast.emit('startErasing');
+    });
+    //지우는걸 멈추기
+    socket.on('stopErasing', () => {
+      socket.broadcast.emit('stopErasing');
+    });
+    //전체 지우기
+    socket.on('clearCanvas', () => {
+      socket.broadcast.emit('clearCanvas');
+    });
 
     // 화상채팅 초대
     socket.on('register', (userId) => {
@@ -163,7 +163,7 @@ module.exports = (io) => {
           io.to(inviteeSocketId).emit('start_face_chat', roomId);
         } catch (error) {
           console.error('Error while joining the room:', error);
-          socket.emit('error_notification', 'Failed to join the chat room.'); 
+          socket.emit('error_notification', 'Failed to join the chat room.');
         }
       } else {
         console.log('Socket ID not found.');
