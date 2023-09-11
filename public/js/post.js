@@ -189,6 +189,8 @@ async function fetchPostMain(post_id) {
   }
 }
 
+const titleInput = document.getElementById('titleInput');
+const contentInput = document.getElementById('contentInput');
 // 페이지 로딩 시 게시글 상세 정보를 가져와서 화면에 표시
 async function loadPostMain() {
   const params = new URLSearchParams(window.location.search);
@@ -207,6 +209,8 @@ async function loadPostMain() {
     postContentElement.textContent = postMain.data.content;
     postSubjectElement.textContent = postMain.data.subject;
 
+    titleInput.value = postMain.data.title;
+    contentInput.value = postMain.data.content;
     // 만약 image가 null이 아니라면, 즉 이미지가 있다면 해당 image 문자열을 img 태그의 src로 설정합니다.
     if (postMain.data.image) {
       // S3 버킷 경로와 파일 이름을 조합하여 전체 이미지 URL 생성
@@ -457,67 +461,47 @@ document.getElementById('postCreate').addEventListener('click', function () {
 // 게시글 수정
 // 게시글 수정 버튼 클릭 이벤트 리스너
 const postUpdateBtn = document.getElementById('postUpdate');
+const updatePostModal = document.getElementById('updatePostModal');
 
 postUpdateBtn.addEventListener('click', function () {
-  window.location.href = `/public/views/post-detail.html?post_id=${post_id}`;
+  updatePostModal.style.display = 'block';
 
-  // 게시글 내용 불러오기
-  fetch(`/api/post/${post_id}`)
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.code === 200) {
-        const { title, content, subject } = data.data;
-        postTitle.value = title;
-        postContent.value = content;
-        postSubject.value = subject;
-      } else {
-        console.error(data);
-      }
+  const subjectInput = document.getElementById('subjectSelect');
+  const imageInput = document.getElementById('imageUpload');
+  const editButton = document.getElementById('editButton');
+
+  editButton.addEventListener('click', () => {
+    const formData = new FormData();
+    formData.append('title', titleInput.value);
+    formData.append('content', contentInput.value);
+    formData.append('subject', subjectInput.value);
+
+    console.log(formData);
+    // 이미지
+
+    if (imageInput && imageInput.files && imageInput.files.length > 0) {
+      // 파일이 선택된 경우에만 실행
+      formData.append('image', imageInput.files[0]);
+    }
+    fetch(`/api/post/${post_id}`, {
+      method: 'POST',
+      body: formData,
+      // headers: { 'Content-Type': 'multipart/form-data' },
     })
-    .catch((error) => {
-      console.error('Error:', error);
-      alert('게시글을 불러오는 중 오류가 발생했습니다.');
-    });
-  // });
-
-  const title = postTitle.value;
-  const content = postContent.value;
-  const subject = postSubject.value;
-
-  const formData = new FormData();
-  formData.append('title', title);
-  formData.append('content', content);
-  formData.append('subject', subject);
-
-  // 이미지
-  const imageInput = document.querySelector('.upload-input');
-
-  if (imageInput && imageInput.files && imageInput.files.length > 0) {
-    // 파일이 선택된 경우에만 실행
-    formData.append('image', imageInput.files[0]);
-  }
-
-  fetch(`/api/post/${post_id}`, {
-    method: 'POST',
-    body: formData,
-    // headers: { 'Content-Type': 'multipart/form-data' },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.code === 200) {
-        alert('게시글이 수정되었습니다.');
-        window.location.reload(); // 현재 페이지 새로고침
-      } else {
-        console.error(data);
-        alert('게시글 수정에 실패했습니다.');
-      }
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      alert('오류가 발생했습니다.');
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        alert(data.message);
+        location.reload();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        alert('오류가 발생했습니다.');
+      });
+  });
 });
-
+function closeModal() {
+  updatePostModal.style.display = 'none';
+}
 // document.addEventListener('DOMContentLoaded', function () {
 //   const postTitle = document.getElementById('postTitle');
 //   const postContent = document.getElementById('postContent');
