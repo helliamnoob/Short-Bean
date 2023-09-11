@@ -378,17 +378,6 @@ fetchComments();
 
 // // ---------------------------------------
 
-// // 게시글 수정 버튼 클릭 이벤트 리스너 추가
-// document.getElementById('postUpdate').addEventListener('click', function () {
-//   // 예를 들어, 모달을 열거나 수정할 게시글의 ID를 얻어와서 해당 게시글 수정 페이지로 이동할 수 있습니다.
-// });
-
-// // 게시글 삭제 버튼 클릭 이벤트 리스너 추가
-// document.getElementById('postDelete').addEventListener('click', function () {
-//   // 게시글 삭제 로직을 여기에 추가
-//   // 예를 들어, 확인 대화상자를 띄우고 확인 시 게시글을 삭제할 수 있습니다.
-// });
-
 // -----------------------------------------------
 
 // // 모달
@@ -458,10 +447,7 @@ document.getElementById('postCreate').addEventListener('click', function () {
 //   window.location.href = `/public/views/post.html?post_id=${data.data.post_id}`; // 여기에 게시글 작성 페이지의 URL을 넣으세요.
 // });
 
-// 게시글 수정
-// 게시글 수정 버튼 클릭 이벤트 리스너
 const postUpdateBtn = document.getElementById('postUpdate');
-// 모달창 생성
 const updatePostModal = document.getElementById('updatePostModal');
 
 postUpdateBtn.addEventListener('click', function () {
@@ -504,6 +490,34 @@ postUpdateBtn.addEventListener('click', function () {
 function closeModal() {
   updatePostModal.style.display = 'none';
 }
+
+const deleteBtn = document.getElementById('postDelete');
+// 게시글 삭제 버튼 클릭 이벤트 리스너 추가
+deleteBtn.addEventListener('click', async function () {
+  const prompt = confirm('정말 삭제하시겠습니까?');
+  if (prompt) {
+    try {
+      const response = await fetch(`/api/post/${post_id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        alert('게시글이 삭제되었습니다.');
+        window.location.href = `/public/views/user-main.html`;
+      } else {
+        const data = await response.json();
+        alert(`fail : ${data.error}`);
+        location.reload();
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  }
+});
+
 // document.addEventListener('DOMContentLoaded', function () {
 //   const postTitle = document.getElementById('postTitle');
 //   const postContent = document.getElementById('postContent');
