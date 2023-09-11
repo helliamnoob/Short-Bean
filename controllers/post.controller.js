@@ -110,7 +110,7 @@ class PostController {
 
       return res.status(code).json({ message });
     } catch (error) {
-      return this.handleError(res, error);
+      return res.status(400).json({ error: error.message });
     }
   };
 
