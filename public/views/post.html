@@ -14,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- 외부 스타일 시트 불러오기 -->
-    <link rel="stylesheet" href="/public/css/main.css" />
+    <link rel="stylesheet" href="/public/css/post.css" />
 
     <!-- Bootstrap CSS 링크 -->
     <link
@@ -61,6 +61,26 @@
       <button type="button" class="btn btn-dark" id="postDelete">게시글 삭제</button>
       <button type="button" class="btn btn-dark" id="postReport">게시글 신고하기</button>
       <button type="button" class="btn btn-dark" id="postLike">게시글 좋아요</button>
+    </div>
+
+    <div id="updatePostModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>게시글수정</h2>
+        <input type="text" id="titleInput" placeholder="title" />
+        <textarea id="contentInput" placeholder="content" rows="4" cols="50"></textarea>
+        <label for="subjectSelect">과목:</label>
+        <select id="subjectSelect">
+          <option value="국어">국어</option>
+          <option value="영어">영어</option>
+          <option value="수학">수학</option>
+        </select>
+
+        <!-- 이미지 업로드 -->
+        <label for="imageUpload">이미지 업로드:</label>
+        <input type="file" id="imageUpload" accept="image/*" />
+        <button id="editButton">수정하기</button>
+      </div>
     </div>
 
     <!-- 사용자의 댓글을 입력 받는 부분 -->
