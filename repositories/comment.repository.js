@@ -6,11 +6,12 @@ class CommentRepository {
     return await Comments.findAll({
       where: { post_id },
       include: [{ model: Users }],
+      order: [['createdAt', 'DESC']], // 생성일자 내림차순
     });
   };
 
   findComment = async ({ comment_id }) => {
-    return await Comments.findOne({ where: { comment_id } });
+    return await Comments.findOne({ where: { comment_id }, order: [['createdAt', 'DESC']] });
   };
 
   createComment = async ({ user_id, post_id, content }) => {

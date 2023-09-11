@@ -6,8 +6,8 @@ class PostService {
 
   findAllPost = async () => {
     try {
-      const data = await this.postRepository.findAllPost({
-        order: [['createdAt', 'desc']], // 내림차순 정렬
+      const data = await this.postRepository.findAllPostWithId({
+        // order: [['createdAt', 'desc']], // 내림차순 정렬
       });
       return { code: 200, data };
     } catch (error) {
@@ -62,10 +62,12 @@ class PostService {
 
   deletePost = async ({ user_id, post_id }) => {
     try {
-      await this.postRepository.deletePost({ post_id, user_id });
+      const exPost = await this.postRepository.getPostById(post_id);
+      if (exPost.user_id !== user_id) throw new Error('삭제 권한이 없습니다.');
+      await this.postRepository.deletePost(post_id);
       return { code: 200, message: '질문을 삭제하였습니다.' };
     } catch (error) {
-      throw { code: 400, message: '데이터 형식이 올바르지 않습니다.' };
+      throw error;
     }
   };
 }

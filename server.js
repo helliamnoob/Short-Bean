@@ -5,7 +5,7 @@ const sql_store = require('express-mysql-session');
 const cors = require('cors');
 const app = express();
 
-const port = 3000;
+const port = 80;
 const http = require('http');
 const cookieParser = require('cookie-parser');
 const { mongoDB } = require('./config/mongo.config');
@@ -36,7 +36,6 @@ app.use(
   })
 );
 app.use(express.json());
-app.use(cookieParser());
 app.use(cookieParser());
 app.set('view engine', 'html');
 app.set('views', __dirname + '/public/views');
@@ -76,7 +75,12 @@ app.get('/admin', (_, res) => {
 app.get('/post', (_, res) => {
   res.sendFile(__dirname + '/public/views/post.html');
 });
-app.use(cookieParser());
+app.get('/admin/id=:id', (req, res) => {
+  res.sendFile(__dirname + '/public/views/report-detail.html');
+});
+app.get('/admin/tutors/id=:id', (req, res) => {
+  res.sendFile(__dirname + '/public/views/tutor-detail.html');
+});
 
 // app.use(cookieParser(process.env.COOKIE_SECRET));
 

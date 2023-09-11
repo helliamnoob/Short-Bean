@@ -21,10 +21,10 @@ module.exports = (io) => {
     };
 
     connectedUsers.push(user);
-
+    console.log(user);
+    socket.emit('getName', userName);
     // 새로운 사용자가 접속했음을 모든  알림
     io.emit('show_users', connectedUsers);
-
     // 연결이 끊길 때 사용자 목록에서 제거
     socket.on('disconnect', () => {
       const disconnectedUser = connectedUsers.find((user) => user.socketId === socket.id);
@@ -34,10 +34,6 @@ module.exports = (io) => {
 
     // 방에 입장할 때
     socket.on('enter_room', async (targetUserId, targetUserName, done) => {
-      if (userId == targetUserId) {
-        socket.emit('sameUser');
-        return;
-      }
       // 현재 유저와 가져온 유저와의 채팅방이 있는지 확인
       const roomInfo = await getRoomInfo(userId, targetUserId);
 
@@ -57,16 +53,18 @@ module.exports = (io) => {
         socket.to(roomId).emit('welcome', userName);
 
         socket.emit('enter_room', roomId, exChatMessages);
-        done(userName, targetUserName);
+        done(targetUserName);
       }
     });
 
-    socket.on('new_message', async (msg, room, done) => {
-      // 새로운 채팅데이터 생성
+    socket.on('new_message', async (msg, room, targetUserName, done) => {
       await saveMsg(room, socket, msg);
-      // 룸에 있는 사용자에게 보내기
-      // 시간 추가해야한다.
+      const findUser = connectedUsers.find((user) => user.userName === targetUserName);
+
       socket.to(room).emit('new_message', `${userName}: ${msg}`);
+      if (findUser) {
+        io.to(findUser.socketId).emit('notice_message', `${userName}: ${msg}`);
+      }
       done();
     });
     // 나갈 때 알림
@@ -78,43 +76,66 @@ module.exports = (io) => {
       const tutors = connectedUsers.filter((user) => user.isTutor === true);
       done(tutors);
     });
-    // 예림님쪽
+    // 예림님쪽 화상채팅
+
+    //룸 들어가기
     socket.on('join_room', (roomId) => {
       socket.join(roomId);
       socket.to(roomId).emit('user_joined', { userId: socket.id, roomId });
     });
-
+    //들어가는 순간 offer 생성
     socket.on('offer', (offer, roomId) => {
       console.log(`[SERVER] Received an 'offer' from ${socket.id} for room ${roomId}`);
       socket.to(roomId).emit('offer', offer);
       console.log(`[SERVER] 'offer' event emitted to room ${roomId}`);
     });
-
+    //응답
     socket.on('answer', (answer, roomId) => {
       console.log(`[SERVER] Received an 'answer' from ${socket.id} for room ${roomId}`);
       socket.to(roomId).emit('answer', answer);
       console.log(`[SERVER] 'answer' event emitted to room ${roomId}`);
     });
-
+    //연결
     socket.on('ice', (ice, roomId) => {
       console.log(`[SERVER] Received an 'ice' candidate from ${socket.id} for room ${roomId}`);
       socket.to(roomId).emit('ice', ice);
       console.log(`[SERVER] 'ice' event emitted to room ${roomId}`);
     });
+    //종료
+    socket.on('leave_room', (roomId) => {
+      console.log(`User ${socket.id} has left room ${roomId}`);
+      socket.leave(roomId);
+      socket.to(roomId).emit('user_left');
+    });
 
-    // socket.on('disconnect', () => {
-    //   console.log('User disconnected:', socket.id);
+    //캔버스 화면 공유
 
-    //   // Find the disconnected user and remove from the tracking object
-    //   for (let userId in userSockets) {
-    //     if (userSockets[userId] === socket.id) {
-    //       delete userSockets[userId];
-    //       break;
-    //     }
-    //   }
-    // });
+    //그리기
+    socket.on('drawing', (data) => {
+      socket.broadcast.emit('drawing', data);
+    });
+    //마우스 누르고 시작하는 지점
+    socket.on('mousedown', (data) => {
+      socket.broadcast.emit('mousedown', data);
+    });
+    //마우스 때고 끝내는 지점
+    socket.on('mouseup', () => {
+      socket.broadcast.emit('mouseup');
+    });
+    //지우기
+    socket.on('startErasing', () => {
+      socket.broadcast.emit('startErasing');
+    });
+    //지우는걸 멈추기
+    socket.on('stopErasing', () => {
+      socket.broadcast.emit('stopErasing');
+    });
+    //전체 지우기
+    socket.on('clearCanvas', () => {
+      socket.broadcast.emit('clearCanvas');
+    });
 
-    // 예림님쪽 invite
+    // 화상채팅 초대
     socket.on('register', (userId) => {
       userSockets[userId] = socket.id;
       console.log('Registered:', userId, 'with socket ID:', socket.id);
@@ -143,11 +164,11 @@ module.exports = (io) => {
           io.to(inviteeSocketId).emit('start_face_chat', roomId);
         } catch (error) {
           console.error('Error while joining the room:', error);
-          socket.emit('error_notification', 'Failed to join the chat room.'); // Error notification
+          socket.emit('error_notification', 'Failed to join the chat room.');
         }
       } else {
         console.log('Socket ID not found.');
-        socket.emit('error_notification', 'An error occurred while connecting. Please try again.'); // Error notification
+        socket.emit('error_notification', 'An error occurred while connecting. Please try again.');
       }
     });
   });
@@ -172,8 +193,11 @@ async function getMessage(roomId, userName, targetUserName, roomOwner) {
 
   chatData.forEach((chat) => {
     const senderName = chat.is_send === roomOwner ? userName : targetUserName;
-    const message = `${senderName} : ${chat.message_content}`;
-    messages.push(message);
+    const messageObj = {
+      message: `${senderName}: ${chat.message_content}`,
+      createdAt: chat.created_at,
+    };
+    messages.push(messageObj);
   });
   return messages;
 }

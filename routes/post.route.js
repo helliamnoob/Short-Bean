@@ -4,8 +4,7 @@ const router = express.Router();
 // 로그인 인증부분
 const auth = require('../middlewares/auth_middleware');
 
-// 이미지 업로드 부분
-const upload = require('../middlewares/upload_middleware');
+const { upload } = require('../middlewares/upload_middleware');
 
 const PostController = require('../controllers/post.controller');
 const postController = new PostController();

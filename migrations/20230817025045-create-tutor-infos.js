@@ -27,8 +27,8 @@ module.exports = {
       },
       status: {
         allowNull: false,
-        defaultValue: '로그아웃',
-        type: Sequelize.ENUM('로그아웃', '로그인'),
+        defaultValue: '처리중',
+        type: Sequelize.ENUM('처리중', '수리', '반려'),
       },
       tutor_like: {
         allowNull: false,

@@ -22,6 +22,14 @@ class ReportController {
       return res.status(500).json({ message: error.message });
     }
   };
+  getReportaWeek = async (req, res, next) => {
+    try {
+      const report = await this.reportService.getReportaWeek();
+      res.status(200).json({ data: report });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  };
   creatReport = async (req, res, next) => {
     try {
       const { report_content, reported_user_id } = req.body;
@@ -45,6 +53,17 @@ class ReportController {
       const { report_id } = req.params;
       const { report_content } = req.body;
       const report = await this.reportService.updateReport({ report_id, user_id, report_content });
+
+      res.status(200).json({ data: report });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  };
+  updateStatus = async (req, res, next) => {
+    try {
+      const { report_id } = req.params;
+      const { report_status } = req.body;
+      const report = await this.reportService.updateStatus({ report_id, report_status });
 
       res.status(200).json({ data: report });
     } catch (error) {

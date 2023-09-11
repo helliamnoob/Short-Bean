@@ -1,3 +1,29 @@
+import { socket } from '../util/socket.util.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (Notification.permission !== 'granted') {
+    Notification.requestPermission().then((permission) => {
+      if (permission === 'granted') {
+        console.log(Notification.permission);
+      } else {
+        console.log(Notification.permission);
+      }
+    });
+  }
+});
+
+socket.on('notice_message', (msg) => {
+  if (Notification.permission === 'granted') {
+    const notification = new Notification('새 메시지', {
+      body: msg,
+    });
+
+    notification.onclick = () => {
+      window.location.href = `/public/views/chat.html`;
+      notification.close();
+    };
+  }
+});
 // 유저 환영 문구 불러오기
 function displayWelcomeMessage(userName) {
   var welcomeLabel = document.getElementById('welcome-label');
@@ -256,6 +282,8 @@ document.getElementById('all-question-button').addEventListener('click', functio
 //     updatePostDeck(newPost); // 게시글 카드 업데이트
 //     newPostForm.reset(); // 입력 폼 초기화
 //   }
+
+// 최신순 게시글 리스트
 window.addEventListener('DOMContentLoaded', async function () {
   fetch('/api/post', {})
     .then((response) => response.json())
@@ -267,6 +295,8 @@ window.addEventListener('DOMContentLoaded', async function () {
         let title = post['title'];
         let content = post['content'];
         let subject = post['subject'];
+        let postId = post['post_id'];
+        // let image = post['image'];
 
         let temp_html = `<div class="solo-card">
     <div class="card w-75">
@@ -278,7 +308,15 @@ window.addEventListener('DOMContentLoaded', async function () {
     </div>
     </div>`;
         postBox.insertAdjacentHTML('beforeend', temp_html);
+
+        // 게시글 리스트 클릭하면 상세페이지로-!
+        const cardBodyElements = document.querySelectorAll('.card-body');
+
+        cardBodyElements.forEach((cardBodyElement, index) => {
+          cardBodyElement.addEventListener('click', function (event) {
+            window.location.href = `/public/views/post.html?post_id=${rows[index].post_id}`;
+          });
+        });
       });
     });
 });
-// };

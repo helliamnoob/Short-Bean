@@ -23,11 +23,23 @@ class ReportRepository {
     return reportData;
   };
 
+  findaWeek = async () => {
+    const reportData = await Reports.findAll({
+      where: { [Op.gte]: new Date(Date.parse(new Date()) - 7 * 1000 * 60 * 60 * 24) },
+    });
+    return reportData;
+  };
+
   updateReport = async ({ report_id, user_id, report_content }) => {
     const reportData = await Reports.update(
       { report_content },
       { where: { [Op.and]: [{ report_id: report_id }, { user_id: user_id }] } }
     );
+    return reportData;
+  };
+
+  updateStatus = async ({ report_id, report_status }) => {
+    const reportData = await Reports.update({ report_status }, { where: { report_id: report_id } });
     return reportData;
   };
 

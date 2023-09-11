@@ -4,7 +4,6 @@ const admin_signup_btn = document.getElementById('admin_signup_btn');
 const emailInput = document.getElementById('email');
 const pwdInput = document.getElementById('password');
 
-
 admin_login_btn.addEventListener('click', async () => {
   try {
     const response = await fetch('/api/admin/login', {
@@ -32,6 +31,5 @@ admin_login_btn.addEventListener('click', async () => {
 });
 
 admin_signup_btn.addEventListener('click', async () => {
-        window.location.href = `/public/views/admin_signup.html`;
-  });
-
+  window.location.href = `/public/views/admin_signup.html`;
+});

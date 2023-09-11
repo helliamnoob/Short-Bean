@@ -34,18 +34,15 @@ loginbtn.addEventListener('click', async () => {
 
 async function user_cookie_check() {
   console.log('start');
-  if(cookie){
-    if(cookie_check()){
+  if (cookie) {
+    if (cookie_check()) {
       return;
-    }
-    else{
-      console.log("user totur check")
+    } else {
+      console.log('user totur check');
       console.log(tutor_check());
       return;
     }
-  }
-  else
-    return console.log("end");
+  } else return console.log('end');
 }
 
 async function tutor_check() {
@@ -53,16 +50,17 @@ async function tutor_check() {
     const response = await fetch('/api/usercheck/tutor', {
       method: 'GET',
     })
-    .then(res => res.json()).then(data => {
-      if(data['data']==false){
-        console.log("user");
-        window.location.href = `/public/views/user-main.html`;
+      .then((res) => res.json())
+      .then((data) => {
+        if (data['data'] == false) {
+          console.log('user');
+          window.location.href = `/public/views/user-main.html`;
+          return;
+        }
+        window.location.href = `/public/views/tutor-main.html`;
+        console.log('tutor');
         return;
-      }
-      window.location.href = `/public/views/tutor-main.html`;
-      console.log("tutor");
-      return;
-  });
+      });
   } catch (error) {
     console.error('Error:', error.message);
     return;
@@ -73,17 +71,16 @@ async function cookie_check() {
     const response = await fetch('/api/usercheck', {
       method: 'GET',
     })
-    .then(res => res.json()).then(data => {
-      console.log(data);
-      return data;
-  });
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        return data;
+      });
   } catch (error) {
     console.error('Error:', error.message);
     return;
   }
 }
-
-
 
 // 코드수정 -이승준
 function redircetSignUp() {

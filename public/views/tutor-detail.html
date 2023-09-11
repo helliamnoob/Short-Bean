@@ -49,75 +49,32 @@
   <!-- 게시글 페이지 -->
   <div class="main_page">
     <div class="main_title">
-      <h1>관리자 페이지</h1>
+      <h1>튜터 권한 신청페이지</h1>
     </div>
-    <div class="tutorCheck">
-        <h2>튜터 승인 내역</h2>
+    </div class="tutorCheck">
+        <h2>튜터 권한 신청</h2>
         <div>
-            <ul class="list-group" id="tutorList"></ul>
-        </div>
-    </div class="reportCheck">
-        <h2>신고내역</h2>
-        <div>
-            <ul class="list-group" id="reportList"></ul>
+            <div class="list-group" id="tutorDetail"></div>
         </div>
     <div>
 
     </div>
-    <!-- 게시글 관련 버튼 -->
+    <!-- 버튼 -->
     <div class="card__inner container gray" id="cardList">
-      <button type="button" class="btn btn-dark" id="pastTutor">지난 튜터 요청</button>
-      <button type="button" class="btn btn-dark" id="pastReport">지난 신고 내역</button>
+      <button type="button" class="btn btn-dark" id="cancel">권한 거부</button>
+      <button type="button" class="btn btn-dark" id="accept">승인 완료</button>
     </div>
 
-    <div>
-        <canvas id="myChart"></canvas>
-      </div>
 
 
   <!-- 사이트 제작 정보 -->
   <div class="copyright">Site made with: <a href="https://templated.co/">TEMPLATED.CO</a></div>
 
-  <!-- 지난 신고하기 내역 모달 -->
-  <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="reportModalLabel">지난 신고 내역</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div>
-                <ul class="list-group" id="pastReportList"></ul>
-            </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 지난 튜터권한 요청 내역 모달 -->
-  <div class="modal fade" id="tutorModal" tabindex="-1" aria-labelledby="tutorModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="tutorModalLabel">지난 튜터 신청 내역</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div class="mb-3">
-                <div>
-                    <ul class="list-group" id="pastTutorList"></ul>
-                </div>
-            </div>
-        </div>
-      </div>
-    </div>
-  </div>
   <!-- 필요한 스크립트 파일 불러오기 -->
   <script src="/public/js/jquery.min.js"></script>
   <script src="/public/js/skel.min.js"></script>
   <script src="/public/js/util.js"></script>
-  <script src="/public/js/admin.js"></script>
+  <script src="/public/js/tutor-detail.js"></script>
 </body>
 
 </html>

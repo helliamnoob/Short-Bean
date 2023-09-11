@@ -20,6 +20,13 @@ class PostController {
       if (code === 404) {
         res.status(404).json({ errorMessage: '존재하는 게시글이 없습니다.' });
       }
+
+      const rows = data.map((post) => ({
+        title: post.title,
+        content: post.content,
+        subject: post.subject,
+        post_id: post.post_id,
+      }));
       return res.status(code).json({ data });
     } catch (error) {
       return this.handleError(res, error);
@@ -55,7 +62,7 @@ class PostController {
       const { title, content, subject } = req.body;
       const { user_id } = res.locals.user;
 
-      let filePath = req.file ? req.file.location : null;
+      let filePath = req.files && req.files[0] ? req.files[0].location : null;
       const image = filePath ? `<img src="${filePath}" class="image" alt="질문 이미지"/>` : '';
 
       if (!title || !content || !subject) {
@@ -67,7 +74,7 @@ class PostController {
         content,
         subject,
         user_id,
-        image,
+        image: filePath, //   이 HTML 태그 전체가 이미지의 경로로 사용되기 때문에 웹 브라우저에서 이미지를 로드할 수 없기 떄문에 filePath 사용? 58번째 라인 참고
       });
 
       return res.status(code).json({ message, data });
@@ -85,7 +92,7 @@ class PostController {
       const { user_id } = res.locals.user;
       const { post_id } = req.params;
 
-      let filePath = req.file ? req.file.location : null;
+      let filePath = req.files && req.files[0] ? req.files[0].location : null;
       const image = filePath ? `<img src="${filePath}" class="image" alt="질문 이미지"/>` : '';
 
       if (!content || !subject) {
@@ -98,7 +105,7 @@ class PostController {
         subject,
         user_id,
         post_id,
-        image,
+        image: filePath,
       });
 
       return res.status(code).json({ message });
@@ -117,9 +124,9 @@ class PostController {
         return res.status(400).json({ error: '게시글 ID가 필요합니다.' });
       }
 
-      if (post_id !== req.body.requested_post_id) {
-        return res.status(400).json({ error: '올바른 게시글 ID가 아닙니다.' });
-      }
+      // if (post_id !== req.body.requested_post_id) {
+      //   return res.status(400).json({ error: '올바른 게시글 ID가 아닙니다.' });
+      // }
 
       const { code, message } = await this.postService.deletePost({
         post_id,
@@ -128,7 +135,7 @@ class PostController {
 
       return res.status(code).json({ message });
     } catch (error) {
-      return this.handleError(res, error);
+      return res.status(400).json({ error: error.message });
     }
   };
 }

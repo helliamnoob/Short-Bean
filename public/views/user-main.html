@@ -40,8 +40,8 @@
     </header>
     <!-- 메인 배너 부분 -->
     <section id="banner">
-      <h1>Welcome to Theory</h1>
-      <p>A free responsive HTML5 website template by TEMPLATED.</p>
+      <h1>Welcome to ShortBean</h1>
+      <p>It's a one-on-one matching video education site.</p>
     </section>
 
     <!-- 학생 이름, 환영 문구 보이는 자리 -->
@@ -71,35 +71,9 @@
         <div class="area-title">
             <h3 class="title">전체 질문</h3>
 
-        </div>
-        <div class="scroll-post-list-box">
-            <div class="post-list-info">
-                <div>
-                    <ol class="all-post-list">
-                        <li>
-                            <div class="post-card">
-                                <a nocr
-                                    onclick="return goOtherCR(this, 'a=nco_x0a*A.castmore&r=1&i=1800009D_0000009C1258&u=' + urlencode(this.href));"
-                                    href="/public/views/post.html?post_id=1" class="post-link-box">
-                                    <div class="title-box">
-                                        <strong class="name type_ell_2 _html_ellipsis"
-                                            style="max-height: fit-content;"></strong>
-                                        <a nocr
-                                            onclick="return goOtherCR(this, 'a=nco_x0a*A.castmore&r=1&i=1800009D_0000009C1258&u=' + urlencode(this.href));"
-                                            class="_text">${post.title}</a>
-                                    </div>
-                                </a>
-                            </div>
-                        </li>
-                    </ol>
-                </div>
-            </div>
-            <a nocr href="#" class="pre-visual-prev">이전</a>
-            <a nocr href="#" class="next-visual-next on">다음</a>
-        </div>
-    </div> -->
+    
 
-    <!-- <div class="card-deck">
+     <div class="card-deck">
         <div class="card">
             <img class="card-img-top" src="..." alt="Card image cap">
             <div class="card-body">
@@ -139,31 +113,6 @@
       <div class="row" id="posts-box"></div>
     </div>
 
-    <!-- 페이지 하단에 위치하는 푸터 -->
-    <footer id="footer">
-      <div class="inner">
-        <div class="flex">
-          <ul class="icons">
-            <li>
-              <a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a>
-            </li>
-            <li>
-              <a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a>
-            </li>
-            <li>
-              <a href="#" class="icon fa-linkedin"><span class="label">linkedIn</span></a>
-            </li>
-            <li>
-              <a href="#" class="icon fa-pinterest-p"><span class="label">Pinterest</span></a>
-            </li>
-            <li>
-              <a href="#" class="icon fa-vimeo"><span class="label">Vimeo</span></a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </footer>
-
     <!-- 사이트 제작 정보 -->
     <div class="copyright">Site made with: <a href="https://templated.co/">TEMPLATED.CO</a></div>
 
@@ -171,7 +120,8 @@
     <script src="/public/js/jquery.min.js"></script>
     <script src="/public/js/skel.min.js"></script>
     <script src="/public/js/util.js"></script>
-    <script src="../js/user-main.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="module" src="../js/user-main.js"></script>
     <!-- <script src="/public/js/post.js"></script> -->
   </body>
 </html>
