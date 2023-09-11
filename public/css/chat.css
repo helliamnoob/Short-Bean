@@ -1980,7 +1980,7 @@ article.wrapper article header {
 
 section.wrapper.style1,
 article.wrapper.style1 {
-  background: #5385c1;
+  background: #ffffff;
   color: #bacee6;
 }
 
@@ -3110,7 +3110,7 @@ button:disabled,
 
 #banner {
   padding: 12em 0 10em 0;
-  background-image: url('/public/images/banner.jpg');
+  background-image: url('/public/images/sb-banner.jpg');
   background-size: cover;
   background-position: top;
   background-attachment: fixed;
@@ -3121,7 +3121,7 @@ button:disabled,
 #banner h1 {
   font-size: 3.5em;
   font-weight: 100;
-  color: #fff;
+  color: #6a5acd;
   line-height: 1em;
   margin: 0 0 0.5em 0;
   padding: 0;
@@ -3129,7 +3129,7 @@ button:disabled,
 
 #banner p {
   font-size: 1em;
-  color: rgba(255, 255, 255, 0.55);
+  color: #6a5acd;
   margin-bottom: 1.75em;
 }
 
@@ -3363,18 +3363,20 @@ header {
 
 /* 사용자 목록 스타일 */
 .user-list {
+  overflow-y: auto;
   flex: 1;
-  background-color: #3498db;
-  color: white;
+  background-color: #ecf0f1;
+  color: #5385c1;
   padding: 20px;
   margin-right: 10px;
   border-radius: 10px;
+  height: 600px;
 }
 
 .user-list h2 {
   margin-bottom: 10px;
   text-align: center;
-  color: #ffffff;
+  color: #5385c1;
 }
 
 /* 채팅 스타일 */
@@ -3441,7 +3443,7 @@ header {
   margin-bottom: 10px;
   border: 1px solid #000; /* 1px 두께의 검은색 외곽선 */
   border-radius: 5px;
-  background-color: #15557c; /* 조금 더 어두운 초록색 배경 */
+  background-color: #d3d3d3; /* 조금 더 어두운 초록색 배경 */
 
   /* flex 컨테이너 설정 */
   display: flex;
