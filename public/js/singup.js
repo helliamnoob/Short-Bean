@@ -43,16 +43,16 @@ signup_btn.addEventListener('click', async () => {
 
 sms_auth.addEventListener('click', async () => {
   try {
-    const response = await fetch('/api/smsauth', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: user_name_input.value,
-        phone: phone_number_input.value,
-      }),
-    });
+      const response = await fetch('/api/smsauth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name : user_name_input.value,
+          phone: phone_number_input.value,
+        }),
+      });
 
     if (response.ok) {
       alert('전송 되었습니다.');
@@ -82,14 +82,17 @@ sms_check.addEventListener('click', async () => {
         let rows = data;
         code = rows['data'];
       });
-
-    console.log(code);
-    if (auth_input.value == code) {
-      alert('인증 성공');
-      return;
-    }
-    alert(`인증 실패`);
-    return;
+    
+        console.log(code);
+        if(auth_input.value == code)
+        {
+          alert('인증 성공');
+          signup_btn.disabled = false;
+          return;
+        }
+        alert(`인증 실패`);
+        return;
+    
   } catch (error) {
     console.error('Error:', error.message);
   }
