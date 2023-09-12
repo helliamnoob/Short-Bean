@@ -83,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const postTitle = document.getElementById('post-title');
   const postContent = document.getElementById('post-content');
   const subjectSelect = document.getElementById('subject');
+  const imageInput = document.querySelector('.upload-input');
 
   console.log(postCreateBtn);
   console.log(postTitle);
@@ -98,14 +99,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const title = postTitle.value;
     const content = postContent.value;
     const subject = subjectSelect.value;
+    const image = imageInput.value;
 
     const formData = new FormData();
     formData.append('title', title);
     formData.append('content', content);
     formData.append('subject', subject);
-
     // 이미지
-    const imageInput = document.querySelector('.upload-input');
+    // const imageInput = document.querySelector('.upload-input');
     // if (imageInput.files.length > 0) {
     formData.append('image', imageInput.files[0]);
     // }
@@ -121,6 +122,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // } else {
         //   alert('질문 저장에 실패했습니다.');
         //   // 저장 실패 시의 처리
+        console.log(imageInput); // 아무 값 안뜸
+        console.log(image); // 사진 이름 뜸
+        console.log(imageInput.files); // FileList {0: File, length: 1}
+
         console.log(data.message);
         window.location.href = `/public/views/post.html?post_id=${data.data.post_id}`;
       })
