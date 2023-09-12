@@ -162,16 +162,16 @@ class PostController {
     }
   };
 
-  // // 게시글 좋아요순 조회
-  // getPostOrderByLikes = async (req, res) => {
-  //   try {
-  //     const posts = await this.postService.getPostOrderByLikes();
-  //     res.json(posts);
-  //   } catch (error) {
-  //     console.error(error);
-  //     res.status(error.code || 500).json({ message: error.message || '서버 오류가 발생했습니다.' });
-  //   }
-  // };
+  // 게시글 좋아요순 조회
+  getPostOrderByLikes = async (req, res) => {
+    try {
+      const posts = await this.postService.getPostOrderByLikes();
+      res.json(posts);
+    } catch (error) {
+      console.error(error);
+      res.status(error.code || 500).json({ message: error.message || '서버 오류가 발생했습니다.' });
+    }
+  };
 }
 
 module.exports = PostController;
