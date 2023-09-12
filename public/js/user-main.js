@@ -95,6 +95,140 @@ document.getElementById('all-question-button').addEventListener('click', functio
   window.location.href = `/public/views/post-list.html`;
 });
 
+// --------------------------------------------------------------------------------------------------------
+// 인기순 게시글 리스트2
+// 좋아요 내림차순 게시글 리스트 표시
+window.addEventListener('DOMContentLoaded', async function () {
+  try {
+    const response = await fetch('/api/post/likes', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+
+      // 데이터를 활용하여 화면에 게시글 리스트 표시하기
+      const postListContainer = document.getElementById('post-list-container');
+
+      data.forEach((post) => {
+        let title = post.title;
+        let content = post.content;
+        let subject = post.subject;
+
+        let temp_html = `<div class="solo-card">
+          <div class="card w-75">
+            <div class="card-body">
+              <h5 class="card-title">제목: ${title}</h5>
+              <p>${content}</p>
+              <p>과목: ${subject}</p>
+            </div>
+          </div>
+        </div>`;
+
+        postListContainer.insertAdjacentHTML('beforeend', temp_html);
+
+        // 게시글 리스트 클릭하면 상세페이지로 이동
+        const cardBodyElements = document.querySelectorAll('.card-body');
+
+        cardBodyElements.forEach((cardBodyElement, index) => {
+          cardBodyElement.addEventListener('click', function (event) {
+            window.location.href = `/public/views/post.html?post_id=${post.post_id}`;
+          });
+        });
+      });
+    } else {
+      console.error('게시글 조회 실패:', response.statusText);
+      alert('게시글 조회에 실패했습니다.');
+    }
+  } catch (error) {
+    console.error('게시글 조회 오류:', error);
+    alert('게시글 조회 중 오류가 발생했습니다.');
+  }
+});
+
+// // 인기(좋아요)순 게시글 리스트1
+// window.addEventListener('DOMContentLoaded', async function () {
+//   fetch('/api/post', {})
+//     .then((response) => response.json())
+//     .then((data) => {
+//       let rows = data.data;
+//       console.log(data);
+//       const postBox = document.getElementById('posts-box');
+//       rows.forEach((post) => {
+//         let title = post['title'];
+//         let content = post['content'];
+//         let subject = post['subject'];
+//         let postId = post['post_id'];
+//         // let image = post['image'];
+
+//         let temp_html = `<div class="solo-card">
+//     <div class="card w-75">
+//     <div class="card-body">
+//     <h5 class="card-title">제목: ${title}</h5>
+//     <p class="card-text">${content}</p>
+//     <p class="card-text">과목: ${subject}</p>
+//     </div>
+//     </div>
+//     </div>`;
+//         postBox.insertAdjacentHTML('beforeend', temp_html);
+
+//         // 게시글 리스트 클릭하면 상세페이지로-!
+//         const cardBodyElements = document.querySelectorAll('.card-body');
+
+//         cardBodyElements.forEach((cardBodyElement, index) => {
+//           cardBodyElement.addEventListener('click', function (event) {
+//             window.location.href = `/public/views/post.html?post_id=${rows[index].post_id}`;
+//           });
+//         });
+//       });
+//     });
+// });
+
+// window.addEventListener('DOMContentLoaded', async function () {
+//   try {
+//     const response = await fetch('/api/post?order=post_like DESC', {
+//       method: 'GET',
+
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//     });
+
+//     if (response.ok) {
+//       const data = await response.json();
+//       displayPosts(data);
+//     } else {
+//       console.error('게시글 조회 실패:', response.statusText);
+//       alert('게시글 조회에 실패했습니다.');
+//     }
+//   } catch (error) {
+//     console.error('게시글 조회 오류:', error);
+//     alert('게시글 조회 중 오류가 발생했습니다.');
+//   }
+// });
+
+// function displayPosts(posts) {
+//   postsContainer.innerHTML = ''; // 이전 결과를 지우고 새로운 결과 표시
+
+//   if (posts.length === 0) {
+//     postsContainer.textContent = '게시글이 없습니다.';
+//   } else {
+//     const ulElement = document.createElement('ul');
+
+//     posts.forEach((post) => {
+//       const liElement = document.createElement('li');
+//       liElement.textContent = `제목: ${post.title}, 내용: ${post.content}`;
+//       ulElement.appendChild(liElement);
+//     });
+
+//     postsContainer.appendChild(ulElement);
+//   }
+// }
+// ---------------------------------------------위는 최신------------------
 // // 인기 순으로 게시글 데이터를 받아와 화면에 표시하는 함수
 // function displayPosts(posts) {
 //   const postList = document.getElementById('post-list');
@@ -282,7 +416,7 @@ document.getElementById('all-question-button').addEventListener('click', functio
 //     updatePostDeck(newPost); // 게시글 카드 업데이트
 //     newPostForm.reset(); // 입력 폼 초기화
 //   }
-
+// -------------------------------------------------------------------------------------------------------------
 // 최신순 게시글 리스트
 window.addEventListener('DOMContentLoaded', async function () {
   fetch('/api/post', {})
@@ -329,7 +463,6 @@ window.addEventListener('DOMContentLoaded', async function () {
       headers: {
         'Content-Type': 'application/json',
       },
-      order: [['post_like', 'DESC']],
     });
 
     if (response.ok) {

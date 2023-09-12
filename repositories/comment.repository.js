@@ -14,7 +14,7 @@ class CommentRepository {
     return await Comments.findOne({
       where: { comment_id },
       order: [['createdAt', 'DESC']],
-      attribute: ['userName'],
+      attribute: ['userName'], // 프론트에 보이게 못..하나
     });
   };
 

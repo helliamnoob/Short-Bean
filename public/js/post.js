@@ -500,76 +500,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   loadComments();
-  //     // 댓글 작성 폼 초기화
-  //     document.getElementById('commentText').value = '';
-  //   } catch (error) {
-  //     console.error('댓글 작성 오류:', error);
-  //   }
-  // }
-
-  // 댓글 작성 폼의 submit 이벤트 핸들러 등록
-  // document.getElementById('commentInput').addEventListener('submit', submitComment);
-
-  // // ---------------------------------------
-
-  // -----------------------------------------------
-
-  // // 모달
-  // const modal = document.getElementById('modal');
-  // function modalOn() {
-  //   modal.classList.add('on');
-  // }
-  // function modalOff() {
-  //   modal.classList.remove('on');
-  // }
-  // const btnModal = document.getElementById('commentModal');
-  // btnModal.addEventListener('click', modalOn);
-
-  // const closeBtn = modal.querySelector('.close-area');
-  // modal.addEventListener('click', function (e) {
-  //   if (e.target === this) {
-  //     modalOff();
-  //   }
-  // });
-  // closeBtn.addEventListener('click', modalOff);
-
-  // ---------------------wkfwhagkwk-------------------
-  // // 댓글 수정 모달 열기
-  // const commentEditButton = document.querySelector('#commentEdit');
-  // commentEditButton.addEventListener('click', function () {
-  //   // 선택한 댓글의 내용을 가져옵니다.
-  //   const selectedComment = getSelectedComment(); // 이 함수는 선택한 댓글을 가져오는 로직을 구현해야 합니다.
-
-  //   // 모달 창에 댓글 내용을 채웁니다.
-  //   document.getElementById('editCommentText').value = selectedComment;
-
-  //   // 모달을 열어줍니다.
-  //   const commentEditModal = new bootstrap.Modal(document.getElementById('commentEditModal'));
-  //   commentEditModal.show();
-  // });
-
-  // // 댓글 수정 버튼 클릭 이벤트 리스너 추가
-  // document.getElementById('saveComment').addEventListener('click', function () {
-  //   // 수정된 댓글 내용을 가져옵니다.
-  //   const updatedComment = document.getElementById('editCommentText').value;
-
-  //   // 서버에 수정된 댓글을 저장하는 함수 호출
-  //   saveUpdatedComment(updatedComment); // 이 함수는 서버에 수정된 댓글을 보내는 로직을 구현해야 합니다.
-
-  //   // 모달을 닫습니다.
-  //   const commentEditModal = new bootstrap.Modal(document.getElementById('commentEditModal'));
-  //   commentEditModal.hide();
-  // });
-
-  // // 선택한 댓글을 가져오는 함수 (예시로 선택한 댓글을 하드코딩으로 반환)
-  // function getSelectedComment() {
-  //   return '선택한 댓글 내용'; // 실제로 선택한 댓글 내용을 가져오는 로직을 구현해야 합니다.
-  // }
-
-  // // 서버에 수정된 댓글을 저장하는 함수 (실제로 서버로 보내는 코드를 추가해야 합니다)
-  // function saveUpdatedComment(updatedComment) {
-  //   // 여기에 서버로 수정된 댓글을 전송하는 로직을 추가합니다.
-  // }
+  // -------------------------------------------------------------
 
   // 게시글 작성 버튼 클릭 이벤트 리스너 추가
   document.getElementById('postCreate').addEventListener('click', function () {
@@ -652,3 +583,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+// ---------------------------------------------------------

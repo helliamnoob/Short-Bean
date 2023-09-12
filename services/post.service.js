@@ -93,19 +93,15 @@ class PostService {
     return await this.PostModel.findAll(queryOptions);
   }
 
-  // // 게시글 좋아요순 조회
-  // async getPostOrderByLikes() {
-  //   try {
-  //     return await Posts.findAll({
-  //       order: [['post_like', 'DESC']], // 'post_like' 필드를 기준으로 내림차순 정렬
-  //     });
-  //     res.json(posts);
-  //   } catch (error) {
-  //     console.error(error);
-
-  //     res.status(500).json({ message: '서버 오류가 발생했습니다.' });
-  //   }
-  // }
+  // 게시글 좋아요순 조회
+  async getPostOrderByLikes() {
+    try {
+      return await postRepository.getPostOrderByLikes();
+    } catch (error) {
+      console.error(error);
+      throw new Error('서버 오류가 발생했습니다.');
+    }
+  }
 }
 
 module.exports = PostService;
