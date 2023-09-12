@@ -8,11 +8,15 @@ class PostRepository {
   }
 
   findAllPostWithId = async () => {
-    // include Users 생략할까? 결과값이 쓸데없이 자세한 것 같은데..
     return await Posts.findAll({
-      include: [{ model: Users }],
-      order: [['updatedAt', 'DESC']],
-      attributes: ['post_id', 'title', 'content', 'subject'],
+      include: [
+        {
+          model: Users,
+          attributes: ['nickname'], // 가져올 Users 모델의 속성을 지정
+        },
+      ],
+      order: [['createdAt', 'DESC']],
+      attributes: ['post_id', 'title', 'content', 'subject', 'image'],
     });
   };
 
@@ -67,6 +71,12 @@ class PostRepository {
   async getPostOrderByLikes() {
     try {
       const posts = await Posts.findAll({
+        include: [
+          {
+            model: Users,
+            attributes: ['nickname'], // 가져올 Users 모델의 속성을 지정
+          },
+        ],
         order: [['post_like', 'DESC']], // 'post_like' 필드를 기준으로 내림차순 정렬
       });
       return posts;

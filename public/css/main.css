@@ -3290,3 +3290,71 @@ button:disabled,
   border: none;
   cursor: point;
 }
+
+.post-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: center;
+}
+
+.post-card {
+  box-shadow:
+    0 3px 6px rgba(0, 0, 0, 0.12),
+    0 3px 6px rgba(0, 0, 0, 0.24);
+  margin: 20px;
+  padding: 20px;
+  width: 300px;
+  justify-self: center;
+  background-color: bisque;
+  border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.post-card img {
+  width: 250px;
+  height: 200px;
+  border-radius: 10px;
+}
+.container {
+  display: flex;
+  justify-content: flex-end; /* 부모 컨테이너를 오른쪽으로 정렬 */
+  align-items: center; /* 세로 가운데 정렬 */
+  width: 100%;
+  padding: 20px 0;
+  border-bottom: 1px solid black;
+}
+
+.search {
+  display: flex;
+  align-items: center; /* 세로 가운데 정렬 */
+}
+
+.search label {
+  font-size: 25px;
+}
+
+.search input {
+  margin-left: 20px;
+  min-width: 200px;
+  padding: 5px 10px;
+}
+
+.search button {
+  margin-left: 10px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.sort {
+  display: flex;
+  align-items: center; /* 세로 가운데 정렬 */
+  margin-left: auto; /* 나머지 공간을 차지하도록 왼쪽 마진을 auto로 설정 */
+}
+
+.sort button {
+  width: 50px;
+  margin-left: 10px;
+  padding: 3px;
+  cursor: pointer;
+}
