@@ -16,10 +16,17 @@ class TutorRepository {
     return tutorData;
   };
 
-  findTutor = async ({ tutor_id, user_id }) => {
+  findTutor = async ({ tutor_id }) => {
     const tutorData = await TutorInfos.findOne({
       where: { tutor_id: tutor_id },
       order: [['createdAt']],
+    });
+    return tutorData;
+  };
+
+  checkTutor = async ({ user_id }) => {
+    const tutorData = await TutorInfos.findOne({
+      where: { user_id },
     });
     return tutorData;
   };

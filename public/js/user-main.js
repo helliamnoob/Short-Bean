@@ -95,228 +95,156 @@ document.getElementById('all-question-button').addEventListener('click', functio
   window.location.href = `/public/views/post-list.html`;
 });
 
-// // 인기 순으로 게시글 데이터를 받아와 화면에 표시하는 함수
-// function displayPosts(posts) {
-//   const postList = document.getElementById('post-list');
+// --------------------------------------------------------------------------------------------------------
+// 인기순 게시글 리스트2
+// 좋아요 내림차순 게시글 리스트 표시
+// 대체이미지
+const defaultImage =
+  'https://previews.123rf.com/images/kahovsky/kahovsky2006/kahovsky200600131/148771530-%EA%B7%80%EC%97%AC%EC%9A%B4-%ED%96%89%EB%B3%B5-%EC%9E%AC%EB%AF%B8-%EB%91%90%EB%B6%80%EC%99%80-%EC%BD%A9%EC%9E%85%EB%8B%88%EB%8B%A4-%EB%B2%A1%ED%84%B0-%EB%A7%8C%ED%99%94-%EC%BA%90%EB%A6%AD%ED%84%B0-%EC%86%90-%EA%B7%B8%EB%A6%AC%EA%B8%B0-%EC%8A%A4%ED%83%80%EC%9D%BC-%EA%B7%B8%EB%A6%BC%EC%9E%85%EB%8B%88%EB%8B%A4-%ED%9D%B0%EC%83%89-%EB%B0%B0%EA%B2%BD%EC%97%90.jpg';
 
-//   posts.forEach((post) => {
-//     const postContainer = document.createElement('div');
-//     postContainer.classList.add('post');
-
-//     const image = document.createElement('img');
-//     image.src = post.imageURL;
-//     image.alt = post.title;
-
-//     const title = document.createElement('h2');
-//     title.textContent = post.title;
-
-//     postContainer.appendChild(image);
-//     postContainer.appendChild(title);
-
-//     postList.appendChild(postContainer);
-//   });
-// }
-
-// // API 엔드포인트에서 게시글 목록을 가져와 화면에 표시하는 함수 호출
-// fetch('/api/posts/likes') // API 엔드포인트에 요청을 보냅니다.
-//   .then((response) => response.json())
-//   .then((data) => {
-//     const sortedPosts = data.posts.sort((a, b) => b.likes - a.likes); // 좋아요 순으로 정렬
-//     displayPosts(sortedPosts); // 게시글 표시 함수 호출
-//   })
-//   .catch((error) => {
-//     console.error('게시글 정보를 가져오는 중 에러 발생:', error);
-//   });
-
-// // 프론트엔드 스크립트에서 사용하는 API 엔드포인트
-// const popularPostsApi = '/api/popular-posts';
-// const allPostsApi = '/api/all-posts';
-
-// // 인기 문제 불러오기
-// function displayPopularPosts(data) {
-//   const popularPostsContainer = document.getElementById('popular-posts-container');
-//   popularPostsContainer.innerHTML = ''; // 기존 내용 초기화
-
-//   data.forEach((post) => {
-//     const postCard = document.createElement('div');
-//     postCard.className = 'post-card';
-
-//     // 이미지 추가
-//     const imageElement = document.createElement('img');
-//     imageElement.src = post.image; // 이미지 경로 설정
-//     postCard.appendChild(imageElement);
-
-//     // 제목 추가
-//     const titleElement = document.createElement('h2');
-//     titleElement.textContent = post.title; // 제목 설정
-//     postCard.appendChild(titleElement);
-
-//     popularPostsContainer.appendChild(postCard);
-//   });
-// }
-
-// // 전체 문제 불러오기
-// function displayAllPosts(data) {
-//   const allPostsContainer = document.getElementById('all-posts-container');
-//   allPostsContainer.innerHTML = ''; // 기존 내용 초기화
-
-//   data.forEach((post) => {
-//     const postCard = document.createElement('div');
-//     postCard.className = 'post-card';
-
-//     // 이미지 추가
-//     const imageElement = document.createElement('img');
-//     imageElement.src = post.image; // 이미지 경로 설정: post_id? post?
-//     postCard.appendChild(imageElement);
-
-//     // 제목 추가
-//     const titleElement = document.createElement('h2');
-//     titleElement.textContent = post.title; // 제목 설정: post_id? post?
-//     postCard.appendChild(titleElement);
-
-//     allPostsContainer.appendChild(postCard);
-//   });
-// }
-
-// // API를 호출하여 데이터 가져오기 및 표시
-// function fetchAndDisplayData(apiEndpoint, displayFunction) {
-//   fetch(apiEndpoint)
-//     .then((response) => response.json())
-//     .then((data) => {
-//       displayFunction(data);
-//     })
-//     .catch((error) => {
-//       console.error('데이터를 가져오는 중 에러 발생:', error);
-//     });
-// }
-
-// // 페이지 로드 시 데이터 가져와서 표시
-// window.onload = function () {
-//   fetchUserName();
-//   fetchAndDisplayData(popularPostsApi, displayPopularPosts);
-//   fetchAndDisplayData(allPostsApi, displayAllPosts);
-// };
-
-// // 페이지 로드 시 데이터 가져와서 표시
-// document.addEventListener('DOMContentLoaded', function () {
-//   fetchUserName();
-//   fetchAndDisplayData(popularPostsApi, displayPopularPosts);
-//   fetchAndDisplayData(allPostsApi, displayAllPosts);
-// });
-
-// // 전체 질문
-// window.onload = function () {
-//   let globalPosts; // 전역 변수로 게시글 데이터를 저장할 배열
-
-//   const options = {
-//     method: 'GET',
-//     headers: {
-//       accept: 'application/json',
-//       Authorization: 'Bearer YOUR_ACCESS_TOKEN', // 액세스 토큰을 적절한 값으로 대체해야 합니다.
-//     },
-//   };
-
-//   function fetchPosts() {
-//     fetch('YOUR_BACKEND_API_URL', options) // 백엔드 API의 URL을 적절한 값으로 대체해야 합니다.
-//       .then((response) => response.json())
-//       .then((data) => {
-//         globalPosts = data; // 전역 변수에 게시글 데이터 저장
-//         renderPostCards(data);
-//       });
-//   }
-
-//   // 페이지 로드시 최초 게시글 데이터 불러오기
-//   fetchPosts();
-
-//   // 신규 게시글이 올라올 때마다 자동으로 게시글 카드 덱으로 변경
-//   function updatePostDeck(newPost) {
-//     globalPosts.unshift(newPost); // 새 게시글을 배열의 맨 앞에 추가
-//     renderPostCards(globalPosts);
-//   }
-
-//   // 게시글 카드 UI 업데이트
-//   function renderPostCards(posts) {
-//     var cardContainer = document.querySelector('.card-container');
-//     cardContainer.innerHTML = ''; // 기존 카드 제거
-//     let cardHTML = '';
-
-//     posts.forEach((post) => {
-//       var id = post.id;
-//       var title = post.title;
-//       var content = post.content;
-//       var updatedAt = new Date(post.updatedAt).toLocaleString(); // 업데이트 시간 포맷팅
-
-//       cardHTML += `
-//               <div class="post-card">
-//                   <h2>${title}</h2>
-//                   <p>${content}</p>
-//                   <span>업데이트 시간: ${updatedAt}</span>
-//               </div>
-//           `;
-//     });
-
-//     cardContainer.innerHTML = cardHTML;
-//   }
-
-//   // 여기서부터는 이벤트 리스너 등록 코드입니다.
-
-//   // 신규 게시글 추가 이벤트 리스너 등록
-//   var newPostForm = document.getElementById('new-post-form');
-//   newPostForm.addEventListener('submit', handleNewPost);
-
-//   // 신규 게시글 추가 이벤트 핸들러
-//   function handleNewPost(event) {
-//     event.preventDefault();
-
-//     var titleInput = document.getElementById('post-title');
-//     var contentInput = document.getElementById('post-content');
-
-//     // 새 게시글 객체 생성
-//     var newPost = {
-//       id: globalPosts.length + 1, // 임시 방식으로 id 생성 (실제 백엔드와 연동 필요)
-//       title: titleInput.value,
-//       content: contentInput.value,
-//       updatedAt: new Date().toISOString(), // 현재 시간으로 설정
-//     };
-
-//     updatePostDeck(newPost); // 게시글 카드 업데이트
-//     newPostForm.reset(); // 입력 폼 초기화
-//   }
-
-// 최신순 게시글 리스트
-window.addEventListener('DOMContentLoaded', async function () {
-  fetch('/api/post', {})
-    .then((response) => response.json())
-    .then((data) => {
-      let rows = data.data;
-      console.log(data);
-      const postBox = document.getElementById('posts-box');
-      rows.forEach((post) => {
-        let title = post['title'];
-        let content = post['content'];
-        let subject = post['subject'];
-        let postId = post['post_id'];
-        // let image = post['image'];
-
-        let temp_html = `<div class="solo-card">
-    <div class="card w-75">
-    <div class="card-body">
-    <h5 class="card-title">제목: ${title}</h5>
-    <p class="card-text">${content}</p>
-    <p class="card-text">과목: ${subject}</p>
-    </div>
-    </div>
-    </div>`;
-        postBox.insertAdjacentHTML('beforeend', temp_html);
-
-        // 게시글 리스트 클릭하면 상세페이지로-!
-        const cardBodyElements = document.querySelectorAll('.card-body');
-
-        cardBodyElements.forEach((cardBodyElement, index) => {
-          cardBodyElement.addEventListener('click', function (event) {
-            window.location.href = `/public/views/post.html?post_id=${rows[index].post_id}`;
-          });
-        });
-      });
+document.addEventListener('DOMContentLoaded', async function () {
+  try {
+    const response = await fetch('/api/posts/likes', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
+
+    if (response.ok) {
+      const data = await response.json();
+
+      // 데이터를 활용하여 화면에 게시글 리스트 표시하기
+      const postListContainer = document.getElementById('posts-box1');
+
+      data.slice(0, 4).forEach((post) => {
+        let title = post.title;
+        let subject = post.subject;
+        let image = post.image;
+        if (!image) {
+          image = defaultImage;
+        }
+        let temp_html = `<div data-post-id="${post.post_id}" class="post-card">
+    <img src="${image}" 
+    alt="${image}">
+    <p>이름: ${post.User.nickname}</p> 
+    <h5 class="card-title">제목: ${title}</h5>
+    <p>과목: ${subject}</p>
+    </div>`;
+        postListContainer.insertAdjacentHTML('beforeend', temp_html);
+      });
+    } else {
+      console.error('게시글 조회 실패:', response.statusText);
+      alert('게시글 조회에 실패했습니다.');
+    }
+  } catch (error) {
+    console.error('게시글 조회 오류:', error);
+    alert('게시글 조회 중 오류가 발생했습니다.');
+  }
+});
+const hotPostList = document.getElementById('posts-box');
+
+hotPostList.addEventListener('click', (e) => {
+  const post = e.target.closest('div');
+  const postId = post.getAttribute('data-post-id');
+  if (postId) window.location.href = `/public/views/post.html?post_id=${postId}}`;
+});
+
+// 게시글 리스트
+document.addEventListener('DOMContentLoaded', async function () {
+  let rows = await getPosts();
+  const postBox = document.getElementById('posts-box');
+  postBox.innerHTML = '';
+
+  rows.forEach((post) => {
+    console.log(post);
+    let title = post['title'];
+    let subject = post['subject'];
+    let image = post.image;
+    if (!image) {
+      image = defaultImage;
+    }
+
+    let temp_html = `<div data-post-id="${post.post_id}" class="post-card">
+    <img src="${image}" alt="${image}">
+    <h5 class="card-title">제목: ${title}</h5>
+    <p>이름: ${post.User.nickname}</p>
+    <p>과목: ${subject}</p>
+    </div>`;
+    postBox.insertAdjacentHTML('beforeend', temp_html);
+  });
+});
+
+const postList = document.getElementById('posts-box');
+
+postList.addEventListener('click', (e) => {
+  const post = e.target.closest('div');
+  const postId = post.getAttribute('data-post-id');
+  if (postId) window.location.href = `/public/views/post.html?post_id=${postId}}`;
+});
+
+const searchBtn = document.getElementById('searchBtn');
+searchBtn.addEventListener('click', search);
+
+async function search() {
+  //검색으로 새로 불러오는 데이터
+  let Allposts = await getPosts();
+  let inputText = document.getElementById('searchInput').value;
+
+  //검색 유효성 검사
+  if (inputText.trim() === '') {
+    alert('검색어를 입력해주세요.');
+    return;
+  }
+
+  const searchData = Allposts.filter((post) => {
+    return post.title.includes(inputText) || post.User.nickname.includes(inputText);
+  });
+
+  const postBox = document.getElementById('posts-box');
+  postBox.innerHTML = '';
+  searchData.forEach((post) => {
+    let title = post['title'];
+    let subject = post['subject'];
+    let image = post.image;
+    if (!image) {
+      image = defaultImage;
+    }
+
+    let temp_html = `<div data-post-id="${post.post_id}" class="post-card">
+    <img src="${image}" alt="${image}">
+    <h5 class="card-title">제목: ${title}</h5>
+    <p>이름: ${post.User.nickname}</p>
+    <p>과목: ${subject}</p>
+    </div>`;
+    postBox.insertAdjacentHTML('beforeend', temp_html);
+  });
+}
+
+async function getPosts() {
+  try {
+    const response = await fetch('/api/post', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+
+      return data.data;
+    } else {
+      const data = await response.json();
+      alert(`fail : ${data.message}`);
+    }
+  } catch (error) {
+    console.error('Error:', error.message);
+  }
+}
+
+// 튜터리스트 페이지 이동
+const reportButton = document.querySelector('#tutor-button');
+reportButton.addEventListener('click', function () {
+  window.location.href = '../tutorlist';
 });

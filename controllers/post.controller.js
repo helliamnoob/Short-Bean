@@ -40,10 +40,10 @@ class PostController {
 
       const parsed_post_id = parseInt(post_id); // post_id 값을 숫자로 변환
 
-      if (isNaN(parsed_post_id)) {
-        // 숫자로 변환되지 않은 경우 처리
-        return res.status(400).json({ errorMessage: '유효하지 않은 post_id입니다.' });
-      }
+      // if (isNaN(parsed_post_id)) {
+      //   // 숫자로 변환되지 않은 경우 처리
+      //   return res.status(400).json({ errorMessage: '유효하지 않은 post_id입니다.' });
+      // }
 
       const { code, data } = await this.postService.findPost({ post_id });
 
@@ -110,7 +110,7 @@ class PostController {
 
       return res.status(code).json({ message });
     } catch (error) {
-      return this.handleError(res, error);
+      return res.status(400).json({ error: error.message });
     }
   };
 
@@ -136,6 +136,40 @@ class PostController {
       return res.status(code).json({ message });
     } catch (error) {
       return res.status(400).json({ error: error.message });
+    }
+  };
+
+  // 게시글 검색
+  searchPost = async (req, res) => {
+    try {
+      const { title, content, subject } = req.body;
+      // 요청 데이터 검증 (필요에 따라 추가적인 검증이 필요할 수 있음)
+      if (!title && !content && !subject) {
+        return res.status(400).json({ message: '검색어를 제공하세요.' });
+      }
+
+      const data = await this.postService.searchPost({ title, content, subject });
+
+      // 검색 결과가 없을 경우 처리 (필요에 따라 추가적인 처리가 필요할 수 있음)
+      if (!data || data.length === 0) {
+        return res.status(404).json({ message: '검색 결과가 없습니다.' });
+      }
+
+      return res.status(200).json({ data });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send({ message: '서버 오류가 발생했습니다.' });
+    }
+  };
+
+  // 게시글 좋아요순 조회
+  getPostOrderByLikes = async (req, res) => {
+    try {
+      const posts = await this.postService.getPostOrderByLikes();
+      res.json(posts);
+    } catch (error) {
+      console.error(error);
+      res.status(error.code || 500).json({ message: error.message || '서버 오류가 발생했습니다.' });
     }
   };
 }
