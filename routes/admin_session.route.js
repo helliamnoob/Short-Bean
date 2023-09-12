@@ -8,19 +8,6 @@ const env = process.env;
 require('dotenv').config();
 
 
-const options = {
-    host: env.MYSQL_HOST,
-    port : env.MYSQL_PORT,
-    user :env.MYSQL_USERNAME,
-    password :env.MYSQL_PASSWORD,
-    database :env.MYSQL_DATABASE
-}
-router.use(session({                                            
-    secret:env.SECRET_KEY,
-    resave:false,
-    saveUninitialized:true,
-    store: new memory_session(options)                             
-  }));
 
   router.post('/admin/session/login', async(req, res,next) => {
     const {email,password} = req.body;

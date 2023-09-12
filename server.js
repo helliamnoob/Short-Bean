@@ -1,7 +1,7 @@
 const SocketIO = require('socket.io');
 const express = require('express');
 const session = require('express-session');
-const sql_store = require('express-mysql-session');
+const memory_session = require('memorystore')(session);
 const cors = require('cors');
 const app = express();
 
@@ -29,6 +29,20 @@ const inviteSocketController = require('./invite.socket');
 const io = SocketIO(server);
 mongoDB();
 
+
+const options = {
+  host: process.env.MYSQL_HOST,
+  port : process.env.MYSQL_PORT,
+  user : process.env.MYSQL_USERNAME,
+  password : process.env.MYSQL_PASSWORD,
+  database : process.env.MYSQL_DATABASE
+}
+router.use(session({                                            
+  secret : process.env.SECRET_KEY,
+  resave:false,
+  saveUninitialized:true,
+  store: new memory_session(options)                             
+}));
 app.use(
   cors({
     origin: '*',
@@ -84,19 +98,6 @@ app.get('/admin/tutors/id=:id', (req, res) => {
 
 // app.use(cookieParser(process.env.COOKIE_SECRET));
 
-const options = {
-    host: process.env.MYSQL_HOST,
-    port : process.env.MYSQL_PORT,
-    user :process.env.MYSQL_USERNAME,
-    password :process.env.MYSQL_PASSWORD,
-    database :process.env.MYSQL_DATABASE
-}
-
-app.use(session({                                            
-    secret:"asdfasffdas",
-    resave:true,
-    saveUninitialized:true,                                    
-  }));
 
 server.listen(port, () => {
   console.log(port, '포트로 서버가 열렸어요!');
