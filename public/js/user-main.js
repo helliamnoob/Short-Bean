@@ -285,8 +285,10 @@ document.getElementById('all-question-button').addEventListener('click', functio
 
 // 게시글 리스트
 document.addEventListener('DOMContentLoaded', async function () {
-  let rows = await getPost();
+  let rows = await getPosts();
   const postBox = document.getElementById('posts-box');
+  postBox.innerHTML = '';
+
   rows.forEach((post) => {
     console.log(post);
     let title = post['title'];
@@ -313,12 +315,13 @@ postList.addEventListener('click', (e) => {
   if (postId) window.location.href = `/public/views/post.html?post_id=${postId}}`;
 });
 
-// window.location.href = `/public/views/post.html?post_id=${rows[index].post_id}`;
+const searchBtn = document.getElementById('searchBtn');
+searchBtn.addEventListener('click', search);
+
 async function search() {
   //검색으로 새로 불러오는 데이터
-  let { results: movies } = await getMovies();
-  let inputText;
-  inputText = document.getElementById('search-input').value.toUpperCase(); // 대문자 변환해서 입력받은 데이터 할당
+  let Allposts = await getPosts();
+  let inputText = document.getElementById('searchInput').value;
 
   //검색 유효성 검사
   if (inputText.trim() === '') {
@@ -326,15 +329,30 @@ async function search() {
     return;
   }
 
-  const searchData = movies.filter((x) => {
-    let a = x.title.toUpperCase();
-    return a.includes(inputText);
-  }); // title 도 대문자로 includes로 문자열이 포함되어있으면 serchData로 반환
+  const searchData = Allposts.filter((post) => {
+    return post.title.includes(inputText) || post.User.nickname.includes(inputText);
+  });
 
-  seepage(searchData);
+  const postBox = document.getElementById('posts-box');
+  postBox.innerHTML = '';
+  searchData.forEach((post) => {
+    let title = post['title'];
+    let content = post['content'];
+    let subject = post['subject'];
+    let postId = post['post_id'];
+    // let image = post['image'];
+
+    let temp_html = `<div data-post-id="${post.post_id}" class="post-card">
+    <img src="https://health.chosun.com/site/data/img_dir/2016/12/16/2016121602199_0.jpg" alt="https://health.chosun.com/site/data/img_dir/2016/12/16/2016121602199_0.jpg">
+    <h5 class="card-title">제목: ${title}</h5>
+    <p>이름: ${post.User.nickname}</p>
+    <p>과목: ${subject}</p>
+    </div>`;
+    postBox.insertAdjacentHTML('beforeend', temp_html);
+  });
 }
 
-async function getPost() {
+async function getPosts() {
   try {
     const response = await fetch('/api/post', {
       method: 'GET',
