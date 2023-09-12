@@ -298,14 +298,10 @@ window.addEventListener('DOMContentLoaded', async function () {
         let postId = post['post_id'];
         // let image = post['image'];
 
-        let temp_html = `<div class="solo-card">
-    <div class="card w-75">
-    <div class="card-body">
+        let temp_html = `<div class="post-card">
     <h5 class="card-title">제목: ${title}</h5>
     <p class="card-text">${content}</p>
     <p class="card-text">과목: ${subject}</p>
-    </div>
-    </div>
     </div>`;
         postBox.insertAdjacentHTML('beforeend', temp_html);
 
