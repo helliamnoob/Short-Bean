@@ -96,7 +96,7 @@ class PostService {
   // 게시글 좋아요순 조회
   async getPostOrderByLikes() {
     try {
-      return await postRepository.getPostOrderByLikes();
+      return await this.postRepository.getPostOrderByLikes();
     } catch (error) {
       console.error(error);
       throw new Error('서버 오류가 발생했습니다.');
