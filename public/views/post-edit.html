@@ -40,7 +40,7 @@
     <!-- 메인 배너 부분 -->
     <section id="banner">
         <h1>Welcome to ShortBean</h1>
-      <p>It's a one-on-one matching video education site.</p>
+        <p>It's a one-on-one matching video education site.</p>
     </section>
     <!-- 게시글 작성란 -->
     <!-- 질문 제목 작성 부분 -->
@@ -48,17 +48,10 @@
         <textarea class="post_title" placeholder="title" id="post-title"
             style="width: 1000px; height: 60px;"></textarea>
     </div>
-    <!-- <div class="post-card-container"></div>
-    <form id="new-post-form">
-        <label for="post-title">title:</label>
-        <input type="text" id="post-title" required><br>
-        <label for="post-content">Content:</label>
-        <textarea id="post-content" required></textarea><br>
-        <button type="submit">Create New Post</button>
-    </form> -->
+
 
     <!-- 질문 내용 작성 부분 -->
-    <!-- <div class="form-floating"> -->
+
     <div class="post-content-container">
         <textarea class="post-content" placeholder="posting here" id="post-content"
             style="width: 1000px; height: 500px"></textarea>
@@ -82,13 +75,13 @@
             <i class="fa fa-plus-square-o" aria-hidden="true"></i>
         </div>
     </div>
-    <input class="upload-input" type="file" accept="image/jpeg, image/png, image/jpg, image/PNG, image/bmp">
+    <input class="upload-input" type="file" id="imagevlaue" accept="image/jpeg, image/png, image/jpg, image/PNG, image/bmp">
     <!-- 이미지 업로드하는 버튼 부분 -->
     <!-- <button class="image-btn">업로드 사진 선택</button> -->
 
     <!-- 질문(게시글) 저장 버튼 -->
     <div class="card__inner container gray" id="cardList">
-        <button type="button" class="btn btn-dark" id="postCreate">질문 저장</button>
+        <button type="button" class="btn btn-dark" id="updatePost">게시글 수정</button>
 
 
         <!-- 사이트 제작 정보 -->
@@ -98,7 +91,9 @@
         <script src="/public/js/jquery.min.js"></script>
         <script src="/public/js/skel.min.js"></script>
         <script src="/public/js/util.js"></script>
-        <script src="/public/js/post-detail.js"></script>
+        <!-- <script src="/public/js/post-detail.js"></script> -->
+        <script src="/public/js/post-edit.js"></script>
+        <!-- <script src="/public/js/post.js"></script> -->
 </body>
 
 </html>
