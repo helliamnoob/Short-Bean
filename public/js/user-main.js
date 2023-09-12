@@ -112,7 +112,7 @@ window.addEventListener('DOMContentLoaded', async function () {
       console.log(data);
 
       // 데이터를 활용하여 화면에 게시글 리스트 표시하기
-      const postListContainer = document.getElementById('post-list-container');
+      const postListContainer = document.getElementById('posts-box1');
 
       data.forEach((post) => {
         let title = post.title;
@@ -424,7 +424,7 @@ window.addEventListener('DOMContentLoaded', async function () {
     .then((data) => {
       let rows = data.data;
       console.log(data);
-      const postBox = document.getElementById('posts-box');
+      const postBox = document.getElementById('posts-box2');
       rows.forEach((post) => {
         let title = post['title'];
         let content = post['content'];
