@@ -1,7 +1,7 @@
 const SocketIO = require('socket.io');
 const express = require('express');
-const session = require('express-session');
-const sql_store = require('express-mysql-session');
+// const session = require('express-session');
+// const sql_store = require('express-mysql-session');
 const cors = require('cors');
 const app = express();
 const memory_session = require('memorystore')(session);
@@ -102,6 +102,23 @@ app.get('/admin', checkLogin, (req, res) => {
 app.get('/post', (_, res) => {
   res.sendFile(__dirname + '/public/views/post.html');
 });
+
+// // 검색 기능
+// app.get('/api/search', (req, res) => {
+//   // 검색 로직을 구현해야 합니다.
+//   const query = req.query.q.toLowerCase();
+//   const sqlQuery = `SELECT * FROM posts WHERE title LIKE '%${query}%'`;
+
+//   connection.query(sqlQuery, (error, results) => {
+//     if (error) {
+//       console.error('검색 오류:', error);
+//       res.status(500).json({ error: '검색 중 오류가 발생했습니다.' });
+//     } else {
+//       res.json(results);
+//     }
+//   });
+// });
+
 app.get('/admin/id=:id', (req, res) => {
   res.sendFile(__dirname + '/public/views/report-detail.html');
 });
@@ -116,14 +133,6 @@ app.get('/admin/login', (req, res) => {
 });
 
 // app.use(cookieParser(process.env.COOKIE_SECRET));
-
-// const options = {
-//   host: process.env.MYSQL_HOST,
-//   port: process.env.MYSQL_PORT,
-//   user: process.env.MYSQL_USERNAME,
-//   password: process.env.MYSQL_PASSWORD,
-//   database: process.env.MYSQL_DATABASE,
-// };
 
 server.listen(port, () => {
   console.log(port, '포트로 서버가 열렸어요!');
