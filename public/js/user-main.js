@@ -285,29 +285,24 @@ document.getElementById('all-question-button').addEventListener('click', functio
 
 // 게시글 리스트
 document.addEventListener('DOMContentLoaded', async function () {
-  fetch('/api/post', {})
-    .then((response) => response.json())
-    .then((data) => {
-      let rows = data.data;
-      console.log(data);
-      const postBox = document.getElementById('posts-box');
-      rows.forEach((post) => {
-        console.log(post);
-        let title = post['title'];
-        let content = post['content'];
-        let subject = post['subject'];
-        let postId = post['post_id'];
-        // let image = post['image'];
+  let rows = await getPost();
+  const postBox = document.getElementById('posts-box');
+  rows.forEach((post) => {
+    console.log(post);
+    let title = post['title'];
+    let content = post['content'];
+    let subject = post['subject'];
+    let postId = post['post_id'];
+    // let image = post['image'];
 
-        let temp_html = `<div data-post-id="${post.post_id}" class="post-card">
-        <img src="https://health.chosun.com/site/data/img_dir/2016/12/16/2016121602199_0.jpg" alt="https://health.chosun.com/site/data/img_dir/2016/12/16/2016121602199_0.jpg">
-        <h5 class="card-title">제목: ${title}</h5>
+    let temp_html = `<div data-post-id="${post.post_id}" class="post-card">
+    <img src="https://health.chosun.com/site/data/img_dir/2016/12/16/2016121602199_0.jpg" alt="https://health.chosun.com/site/data/img_dir/2016/12/16/2016121602199_0.jpg">
+    <h5 class="card-title">제목: ${title}</h5>
     <p>이름: ${post.User.nickname}</p>
     <p>과목: ${subject}</p>
     </div>`;
-        postBox.insertAdjacentHTML('beforeend', temp_html);
-      });
-    });
+    postBox.insertAdjacentHTML('beforeend', temp_html);
+  });
 });
 
 const postList = document.getElementById('posts-box');
@@ -337,6 +332,28 @@ async function search() {
   }); // title 도 대문자로 includes로 문자열이 포함되어있으면 serchData로 반환
 
   seepage(searchData);
+}
+
+async function getPost() {
+  try {
+    const response = await fetch('/api/post', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+
+      return data.data;
+    } else {
+      const data = await response.json();
+      alert(`fail : ${data.message}`);
+    }
+  } catch (error) {
+    console.error('Error:', error.message);
+  }
 }
 
 // window.addEventListener('DOMContentLoaded', async function () {
