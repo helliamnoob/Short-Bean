@@ -19,9 +19,15 @@ router.get('/post/:post_id', postController.getPost);
 router.post('/post', auth, upload.array('image'), postController.createPost);
 
 // 게시글 수정
-router.post('/post/:post_id', auth, upload.array('image'), postController.updatePost);
+router.put('/post/:post_id', auth, upload.array('image'), postController.updatePost);
 
 // 게시글 삭제
 router.delete('/post/:post_id', auth, postController.deletePost);
+
+// 게시글 검색
+router.get('/search_post', postController.searchPost);
+
+// // 게시글 좋아요순 조회
+// router.get('/post/likes', postController.getPostOrderByLikes);
 
 module.exports = router;

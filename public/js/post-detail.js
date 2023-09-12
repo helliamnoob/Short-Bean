@@ -84,6 +84,16 @@ document.addEventListener('DOMContentLoaded', function () {
   const postContent = document.getElementById('post-content');
   const subjectSelect = document.getElementById('subject');
 
+  console.log(postCreateBtn);
+  console.log(postTitle);
+  console.log(postContent);
+  console.log(subjectSelect);
+
+  if (!postCreateBtn || !postTitle || !postContent || !subjectSelect) {
+    console.error('One or more elements not found.');
+    return;
+  }
+
   postCreateBtn.addEventListener('click', function () {
     const title = postTitle.value;
     const content = postContent.value;

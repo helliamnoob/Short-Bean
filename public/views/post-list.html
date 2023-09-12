@@ -45,24 +45,25 @@
     <!-- 메인 배너 부분 -->
     <section id="banner">
         <h1>Welcome to ShortBean</h1>
-      <p>It's a one-on-one matching video education site.</p>
+        <p>It's a one-on-one matching video education site.</p>
     </section>
 
     <!-- 검색창 부분 -->
-    <form class="search-form">
-        <input class="search-box" />
-        <button type="button" class="btn btn-dark" id="search">검색</button>
-    </form>
+    <!-- <form class="search-form"> -->
+    <!-- <input class="search-box" /> -->
+    <!-- <button type="button" class="btn btn-dark" id="search">검색</button>
+    </form> -->
+
+    <!-- 검색 입력 필드와 버튼 -->
+    <input type="text" id="searchInput" placeholder="검색어를 입력하세요">
+    <button id="searchButton">검색</button>
+
+    <!-- 검색 결과를 표시할 div -->
+    <div id="searchResults"></div>
+
 
     <!-- 과목 선택 부분 -->
-    <!-- <div class="sort">
-        <select id="select">
-            <option name="select" value="name">선택하세요</option>
-            <!-- <option name="select" value="title">제목</option> -->
-    <!-- <option name="select" value="subject">국어</option>
-            <option name="select" value="subject">영어</option>
-            <option name="select" value="subject">수학</option>
-        </select>  -->
+
     <button type="button" onclick="sort()" id="search">조회</button>
     </div>
     <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
@@ -80,7 +81,7 @@
         <div class="row" id="posts-box"></div>
 
         <!-- 카드 형식 -->
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+        <!-- <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col">
                 <div class="card h-100">
                     <img src="..." class="card-img-top" alt="...">
@@ -93,8 +94,8 @@
                         <small class="text-muted">Last updated 3 mins ago</small>
                     </div>
                 </div>
-            </div>
-            <!-- <div class="col">
+            </div> -->
+        <!-- <div class="col">
                 <div class="card h-100">
                     <img src="..." class="card-img-top" alt="...">
                     <div class="card-body">
@@ -121,7 +122,7 @@
                     </div>
                 </div>
             </div> -->
-        </div>
+    </div>
 
 
     </div>
@@ -130,40 +131,27 @@
 
 
 
-    <!-- <div class="input-group">
-        <nav>
-            <div class="category" id="popular-category">Popular</div>
-            <div class="category" id="nowplaying-category">Now Playing</div>
-            <div class="category" id="toprate-category">Top Rated</div>
-            <div class="category" id="upcoming-category">Upcoming</div>
-        </nav>
-        <div class="searchBbtn">
-            <input type="text" id="search-box" placeholder="영화 제목을 입력하세요" autofocus />
-            <button class="search-btn" id="click-btn" type="button">
-                <p>search</p>
-            </button>
-        </div>
-    </div> -->
-            <!-- 페이지 넘기는 부분 -->
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            <!-- <section class="post-list"></section>
+
+    <!-- 페이지 넘기는 부분 -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <!-- <section class="post-list"></section>
             <div class="search" id="page">
                 <h4 style="margin-right: 20px">page</h4>
                 <select id="page">
@@ -184,6 +172,7 @@
     <script src="/public/js/skel.min.js"></script>
     <script src="/public/js/util.js"></script>
     <script src="/public/js/post-list.js"></script>
+    <!-- <script src="/server.js"></script> -->
     <!-- <script src="/public/js/post.js"></script> -->
 </body>
 
