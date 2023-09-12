@@ -8,7 +8,7 @@ class PostService {
   findAllPost = async () => {
     try {
       const data = await this.postRepository.findAllPostWithId({
-        order: [['createdAt', 'desc']], // 내림차순 정렬
+        order: [['createdAt', 'DESC']], // 내림차순 정렬
       });
       return { code: 200, data };
     } catch (error) {

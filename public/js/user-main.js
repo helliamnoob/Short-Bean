@@ -100,7 +100,7 @@ document.getElementById('all-question-button').addEventListener('click', functio
 // 좋아요 내림차순 게시글 리스트 표시
 window.addEventListener('DOMContentLoaded', async function () {
   try {
-    const response = await fetch('/api/post/likes', {
+    const response = await fetch('/api/posts/likes', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
