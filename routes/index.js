@@ -9,4 +9,5 @@ module.exports = {
   facechatRouter: require('./facechat.route.js'),
   tutorRouter: require('./tutor.route.js'),
   adminRouter: require('./admin_session.route.js'),
+  adminSessionRouter: require('./admin_session.route.js'),
 };
