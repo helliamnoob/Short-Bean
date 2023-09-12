@@ -1,6 +1,6 @@
 const SocketIO = require('socket.io');
 const express = require('express');
-// const session = require('express-session');
+const session = require('express-session');
 // const sql_store = require('express-mysql-session');
 const cors = require('cors');
 const app = express();
@@ -11,14 +11,7 @@ const port = 3000;
 const http = require('http');
 const cookieParser = require('cookie-parser');
 const { mongoDB } = require('./config/mongo.config');
-// app.use(
-//   session({
-//     secret: 'asdfasffdas',
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: { secure: false },
-//   })
-// );
+
 const options = {
   host: process.env.MYSQL_HOST,
   port: process.env.MYSQL_PORT,
