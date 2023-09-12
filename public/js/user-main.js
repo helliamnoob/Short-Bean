@@ -283,8 +283,8 @@ document.getElementById('all-question-button').addEventListener('click', functio
 //     newPostForm.reset(); // 입력 폼 초기화
 //   }
 
-// 최신순 게시글 리스트
-window.addEventListener('DOMContentLoaded', async function () {
+// 게시글 리스트
+document.addEventListener('DOMContentLoaded', async function () {
   fetch('/api/post', {})
     .then((response) => response.json())
     .then((data) => {
@@ -292,54 +292,76 @@ window.addEventListener('DOMContentLoaded', async function () {
       console.log(data);
       const postBox = document.getElementById('posts-box');
       rows.forEach((post) => {
+        console.log(post);
         let title = post['title'];
         let content = post['content'];
         let subject = post['subject'];
         let postId = post['post_id'];
         // let image = post['image'];
 
-        let temp_html = `<div class="post-card">
-    <h5 class="card-title">제목: ${title}</h5>
-    <p class="card-text">${content}</p>
-    <p class="card-text">과목: ${subject}</p>
+        let temp_html = `<div data-post-id="${post.post_id}" class="post-card">
+        <img src="https://health.chosun.com/site/data/img_dir/2016/12/16/2016121602199_0.jpg" alt="https://health.chosun.com/site/data/img_dir/2016/12/16/2016121602199_0.jpg">
+        <h5 class="card-title">제목: ${title}</h5>
+    <p>이름: ${post.User.nickname}</p>
+    <p>과목: ${subject}</p>
     </div>`;
         postBox.insertAdjacentHTML('beforeend', temp_html);
-
-        // 게시글 리스트 클릭하면 상세페이지로-!
-        const cardBodyElements = document.querySelectorAll('.card-body');
-
-        cardBodyElements.forEach((cardBodyElement, index) => {
-          cardBodyElement.addEventListener('click', function (event) {
-            window.location.href = `/public/views/post.html?post_id=${rows[index].post_id}`;
-          });
-        });
       });
     });
 });
 
-window.addEventListener('DOMContentLoaded', async function () {
-  try {
-    const response = await fetch('/api/post', {
-      method: 'GET',
+const postList = document.getElementById('posts-box');
 
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      order: [['post_like', 'DESC']],
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      displayPosts(data);
-    } else {
-      console.error('게시글 조회 실패:', response.statusText);
-      alert('게시글 조회에 실패했습니다.');
-    }
-  } catch (error) {
-    console.error('게시글 조회 오류:', error);
-    alert('게시글 조회 중 오류가 발생했습니다.');
-  }
+postList.addEventListener('click', (e) => {
+  const post = e.target.closest('div');
+  const postId = post.getAttribute('data-post-id');
+  if (postId) window.location.href = `/public/views/post.html?post_id=${postId}}`;
 });
+
+// window.location.href = `/public/views/post.html?post_id=${rows[index].post_id}`;
+async function search() {
+  //검색으로 새로 불러오는 데이터
+  let { results: movies } = await getMovies();
+  let inputText;
+  inputText = document.getElementById('search-input').value.toUpperCase(); // 대문자 변환해서 입력받은 데이터 할당
+
+  //검색 유효성 검사
+  if (inputText.trim() === '') {
+    alert('검색어를 입력해주세요.');
+    return;
+  }
+
+  const searchData = movies.filter((x) => {
+    let a = x.title.toUpperCase();
+    return a.includes(inputText);
+  }); // title 도 대문자로 includes로 문자열이 포함되어있으면 serchData로 반환
+
+  seepage(searchData);
+}
+
+// window.addEventListener('DOMContentLoaded', async function () {
+//   try {
+//     const response = await fetch('/api/post', {
+//       method: 'GET',
+
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       order: [['post_like', 'DESC']],
+//     });
+
+//     if (response.ok) {
+//       const data = await response.json();
+//       displayPosts(data);
+//     } else {
+//       console.error('게시글 조회 실패:', response.statusText);
+//       alert('게시글 조회에 실패했습니다.');
+//     }
+//   } catch (error) {
+//     console.error('게시글 조회 오류:', error);
+//     alert('게시글 조회 중 오류가 발생했습니다.');
+//   }
+// });
 
 function displayPosts(posts) {
   postsContainer.innerHTML = ''; // 이전 결과를 지우고 새로운 결과 표시
