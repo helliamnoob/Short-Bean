@@ -1,3 +1,5 @@
+import { jwtToken } from '../util/isLogin.util.js';
+
 const tutorinfo_form = document.getElementById('tutorinfo');
 const age = document.getElementById('age');
 const sex = document.getElementById('sex');
@@ -8,7 +10,6 @@ const tutor_like = document.getElementById('tutor_like');
 const infoupdate_btn = document.getElementById('infoupdate_btn');
 
 document.addEventListener('DOMContentLoaded', () => {
-  const jwtToken = getCookieValue('authorization');
   if (!jwtToken) {
     alert('로그인 후 이용가능한 서비스입니다.');
     window.location.href = `/`;
@@ -86,14 +87,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     tutorList.appendChild(listTutor);
   }
 });
-function getCookieValue(cookieName) {
-  const cookieParts = document.cookie.split('; ');
-
-  for (const part of cookieParts) {
-    const [name, value] = part.split('=');
-    if (name === cookieName) {
-      return value;
-    }
-  }
-  return null;
-}
