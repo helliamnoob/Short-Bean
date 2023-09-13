@@ -1,22 +1,37 @@
+//파라미터 값 받아오기
+const params = new URLSearchParams(window.location.search);
+const post_id = params.get('post_id');
+
 // 신고하기 모달 열기
 const reportButton = document.querySelector('#postReport');
 reportButton.addEventListener('click', function () {
   const reportModal = new bootstrap.Modal(document.getElementById('reportModal'));
   reportModal.show();
+  const response = fetch(`/api/post/${post_id}`);
+  if (!response.ok) {
+    throw new Error('게시글을 불러오는 중 오류가 발생했습니다.');
+  }
+  const data = response.json();
+  const postUserId = data.user_id;
+  const postUsertag = document.getElementById('postUser');
+  const temp_html = `${postUserId}`;
+  postUsertag.insertAdjacentHTML('beforeend', temp_html);
 });
 
 // 신고하기 api 요청
 const loginForm = document.getElementById('reportForm');
-loginForm.addEventListener('submit', function (event) {
+loginForm.addEventListener('submit', async function (event) {
   event.preventDefault();
+  const data = await fetch(`/api/post/${post_id}`).then((response) => response.json());
 
   const content = document.getElementById('content').value;
-  const userId = document.getElementById('userId').value;
-  const post_id = document.getElementById('postLike').value;
+  //const userId = document.getElementById('userId').value;
+  const postUser = data.data.user_id;
+  console.log(data);
 
   const formData = {
     report_content: content,
-    reported_user_id: userId,
+    reported_user_id: postUser,
   };
   fetch('/api/reports', {
     method: 'POST',
@@ -38,8 +53,6 @@ loginForm.addEventListener('submit', function (event) {
 });
 // ------------------------------------------------------------------------------
 //댓글
-const params = new URLSearchParams(window.location.search);
-const post_id = params.get('post_id');
 
 //댓글 조회
 function addCommentToDOM(commentList, content, commentId) {
