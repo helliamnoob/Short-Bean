@@ -14,7 +14,7 @@ requestTutorButton.addEventListener('click', requestTutor);
 window.onload = info();
 async function info() {
   try {
-      const response = await fetch('/api/usertest', {
+      const response = await fetch('/api/userinfo', {
       method: 'GET',
     })
       .then((res) => res.json())

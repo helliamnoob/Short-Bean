@@ -6,46 +6,92 @@
 -->
 <html>
   <head>
-    <title>Theory by TEMPLATED</title>
+    <title>관리자 로그인</title>
     <!-- 문서의 메타 정보와 스타일, 스크립트 등을 정의하는 부분 -->
-
+  
     <!-- 문서 인코딩과 뷰포트 설정 -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+  
     <!-- 외부 스타일 시트 불러오기 -->
-    <link rel="stylesheet" href="/public/css/main.css" />
-
-    <!-- Bootstrap CSS 링크 -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-
-    <!-- Bootstrap JS와 jQuery 스크립트 -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <link rel="stylesheet" href="/public/css/main.css" /> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"></script>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+      header {
+        background-color: rgb(112, 159, 251);
+        background-image: url('/public/images/Section\ 1\ \(2\).jpg');
+        color: white;
+        padding: 10px;
+        text-align: right;
+        width: 100%;
+        height: 500px;
+        justify-content: space-between;
+        font-family: 'Noto Serif KR', serif;
+      }
+     
+  
+      main {
+        background-color: #f8f0ee;
+        padding: 20px;
+        width: 100%;
+        height: 1700px;
+        font-family: 'Noto Serif KR', serif;
+      }
+  
+      footer {
+        padding: 10px;
+        text-align: center;
+        background-color: grey;
+      }
+      
+  button{
+      border:none;
+      color: #004AAD;
+      background-color: white;
+      border-radius: 5px; 
+      width: 110px; 
+    height: 40px; 
+  }
+  
+  button:hover{
+  
+      background-color: #004AAD;
+      color: white;
+  }
+  
+  .main-Btn button{
+  margin: 10px 10px 10px 10px;
+  }
+  
+  #point{
+      color: white;
+      text-decoration: none;
+  }
+  
+  </style>
+  
+  
   </head>
-
+  
   <body>
     <!-- 페이지 상단에 위치하는 헤더 -->
-    <header id="header">
-      <div class="inner">
-        <a href="index.html" class="logo">짧공</a>
-        <nav id="nav">
-          <!-- <a href="index.html">Home</a>
-          <a href="generic.html">Generic</a>
-          <a href="elements.html">Elements</a>
-          <a href="post-list.html">Post</a> -->
-        </nav>
-        <a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
-      </div>
-    </header>
-
-    <!-- 메인 배너 부분 -->
-    <section id="banner">
-      <h1>Welcome to ShortBean</h1>
-      <p>It's a one-on-one matching video education site.</p>
-    </section>
+    <header>
+      <nav>
+    <a id="point" href="/public/views/login.html">로그인</a> | <a id="point" href="#">로그아웃</a> | <a id="point" href="/public/views/userinfo.html">마이페이지</a>
+  </nav>
+  </header>
+  
+  <main>
+  
 
     <div id="admin_login">
       <h1>관리자로그인</h1>
@@ -54,12 +100,16 @@
       <h2>password</h2>
       <input type="password" id="password" />
       <button type="button" id="admin_login_btn">LOGIN</button>
-      <button type="button" id="admin_logout_btn">LOGOUT</button>
-      <button type="button" id="admin_signup_btn">SIGNUP</button>
-    </div>
+      </div>
+    </main>
 
-    <!-- 사이트 제작 정보 -->
-    <div class="copyright">Site made with: <a href="https://templated.co/">TEMPLATED.CO</a></div>
+    <footer>
+      <a href="https://www.youtube.com"><img src="/public/images/유투브아이콘.png" alt="YouTube"></a>
+      <a href="https://www.facebook.com"><img src="/public/images/페북아이콘.png" alt="Facebook"></a>
+      <a href="https://www.instagram.com/"><img src="/public/images/인스타아이콘.png" alt="insta"></a>
+      <a href="https://twitter.com/"><img src="/public/images/트위터 아이콘.png" alt="twitter"></a>
+      <!-- 더 많은 아이콘 -->
+    </footer>
 
     <!-- 필요한 스크립트 파일 불러오기 -->
     <script src="/public/js/jquery.min.js"></script>
