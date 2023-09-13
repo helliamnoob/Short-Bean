@@ -1,13 +1,29 @@
 /* Reset */
 header {
+  color: white;
+  padding: 50px;
+  text-align: right;
+  width: 100%;
+  height: 60px;
+  justify-content: top;
+  font-family: 'Noto Serif KR', serif;
+}
+#nav {
+  justify-content: space-between !important;
+  padding-bottom: 3.5rem !important;
+}
+#logout {
+  justify-content: right !important;
+}
+.banner {
   background-color: rgb(112, 159, 251);
   background-image: url('/public/images/Section\ 1\ \(2\).jpg');
   color: white;
-  padding: 10px;
+  padding: 100px;
   text-align: right;
   width: 100%;
   height: 500px;
-  justify-content: space-between;
+  justify-content: top;
   font-family: 'Noto Serif KR', serif;
 }
 
