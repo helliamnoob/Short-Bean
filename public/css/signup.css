@@ -2,3 +2,140 @@
     display: table-cell;
     vertical-align: middle;
 }
+
+header {
+    background-color: rgb(112, 159, 251);
+    background-image: url('/public/images/Section\ 1\ \(2\).jpg');
+    color: white;
+    padding: 10px;
+    text-align: right;
+    width: 100%;
+    height: 500px;
+    justify-content: space-between;
+    font-family: 'Noto Serif KR', serif;
+  }
+ 
+
+  main {
+    background-color: #f8f0ee;
+    padding: 20px;
+    width: 100%;
+    height: 1700px;
+    font-family: 'Noto Serif KR', serif;
+  }
+
+  footer {
+    padding: 10px;
+    text-align: center;
+    background-color: grey;
+  }
+
+
+  .search-box input {
+padding: 5px;
+border-radius: 3px;
+margin-bottom: 10px;
+}
+
+  .tutor-list, .problem-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .tutor-item, .problem-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+  }
+
+  .card {
+border: 1px solid #ccc;
+border-radius: 5px;
+margin: 10px;
+padding: 10px;
+box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+width: 300px;
+height: 400px;
+}
+
+
+.tutor-list{
+  border: 1px solid #ccc;
+border-radius: 5px;
+margin: 10px;
+padding: 10px;
+box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+width: 300px;
+height: 450px;
+}
+
+.card-header {
+font-weight: bold;
+margin-bottom: 10px;
+}
+
+.card-body {
+font-size: 14px;
+}
+
+.popular-problems {
+display: flex;
+flex-wrap: wrap;
+justify-content: space-around;
+}
+.tutors{
+  display: flex;
+flex-wrap: wrap;
+justify-content: space-around;   
+}
+
+button{
+  border:none;
+  color: #004AAD;
+  background-color: white;
+  border-radius: 5px; 
+  width: 100px; 
+height: 40px; 
+}
+
+button:hover{
+
+  background-color: #004AAD;
+  color: white;
+}
+#heart{
+  background-color:white;
+  color: #ff471a;
+  width: 50px; 
+height: 50px; 
+}
+#heart:hover{
+  background-color: #ff471a;
+  color: white;  
+}
+
+#search{
+  width: 80px; 
+height: 30px;  
+}
+
+#point{
+  color: white;
+  text-decoration: none;
+}
+.button-container {
+display: flex;
+justify-content: center;
+}
+
+.button-container button {
+margin: 10px 10px; /* 좌우에만 마진을 적용 */
+}
+
+.tutor-item button{
+  margin: 10px 50px;
+}
+
+.main-Btn button{
+margin: 10px 10px 10px 10px;
+}

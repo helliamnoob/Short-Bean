@@ -14,12 +14,12 @@ requestTutorButton.addEventListener('click', requestTutor);
 window.onload = info();
 async function info() {
   try {
-      const response = await fetch('/api/usertest', {
+      const response = await fetch('/api/userInfo', {
       method: 'GET',
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data['user']);
+        console.log(data);
         let rows = data['user'];
         email.textContent = rows.email;
         nickname.textContent = rows.nickname;
