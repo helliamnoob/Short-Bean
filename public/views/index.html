@@ -9,23 +9,32 @@
     <title>Theory by TEMPLATED</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="/public/css/main.css" />
+    <link rel="stylesheet" href="/public/css/post.css" />
     <script src="/socket.io/socket.io.js"></script>
   </head>
   <body>
     <!-- Header -->
-    <header id="header">
-      <div class="inner">
-        <a href="/" class="logo">짧공</a>
-        <nav id="nav">
-          <a href="/public/views/login_demo.html">로그인하기</a>
-          <a href="/public/views/chat.html">채팅하기</a>
-          <a href="/">홈페이지</a>
-          <a href="/public/views/mypage.html">마이페이지</a>
-        </nav>
-        <a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+    <header class="d-flex justify-content-center py-3" id="nav">
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a
+            id="point"
+            href="/public/views/user-main.html"
+            class="nav-link active"
+            aria-current="page"
+            >메인페이지</a
+          >
+        </li>
+        <li class="nav-item">
+          <a href="/public/views/userinfo.html" class="nav-link">마이페이지</a>
+        </li>
+      </ul>
+
+      <div class="col-md-3 text-end">
+        <button id="logout" type="button" class="btn btn-outline-primary me-2">Logout</button>
       </div>
     </header>
+    <div class="banner"></div>
 
     <!-- Banner -->
     <section id="banner">

@@ -7,112 +7,135 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- 외부 스타일 시트 불러오기 -->
-    <!-- <link rel="stylesheet" href="/public/css/main.css" /> -->
+    <link rel="stylesheet" href="/public/css/post.css" />
 
     <style>
-      header {
-    background-color: rgb(112, 159, 251);
-    background-image: url('/public/images/Section\ 1\ \(2\).jpg');
-    color: white;
-    padding: 10px;
-    text-align: right;
-    width: 100%;
-    height: 500px;
-    justify-content: space-between;
-    font-family: 'Noto Serif KR', serif;
-  }
- 
+      main {
+        background-color: #f8f0ee;
+        padding: 20px;
+        width: 100%;
+        height: 1700px;
+        font-family: 'Noto Serif KR', serif;
+      }
 
-  main {
-    background-color: #f8f0ee;
-    padding: 20px;
-    width: 100%;
-    height: 1700px;
-    font-family: 'Noto Serif KR', serif;
-  }
+      footer {
+        padding: 10px;
+        text-align: center;
+        background-color: grey;
+      }
 
-  footer {
-    padding: 10px;
-    text-align: center;
-    background-color: grey;
-  }
-  
-button{
-  border:none;
-  color: #004AAD;
-  background-color: white;
-  border-radius: 5px; 
-  width: 110px; 
-  height: 40px; 
-}
+      button {
+        border: none;
+        color: #004aad;
+        background-color: white;
+        border-radius: 5px;
+        width: 110px;
+        height: 40px;
+      }
 
-button:hover{
+      button:hover {
+        background-color: #004aad;
+        color: white;
+      }
 
-  background-color: #004AAD;
-  color: white;
-}
+      .main-Btn button {
+        margin: 10px 10px 10px 10px;
+      }
 
-.main-Btn button{
-margin: 10px 10px 10px 10px;
-}
-
-#point{
-  color: white;
-  text-decoration: none;
-}
-
-      </style>
+      #point {
+        color: white;
+        text-decoration: none;
+      }
+    </style>
     <title>Theory by TEMPLATED</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-    crossorigin="anonymous"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;400&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
 
-</head>
+  <body>
+    <!-- 페이지 상단에 위치하는 헤더 -->
+    <header class="d-flex justify-content-center py-3" id="nav">
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a
+            id="point"
+            href="/public/views/user-main.html"
+            class="nav-link active"
+            aria-current="page"
+            >메인페이지</a
+          >
+        </li>
+        <li class="nav-item">
+          <a href="/public/views/userinfo.html" class="nav-link">마이페이지</a>
+        </li>
+      </ul>
 
-<body>
-  <!-- 페이지 상단에 위치하는 헤더 -->
-  <header>
-    <nav>
-  <a id="point" href="/public/views/login.html">로그인</a> | <a id="point" href="#">로그아웃</a> | <a id="point" href="/public/views/userinfo.html">마이페이지</a>
-</nav>
-</header>
+      <div class="col-md-3 text-end">
+        <button type="button" class="btn btn-outline-primary me-2" onclick="location.href='/'">
+          Login
+        </button>
+      </div>
+    </header>
+    <div class="banner"></div>
 
-<main>
+    <main>
+      <div id="signup">
+        <h1>email</h1>
+        <input type="text" id="email" placeholder=" email" />
+        <h1>password</h1>
+        <input type="text" id="password" placeholder=" password" />
+        <h1>nickname</h1>
+        <input typr="text" id="nickname" placeholder=" nickname" />
+        <h1>user_name</h1>
+        <input typr="text" id="user_name" placeholder=" user_name" />
+        <h1>phone_number</h1>
+        <input typr="text" id="phone_number" placeholder=" -없이 입력해주세요" />
+        <button type="button" id="sms_auth_btn">sms_auth</button>
+        <h1>auth</h1>
+        <input typr="text" id="auth" placeholder=" 인증번호" />
+        <button type="button" id="check_btn">sms_check</button>
+        <h1>birth_date</h1>
+        <input typr="text" id="birth_date" placeholder=" 0000-00-00" />
+        <button type="button" id="signup_btn" disabled="disabled">signup</button>
+      </div>
+    </main>
 
-    <div id="signup">
-      <h1>email</h1>
-      <input type="text" id="email" placeholder=" email"/>
-      <h1>password</h1>
-      <input type="text" id="password" placeholder=" password"/>
-      <h1>nickname</h1>
-      <input typr="text" id="nickname" placeholder=" nickname"/>
-      <h1>user_name</h1>
-      <input typr="text" id="user_name" placeholder=" user_name"/>
-      <h1>phone_number</h1>
-      <input typr="text" id = "phone_number" placeholder=" -없이 입력해주세요"/>
-      <button type="button" id="sms_auth_btn">sms_auth</button>
-      <h1>auth</h1>
-      <input typr="text" id = "auth" placeholder=" 인증번호"/>
-      <button type="button" id="check_btn">sms_check</button>
-      <h1>birth_date</h1>
-      <input typr="text" id="birth_date" placeholder=" 0000-00-00"/>
-      <button type="button" id="signup_btn"  disabled="disabled" >signup</button>
-    </div>
-
-  </main>
-  
     <footer>
-      <a href="https://www.youtube.com"><img src="/public/images/유투브아이콘.png" alt="YouTube"></a>
-      <a href="https://www.facebook.com"><img src="/public/images/페북아이콘.png" alt="Facebook"></a>
-      <a href="https://www.instagram.com/"><img src="/public/images/인스타아이콘.png" alt="insta"></a>
-      <a href="https://twitter.com/"><img src="/public/images/트위터 아이콘.png" alt="twitter"></a>
+      <a href="https://www.youtube.com"
+        ><img src="/public/images/유투브아이콘.png" alt="YouTube"
+      /></a>
+      <a href="https://www.facebook.com"
+        ><img src="/public/images/페북아이콘.png" alt="Facebook"
+      /></a>
+      <a href="https://www.instagram.com/"
+        ><img src="/public/images/인스타아이콘.png" alt="insta"
+      /></a>
+      <a href="https://twitter.com/"
+        ><img src="/public/images/트위터 아이콘.png" alt="twitter"
+      /></a>
       <!-- 더 많은 아이콘 -->
     </footer>
     <!-- 필요한 스크립트 파일 불러오기 -->

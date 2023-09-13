@@ -33,13 +33,27 @@
   </head>
   <body>
     <!-- Header -->
-    <header>
-      <nav>
-        <a id="point" href="/public/views/user-main.html">메인페이지</a> |
-        <a id="point" href="/public/views/userinfo.html">마이페이지</a> |
-        <button id="logout">로그아웃</button>
-      </nav>
+    <header class="d-flex justify-content-center py-3" id="nav">
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a
+            id="point"
+            href="/public/views/user-main.html"
+            class="nav-link active"
+            aria-current="page"
+            >메인페이지</a
+          >
+        </li>
+        <li class="nav-item">
+          <a href="/public/views/userinfo.html" class="nav-link">마이페이지</a>
+        </li>
+      </ul>
+
+      <div class="col-md-3 text-end">
+        <button id="logout" type="button" class="btn btn-outline-primary me-2">Logout</button>
+      </div>
     </header>
+    <div class="banner"></div>
     <main>
       <div class="container">
         <div class="user-list">

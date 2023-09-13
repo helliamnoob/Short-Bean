@@ -7,15 +7,6 @@ const reportButton = document.querySelector('#postReport');
 reportButton.addEventListener('click', function () {
   const reportModal = new bootstrap.Modal(document.getElementById('reportModal'));
   reportModal.show();
-  const response = fetch(`/api/post/${post_id}`);
-  if (!response.ok) {
-    throw new Error('게시글을 불러오는 중 오류가 발생했습니다.');
-  }
-  const data = response.json();
-  const postUserId = data.user_id;
-  const postUsertag = document.getElementById('postUser');
-  const temp_html = `${postUserId}`;
-  postUsertag.insertAdjacentHTML('beforeend', temp_html);
 });
 
 // 신고하기 api 요청
@@ -27,7 +18,6 @@ loginForm.addEventListener('submit', async function (event) {
   const content = document.getElementById('content').value;
   //const userId = document.getElementById('userId').value;
   const postUser = data.data.user_id;
-  console.log(data);
 
   const formData = {
     report_content: content,
