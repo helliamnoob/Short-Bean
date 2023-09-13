@@ -5,7 +5,7 @@ const logoutbtn = document.getElementById('logoutBtn');
 const loginbtn = document.getElementById('loginBtn');
 const cookie = document.cookie;
 
-window.onload = user_cookie_check();
+window.onload = user_cookie_check() ;
 
 loginbtn.addEventListener('click', async () => {
   try {
@@ -22,8 +22,10 @@ loginbtn.addEventListener('click', async () => {
     });
     if (response.ok) {
       // 로그인 성공시 페이지 이동
+      console.log(document.cookie);
       alert('로그인이 되었습니다.');
       tutor_check();
+      return;
     } else {
       const data = await response.json();
       alert(`로그인 실패: ${data.message}`);
@@ -134,4 +136,26 @@ function redircetlogin() {
 
 function redircetmyinfo() {
   window.location.href = `/public/views/userinfo.html`;
+}
+async function usercheck() {
+  try {
+    const response = await fetch('/api/userInfo', {
+    method: 'GET',
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      let rows = data['user'];
+    });
+
+  if (response.ok) {
+    return;
+  } else {
+    alert('로그인이 필요합니다.');
+    window.location.href = `/public/views/login.html`;
+    return;
+  }
+  return;
+} catch (error) {
+  console.error('Error:', error.message);
+}
 }

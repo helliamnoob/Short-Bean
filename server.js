@@ -43,8 +43,6 @@ const {
 } = require('./routes');
 
 const server = http.createServer(app);
-const faceSocketController = require('./face.socket');
-const inviteSocketController = require('./invite.socket');
 const io = SocketIO(server);
 mongoDB();
 
