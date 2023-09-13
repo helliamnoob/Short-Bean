@@ -27,7 +27,7 @@ socket.on('notice_message', (msg) => {
 // 유저 환영 문구 불러오기
 function displayWelcomeMessage(userName) {
   var welcomeLabel = document.getElementById('welcome-label');
-  welcomeLabel.textContent = '학생 ' + userName + '님 환영합니다';
+  welcomeLabel.textContent = userName + '학생 환영합니다';
 }
 
 // 페이지가 로드될 때 사용자 정보를 가져와 환영 메시지를 표시합니다.
@@ -41,54 +41,16 @@ function fetchUserName() {
       console.error('사용자 정보를 가져오는 중 에러 발생:', error);
     });
 }
-
-// 페이지가 로드될 때 사용자 이름을 가져와 환영 메시지를 표시합니다.
-// 맨밑이랑 겹쳐서 에러나서 맨밑에다 추가함
-window.onload = function () {
-  fetchUserName();
-};
-
-// 마이페이지 버튼 클릭 시 이동: 유저네임 or 유저아이디 고민
-function setupMyPageButton(user_id) {
-  const myPageButton = document.getElementById('mypage-button');
-  myPageButton.addEventListener('click', function () {
-    window.location.href = `/public/views/userInfo.html?user_id=${user_id}`; // 추후에 만들어진 마이페이지 URL로 이동
-  });
-}
-
-// 질문하기 버튼 클릭 시 페이지 이동
-document.getElementById('question-button').addEventListener('click', function () {
-  fetch('/api/user') // 현재 로그인된 사용자의 정보를 가져옴
-    .then((response) => response.json())
-    .then((data) => {
-      const user_id = data.user_id; // 현재 로그인된 사용자의 user_id
-      const questionPageURL = `/public/views/post-detail.html?user_id=${user_id}`; // 질문 페이지 URL 생성
-      window.location.href = questionPageURL; // 페이지 이동
-    })
-    .catch((error) => {
-      console.error('사용자 정보를 가져오는 중 에러 발생:', error);
-    });
+document.getElementById(`question-button`).addEventListener('click', () => {
+  window.location.href = `/public/views/post-detail.html`;
 });
 
-// 1:1 상담 버튼 클릭 시 페이지 이동
-// const chatButton = document.getElementById('chat-button');
-// chatButton.addEventListener('click', function () {
 document.getElementById('chat-button').addEventListener('click', function () {
-  // fetch('/api/user') // 현재 로그인된 사용자의 정보를 가져옴
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     window.location.href = `/public/views/chat.html`; // 채팅 페이지 URL
-  //   })
-  //   .catch((error) => {
-  //     console.error('사용자 정보를 가져오는 중 에러 발생:', error);
-  //   });
-  // 쿠키로 검증해서 api호출 안해도 될듯해서 주석처리했습니다
-  // 패치쓰면 async await 안써도되나요???
   window.location.href = `/public/views/chat.html`; // 채팅 페이지 URL
 });
 
 document.getElementById('mypage-button').addEventListener('click', function () {
-  window.location.href = `/public/views/userinfo.html`;
+  window.location.href = `/public/views/tutorinfo.html`;
 });
 
 document.getElementById('all-question-button').addEventListener('click', function () {
@@ -102,6 +64,7 @@ document.getElementById('all-question-button').addEventListener('click', functio
 const defaultImage = '/public/images/콩 (10).png';
 
 document.addEventListener('DOMContentLoaded', async function () {
+  fetchUserName();
   try {
     const response = await fetch('/api/posts/likes', {
       method: 'GET',
@@ -148,7 +111,7 @@ const hotPostList = document.getElementById('posts-box1');
 hotPostList.addEventListener('click', (e) => {
   const post = e.target.closest('div');
   const postId = post.getAttribute('data-post-id');
-  if (postId) window.location.href = `/public/views/post.html?post_id=${postId}}`;
+  if (postId) window.location.href = `/public/views/post.html?post_id=${postId}`;
 });
 
 // 게시글 리스트
@@ -183,7 +146,7 @@ const postList = document.getElementById('posts-box');
 postList.addEventListener('click', (e) => {
   const post = e.target.closest('div');
   const postId = post.getAttribute('data-post-id');
-  if (postId) window.location.href = `/public/views/post.html?post_id=${postId}}`;
+  if (postId) window.location.href = `/public/views/post.html?post_id=${postId}`;
 });
 
 const searchBtn = document.getElementById('searchBtn');
@@ -214,12 +177,14 @@ async function search() {
       image = defaultImage;
     }
 
-    let temp_html = `<div data-post-id="${post.post_id}" class="post-card">
-    <img src="${image}" alt="${image}">
+    let temp_html = `<div data-post-id="${post.post_id}" class="card" style="width: 18rem">
+    <img src="${image}" alt="${image}" />
+    <div class="card-body">
+    <p>이름: ${post.User.nickname}</p> 
     <h5 class="card-title">제목: ${title}</h5>
-    <p>이름: ${post.User.nickname}</p>
     <p>과목: ${subject}</p>
-    </div>`;
+    </div>
+  </div`;
     postBox.insertAdjacentHTML('beforeend', temp_html);
   });
 }
