@@ -43,8 +43,6 @@ const {
 } = require('./routes');
 
 const server = http.createServer(app);
-const faceSocketController = require('./face.socket');
-const inviteSocketController = require('./invite.socket');
 const io = SocketIO(server);
 mongoDB();
 
@@ -59,8 +57,7 @@ app.use(cookieParser());
 app.set('view engine', 'html');
 app.set('views', __dirname + '/public/views');
 app.set('io', io);
-// faceSocketController(io);
-// inviteSocketController(io);
+
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/api', [
   authRouter,
