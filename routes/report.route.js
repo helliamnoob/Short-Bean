@@ -6,7 +6,7 @@ const ReportController = require('../controllers/report.controller');
 const reportController = new ReportController();
 
 router.get('/reports', reportController.getReportAll);
-router.get('/reportsAweek', reportController.getReportaWeek);
+router.get('/week_reports', reportController.getReportaWeek);
 router.get('/reports/:report_id', auth, reportController.getReport);
 router.post('/reports', auth, reportController.creatReport);
 router.put('/reports/:report_id', auth, reportController.updateReport);

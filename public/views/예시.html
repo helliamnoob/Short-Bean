@@ -1,290 +1,335 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+    crossorigin="anonymous"
+  />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-    crossorigin="anonymous"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<head>
-  <title>프론트엔드 예시</title>
-  <style>
-    header {
-      background-color: rgb(112, 159, 251);
-      background-image: url('/public/images/Section\ 1\ \(2\).jpg');
-      color: white;
-      padding: 10px;
-      text-align: right;
-      width: 100%;
-      height: 500px;
-      justify-content: space-between;
-      font-family: 'Noto Serif KR', serif;
-    }
-   
+    crossorigin="anonymous"
+  ></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;400&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <head>
+    <title>프론트엔드 예시</title>
+    <style>
+      header {
+        background-color: rgb(112, 159, 251);
+        background-image: url('/public/images/Section\ 1\ \(2\).jpg');
+        color: white;
+        padding: 10px;
+        text-align: right;
+        width: 100%;
+        height: 500px;
+        justify-content: space-between;
+        font-family: 'Noto Serif KR', serif;
+      }
 
-    main {
-      background-color: #f8f0ee;
-      padding: 20px;
-      width: 100%;
-      height: 1700px;
-      font-family: 'Noto Serif KR', serif;
-    }
+      main {
+        background-color: #f8f0ee;
+        padding: 20px;
+        width: 100%;
+        height: 1700px;
+        font-family: 'Noto Serif KR', serif;
+      }
 
-    footer {
-      padding: 10px;
-      text-align: center;
-      background-color: grey;
-    }
+      footer {
+        padding: 10px;
+        text-align: center;
+        background-color: grey;
+      }
 
+      .search-box input {
+        padding: 5px;
+        border-radius: 3px;
+        margin-bottom: 10px;
+      }
 
-    .search-box input {
-  padding: 5px;
-  border-radius: 3px;
-  margin-bottom: 10px;
-}
+      .tutor-list,
+      .problem-list {
+        list-style: none;
+        padding: 0;
+      }
 
-    .tutor-list, .problem-list {
-      list-style: none;
-      padding: 0;
-    }
+      .tutor-item,
+      .problem-item {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 10px 0;
+      }
 
-    .tutor-item, .problem-item {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin: 10px 0;
-    }
+      .card {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin: 10px;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 300px;
+        height: 400px;
+      }
 
-    .card {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin: 10px;
-  padding: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  width: 300px;
-  height: 400px;
-}
+      .tutor-list {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin: 10px;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 300px;
+        height: 450px;
+      }
 
+      .card-header {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
 
-.tutor-list{
-    border: 1px solid #ccc;
-  border-radius: 5px;
-  margin: 10px;
-  padding: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  width: 300px;
-  height: 450px;
-}
+      .card-body {
+        font-size: 14px;
+      }
 
-.card-header {
-  font-weight: bold;
-  margin-bottom: 10px;
-}
+      .popular-problems {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
+      .tutors {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
 
-.card-body {
-  font-size: 14px;
-}
+      button {
+        border: none;
+        color: #004aad;
+        background-color: white;
+        border-radius: 5px;
+        width: 100px;
+        height: 40px;
+      }
 
-.popular-problems {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-.tutors{
-    display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;   
-}
+      button:hover {
+        background-color: #004aad;
+        color: white;
+      }
+      #heart {
+        background-color: white;
+        color: #ff471a;
+        width: 50px;
+        height: 50px;
+      }
+      #heart:hover {
+        background-color: #ff471a;
+        color: white;
+      }
 
-button{
-    border:none;
-    color: #004AAD;
-    background-color: white;
-    border-radius: 5px; 
-    width: 100px; 
-  height: 40px; 
-}
+      #search {
+        width: 80px;
+        height: 30px;
+      }
 
-button:hover{
+      #point {
+        color: white;
+        text-decoration: none;
+      }
+      .button-container {
+        display: flex;
+        justify-content: center;
+      }
 
-    background-color: #004AAD;
-    color: white;
-}
-#heart{
-    background-color:white;
-    color: #ff471a;
-    width: 50px; 
-  height: 50px; 
-}
-#heart:hover{
-    background-color: #ff471a;
-    color: white;  
-}
+      .button-container button {
+        margin: 10px 10px; /* 좌우에만 마진을 적용 */
+      }
 
-#search{
-    width: 80px; 
-  height: 30px;  
-}
+      .tutor-item button {
+        margin: 10px 50px;
+      }
 
-#point{
-    color: white;
-    text-decoration: none;
-}
-.button-container {
-  display: flex;
-  justify-content: center;
-}
-
-.button-container button {
-  margin: 10px 10px; /* 좌우에만 마진을 적용 */
-}
-
-.tutor-item button{
-    margin: 10px 50px;
-}
-
-.main-Btn button{
-margin: 10px 10px 10px 10px;
-}
-
-  </style>
-</head>
-<body>
-  <header>
-    <div class="search-box">
-        <input type="text" placeholder="검색...">
+      .main-Btn button {
+        margin: 10px 10px 10px 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="search-box">
+        <input type="text" placeholder="검색..." />
         <button id="search">검색</button>
       </div>
       <nav>
-    <a id="point" href="#">로그인</a> | <a id="point" href="#">로그아웃</a> | <a id="point" href="#">마이페이지</a>
-</nav>
-  </header>
-  <main class="main-Btn">
-    <div>
-    <button>질문하기</button>
-    <button>전체문제</button>
-    <button>채팅방가기</button>
-</div>
+        <a id="point" href="#">로그인</a> | <a id="point" href="#">로그아웃</a> |
+        <a id="point" href="#">마이페이지</a>
+      </nav>
+    </header>
+    <main class="main-Btn">
+      <div>
+        <button>질문하기</button>
+        <button>전체문제</button>
+        <button>채팅방가기</button>
+      </div>
 
-    <h1>인기 문제</h1>
-    <p></p>
-    <section class="popular-problems">   
-        <div class="card" style="width: 18rem;">
-            <img src="/public/images/콩 (10).png" class="card-img-top" alt="...">
-            <div class="card-body">
-               <a>문제 제목</a>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
+      <h1>인기 문제</h1>
+      <p></p>
+      <section class="popular-problems">
+        <div class="card" style="width: 18rem">
+          <img src="/public/images/콩 (10).png" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <a>문제 제목</a>
+            <p class="card-text">
+              Some quick example text to build on the card title and make up the bulk of the card's
+              content.
+            </p>
           </div>
-          <div class="card" style="width: 18rem;">
-            <img src="/public/images/콩 (10).png" class="card-img-top" alt="...">
-            <div class="card-body">
-               <a>문제 제목</a>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
+        </div>
+        <div class="card" style="width: 18rem">
+          <img src="/public/images/콩 (10).png" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <a>문제 제목</a>
+            <p class="card-text">
+              Some quick example text to build on the card title and make up the bulk of the card's
+              content.
+            </p>
           </div>
-          <div class="card" style="width: 18rem;">
-            <img src="/public/images/콩 (10).png"class="card-img-top" alt="...">
-            <div class="card-body">
-               <a>문제 제목</a>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
+        </div>
+        <div class="card" style="width: 18rem">
+          <img src="/public/images/콩 (10).png" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <a>문제 제목</a>
+            <p class="card-text">
+              Some quick example text to build on the card title and make up the bulk of the card's
+              content.
+            </p>
           </div>
-          <div class="card" style="width: 18rem;">
-            <img src="/public/images/콩 (10).png" class="card-img-top" alt="...">
-            <div class="card-body">
-                 <a>문제 제목</a>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
+        </div>
+        <div class="card" style="width: 18rem">
+          <img src="/public/images/콩 (10).png" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <a>문제 제목</a>
+            <p class="card-text">
+              Some quick example text to build on the card title and make up the bulk of the card's
+              content.
+            </p>
           </div>
+        </div>
       </section>
       <h1>튜터 리스트</h1>
       <p></p>
-    <section class="tutors">
-      <ul class="tutor-list">
-        <li class="tutor-item">
-            <img src="/public/images/15.png" class="card-img-top" alt="...">
-          튜터님
-          <button id="heart">
-            <i class="fa-solid fa-heart"></i>
-          </button>
-        </li>
-        <div class="button-container">
-        <button >채팅하기</button>
-        <button>화상채팅</button>
+      <section class="tutors">
+        <ul class="tutor-list">
+          <li class="tutor-item">
+            <img src="/public/images/15.png" class="card-img-top" alt="..." />
+            튜터님
+            <button id="heart">
+              <i class="fa-solid fa-heart"></i>
+            </button>
+          </li>
+          <div class="button-container">
+            <button>채팅하기</button>
+            <button>화상채팅</button>
+          </div>
+        </ul>
+        <ul class="tutor-list">
+          <li class="tutor-item">
+            <img src="/public/images/16.png" class="card-img-top" alt="..." />
+            튜터님
+            <button id="heart">
+              <i class="fa-solid fa-heart"></i>
+            </button>
+          </li>
+
+          <div class="button-container">
+            <button>채팅하기</button>
+            <button>화상채팅</button>
+          </div>
+        </ul>
+        <ul class="tutor-list">
+          <li class="tutor-item">
+            <img src="/public/images/15.png" class="card-img-top" alt="..." />
+            튜터님
+            <button id="heart">
+              <i class="fa-solid fa-heart"></i>
+            </button>
+          </li>
+          <div class="button-container">
+            <button>채팅하기</button>
+            <button>화상채팅</button>
+          </div>
+        </ul>
+      </section>
+      <h1>전체 문제 리스트</h1>
+      <p></p>
+      <section class="popular-problems">
+        <div class="card" style="width: 18rem">
+          <img src="/public/images/(@^0^@) (2).png" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <a>문제 제목</a>
+            <p class="card-text">
+              Some quick example text to build on the card title and make up the bulk of the card's
+              content.
+            </p>
+          </div>
         </div>
-      </ul>
-      <ul class="tutor-list">
-        <li class="tutor-item">
-            <img src="/public/images/16.png" class="card-img-top" alt="...">
-          튜터님
-          <button  id="heart">
-            <i class="fa-solid fa-heart" ></i>
-          </button>
-        </li>
+        <div class="card" style="width: 18rem">
+          <img src="/public/images/(@^0^@) (2).png" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <a>문제 제목</a>
+            <p class="card-text">
+              Some quick example text to build on the card title and make up the bulk of the card's
+              content.
+            </p>
+          </div>
+        </div>
+        <div class="card" style="width: 18rem">
+          <img src="/public/images/(@^0^@) (2).png" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <a>문제 제목</a>
+            <p class="card-text">
+              Some quick example text to build on the card title and make up the bulk of the card's
+              content.
+            </p>
+          </div>
+        </div>
+        <div class="card" style="width: 18rem">
+          <img src="/public/images/(@^0^@) (2).png" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <a>문제 제목</a>
+            <p class="card-text">
+              Some quick example text to build on the card title and make up the bulk of the card's
+              content.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
 
-        <div class="button-container">
-            <button >채팅하기</button>
-            <button>화상채팅</button>
-            </div>
-      </ul>
-      <ul class="tutor-list">
-        <li class="tutor-item">
-            <img src="/public/images/15.png" class="card-img-top" alt="...">
-          튜터님
-          <button id="heart">
-            <i class="fa-solid fa-heart"></i>
-          </button>
-        </li>
-        <div class="button-container">
-            <button >채팅하기</button>
-            <button>화상채팅</button>
-            </div>
-      </ul>
-    </section>
-    <h1>전체 문제 리스트</h1>
-    <p></p>
-    <section class="popular-problems">   
-        <div class="card" style="width: 18rem;">
-            <img src="/public/images/(@^0^@) (2).png" class="card-img-top" alt="...">
-            <div class="card-body">
-                <a>문제 제목</a>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-          </div>
-          <div class="card" style="width: 18rem;">
-            <img src="/public/images/(@^0^@) (2).png" class="card-img-top" alt="...">
-            <div class="card-body">
-                <a>문제 제목</a>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-          </div>
-          <div class="card" style="width: 18rem;">
-            <img src="/public/images/(@^0^@) (2).png" class="card-img-top" alt="...">
-            <div class="card-body">
-                <a>문제 제목</a>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-          </div>
-          <div class="card" style="width: 18rem;">
-            <img src="/public/images/(@^0^@) (2).png" class="card-img-top" alt="...">
-            <div class="card-body">
-                <a>문제 제목</a>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-          </div>
-      </section> 
-  </main>
-
-  <footer>
-    <a href="https://www.youtube.com"><img src="/public/images/유투브아이콘.png" alt="YouTube"></a>
-    <a href="https://www.facebook.com"><img src="/public/images/페북아이콘.png" alt="Facebook"></a>
-    <a href="https://www.instagram.com/"><img src="/public/images/인스타아이콘.png" alt="insta"></a>
-    <a href="https://twitter.com/"><img src="/public/images/트위터 아이콘.png" alt="twitter"></a>
-    <!-- 더 많은 아이콘 -->
-  </footer>
-</body>
+    <footer>
+      <a href="https://www.youtube.com"
+        ><img src="/public/images/유투브아이콘.png" alt="YouTube"
+      /></a>
+      <a href="https://www.facebook.com"
+        ><img src="/public/images/페북아이콘.png" alt="Facebook"
+      /></a>
+      <a href="https://www.instagram.com/"
+        ><img src="/public/images/인스타아이콘.png" alt="insta"
+      /></a>
+      <a href="https://twitter.com/"
+        ><img src="/public/images/트위터 아이콘.png" alt="twitter"
+      /></a>
+      <!-- 더 많은 아이콘 -->
+    </footer>
+  </body>
 </html>

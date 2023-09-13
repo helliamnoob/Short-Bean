@@ -73,7 +73,7 @@ router.post('/login', async (req, res) => {
 
 // 로그아웃
 router.post('/logout', (req, res) => {
-  res.cookie('authorization', '');
+  res.clearCookie('authorization');
   return res.status(200).json({ message: '로그아웃 완료' });
 });
 

@@ -1,127 +1,87 @@
 <!doctype html>
-<!--
-    Theory by TEMPLATED
-    templated.co @templatedco
-    Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
--->
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+  crossorigin="anonymous"
+/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+  crossorigin="anonymous"
+></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;400&display=swap"
+  rel="stylesheet"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
 <html>
   <head>
     <title>Theory by TEMPLATED</title>
-    <!-- 문서의 메타 정보와 스타일, 스크립트 등을 정의하는 부분 -->
-
-    <!-- 문서 인코딩과 뷰포트 설정 -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- 외부 스타일 시트 불러오기 -->
-    <!-- <link rel="stylesheet" href="/public/css/main.css" /> -->
-    <style>
-      header {
-          background-color: rgb(112, 159, 251);
-          background-image: url('/public/images/Section\ 1\ \(2\).jpg');
-          color: white;
-          padding: 10px;
-          text-align: right;
-          width: 100%;
-          height: 500px;
-          justify-content: space-between;
-          font-family: 'Noto Serif KR', serif;
-        }
-       
-    
-        main {
-          background-color: #f8f0ee;
-          padding: 20px;
-          width: 100%;
-          height: 1700px;
-          font-family: 'Noto Serif KR', serif;
-        }
-    
-        footer {
-          padding: 10px;
-          text-align: center;
-          background-color: grey;
-        }
-    
-    
-        .search-box input {
-      padding: 5px;
-      border-radius: 3px;
-      margin-bottom: 10px;
-    }
-    </style>
-    <!-- Bootstrap CSS 링크 -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-
-    <!-- Bootstrap JS와 jQuery 스크립트 -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/public/css/post.css" />
   </head>
 
   <body>
     <!-- 페이지 상단에 위치하는 헤더 -->
-    <header id="header">
-      <div class="inner">
-        <a href="/" class="logo">짧공</a>
-        <nav id="nav">
-          <a href="/public/views/chat.html">채팅하기</a>
-          <a href="/public/views/user-main.html">홈페이지</a>
-        </nav>
-        <a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
-      </div>
+    <header>
+      <nav>
+        <a id="point" href="/public/views/user-main.html">메인페이지</a> |
+        <a id="point" href="/public/views/userinfo.html">마이페이지</a> |
+        <button id="logout">로그아웃</button>
+      </nav>
     </header>
-    <!-- 메인 배너 부분 -->
-    <section id="banner">
-      <h1>Welcome to ShortBean</h1>
-      <p>It's a one-on-one matching video education site.</p>
-    </section>
-
-    <!-- 학생 이름, 환영 문구 보이는 자리 -->
-    <div class="welcomeUser" id="user-box" style="display: block">
-      <label id="welcome-label">Loading...</label>
-    </div>
-
-    <!-- 마이페이지 이동 버튼 -->
-    <button id="mypage-button">마이페이지</button>
-
-    <!-- 질문하기 이동 버튼 -->
-    <button id="question-button">질문하기</button>
-
-    <!-- 1:1 상담(채팅?) 이동 버튼 -->
-    <button id="chat-button">채팅하기</button>
-
-    <!-- 문제 전체보기  -->
-    <button id="all-question-button">전체문제보기</button>
-    <!-- 튜터 리스트 보기-->
-    <button id="tutor-button">튜터 리스트</button>
-
-    <!-- 인기 게시글 -->
-    <p>인기 질문</p>
-
-    <div class="post-list" id="posts-box1"></div>
-    <!-- 게시글 분할, 전시 -->
-
-    <!-- 전체 게시글: 최신순 사진 & 제목만 보이게 하나씩 진열 -->
-    <strong>전체 질문</strong>
-    <div class="container">
-      <div class="search">
-        <input type="text" id="searchInput" placeholder="작성자 혹은 제목을 입력해주세요" />
-        <button type="button" id="searchBtn">검색</button>
+    <main>
+      <div class="welcomeUser" id="user-box" style="display: block">
+        <label id="welcome-label">Loading...</label>
       </div>
-    </div>
-    <div class="post-list" id="posts-box"></div>
+      <button id="mypage-button">마이페이지</button>
+      <button id="question-button">질문하기</button>
+      <button id="chat-button">채팅하기</button>
+      <button id="all-question-button">전체문제보기</button>
+      <h1>인기 질문</h1>
+      <section class="post-list" id="posts-box1"></section>
+      <h1>전체 질문</h1>
 
-    <!-- 사이트 제작 정보 -->
-    <div class="copyright">Site made with: <a href="https://templated.co/">TEMPLATED.CO</a></div>
+      <div class="container">
+        <div class="search">
+          <input type="text" id="searchInput" placeholder="작성자 혹은 제목을 입력해주세요" />
+          <button type="button" id="searchBtn">검색</button>
+        </div>
+      </div>
+      <section class="post-list" id="posts-box"></section>
+      <div class="post-list" id="posts-box"></div>
+    </main>
+    <footer>
+      <a href="https://www.youtube.com"
+        ><img src="/public/images/유투브아이콘.png" alt="YouTube"
+      /></a>
+      <a href="https://www.facebook.com"
+        ><img src="/public/images/페북아이콘.png" alt="Facebook"
+      /></a>
+      <a href="https://www.instagram.com/"
+        ><img src="/public/images/인스타아이콘.png" alt="insta"
+      /></a>
+      <a href="https://twitter.com/"
+        ><img src="/public/images/트위터 아이콘.png" alt="twitter"
+      /></a>
+    </footer>
 
-    <!-- 필요한 스크립트 파일 불러오기 -->
     <script src="/public/js/jquery.min.js"></script>
     <script src="/public/js/skel.min.js"></script>
     <script src="/public/js/util.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script type="module" src="../js/user-main.js"></script>
-    <!-- <script src="/public/js/post.js"></script> -->
   </body>
 </html>
