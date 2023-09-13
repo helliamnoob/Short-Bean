@@ -23,8 +23,6 @@ require('dotenv').config();
 //   })
 // );
 
-<<<<<<< HEAD
-=======
 router.post('/admin/session/login', async (req, res, next) => {
   const { email, password } = req.body;
   try {
@@ -38,6 +36,7 @@ router.post('/admin/session/login', async (req, res, next) => {
     }
     req.session.admin = admins_find;
     console.log('이거로 로그인함: ', req.session.admin);
+    // 세션 만료시간지정 
     req.session.isLoggedIn = true;
     return res.status(200).json({ message: '관리자 로그인' });
   } catch (e) {
@@ -47,7 +46,6 @@ router.post('/admin/session/login', async (req, res, next) => {
 });
 //만료시간, 지금은 한번에 한명만 로그인되어지고 다음사람이 로그인하면 이전 로그인자가 쓸 수 없음
 //특별한 활동이 없으면 세션날리기, 10분이내로 활동이있으면 세션 시간을 초기화
->>>>>>> 094c9ccf5b883c11b1d2ecc3d087b710b48e13c2
 
 router.get('/admin/session/', async (req, res) => {
   const login_admin = req.session.admin;
