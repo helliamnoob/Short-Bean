@@ -11,6 +11,9 @@ const phone_number_input = document.getElementById('phone_number');
 const birth_date_input = document.getElementById('birth_date');
 const auth_input = document.getElementById('auth');
 
+
+signup_btn.style.display = "none";
+
 signup_btn.addEventListener('click', async () => {
   try {
     const response = await fetch('/api/signup', {
@@ -83,11 +86,10 @@ sms_check.addEventListener('click', async () => {
         code = rows['data'];
       });
     
-        console.log(code);
         if(auth_input.value == code)
         {
           alert('인증 성공');
-          signup_btn.disabled = false;
+          signup_btn.style.display = "block";
           return;
         }
         alert(`인증 실패`);
