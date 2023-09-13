@@ -1,5 +1,11 @@
+import { jwtToken } from '../util/isLogin.util.js';
+
 // 게시글 리스트
 window.addEventListener('DOMContentLoaded', async function () {
+  if (!jwtToken) {
+    alert('로그인 후 이용가능한 서비스입니다.');
+    window.location.href = `/`;
+  }
   fetch('/api/post', {})
     .then((response) => response.json())
     .then((data) => {
