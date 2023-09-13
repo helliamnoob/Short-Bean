@@ -11,10 +11,18 @@ const requestTutorFormModal = document.getElementById('requestTutorFormModal');
 const requestTutorButton = document.getElementById('requestTutorButton');
 requestTutorButton.addEventListener('click', requestTutor);
 
-window.onload = info();
+document.addEventListener('DOMContentLoaded', () => {
+  const jwtToken = getCookieValue('authorization');
+  if (!jwtToken) {
+    alert('로그인 후 이용가능한 서비스입니다.');
+    window.location.href = `/`;
+  } else {
+    info();
+  }
+});
 async function info() {
   try {
-      const response = await fetch('/api/userInfo', {
+    const response = await fetch('/api/userInfo', {
       method: 'GET',
     })
       .then((res) => res.json())
@@ -44,12 +52,12 @@ infoupdate_btn.addEventListener('click', async () => {
 
 delete_btn.addEventListener('click', async () => {
   try {
-      const response = await fetch('/api/signout', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+    const response = await fetch('/api/signout', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
     if (response.ok) {
       alert('탈퇴 되었습니다.');
@@ -100,4 +108,15 @@ function showRequestTutorModal() {
 }
 function closeModal() {
   requestTutorFormModal.style.display = 'none';
+}
+function getCookieValue(cookieName) {
+  const cookieParts = document.cookie.split('; ');
+
+  for (const part of cookieParts) {
+    const [name, value] = part.split('=');
+    if (name === cookieName) {
+      return value;
+    }
+  }
+  return null;
 }
