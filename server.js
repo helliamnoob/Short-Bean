@@ -57,7 +57,6 @@ app.use(cookieParser());
 app.set('view engine', 'html');
 app.set('views', __dirname + '/public/views');
 app.set('io', io);
-
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/api', [
   authRouter,
@@ -93,21 +92,6 @@ app.get('/post', (_, res) => {
   res.sendFile(__dirname + '/public/views/post.html');
 });
 
-// // 검색 기능
-// app.get('/api/search', (req, res) => {
-//   // 검색 로직을 구현해야 합니다.
-//   const query = req.query.q.toLowerCase();
-//   const sqlQuery = `SELECT * FROM posts WHERE title LIKE '%${query}%'`;
-
-//   connection.query(sqlQuery, (error, results) => {
-//     if (error) {
-//       console.error('검색 오류:', error);
-//       res.status(500).json({ error: '검색 중 오류가 발생했습니다.' });
-//     } else {
-//       res.json(results);
-//     }
-//   });
-// });
 
 app.get('/admin/id=:id', (req, res) => {
   res.sendFile(__dirname + '/public/views/report-detail.html');
