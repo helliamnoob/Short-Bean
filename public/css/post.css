@@ -480,3 +480,8 @@ button:hover {
   padding: 3px;
   cursor: pointer;
 }
+
+/* 모달 백드롭 에러 해결 */
+.modal-backdrop {
+  z-index: 0;
+}
