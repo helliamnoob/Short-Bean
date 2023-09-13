@@ -24,8 +24,13 @@ class ReportRepository {
   };
 
   findaWeek = async () => {
+    const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000); // 현재 시간에서 7일 이전 시간 계산
     const reportData = await Reports.findAll({
-      where: { [Op.gte]: new Date(Date.parse(new Date()) - 7 * 1000 * 60 * 60 * 24) },
+      where: {
+        createdAt: {
+          [Op.gte]: oneWeekAgo,
+        },
+      },
     });
     return reportData;
   };

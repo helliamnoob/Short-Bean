@@ -36,6 +36,7 @@ router.post('/admin/session/login', async (req, res, next) => {
     }
     req.session.admin = admins_find;
     console.log('이거로 로그인함: ', req.session.admin);
+    // 세션 만료시간지정 
     req.session.isLoggedIn = true;
     return res.status(200).json({ message: '관리자 로그인' });
   } catch (e) {
