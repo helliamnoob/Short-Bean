@@ -1,9 +1,29 @@
 <!doctype html>
-<!--
-	Theory by TEMPLATED
-	templated.co @templatedco
-	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
--->
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+  crossorigin="anonymous"
+/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+  crossorigin="anonymous"
+></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;400&display=swap"
+  rel="stylesheet"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
 <html>
   <head>
     <title>Theory by TEMPLATED</title>
@@ -13,78 +33,68 @@
   </head>
   <body>
     <!-- Header -->
-    <header id="header">
-      <div class="inner" style="color: black">
-        <a href="/public/views/user-main.html" class="logo">짧공</a>
-        <nav id="nav">
-          <a href="/public/views/chat.html">채팅하기</a>
-          <a href="/public/views/user-main.html">홈페이지</a>
-        </nav>
-        <a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
-      </div>
+    <header>
+      <nav>
+        <a id="point" href="/public/views/user-main.html">메인페이지</a> |
+        <a id="point" href="/public/views/userinfo.html">마이페이지</a> |
+        <button id="logout">로그아웃</button>
+      </nav>
     </header>
-
-    <!-- Banner -->
-    <section id="banner">
-      <h1>짧은 공부</h1>
-      <p>당신 마음대로 채팅이나 해보시져?</p>
-    </section>
-    <div class="container">
-      <div class="user-list">
-        <h2>사용자 목록</h2>
-        <ul id="user-list">
-          <li data-userid="1" data-username="User1" data-status="online">🟢User1</li>
-          <li data-userid="2" data-username="User2" data-status="offline">🔴User2</li>
-          <li>
-            <div class="user-item" data-userid="1" data-username="User1" data-status="online">
-              🟢User1
-              <button class="user-button">버튼1</button>
-              <button class="user-button">버튼2</button>
-            </div>
-          </li>
-        </ul>
-        <!-- 여기에 사용자 목록을 동적으로 추가하세요 -->
-      </div>
-      <div class="chat" id="chat">
-        <h2>채팅</h2>
-        <div class="chat-box" id="chatBox">
-          <!-- 여기에 채팅 내용을 표시하세요 -->
+    <main>
+      <div class="container">
+        <div class="user-list">
+          <h2>사용자 목록</h2>
+          <ul id="user-list"></ul>
         </div>
-        <div class="chat-input">
-          <input type="text" id="message" placeholder="메시지를 입력하세요" />
-          <button id="send">전송</button>
-        </div>
-      </div>
-    </div>
-    <section class="wrapper style1 special">
-      <div id="faceChatBtn">
-        <button>화상채팅하기</button>
-      </div>
-    </section>
-
-    <div id="faceChatForm" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>화상채팅 가능한 선생님</h2>
-        <div id="tutorList">
-          <div class="box person">
-            <h3>Magna</h3>
-            <button>화상대화하기</button>
-            <button>채팅하기</button>
+        <div class="chat" id="chat">
+          <h2>채팅</h2>
+          <div class="chat-box" id="chatBox">
+            <!-- 여기에 채팅 내용을 표시하세요 -->
+          </div>
+          <div class="chat-input">
+            <input type="text" id="message" placeholder="메시지를 입력하세요" />
+            <button id="send">전송</button>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="copyright">Site made with: <a href="https://templated.co/">TEMPLATED.CO</a></div>
+      <div id="faceChatBtn" class="button-container">
+        <button>화상채팅하기</button>
+      </div>
 
-    <!-- Scripts -->
+      <div id="faceChatForm" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>화상채팅 가능한 선생님</h2>
+          <div id="tutorList">
+            <div class="box person">
+              <h3>Magna</h3>
+              <button>화상대화하기</button>
+              <button>채팅하기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <a href="https://www.youtube.com"
+        ><img src="/public/images/유투브아이콘.png" alt="YouTube"
+      /></a>
+      <a href="https://www.facebook.com"
+        ><img src="/public/images/페북아이콘.png" alt="Facebook"
+      /></a>
+      <a href="https://www.instagram.com/"
+        ><img src="/public/images/인스타아이콘.png" alt="insta"
+      /></a>
+      <a href="https://twitter.com/"
+        ><img src="/public/images/트위터 아이콘.png" alt="twitter"
+      /></a>
+    </footer>
     <script src="/public/js/jquery.min.js"></script>
     <script src="/public/js/skel.min.js"></script>
     <script src="/public/js/util.js"></script>
     <script src="/public/js/main.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script type="module" src="/public/js/chat.js"></script>
-    <!-- <script src="/public/js/invite.js"></script> -->
   </body>
 </html>

@@ -14,6 +14,7 @@ function getCookieValue(cookieName) {
 
 function initializeSocket() {
   const jwtToken = getCookieValue('authorization');
+  if (!jwtToken) return;
   const socket = io({
     auth: {
       token: jwtToken,

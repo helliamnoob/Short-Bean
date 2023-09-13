@@ -16,11 +16,11 @@ const screenHeight = window.screen.height;
 faceChatForm.style.display = 'none';
 document.addEventListener('DOMContentLoaded', async () => {
   jwtToken = getCookieValue('authorization');
-  currentUserId = getUserIdFromToken(jwtToken);
-  if (!jwtToken) {
+  if (!jwtToken || !socket) {
     alert('로그인 후 이용가능한 서비스입니다.');
     window.location.href = `/`;
   } else {
+    currentUserId = getUserIdFromToken(jwtToken);
     socketOn();
     socket.emit('register', currentUserId);
 
@@ -336,3 +336,30 @@ function formatTime(dateString) {
 function scrollToBottom() {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
+
+const logoutBtn = document.getElementById('logout');
+logoutBtn.addEventListener('click', async () => {
+  const prompt = confirm('로그아웃 하시겠습니까?');
+  if (!prompt) {
+    return;
+  } else {
+    try {
+      const response = await fetch('/api/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        alert(`로그아웃 되었습니다.`);
+        window.location.href = '/';
+      } else {
+        const data = await response.json();
+        alert(`fail : ${data.message}`);
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  }
+});
