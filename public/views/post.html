@@ -1,69 +1,58 @@
 <!doctype html>
-<!--
-    Theory by TEMPLATED
-    templated.co @templatedco
-    Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
--->
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+  crossorigin="anonymous"
+/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+  crossorigin="anonymous"
+></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;400&display=swap"
+  rel="stylesheet"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
 <html>
+  <head>
+    <title>Theory by TEMPLATED</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
-  <title>Theory by TEMPLATED</title>
-  <!-- 문서의 메타 정보와 스타일, 스크립트 등을 정의하는 부분 -->
+    <link rel="stylesheet" href="/public/css/post.css" />
+  </head>
 
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- 외부 스타일 시트 불러오기 -->
-  <link rel="stylesheet" href="/public/css/post.css" />
-
-  <!-- 외부 스타일 시트 불러오기 -->
-  <link rel="stylesheet" href="/public/css/main.css" />
-
-  <!-- Bootstrap CSS 링크 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-  <!-- Bootstrap JS와 jQuery 스크립트 -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
-</head>
-
-<body>
-  <!-- 페이지 상단에 위치하는 헤더 -->
-  <header id="header">
-    <div class="inner">
-      <a href="/" class="logo">짧공</a>
-      <nav id="nav">
-        <a href="/public/views/chat.html">채팅하기</a>
-        <a href="/public/views/user-main.html">홈페이지</a>
+  <body>
+    <!-- 페이지 상단에 위치하는 헤더 -->
+    <header>
+      <nav>
+        <a id="point" href="/public/views/user-main.html">메인페이지</a> |
+        <a id="point" href="/public/views/userinfo.html">마이페이지</a> |
+        <button id="logout">로그아웃</button>
       </nav>
-      <a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
-    </div>
-    <!-- <div id="cardInfo" class="cardInfo">작성자 | 작성일자 | 수정 | 삭제</div> -->
-  </header>
-
-  <!-- 메인 배너 부분 -->
-  <section id="banner">
-    <h1>Welcome to ShortBean</h1>
-    <p>It's a one-on-one matching video education site.</p>
-  </section>
-
-  <!-- 질문 메인(상세) 페이지 -->
+    </header>
+    <main>
   <section class="post-main">
-    <h1 id="postTitle">게시글 제목</h1>
-    <div id="postContent"></div>
-    <div id="postSubject"></div>
+    <h1>TITLE: <span id="postTitle"></span></h1>
+    <h3>Content:</h3><span id="postContent"></span>
     <div id="postImage"></div>
-    <!-- 게시글 내용 -->
+    <h3>과목: <span id="postSubject"></span></h3>
   </section>
 
   <!-- 게시글 관련 버튼 -->
   <div class="card__inner container gray" id="cardList">
     <button type="button" class="btn btn-dark" id="postCreate">게시글 작성</button>
-    <!-- <div class="btn">
-      <a type="button" onclick="openPopup(this, 1000, 700); return false;" class="btn btn-dark" data-post-id="1">
-        게시글 수정
-      </a>
-    </div> -->
     <button type="button" class="btn btn-dark" id="postUpdate">게시글 수정</button>
     <button type="button" class="btn btn-dark" id="postDelete">게시글 삭제</button>
     <button type="button" class="btn btn-dark" id="postReport">게시글 신고하기</button>
@@ -218,9 +207,9 @@
 
     <!-- 사이트 제작 정보 -->
     <div class="copyright">Site made with: <a href="https://templated.co/">TEMPLATED.CO</a></div>
-
+  </main>
     <!-- 필요한 스크립트 파일 불러오기 -->
-    <script>
+    <!-- <script>
       function openPopup(element, width, height) {
         // 매개변수 명과 중복되는 변수명을 피합니다.
         const retrieved_post_id = element.getAttribute('data-post-id');
@@ -230,7 +219,21 @@
         const options = `resizable=yes, width=${width}, height=${height}, top=${top}, left=${left}`;
         window.open(url, '_blank', options);
       }
-    </script>
+    </script> -->
+    <footer>
+      <a href="https://www.youtube.com"
+        ><img src="/public/images/유투브아이콘.png" alt="YouTube"
+      /></a>
+      <a href="https://www.facebook.com"
+        ><img src="/public/images/페북아이콘.png" alt="Facebook"
+      /></a>
+      <a href="https://www.instagram.com/"
+        ><img src="/public/images/인스타아이콘.png" alt="insta"
+      /></a>
+      <a href="https://twitter.com/"
+        ><img src="/public/images/트위터 아이콘.png" alt="twitter"
+      /></a>
+    </footer>
     <script src="/public/js/jquery.min.js"></script>
     <script src="/public/js/skel.min.js"></script>
     <script src="/public/js/util.js"></script>
