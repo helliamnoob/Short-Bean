@@ -89,8 +89,9 @@ button {
   color: #004aad;
   background-color: white;
   border-radius: 5px;
-  width: 100px;
+  padding: 10px 20px; /* 버튼의 내부 여백을 조절합니다 */
   height: 40px;
+  white-space: nowrap; /* 줄 바꿈 방지 */
 }
 
 button:hover {
