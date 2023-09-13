@@ -5,7 +5,7 @@ const logoutbtn = document.getElementById('logoutBtn');
 const loginbtn = document.getElementById('loginBtn');
 const cookie = document.cookie;
 
-window.onload = user_cookie_check() ;
+window.onload = user_cookie_check();
 
 loginbtn.addEventListener('click', async () => {
   try {
@@ -21,11 +21,8 @@ loginbtn.addEventListener('click', async () => {
       }),
     });
     if (response.ok) {
-      // 로그인 성공시 페이지 이동
-      console.log(document.cookie);
       alert('로그인이 되었습니다.');
-      tutor_check();
-      return;
+      window.location.href = `/public/views/main.html`;
     } else {
       const data = await response.json();
       alert(`로그인 실패: ${data.message}`);
@@ -66,28 +63,6 @@ async function user_cookie_check() {
       return;
     }
   } else return console.log('end');
-}
-
-async function tutor_check() {
-  try {
-    const response = await fetch('/api/usercheck/tutor', {
-      method: 'GET',
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data['data'] == false) {
-          console.log('user');
-          window.location.href = `/public/views/user-main.html`;
-          return;
-        }
-        window.location.href = `/public/views/tutor-main.html`;
-        console.log('tutor');
-        return;
-      });
-  } catch (error) {
-    console.error('Error:', error.message);
-    return;
-  }
 }
 async function cookie_check() {
   try {
@@ -140,22 +115,21 @@ function redircetmyinfo() {
 async function usercheck() {
   try {
     const response = await fetch('/api/userInfo', {
-    method: 'GET',
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      let rows = data['user'];
-    });
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        let rows = data['user'];
+      });
 
-  if (response.ok) {
-    return;
-  } else {
-    alert('로그인이 필요합니다.');
-    window.location.href = `/public/views/login.html`;
-    return;
+    if (response.ok) {
+      return;
+    } else {
+      alert('로그인이 필요합니다.');
+      window.location.href = `/public/views/login.html`;
+      return;
+    }
+  } catch (error) {
+    console.error('Error:', error.message);
   }
-  return;
-} catch (error) {
-  console.error('Error:', error.message);
-}
 }

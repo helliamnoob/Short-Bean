@@ -75,7 +75,7 @@
 
   <div id="updatePostModal" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
+      <span class="close">&times;</span>
       <h2>게시글수정</h2>
       <input type="text" id="titleInput" placeholder="title" />
       <textarea id="contentInput" placeholder="content" rows="4" cols="50"></textarea>
@@ -162,38 +162,6 @@
       </div>
     </div>
 
-
-    <!-- "더 보기" 버튼 -->
-    <!-- <button id="loadMoreButton">더 보기</button> -->
-
-    <!-- 사용자들의 댓글을 보여주는 부분
-  <div class="card">
-
-    <div class="card-body">
-      <blockquote class="blockquote mb-0">
-        <p>이거 다른 풀이도 궁금해요!</p>
-        <footer class="blockquote-footer">호빵맨</footer>
-      </blockquote>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-body">
-      <blockquote class="blockquote mb-0">
-        <p>나도 이거 궁금했는데. 풀이를 봐도 이해가 안 갔어요.</p>
-        <footer class="blockquote-footer">신짱구</footer>
-      </blockquote>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-body">
-      <blockquote class="blockquote mb-0">
-        <p>이 질문 너무 좋아요!</p>
-        <footer class="blockquote-footer">이유리</footer>
-      </blockquote>
-    </div>
-  </div>
-  </div> -->
-
     <!-- 게시글 신고하기 모달 -->
     <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
@@ -216,20 +184,7 @@
     </div>
 
     <!-- 사이트 제작 정보 -->
-    <div class="copyright">Site made with: <a href="https://templated.co/">TEMPLATED.CO</a></div>
   </main>
-    <!-- 필요한 스크립트 파일 불러오기 -->
-    <!-- <script>
-      function openPopup(element, width, height) {
-        // 매개변수 명과 중복되는 변수명을 피합니다.
-        const retrieved_post_id = element.getAttribute('data-post-id');
-        const url = `/public/views/post-edit.html?post_id=${retrieved_post_id}`;
-        const left = (window.screen.width - width) / 2;
-        const top = (window.screen.height - height) / 2;
-        const options = `resizable=yes, width=${width}, height=${height}, top=${top}, left=${left}`;
-        window.open(url, '_blank', options);
-      }
-    </script> -->
     <footer>
       <a href="https://www.youtube.com"
         ><img src="/public/images/유투브아이콘.png" alt="YouTube"
@@ -244,10 +199,8 @@
         ><img src="/public/images/트위터 아이콘.png" alt="twitter"
       /></a>
     </footer>
-    <script src="/public/js/jquery.min.js"></script>
-    <script src="/public/js/skel.min.js"></script>
-    <script src="/public/js/util.js"></script>
-    <script src="/public/js/post.js"></script>
+
+    <script type="module" src="/public/js/post.js"></script>
 </body>
 
 </html>
