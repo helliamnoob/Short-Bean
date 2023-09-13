@@ -99,8 +99,7 @@ document.getElementById('all-question-button').addEventListener('click', functio
 // 인기순 게시글 리스트2
 // 좋아요 내림차순 게시글 리스트 표시
 // 대체이미지
-const defaultImage =
-  'https://previews.123rf.com/images/kahovsky/kahovsky2006/kahovsky200600131/148771530-%EA%B7%80%EC%97%AC%EC%9A%B4-%ED%96%89%EB%B3%B5-%EC%9E%AC%EB%AF%B8-%EB%91%90%EB%B6%80%EC%99%80-%EC%BD%A9%EC%9E%85%EB%8B%88%EB%8B%A4-%EB%B2%A1%ED%84%B0-%EB%A7%8C%ED%99%94-%EC%BA%90%EB%A6%AD%ED%84%B0-%EC%86%90-%EA%B7%B8%EB%A6%AC%EA%B8%B0-%EC%8A%A4%ED%83%80%EC%9D%BC-%EA%B7%B8%EB%A6%BC%EC%9E%85%EB%8B%88%EB%8B%A4-%ED%9D%B0%EC%83%89-%EB%B0%B0%EA%B2%BD%EC%97%90.jpg';
+const defaultImage = '/public/images/콩 (10).png';
 
 document.addEventListener('DOMContentLoaded', async function () {
   try {
@@ -124,13 +123,15 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (!image) {
           image = defaultImage;
         }
-        let temp_html = `<div data-post-id="${post.post_id}" class="post-card">
-    <img src="${image}" 
-    alt="${image}">
-    <p>이름: ${post.User.nickname}</p> 
-    <h5 class="card-title">제목: ${title}</h5>
-    <p>과목: ${subject}</p>
-    </div>`;
+        let temp_html = `
+        <div data-post-id="${post.post_id}" class="card" style="width: 18rem">
+            <img src="${image}" class="card-img-top" alt="${image}" />
+            <div class="card-body">
+            <p>이름: ${post.User.nickname}</p> 
+            <h5 class="card-title">제목: ${title}</h5>
+            <p>과목: ${subject}</p>
+            </div>
+          </div>`;
         postListContainer.insertAdjacentHTML('beforeend', temp_html);
       });
     } else {
@@ -142,7 +143,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     alert('게시글 조회 중 오류가 발생했습니다.');
   }
 });
-const hotPostList = document.getElementById('posts-box');
+const hotPostList = document.getElementById('posts-box1');
 
 hotPostList.addEventListener('click', (e) => {
   const post = e.target.closest('div');
@@ -165,12 +166,14 @@ document.addEventListener('DOMContentLoaded', async function () {
       image = defaultImage;
     }
 
-    let temp_html = `<div data-post-id="${post.post_id}" class="post-card">
-    <img src="${image}" alt="${image}">
+    let temp_html = `<div data-post-id="${post.post_id}" class="card" style="width: 18rem">
+    <img src="${image}" alt="${image}" />
+    <div class="card-body">
+    <p>이름: ${post.User.nickname}</p> 
     <h5 class="card-title">제목: ${title}</h5>
-    <p>이름: ${post.User.nickname}</p>
     <p>과목: ${subject}</p>
-    </div>`;
+    </div>
+  </div>`;
     postBox.insertAdjacentHTML('beforeend', temp_html);
   });
 });
@@ -247,4 +250,31 @@ async function getPosts() {
 const reportButton = document.querySelector('#tutor-button');
 reportButton.addEventListener('click', function () {
   window.location.href = '../tutorlist';
+});
+
+const logoutBtn = document.getElementById('logout');
+logoutBtn.addEventListener('click', async () => {
+  const prompt = confirm('로그아웃 하시겠습니까?');
+  if (!prompt) {
+    return;
+  } else {
+    try {
+      const response = await fetch('/api/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        alert(`로그아웃 되었습니다.`);
+        window.location.href = '/';
+      } else {
+        const data = await response.json();
+        alert(`fail : ${data.message}`);
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  }
 });
