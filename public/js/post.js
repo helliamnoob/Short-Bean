@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const response = await fetch(`/api/post/${post_id}/comment`);
     if (response.ok) {
       const comments = await response.json();
-      console.log(comments);
+      // console.log(comments);
 
       if (Array.isArray(comments.data)) {
         comments.data.forEach((comment) => {

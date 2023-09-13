@@ -13,7 +13,7 @@ const postController = new PostController();
 router.get('/post', postController.getAllPost);
 
 // 게시글 상세 조회
-router.get('/post/:post_id', postController.getPost);
+router.get('/post/:post_id', upload.array('image'), postController.getPost);
 
 // 게시글 생성
 router.post('/post', auth, upload.array('image'), postController.createPost);
