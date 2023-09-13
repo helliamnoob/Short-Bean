@@ -1,6 +1,7 @@
 window.onload = function () {
   loadTutorList();
   loadReportList();
+  loadReportWeek();
 };
 
 function loadTutorList() {
@@ -12,7 +13,6 @@ function loadTutorList() {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
       renderTutorData(data);
     })
     .catch((error) => {
@@ -39,7 +39,7 @@ function renderTutorData(data) {
   });
 }
 function loadReportWeek() {
-  fetch(`/api/reportsAweek`, {
+  fetch(`/api/week_reports`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -63,7 +63,6 @@ function loadReportList() {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
       renderReportData(data);
     })
     .catch((error) => {
@@ -91,6 +90,7 @@ function renderReportData(data) {
 
 //7일간 신고들어온 유저아이디와 그 갯수
 function showReportData(data) {
+  console.log(data);
   let arr = [];
   data.data.forEach((reportData) => {
     const reported_user_id = reportData['reported_user_id'];
@@ -115,13 +115,14 @@ function showReportData(data) {
       labels: keys,
       datasets: [
         {
-          label: '# of report',
+          label: '7일간 신고받은 횟수',
           data: value,
           borderWidth: 1,
         },
       ],
     },
     options: {
+      responsive: false,
       scales: {
         y: {
           beginAtZero: true,
@@ -142,4 +143,28 @@ const tutorButton = document.querySelector('#pastTutor');
 tutorButton.addEventListener('click', function () {
   const tutorModal = new bootstrap.Modal(document.getElementById('tutorModal'));
   tutorModal.show();
+});
+
+const admin_logout_btn = document.getElementById('admin_logout_btn');
+admin_logout_btn.addEventListener('click', async () => {
+  try {
+    console.log('실행');
+    const response = await fetch('/api/admin/session/logout', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        credentials: 'include',
+      },
+    });
+    if (response.ok) {
+      // 로그아웃 성공시 페이지 이동
+      alert('로그아웃 되었습니다.');
+      window.location.href = `/admin/login`;
+    } else {
+      const data = await response.json();
+      alert(`로그아웃 실패: ${data.message}`);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
 });
