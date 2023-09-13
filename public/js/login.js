@@ -1,8 +1,8 @@
 const loginForm = document.getElementById('login');
-const loginbtn = loginForm.querySelector('button');
 const emailInput = document.getElementById('email');
 const pwdInput = document.getElementById('password');
 const logoutbtn = document.getElementById('logoutBtn');
+const loginbtn = document.getElementById('loginBtn');
 const cookie = document.cookie;
 
 window.onload = user_cookie_check();
@@ -106,4 +106,32 @@ async function cookie_check() {
 // 코드수정 -이승준
 function redircetSignUp() {
   window.location.href = `/public/views/signup.html`;
+}
+
+async function logout() {
+  try {
+    const response = await fetch('/api/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        credentials: 'include',
+      },
+    });
+    if (response.ok) {
+      // 로그인 성공시 페이지 이동
+      alert('로그아웃이 되었습니다.');
+    } else {
+      alert(`로그아웃 실패: ${data.message}`);
+    }
+  } catch (error) {
+    console.error('Error:', error.message);
+  }
+}
+
+function redircetlogin() {
+  window.location.href = `/public/views/login.html`;
+}
+
+function redircetmyinfo() {
+  window.location.href = `/public/views/userinfo.html`;
 }
