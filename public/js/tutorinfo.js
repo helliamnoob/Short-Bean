@@ -7,8 +7,16 @@ const career = document.getElementById('career');
 const tutor_like = document.getElementById('tutor_like');
 const infoupdate_btn = document.getElementById('infoupdate_btn');
 
-(window.onload = info()), tutorinfo();
-
+document.addEventListener('DOMContentLoaded', () => {
+  const jwtToken = getCookieValue('authorization');
+  if (!jwtToken) {
+    alert('로그인 후 이용가능한 서비스입니다.');
+    window.location.href = `/`;
+  } else {
+    info();
+    tutorinfo();
+  }
+});
 async function tutorinfo() {
   try {
     const response = await fetch('/api/tutors', {
@@ -78,3 +86,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     tutorList.appendChild(listTutor);
   }
 });
+function getCookieValue(cookieName) {
+  const cookieParts = document.cookie.split('; ');
+
+  for (const part of cookieParts) {
+    const [name, value] = part.split('=');
+    if (name === cookieName) {
+      return value;
+    }
+  }
+  return null;
+}
