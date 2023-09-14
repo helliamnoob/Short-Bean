@@ -30,18 +30,21 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link rel="stylesheet" href="/public/css/main.css" />
+    <link rel="stylesheet" href="/public/css/post.css" />
   </head>
 
   <body>
     <!-- 페이지 상단에 위치하는 헤더 -->
-    <header>
-      <nav>
-        <a id="point" href="/public/views/login.html">로그인</a> |
-        <a id="point" href="#">로그아웃</a> |
-        <a id="point" href="/public/views/main.html">메인페이지</a>
-      </nav>
+    <header class="d-flex justify-content-center py-3" id="nav">
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a id="point" href="/public/views/main.html" class="nav-link active" aria-current="page"
+            >메인페이지</a
+          >
+        </li>
+      </ul>
     </header>
+    <div class="banner"></div>
 
     <main>
       <div id="login">

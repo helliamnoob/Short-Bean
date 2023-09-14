@@ -2,14 +2,20 @@ import { socket } from '../util/socket.util.js';
 let myRole;
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (Notification.permission !== 'granted') {
-    Notification.requestPermission().then((permission) => {
-      if (permission === 'granted') {
-        console.log(Notification.permission);
-      } else {
-        console.log(Notification.permission);
-      }
-    });
+  const jwtToken = getCookieValue('authorization');
+  if (!jwtToken || !socket) {
+    alert('로그인 후 이용가능한 서비스입니다.');
+    window.location.href = `/`;
+  } else {
+    if (Notification.permission !== 'granted') {
+      Notification.requestPermission().then((permission) => {
+        if (permission === 'granted') {
+          console.log(Notification.permission);
+        } else {
+          console.log(Notification.permission);
+        }
+      });
+    }
   }
 });
 
@@ -244,3 +250,14 @@ logoutBtn.addEventListener('click', async () => {
     }
   }
 });
+function getCookieValue(cookieName) {
+  const cookieParts = document.cookie.split('; ');
+
+  for (const part of cookieParts) {
+    const [name, value] = part.split('=');
+    if (name === cookieName) {
+      return value;
+    }
+  }
+  return null;
+}

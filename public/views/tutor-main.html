@@ -29,10 +29,12 @@
     <title>Theory by TEMPLATED</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="/public/css/chat.css" />
+
+    <link rel="stylesheet" href="/public/css/post.css" />
   </head>
+
   <body>
-    <!-- Header -->
+    <!-- 페이지 상단에 위치하는 헤더 -->
     <header class="d-flex justify-content-center py-3" id="nav">
       <ul class="nav nav-pills">
         <li class="nav-item">
@@ -40,48 +42,35 @@
             >메인페이지</a
           >
         </li>
+        <li class="nav-item">
+          <a href="/public/views/userinfo.html" class="nav-link">마이페이지</a>
+        </li>
       </ul>
 
       <div class="col-md-3 text-end">
-        <button id="logout" type="button" class="btn btn-outline-primary me-2">Logout</button>
+        <button id="logout" type="button" class="btn btn-outline-primary me-2" onclick = "logout()">Logout</button>
       </div>
     </header>
     <div class="banner"></div>
     <main>
+      <div class="welcomeUser" id="user-box" style="display: block">
+        <label id="welcome-label">Loading...</label>
+      </div>
+      <button id="mypage-button">마이페이지</button>
+      <button id="chat-button">채팅하기</button>
+      <button id="all-question-button">전체문제보기</button>
+      <h1>인기 질문</h1>
+      <section class="post-list" id="posts-box1"></section>
+      <h1>전체 질문</h1>
+
       <div class="container">
-        <div class="user-list">
-          <h2>사용자 목록</h2>
-          <ul id="user-list"></ul>
-        </div>
-        <div class="chat" id="chat">
-          <h2>채팅</h2>
-          <div class="chat-box" id="chatBox">
-            <!-- 여기에 채팅 내용을 표시하세요 -->
-          </div>
-          <div class="chat-input">
-            <input type="text" id="message" placeholder="메시지를 입력하세요" />
-            <button id="send">전송</button>
-          </div>
+        <div class="search">
+          <input type="text" id="searchInput" placeholder="작성자 혹은 제목을 입력해주세요" />
+          <button type="button" id="searchBtn">검색</button>
         </div>
       </div>
-
-      <div id="faceChatBtn" class="button-container">
-        <button>화상채팅하기</button>
-      </div>
-
-      <div id="faceChatForm" class="modal">
-        <div class="modal-content">
-          <span class="close">&times;</span>
-          <h2>화상채팅 가능한 선생님</h2>
-          <div id="tutorList">
-            <div class="box person">
-              <h3>Magna</h3>
-              <button>화상대화하기</button>
-              <button>채팅하기</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <section class="post-list" id="posts-box"></section>
+      <div class="post-list" id="posts-box"></div>
     </main>
     <footer>
       <a href="https://www.youtube.com"
@@ -97,7 +86,12 @@
         ><img src="/public/images/트위터 아이콘.png" alt="twitter"
       /></a>
     </footer>
+
+    <script src="/public/js/jquery.min.js"></script>
+    <script src="/public/js/skel.min.js"></script>
+    <script src="/public/js/util.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script type="module" src="/public/js/chat.js"></script>
+    <script src="/public/js/logout.js"></script> 
+    <script type="module" src="../js/user-main.js"></script>
   </body>
 </html>

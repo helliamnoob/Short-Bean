@@ -1,3 +1,5 @@
+import { jwtToken } from '../util/isLogin.util.js';
+
 //파라미터 값 받아오기
 const params = new URLSearchParams(window.location.search);
 const post_id = params.get('post_id');
@@ -7,15 +9,6 @@ const reportButton = document.querySelector('#postReport');
 reportButton.addEventListener('click', function () {
   const reportModal = new bootstrap.Modal(document.getElementById('reportModal'));
   reportModal.show();
-  const response = fetch(`/api/post/${post_id}`);
-  if (!response.ok) {
-    throw new Error('게시글을 불러오는 중 오류가 발생했습니다.');
-  }
-  const data = response.json();
-  const postUserId = data.user_id;
-  const postUsertag = document.getElementById('postUser');
-  const temp_html = `${postUserId}`;
-  postUsertag.insertAdjacentHTML('beforeend', temp_html);
 });
 
 // 신고하기 api 요청
@@ -27,7 +20,6 @@ loginForm.addEventListener('submit', async function (event) {
   const content = document.getElementById('content').value;
   //const userId = document.getElementById('userId').value;
   const postUser = data.data.user_id;
-  console.log(data);
 
   const formData = {
     report_content: content,
@@ -165,28 +157,33 @@ function addCommentToDOM(commentList, content, commentId) {
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
-  const commentList = document.getElementById('commentList');
+  if (!jwtToken) {
+    alert('로그인 후 이용가능한 서비스입니다.');
+    window.location.href = `/`;
+  } else {
+    const commentList = document.getElementById('commentList');
 
-  // GET 요청으로 댓글 데이터 가져오기
-  try {
-    const response = await fetch(`/api/post/${post_id}/comment`);
-    if (response.ok) {
-      const comments = await response.json();
-      // console.log(comments);
+    // GET 요청으로 댓글 데이터 가져오기
+    try {
+      const response = await fetch(`/api/post/${post_id}/comment`);
+      if (response.ok) {
+        const comments = await response.json();
+        // console.log(comments);
 
-      if (Array.isArray(comments.data)) {
-        comments.data.forEach((comment) => {
-          addCommentToDOM(commentList, comment.content, comment.comment_id);
-        });
+        if (Array.isArray(comments.data)) {
+          comments.data.forEach((comment) => {
+            addCommentToDOM(commentList, comment.content, comment.comment_id);
+          });
+        } else {
+          console.warn('Received data is not an array');
+        }
       } else {
-        console.warn('Received data is not an array');
+        console.error(`Failed to fetch comments: ${response.status}`);
       }
-    } else {
-      console.error(`Failed to fetch comments: ${response.status}`);
+    } catch (error) {
+      console.error('Error:', error);
+      alert('댓글을 가져오는 데 실패했습니다.');
     }
-  } catch (error) {
-    console.error('Error:', error);
-    alert('댓글을 가져오는 데 실패했습니다.');
   }
 });
 // --------------------------------------------------------------------------------------------

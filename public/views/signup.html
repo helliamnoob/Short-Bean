@@ -7,21 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- 외부 스타일 시트 불러오기 -->
-    <!-- <link rel="stylesheet" href="/public/css/main.css" /> -->
+    <link rel="stylesheet" href="/public/css/post.css" />
 
     <style>
-      header {
-        background-color: rgb(112, 159, 251);
-        background-image: url('/public/images/Section\ 1\ \(2\).jpg');
-        color: white;
-        padding: 10px;
-        text-align: right;
-        width: 100%;
-        height: 500px;
-        justify-content: space-between;
-        font-family: 'Noto Serif KR', serif;
-      }
-
       main {
         background-color: #f8f0ee;
         padding: 20px;
@@ -89,13 +77,22 @@
 
   <body>
     <!-- 페이지 상단에 위치하는 헤더 -->
-    <header>
-      <nav>
-        <a id="point" href="/public/views/login.html">로그인</a> |
-        <a id="point" href="#">로그아웃</a> |
-        <a id="point" href="/public/views/userinfo.html">마이페이지</a>
-      </nav>
+    <header class="d-flex justify-content-center py-3" id="nav">
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a id="point" href="/public/views/main.html" class="nav-link active" aria-current="page"
+            >메인페이지</a
+          >
+        </li>
+      </ul>
+
+      <div class="col-md-3 text-end">
+        <button type="button" class="btn btn-outline-primary me-2" onclick="location.href='/'">
+          Login
+        </button>
+      </div>
     </header>
+    <div class="banner"></div>
 
     <main>
       <div id="signup">

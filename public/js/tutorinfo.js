@@ -1,3 +1,5 @@
+import { jwtToken } from '../util/isLogin.util.js';
+
 const tutorinfo_form = document.getElementById('tutorinfo');
 const age = document.getElementById('age');
 const sex = document.getElementById('sex');
@@ -7,8 +9,15 @@ const career = document.getElementById('career');
 const tutor_like = document.getElementById('tutor_like');
 const infoupdate_btn = document.getElementById('infoupdate_btn');
 
-(window.onload = info()), tutorinfo();
-
+document.addEventListener('DOMContentLoaded', () => {
+  if (!jwtToken) {
+    alert('로그인 후 이용가능한 서비스입니다.');
+    window.location.href = `/`;
+  } else {
+    info();
+    tutorinfo();
+  }
+});
 async function tutorinfo() {
   try {
     const response = await fetch('/api/tutors', {

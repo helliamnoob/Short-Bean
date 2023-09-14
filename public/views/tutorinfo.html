@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- 외부 스타일 시트 불러오기 -->
-    <link rel="stylesheet" href="/public/css/main.css" />
+    <link rel="stylesheet" href="/public/css/post.css" />
     <title>Theory by TEMPLATED</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
@@ -35,40 +35,27 @@
     />
   </head>
 
-  <body>
-    <!-- 페이지 상단에 위치하는 헤더 -->
-    <header>
-      <nav>
-        <a id="point" href="/public/views/login.html">로그인</a> |
-        <a id="point" href="#">로그아웃</a> |
-        <a id="point" href="/public/views/main.html">메인페이지</a>
-      </nav>
-    </header>
+<body>
+  <!-- 페이지 상단에 위치하는 헤더 -->
+  <header>
+    <nav>
+  <a id="point" href="/public/views/login.html">로그인</a> | <a id="point" href="#" onclick = "logout()">로그아웃</a> | <a id="point" href="/public/views/userinfo.html">마이페이지</a>
+</nav>
+</header>
 
-    <main>
-      <div id="tutorinfo">
-        <h1>user_name</h1>
-        <h3 type="text" id="user_name"></h3>
-        <h1>age</h1>
-        <h3 type="text" id="age"></h3>
-        <h1>sex</h1>
-        <h3 type="text" id="sex"></h3>
-        <h1>school_name</h1>
-        <h3 type="text" id="school_name"></h3>
-        <h1>career</h1>
-        <h3 type="text" id="career"></h3>
-        <h1>tutor_like</h1>
-        <h3 type="text" id="tutor_like"></h3>
-        <h1>picture</h1>
-        <h3 type="text" id="picture"></h3>
-        <h1>subject</h1>
-        <h3 type="text" id="subject"></h3>
-        <h1>style</h1>
-        <h3 type="text" id="style"></h3>
-        <h1>logintime</h1>
-        <h3 type="text" id="logintime"></h3>
-        <button type="button" id="infoupdate_btn">나의정보수정</button>
-      </div>
+<main>
+
+    <div id="tutorinfo">
+      <h1>sex</h1>
+      <h3 type="text" id="sex"></h3>
+      <h1>school_name</h1>
+      <h3 type="text" id="school_name"></h3>
+      <h1>career</h1>
+      <h3 type="text" id="career"></h3>
+      <h1>tutor_like</h1>
+      <h3 type="text" id="tutor_like"></h3>
+      <button type="button" id="infoupdate_btn">나의정보수정</button>
+    </div>
     </main>
     <footer>
       <a href="https://www.youtube.com"
@@ -87,8 +74,9 @@
     </footer>
 
     <!-- 필요한 스크립트 파일 불러오기 -->
-    <script src="/public/js/tutorinfo.js"></script>
+    <script type="module" src="/public/js/tutorinfo.js"></script>
     <script src="/public/js/login.js"></script>
+    <script src="/public/js/logout.js"></script>
     <!-- <script src="/public/js/post.js"></script> -->
   </body>
 </html>
