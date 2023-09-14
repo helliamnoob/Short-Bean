@@ -413,16 +413,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (e.target.classList.contains('edit-comment-btn')) {
         const content = prompt('수정할 내용을 입력해주세요');
-        if (content !== null && comment_id !== null) {
+        if (content !== null && content.trim() !== '' && comment_id !== null) {
           await updateComment(comment_id, content);
           await loadComments();
+        } else {
+          alert('수정할 내용을 입력해주세요.');
         }
       } else if (e.target.classList.contains('delete-comment-btn')) {
         const commentOwner = await getCommentOwner(comment_id);
         const currentUser = getCurrentUser();
 
         console.log(commentOwner, currentUser);
-        console.log(getCommentOwner, getCurrentUser);
+        // console.log(getCommentOwner, getCurrentUser);
 
         if (commentOwner !== currentUser) {
           // 권한 없는 경우
