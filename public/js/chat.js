@@ -115,6 +115,25 @@ async function socketOn() {
     userList.innerHTML = '';
     renderUsers(socketUser);
   });
+  socket.on('notice_message', (msg, targetUserName) => {
+    if (Notification.permission === 'granted') {
+      const notification = new Notification('새 메시지', {
+        body: msg,
+      });
+      notification.onclick = () => {
+        const targetUserDiv = document.querySelector(
+          `.userInterface[data-user-name="${targetUserName}"]`
+        );
+        if (targetUserDiv) {
+          const buttonChat = targetUserDiv.querySelector('.button-chat');
+          if (buttonChat) {
+            buttonChat.click();
+          }
+        }
+        notification.close();
+      };
+    }
+  });
   faceChatBtn.addEventListener('click', () => {
     faceChatForm.style.display = 'block';
     socket.emit('show_tutor', handleFaceChatBtn);

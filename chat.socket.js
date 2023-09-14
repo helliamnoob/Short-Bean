@@ -60,9 +60,9 @@ module.exports = (io) => {
       await saveMsg(room, socket, msg);
       const findUser = connectedUsers.find((user) => user.userName === targetUserName);
 
-      socket.to(room).emit('new_message', `${userName}: ${msg}`);
+      socket.to(room).emit('new_message', `${userName}: ${msg}`); //방에띄워주는거
       if (findUser) {
-        io.to(findUser.socketId).emit('notice_message', `${userName}: ${msg}`);
+        io.to(findUser.socketId).emit('notice_message', `${userName}: ${msg}`, userName);
       }
       done();
     });
