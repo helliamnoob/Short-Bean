@@ -33,9 +33,6 @@
           >메인페이지</a
         >
       </li>
-      <li class="nav-item">
-        <a href="/public/views/userinfo.html" class="nav-link">마이페이지</a>
-      </li>
     </ul>
 
     <div class="col-md-3 text-end">
@@ -57,13 +54,13 @@
         <h1>birth_date</h1>
         <h3 type="text" id="birth_date"></h3>
         <button type="button" id="infoupdate_btn">나의정보수정</button>
-        <button onclick="showRequestTutorModal()" type="button">튜터신청하기</button>
+        <button type="button" id="get_tutor_btn">튜터신청하기</button>
         <button type="button" id="delete_btn">탈퇴</button>
       </div>
       <!-- 튜터 신청하기 모달-->
       <div id="requestTutorFormModal" class="modal">
         <div class="modal-content">
-          <span class="close" onclick="closeModal()">&times;</span>
+          <span class="close" id="close">&times;</span>
           <h2>튜터신청하기</h2>
           <input type="text" id="nativeInput" placeholder="출신대학" />
           <textarea id="careerInput" placeholder="자기소개" rows="4" cols="50"></textarea>

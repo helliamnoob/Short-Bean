@@ -1,6 +1,6 @@
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
-const colorBtns = document.querySelectorAll(".pallet button");
+const colorBtns = document.querySelectorAll('.pallet button');
 const eraserBtn = document.querySelector('#eraser');
 const downloadBtn = document.querySelector('#download');
 const clearCanvasBtn = document.querySelector('#clearCanvas');
@@ -12,21 +12,21 @@ let isDrawing = false;
 let isErasing = false;
 
 ctx.lineWidth = 2;
-ctx.strokeStyle ="black";
+ctx.strokeStyle = 'black';
 
 function drawing(e) {
-  if (!isDrawing) return; 
-  
+  if (!isDrawing) return;
+
   const x = e.offsetX;
   const y = e.offsetY;
 
   if (isErasing) {
     ctx.clearRect(x, y, 20, 20);
-    socket.emit('drawing', {isErasing: true, x, y});
+    socket.emit('drawing', { isErasing: true, x, y });
   } else {
     ctx.lineTo(x, y);
     ctx.stroke();
-    socket.emit('drawing', {isErasing: false, x, y, color: ctx.strokeStyle});
+    socket.emit('drawing', { isErasing: false, x, y, color: ctx.strokeStyle });
   }
 }
 
@@ -36,7 +36,7 @@ function startDrawing(e) {
   const y = e.offsetY;
   ctx.beginPath();
   ctx.moveTo(x, y);
-  socket.emit('mousedown', {x, y, color: ctx.strokeStyle});
+  socket.emit('mousedown', { x, y, color: ctx.strokeStyle });
 }
 
 function stopDrawing() {
@@ -52,34 +52,33 @@ function changeColor(e) {
 
   colorBtns.forEach((button) => {
     if (button === e.currentTarget) {
-      button.classList.add("selected");
+      button.classList.add('selected');
     } else {
-      button.classList.remove("selected");
+      button.classList.remove('selected');
     }
-  }); eraserBtn.classList.remove("selected");
-
+  });
+  eraserBtn.classList.remove('selected');
 }
-
 
 function startErasing(e) {
   isErasing = true;
-  colorBtns.forEach((button) => button.classList.remove("selected"));
-  e.currentTarget.classList.add("selected");
+  colorBtns.forEach((button) => button.classList.remove('selected'));
+  e.currentTarget.classList.add('selected');
 
   socket.emit('startErasing');
 }
 
-function downlodeCanvas(){
-  const image = canvas.toDataURL("image/jpeg", 1.0);
-  const linkEl= document.createElement("a");
-  linkEl.href= image;
-  linkEl.download = "paintApp";
+function downlodeCanvas() {
+  const image = canvas.toDataURL('image/jpeg', 1.0);
+  const linkEl = document.createElement('a');
+  linkEl.href = image;
+  linkEl.download = 'paintApp';
   linkEl.click();
 }
 
 function clearCanvas() {
-  ctx.clearRect(0, 0, 1000, 700);
-  colorBtns.forEach((button) => button.classList.remove("selected"));
+  ctx.clearRect(0, 0, 2000, 700);
+  colorBtns.forEach((button) => button.classList.remove('selected'));
 
   socket.emit('clearCanvas');
 }
@@ -112,26 +111,25 @@ socket.on('mouseup', () => {
 
 socket.on('startErasing', () => {
   isErasing = true;
-  colorBtns.forEach((button) => button.classList.remove("selected"));
-  eraserBtn.classList.add("selected");
+  colorBtns.forEach((button) => button.classList.remove('selected'));
+  eraserBtn.classList.add('selected');
 });
 
 socket.on('stopErasing', () => {
   isErasing = false;
-  eraserBtn.classList.remove("selected");
+  eraserBtn.classList.remove('selected');
 });
 
 socket.on('clearCanvas', () => {
   ctx.clearRect(0, 0, 1000, 700);
 });
 
-
 canvas.addEventListener('mousedown', startDrawing);
 canvas.addEventListener('mousemove', drawing);
 canvas.addEventListener('mouseup', stopDrawing);
-colorBtns.forEach((button) => button.addEventListener("click", changeColor));
+colorBtns.forEach((button) => button.addEventListener('click', changeColor));
 eraserBtn.addEventListener('click', startErasing);
-downloadBtn.addEventListener("click", downlodeCanvas);
+downloadBtn.addEventListener('click', downlodeCanvas);
 clearCanvasBtn.addEventListener('click', clearCanvas);
 
 //모바일 터치기능도 추가
@@ -141,7 +139,7 @@ function startDrawingTouch(e) {
   const y = e.touches[0].clientY;
   ctx.beginPath();
   ctx.moveTo(x, y);
-  socket.emit('mousedown', {x, y, color: ctx.strokeStyle});
+  socket.emit('mousedown', { x, y, color: ctx.strokeStyle });
 }
 
 function drawingTouch(e) {
@@ -152,11 +150,11 @@ function drawingTouch(e) {
 
   if (isErasing) {
     ctx.clearRect(x, y, 20, 20);
-    socket.emit('drawing', {isErasing: true, x, y});
+    socket.emit('drawing', { isErasing: true, x, y });
   } else {
     ctx.lineTo(x, y);
     ctx.stroke();
-    socket.emit('drawing', {isErasing: false, x, y, color: ctx.strokeStyle});
+    socket.emit('drawing', { isErasing: false, x, y, color: ctx.strokeStyle });
   }
 }
 
@@ -170,7 +168,3 @@ function stopDrawingTouch() {
 canvas.addEventListener('touchstart', startDrawingTouch);
 canvas.addEventListener('touchmove', drawingTouch);
 canvas.addEventListener('touchend', stopDrawingTouch);
-
-
-
-
