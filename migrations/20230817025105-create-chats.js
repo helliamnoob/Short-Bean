@@ -16,6 +16,8 @@ module.exports = {
           model: 'Users',
           key: 'user_id',
         },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       target_user_id: {
         allowNull: false,
@@ -24,6 +26,8 @@ module.exports = {
           model: 'Users',
           key: 'user_id',
         },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       chat_status: {
         allowNull: false,

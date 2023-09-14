@@ -11,38 +11,56 @@ module.exports = (sequelize, DataTypes) => {
       this.hasOne(models.TutorInfos, {
         sourceKey: 'user_id',
         foreignKey: 'user_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       });
       this.hasMany(models.Posts, {
         sourceKey: 'user_id',
         foreignKey: 'user_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       });
       this.hasMany(models.Chats, {
         sourceKey: 'user_id',
         foreignKey: 'user_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       });
       this.hasMany(models.FaceChats, {
         sourceKey: 'user_id',
         foreignKey: 'user_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       });
       this.hasMany(models.Reviews, {
         sourceKey: 'user_id',
         foreignKey: 'user_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       });
       this.hasMany(models.Reports, {
         sourceKey: 'user_id',
         foreignKey: 'user_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       });
       this.hasMany(models.UserMarks, {
         sourceKey: 'user_id',
         foreignKey: 'user_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       });
       this.hasMany(models.Comments, {
         sourceKey: 'user_id',
         foreignKey: 'user_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       });
       this.hasMany(models.Likes, {
         sourceKey: 'user_id',
         foreignKey: 'user_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       });
     }
   }

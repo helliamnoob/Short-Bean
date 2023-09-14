@@ -12,14 +12,20 @@ module.exports = (sequelize, DataTypes) => {
         //  1:N 관계 설정을 합니다.
         targetKey: 'user_id',
         foreignKey: 'user_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       });
       this.hasMany(models.Comments, {
         sourceKey: 'post_id',
         foreignKey: 'post_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       });
       this.hasMany(models.Likes, {
         sourceKey: 'post_id',
         foreignKey: 'post_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       });
     }
   }

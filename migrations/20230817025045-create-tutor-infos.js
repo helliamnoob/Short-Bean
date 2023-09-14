@@ -16,6 +16,8 @@ module.exports = {
           model: 'Users',
           key: 'user_id',
         },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       school_name: {
         allowNull: false,
