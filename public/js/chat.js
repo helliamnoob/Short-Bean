@@ -14,6 +14,7 @@ const screenWidth = window.screen.width;
 const screenHeight = window.screen.height;
 
 faceChatForm.style.display = 'none';
+chatContainer.style.display = 'none';
 document.addEventListener('DOMContentLoaded', async () => {
   jwtToken = getCookieValue('authorization');
   if (!jwtToken || !socket) {
@@ -296,6 +297,7 @@ function handleRoomSubmit(e) {
 }
 
 function showRoom(targetUserName) {
+  chatContainer.style.display = 'block';
   const h2 = chatContainer.querySelector('h2');
   h2.innerText = `${targetUserName}님 과 채팅`;
   h2.setAttribute('data-user-name', targetUserName); // 1
