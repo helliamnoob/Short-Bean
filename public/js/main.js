@@ -68,10 +68,6 @@ document.getElementById('mypage-button').addEventListener('click', function () {
   else console.log(myRole);
 });
 
-document.getElementById('all-question-button').addEventListener('click', function () {
-  window.location.href = `/public/views/post-list.html`;
-});
-
 // 인기순 게시글 리스트2
 // 좋아요 내림차순 게시글 리스트 표시
 // 대체이미지
