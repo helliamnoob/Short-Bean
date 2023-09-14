@@ -8,7 +8,7 @@ const phone_number_input = document.getElementById('phone_number');
 
 infoupdate_btn.addEventListener('click', async () => {
   try {
-      const response = await fetch('http://localhost:3000/api/userinfo', {
+      const response = await fetch('/api/userinfo', {
       method: 'put',
       headers: {
         'Content-Type': 'application/json',

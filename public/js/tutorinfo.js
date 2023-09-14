@@ -1,9 +1,10 @@
 import { jwtToken } from '../util/isLogin.util.js';
 
-const tutorinfo_form = document.getElementById('tutorinfo');
-const age = document.getElementById('age');
-const sex = document.getElementById('sex');
+const email = document.getElementById('email');
+const nickname = document.getElementById('nickname');
 const user_name = document.getElementById('user_name');
+const phone_number = document.getElementById('phone_number');
+const birth_date = document.getElementById('birth_date');
 const school_name = document.getElementById('school_name');
 const career = document.getElementById('career');
 const tutor_like = document.getElementById('tutor_like');
@@ -34,19 +35,27 @@ async function tutorinfo() {
     console.error('Error:', error.message);
   }
 }
-
 async function info() {
   try {
-    const response = await fetch('/api/usertest', {
+    const response = await fetch('/api/userInfo', {
       method: 'GET',
-      mode: 'cors',
-      credentials: 'same-origin',
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         let rows = data['user'];
+        email.textContent = rows.email;
+        nickname.textContent = rows.nickname;
         user_name.textContent = rows.user_name;
+        phone_number.textContent = rows.phone_number;
+        birth_date.textContent = rows.birth_date;
       });
+
+    if (response.ok) {
+    } else {
+      const data = await response.json();
+    }
+    return;
   } catch (error) {
     console.error('Error:', error.message);
   }
