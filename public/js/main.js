@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
-
 socket.on('notice_message', (msg) => {
   if (Notification.permission === 'granted') {
     const notification = new Notification('새 메시지', {
@@ -66,10 +65,6 @@ document.getElementById('mypage-button').addEventListener('click', function () {
   if (myRole == '선생님') window.location.href = `/public/views/tutorinfo.html`;
   else if (myRole == '학생') window.location.href = `/public/views/userinfo.html`;
   else console.log(myRole);
-});
-
-document.getElementById('all-question-button').addEventListener('click', function () {
-  window.location.href = `/public/views/post-list.html`;
 });
 
 // 인기순 게시글 리스트2
