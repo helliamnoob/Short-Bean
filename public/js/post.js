@@ -546,8 +546,8 @@ document.addEventListener('DOMContentLoaded', () => {
           // },
         });
         if (response.ok) {
-          console.log(response);
           alert('게시글이 수정되었습니다.');
+          location.reload();
         } else {
           const data = await response.json();
           alert(data.error);
