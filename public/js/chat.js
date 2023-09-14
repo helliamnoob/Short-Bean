@@ -174,6 +174,7 @@ function addMessage(message, createdAt) {
   div.appendChild(createdAtSpan);
 
   chatBox.appendChild(div);
+  scrollToBottom();
 }
 
 async function createRoom(targetUesrId) {
@@ -319,8 +320,16 @@ function showRoom(targetUserName) {
   const h2 = chatContainer.querySelector('h2');
   h2.innerText = `${targetUserName}님 과 채팅`;
   h2.setAttribute('data-user-name', targetUserName); // 1
-  const msg = chatContainer.querySelector('#send');
-  msg.addEventListener('click', handleMessageSubmit);
+  const sendBtn = chatContainer.querySelector('#send');
+  sendBtn.addEventListener('click', handleMessageSubmit);
+  const input = chatContainer.querySelector('#message');
+  input.addEventListener('keydown', (e) => {
+    e.preventDefault();
+    if (e.key == 'Enter') {
+      handleMessageSubmit();
+    }
+  });
+  scrollToBottom();
 }
 function handleMessageSubmit() {
   const targetUserName = chatContainer.querySelector('h2').getAttribute('data-user-name');
@@ -328,7 +337,6 @@ function handleMessageSubmit() {
   socket.emit('new_message', input.value, roomId, targetUserName, () => {
     addMessage(`${userName}: ${input.value}`, getCurrentTime());
     input.value = '';
-    scrollToBottom();
   });
 }
 
