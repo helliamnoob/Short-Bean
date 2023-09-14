@@ -374,6 +374,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const commentInput = document.getElementById('comment-input');
   const commentList = document.getElementById('commentList');
 
+  console.log('DOMContentLoaded event handler');
   // const cardContainer = document.querySelector('.card');
   // const cardId = parseInt(cardContainer.dataset.cardId, 10);
   // console.log('cardId:', cardId);
@@ -383,11 +384,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const content = commentInput.value.trim();
     if (!content) return;
+    // 원래 이 코드인데 디버깅때문에 임시 주석
+    //   createComment(content).then(() => {
+    //     commentInput.value = '';
+    //     loadComments();
+    //   });
 
-    createComment(content).then(() => {
-      commentInput.value = '';
-      loadComments();
-    });
+    // 디버깅
+    createComment(content)
+      .then(() => {
+        commentInput.value = '';
+        loadComments();
+      })
+      .catch((error) => {
+        console.error('Error in createComment:', error);
+      });
   });
   console.log(commentList);
 
@@ -409,6 +420,9 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (e.target.classList.contains('delete-comment-btn')) {
         const commentOwner = await getCommentOwner(comment_id);
         const currentUser = getCurrentUser();
+
+        console.log(commentOwner, currentUser);
+        console.log(getCommentOwner, getCurrentUser);
 
         if (commentOwner !== currentUser) {
           // 권한 없는 경우
