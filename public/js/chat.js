@@ -329,11 +329,13 @@ function showRoom(targetUserName) {
       handleMessageSubmit();
     }
   });
+  input.focus();
   scrollToBottom();
 }
 function handleMessageSubmit() {
   const targetUserName = chatContainer.querySelector('h2').getAttribute('data-user-name');
   const input = chatContainer.querySelector('#message');
+  if (!input.value) return;
   socket.emit('new_message', input.value, roomId, targetUserName, () => {
     addMessage(`${userName}: ${input.value}`, getCurrentTime());
     input.value = '';
