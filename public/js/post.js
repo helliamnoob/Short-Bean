@@ -1,3 +1,9 @@
+import { jwtToken } from '../util/isLogin.util.js';
+
+//파라미터 값 받아오기
+const params = new URLSearchParams(window.location.search);
+const post_id = params.get('post_id');
+
 // 신고하기 모달 열기
 const reportButton = document.querySelector('#postReport');
 reportButton.addEventListener('click', function () {
@@ -7,16 +13,17 @@ reportButton.addEventListener('click', function () {
 
 // 신고하기 api 요청
 const loginForm = document.getElementById('reportForm');
-loginForm.addEventListener('submit', function (event) {
+loginForm.addEventListener('submit', async function (event) {
   event.preventDefault();
+  const data = await fetch(`/api/post/${post_id}`).then((response) => response.json());
 
   const content = document.getElementById('content').value;
-  const userId = document.getElementById('userId').value;
-  const post_id = document.getElementById('postLike').value;
+  //const userId = document.getElementById('userId').value;
+  const postUser = data.data.user_id;
 
   const formData = {
     report_content: content,
-    reported_user_id: userId,
+    reported_user_id: postUser,
   };
   fetch('/api/reports', {
     method: 'POST',
@@ -38,8 +45,6 @@ loginForm.addEventListener('submit', function (event) {
 });
 // ------------------------------------------------------------------------------
 //댓글
-const params = new URLSearchParams(window.location.search);
-const post_id = params.get('post_id');
 
 //댓글 조회
 function addCommentToDOM(commentList, content, commentId) {
@@ -152,28 +157,33 @@ function addCommentToDOM(commentList, content, commentId) {
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
-  const commentList = document.getElementById('commentList');
+  if (!jwtToken) {
+    alert('로그인 후 이용가능한 서비스입니다.');
+    window.location.href = `/`;
+  } else {
+    const commentList = document.getElementById('commentList');
 
-  // GET 요청으로 댓글 데이터 가져오기
-  try {
-    const response = await fetch(`/api/post/${post_id}/comment`);
-    if (response.ok) {
-      const comments = await response.json();
-      // console.log(comments);
+    // GET 요청으로 댓글 데이터 가져오기
+    try {
+      const response = await fetch(`/api/post/${post_id}/comment`);
+      if (response.ok) {
+        const comments = await response.json();
+        // console.log(comments);
 
-      if (Array.isArray(comments.data)) {
-        comments.data.forEach((comment) => {
-          addCommentToDOM(commentList, comment.content, comment.comment_id);
-        });
+        if (Array.isArray(comments.data)) {
+          comments.data.forEach((comment) => {
+            addCommentToDOM(commentList, comment.content, comment.comment_id);
+          });
+        } else {
+          console.warn('Received data is not an array');
+        }
       } else {
-        console.warn('Received data is not an array');
+        console.error(`Failed to fetch comments: ${response.status}`);
       }
-    } else {
-      console.error(`Failed to fetch comments: ${response.status}`);
+    } catch (error) {
+      console.error('Error:', error);
+      alert('댓글을 가져오는 데 실패했습니다.');
     }
-  } catch (error) {
-    console.error('Error:', error);
-    alert('댓글을 가져오는 데 실패했습니다.');
   }
 });
 // --------------------------------------------------------------------------------------------
@@ -270,8 +280,6 @@ async function loadPostMain() {
   const post_id = params.get('post_id');
   try {
     const postMain = await fetch(`/api/post/${post_id}`).then((response) => response.json());
-
-    console.log(postMain.data);
     // 프론트엔드에서 게시글 상세 정보를 화면에 표시: 이미지는 따로
     const postTitleElement = document.getElementById('postTitle');
     const postContentElement = document.getElementById('postContent');
@@ -288,8 +296,6 @@ async function loadPostMain() {
     if (postMain.data.image) {
       // S3 버킷 경로와 파일 이름을 조합하여 전체 이미지 URL 생성
       let imageUrl = postMain.data.image;
-      console.log(imageUrl);
-
       // img 태그를 문서에 추가합니다. 여기서는 'postImage' 요소 안에 추가합니다.
       postImageElement.innerHTML = `<img src="${imageUrl}" />`;
     }
@@ -507,11 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = `/public/views/post-detail.html`; // 여기에 게시글 작성 페이지의 URL을 넣으세요.
   });
 
-  // // 버튼 클릭 이벤트 리스너 추가
-  // document.getElementById('postUpdate').addEventListener('click', function () {
-  //   window.location.href = `/public/views/post.html?post_id=${data.data.post_id}`; // 여기에 게시글 작성 페이지의 URL을 넣으세요.
-  // });
-
+  // 게시글 수정
   const postUpdateBtn = document.getElementById('postUpdate');
   const updatePostModal = document.getElementById('updatePostModal');
 
@@ -526,35 +528,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const editButton = document.getElementById('editButton');
 
     //수정하기 버튼을 눌러야 실행됩니다.
-    editButton.addEventListener('click', () => {
+    editButton.addEventListener('click', async () => {
       const formData = new FormData();
       formData.append('title', titleInput.value);
       formData.append('content', contentInput.value);
       formData.append('subject', subjectInput.value);
-
       if (imageInput && imageInput.files && imageInput.files.length > 0) {
         // 파일이 선택된 경우에만 실행
         formData.append('image', imageInput.files[0]);
       }
-      fetch(`/api/post/${post_id}`, {
-        method: 'PUT',
-        body: formData,
-        // headers: { 'Content-Type': 'multipart/form-data' },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          alert(data.message);
-          location.reload();
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-          alert('오류가 발생했습니다.');
+      try {
+        const response = await fetch(`/api/post/${post_id}`, {
+          method: 'PUT',
+          body: formData,
+          // headers: {
+          //   'Content-Type': 'application/json',
+          // },
         });
+        if (response.ok) {
+          console.log(response);
+          alert('게시글이 수정되었습니다.');
+        } else {
+          const data = await response.json();
+          alert(data.error);
+          location.reload();
+        }
+      } catch (error) {
+        console.error('Error:', error.message);
+      }
     });
   });
-  function closeModal() {
+  const closeBtn = document.querySelector('.close');
+  closeBtn.addEventListener('click', () => {
     updatePostModal.style.display = 'none';
-  }
+  });
 
   const deleteBtn = document.getElementById('postDelete');
   // 게시글 삭제 버튼 클릭 이벤트 리스너 추가
@@ -571,10 +578,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (response.ok) {
           alert('게시글이 삭제되었습니다.');
-          window.location.href = `/public/views/user-main.html`;
+          window.location.href = `/public/views/main.html`;
         } else {
           const data = await response.json();
-          alert(`fail : ${data.error}`);
+          alert(data.error);
           location.reload();
         }
       } catch (error) {

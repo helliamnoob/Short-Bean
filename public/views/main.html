@@ -35,13 +35,23 @@
 
   <body>
     <!-- 페이지 상단에 위치하는 헤더 -->
-    <header>
-      <nav>
-        <a id="point" href="/public/views/user-main.html">메인페이지</a> |
-        <a id="point" href="/public/views/userinfo.html">마이페이지</a> |
-        <button id="logout">로그아웃</button>
-      </nav>
+    <header class="d-flex justify-content-center py-3" id="nav">
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a id="point" href="/public/views/main.html" class="nav-link active" aria-current="page"
+            >메인페이지</a
+          >
+        </li>
+        <li class="nav-item">
+          <a href="/public/views/userinfo.html" class="nav-link">마이페이지</a>
+        </li>
+      </ul>
+
+      <div class="col-md-3 text-end">
+        <button id="logout" type="button" class="btn btn-outline-primary me-2">Logout</button>
+      </div>
     </header>
+    <div class="banner"></div>
     <main>
       <div class="welcomeUser" id="user-box" style="display: block">
         <label id="welcome-label">Loading...</label>
@@ -77,11 +87,7 @@
         ><img src="/public/images/트위터 아이콘.png" alt="twitter"
       /></a>
     </footer>
-
-    <script src="/public/js/jquery.min.js"></script>
-    <script src="/public/js/skel.min.js"></script>
-    <script src="/public/js/util.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script type="module" src="../js/user-main.js"></script>
+    <script type="module" src="../js/main.js"></script>
   </body>
 </html>

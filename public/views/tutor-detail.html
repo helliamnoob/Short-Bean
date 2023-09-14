@@ -1,69 +1,99 @@
 <!doctype html>
 <html>
+  <head>
+    <title>튜터 권한 신청</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
-  <title>튜터 권한 신청</title>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- 외부 스타일 시트 불러오기 -->
-  <link rel="stylesheet" href="/public/css/main.css" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- 외부 스타일 시트 불러오기 -->
+    <link rel="stylesheet" href="/public/css/post.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-    crossorigin="anonymous"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;400&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
 
-</head>
+  <body>
+    <!-- 페이지 상단에 위치하는 헤더 -->
+    <header class="d-flex justify-content-center py-3" id="nav">
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a id="point" href="/public/views/main.html" class="nav-link active" aria-current="page"
+            >메인페이지</a
+          >
+        </li>
+        <li class="nav-item">
+          <a href="/public/views/userinfo.html" class="nav-link">마이페이지</a>
+        </li>
+      </ul>
 
-<body>
-  <!-- 페이지 상단에 위치하는 헤더 -->
-  <header>
-    <nav>
-  <a id="point" href="/public/views/login.html">로그인</a> | <a id="point" href="#">로그아웃</a> | <a id="point" href="/public/views/userinfo.html">마이페이지</a>
-</nav>
-</header>
+      <div class="col-md-3 text-end">
+        <button id="logout" type="button" class="btn btn-outline-primary me-2">Logout</button>
+      </div>
+    </header>
+    <div class="banner"></div>
 
-<main>
-  <!-- 게시글 페이지 -->
-  <div class="main_page">
-    <div class="main_title">
-      <h1>튜터 권한 신청페이지</h1>
-    </div>
-    <div class="tutorCheck">
-        <h2>튜터 권한 신청</h2>
-        <div>
+    <main>
+      <!-- 게시글 페이지 -->
+      <div class="main_page">
+        <div class="main_title">
+          <h1>튜터 권한 신청페이지</h1>
+        </div>
+        <div class="tutorCheck">
+          <h2>튜터 권한 신청</h2>
+          <div>
             <div class="list-group" id="tutorDetail"></div>
+          </div>
         </div>
       </div>
+      <!-- 버튼 -->
+      <div class="card__inner container gray" id="cardList">
+        <button type="button" id="cancel">권한 거부</button>
+        <button type="button" id="accept">승인 완료</button>
+      </div>
+    </main>
 
-    </div>
-    <!-- 버튼 -->
-    <div class="card__inner container gray" id="cardList">
-      <button type="button" id="cancel">권한 거부</button>
-      <button type="button" id="accept">승인 완료</button>
-    </div>
+    <footer>
+      <a href="https://www.youtube.com"
+        ><img src="/public/images/유투브아이콘.png" alt="YouTube"
+      /></a>
+      <a href="https://www.facebook.com"
+        ><img src="/public/images/페북아이콘.png" alt="Facebook"
+      /></a>
+      <a href="https://www.instagram.com/"
+        ><img src="/public/images/인스타아이콘.png" alt="insta"
+      /></a>
+      <a href="https://twitter.com/"
+        ><img src="/public/images/트위터 아이콘.png" alt="twitter"
+      /></a>
+      <!-- 더 많은 아이콘 -->
+    </footer>
 
-  </main>
-
-  <footer>
-    <a href="https://www.youtube.com"><img src="/public/images/유투브아이콘.png" alt="YouTube"></a>
-    <a href="https://www.facebook.com"><img src="/public/images/페북아이콘.png" alt="Facebook"></a>
-    <a href="https://www.instagram.com/"><img src="/public/images/인스타아이콘.png" alt="insta"></a>
-    <a href="https://twitter.com/"><img src="/public/images/트위터 아이콘.png" alt="twitter"></a>
-    <!-- 더 많은 아이콘 -->
-  </footer>
-
-  <!-- 필요한 스크립트 파일 불러오기 -->
-  <script src="/public/js/jquery.min.js"></script>
-  <script src="/public/js/skel.min.js"></script>
-  <script src="/public/js/util.js"></script>
-  <script src="/public/js/tutor-detail.js"></script>
-</body>
-
+    <!-- 필요한 스크립트 파일 불러오기 -->
+    <script src="/public/js/jquery.min.js"></script>
+    <script src="/public/js/skel.min.js"></script>
+    <script src="/public/js/util.js"></script>
+    <script src="/public/js/tutor-detail.js"></script>
+  </body>
 </html>

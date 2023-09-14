@@ -367,7 +367,7 @@ router.get('/usercheck/tutor', middleware, async (req, res) => {
   try {
     const find_tutor = await TutorInfos.findOne({ where: { user_id } });
     if (!find_tutor) {
-      return res.status(200).json({ data: false });
+      return res.status(400).json({ data: false });
     }
     return res.status(200).json({ data: find_tutor });
   } catch {
@@ -380,7 +380,7 @@ router.get('/usercheck/admin', async (req, res) => {
   const admin = req.session.admin;
   console.log(admin);
   try {
-    return res.status(200).json({ data: amdin });
+    return res.status(200).json({ data: admin });
   } catch {
     res.status(500).json({ message: 'server error.' });
   }
@@ -391,13 +391,20 @@ router.get('/user', middleware, async (req, res) => {
   const { user_id } = res.locals.user;
 
   try {
-    const user = await Users.findOne({ where: { user_id } });
+    const user = await Users.findOne({
+      where: { user_id },
+      include: [
+        {
+          model: TutorInfos,
+        },
+      ],
+    });
     if (!user) {
       return res.status(400).json({
         message: '해당 유저가 존재하지 않습니다.',
       });
     }
-    return res.status(200).json({ userName: user.user_name });
+    return res.status(200).json({ user });
   } catch {
     res.status(500).json({ message: 'server error.' });
   }

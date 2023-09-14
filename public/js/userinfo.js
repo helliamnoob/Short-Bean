@@ -7,14 +7,24 @@ const birth_date = document.getElementById('birth_date');
 const infoupdate_btn = document.getElementById('infoupdate_btn');
 const delete_btn = document.getElementById('delete_btn');
 
+import { jwtToken } from '../util/isLogin.util.js';
+
 const requestTutorFormModal = document.getElementById('requestTutorFormModal');
 const requestTutorButton = document.getElementById('requestTutorButton');
 requestTutorButton.addEventListener('click', requestTutor);
 
-window.onload = info();
+document.addEventListener('DOMContentLoaded', () => {
+  // const jwtToken = getCookieValue('authorization');
+  if (!jwtToken) {
+    alert('로그인 후 이용가능한 서비스입니다.');
+    window.location.href = `/`;
+  } else {
+    info();
+  }
+});
 async function info() {
   try {
-      const response = await fetch('/api/userInfo', {
+    const response = await fetch('/api/userInfo', {
       method: 'GET',
     })
       .then((res) => res.json())
@@ -44,12 +54,12 @@ infoupdate_btn.addEventListener('click', async () => {
 
 delete_btn.addEventListener('click', async () => {
   try {
-      const response = await fetch('/api/signout', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+    const response = await fetch('/api/signout', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
     if (response.ok) {
       alert('탈퇴 되었습니다.');
