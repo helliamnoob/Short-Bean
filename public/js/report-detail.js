@@ -32,7 +32,7 @@ window.onload = function () {
         console.log('신고 처리완료 성공:', data);
         console.log(formData);
         alert('신고 처리 완료되었습니다.');
-        location.reload();
+        location.href = '/admin';
       })
       .catch((error) => {
         console.error('신고 처리 실패:', error);
@@ -60,7 +60,7 @@ window.onload = function () {
         console.log('신고 처리취소 성공:', data);
         console.log(formData);
         alert('신고 처리취소 완료되었습니다.');
-        location.reload();
+        location.href = '/admin';
       })
       .catch((error) => {
         console.error('신고 처리취소 실패:', error);

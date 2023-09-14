@@ -32,7 +32,7 @@ window.onload = function () {
         console.log('튜터 처리완료 성공:', data);
         console.log(formData);
         alert('튜터 처리 완료되었습니다.');
-        location.reload();
+        location.href = '/admin';
       })
       .catch((error) => {
         console.error('튜터 처리 실패:', error);
@@ -61,7 +61,7 @@ window.onload = function () {
         console.log('튜터 처리거부 성공:', data);
         console.log(formData);
         alert('튜터 처리거부 완료되었습니다.');
-        location.reload();
+        location.href = '/admin';
       })
       .catch((error) => {
         console.error('튜터 처리거부 실패:', error);

@@ -78,3 +78,19 @@ button.control-btn{
 button.control-btn.selected{
   color: red;
 }
+
+#leaveButton {
+  width: 80px;
+  height: 40px;
+  font-size:16px;
+  position: absolute; /* 또는 fixed, relative, sticky 중 하나 */
+  top: 0;
+  right: 20px;
+  background-color: white;
+
+}
+#leaveButton:hover {
+  background-color: rgb(170, 212, 225);
+  color: white;
+  border: 2px solid white; /* 윤곽선 색상과 두께를 지정 */
+}
