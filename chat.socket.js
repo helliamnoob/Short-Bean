@@ -102,11 +102,12 @@ module.exports = (io) => {
       console.log(`[SERVER] 'ice' event emitted to room ${roomId}`);
     });
     //종료
+ 
     socket.on('leave_room', (roomId) => {
-      console.log(`User ${socket.id} has left room ${roomId}`);
-      socket.leave(roomId);
-      socket.to(roomId).emit('user_left');
+      // Notify other clients in the same room
+      socket.to(roomId).emit('user_left', '상대방이 채팅방을 나가셨습니다');
     });
+  
 
     //캔버스 화면 공유
 

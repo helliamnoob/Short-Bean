@@ -78,7 +78,7 @@ function downlodeCanvas(){
 }
 
 function clearCanvas() {
-  ctx.clearRect(0, 0, 1000, 700);
+  ctx.clearRect(0, 0, 2000, 700);
   colorBtns.forEach((button) => button.classList.remove("selected"));
 
   socket.emit('clearCanvas');
