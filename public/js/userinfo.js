@@ -37,12 +37,6 @@ async function info() {
         phone_number.textContent = rows.phone_number;
         birth_date.textContent = rows.birth_date;
       });
-
-    if (response.ok) {
-    } else {
-      const data = await response.json();
-    }
-    return;
   } catch (error) {
     console.error('Error:', error.message);
   }
@@ -104,10 +98,14 @@ async function requestTutor() {
     console.error('Error:', error.message);
   }
 }
+const getTutorBtn = document.getElementById('get_tutor_btn');
 
+getTutorBtn.addEventListener('click', showRequestTutorModal);
 function showRequestTutorModal() {
   requestTutorFormModal.style.display = 'block';
 }
+const close = document.getElementById('close');
+close.addEventListener('click', closeModal);
 function closeModal() {
   requestTutorFormModal.style.display = 'none';
 }
