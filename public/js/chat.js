@@ -14,6 +14,7 @@ const screenWidth = window.screen.width;
 const screenHeight = window.screen.height;
 
 faceChatForm.style.display = 'none';
+chatContainer.style.display = 'none';
 document.addEventListener('DOMContentLoaded', async () => {
   jwtToken = getCookieValue('authorization');
   if (!jwtToken || !socket) {
@@ -23,7 +24,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     currentUserId = getUserIdFromToken(jwtToken);
     socketOn();
     socket.emit('register', currentUserId);
-
     socket.on('receive_invite', async (inviterId, roomId) => {
       const accept = confirm('화상 채팅 초대가 도착했습니다! 수락하시겠습니까?');
       if (accept) {
@@ -296,6 +296,7 @@ function handleRoomSubmit(e) {
 }
 
 function showRoom(targetUserName) {
+  chatContainer.style.display = 'block';
   const h2 = chatContainer.querySelector('h2');
   h2.innerText = `${targetUserName}님 과 채팅`;
   h2.setAttribute('data-user-name', targetUserName); // 1
