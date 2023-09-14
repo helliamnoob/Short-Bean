@@ -29,7 +29,7 @@ class PostRepository {
   };
 
   updatePost = async ({ user_id, post_id, title, content, subject, image }) => {
-    return await Posts.update({ title, content, subject, image }, { where: { post_id } });
+    return await Posts.update({ user_id, title, content, subject, image }, { where: { post_id } });
   };
 
   deletePost = async (post_id) => {
