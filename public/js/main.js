@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
-
 socket.on('notice_message', (msg) => {
   if (Notification.permission === 'granted') {
     const notification = new Notification('새 메시지', {
