@@ -12,11 +12,9 @@ class TutorService {
     if (!tutorData) throw new Error("Tutor doesn't exist");
     return tutorData;
   };
-  checkTutor = async ({ user_id }) => {
-    const tutorData = await this.tutorRepository;
-  };
   creatTutor = async ({ user_id, school_name, career }) => {
     const tutorId = await this.tutorRepository.checkTutor({ user_id });
+    console.log(tutorId);
     if (tutorId) throw new Error('이미 튜터 신청하였습니다.');
     const tutorData = await this.tutorRepository.createTutor({
       user_id,
@@ -43,6 +41,11 @@ class TutorService {
 
   deleteReport = async ({ tutor_id, user_id }) => {
     const tutorData = await this.tutorRepository.deleteTutor({ tutor_id, user_id });
+    return tutorData;
+  };
+
+  getByLikes = async () => {
+    const tutorData = await this.tutorRepository.getByLikes();
     return tutorData;
   };
 }
