@@ -1,4 +1,21 @@
 import { jwtToken } from '../util/isLogin.util.js';
+// import { loadGraphModel } from '@tensorflow/tfjs-converter';
+
+// // 이게 아닌가..?
+// const usersModelPath = 'models/users.js';
+// const postsModelPath = 'models/posts.js';
+
+// // Users 모델 로드
+// const loadUsersModel = async () => {
+//   const usersModel = await loadGraphModel(usersModelPath);
+//   return usersModel;
+// };
+
+// // Posts 모델 로드
+// const loadPostsModel = async () => {
+//   const postsModel = await loadGraphModel(postsModelPath);
+//   return postsModel;
+// };
 
 //파라미터 값 받아오기
 const params = new URLSearchParams(window.location.search);
@@ -271,6 +288,20 @@ async function fetchPostMain(post_id) {
     throw error;
   }
 }
+// // 프론테 게시글 메인에 좋아요 띄우기
+// async function fetchPostMain(post_id) {
+//   try {
+//     const response = await fetch(`/api/post/${post_id}/likes`);
+//     if (!response.ok) {
+//       throw new Error('게시글을 불러오는 중 오류가 발생했습니다.');
+//     }
+//     const data = await response.json();
+//     return data;
+//   } catch (error) {
+//     console.error('게시글 조회 오류:', error);
+//     throw error;
+//   }
+// }
 
 const titleInput = document.getElementById('titleInput');
 const contentInput = document.getElementById('contentInput');
@@ -285,10 +316,13 @@ async function loadPostMain() {
     const postContentElement = document.getElementById('postContent');
     const postSubjectElement = document.getElementById('postSubject');
     const postImageElement = document.getElementById('postImage');
+    const postLikeImageElement = document.getElementById('postLikeImage');
+    const postLikeCountElement = document.getElementById('postLikesCount');
 
     postTitleElement.textContent = postMain.data.title;
     postContentElement.textContent = postMain.data.content;
     postSubjectElement.textContent = postMain.data.subject;
+    postLikeCountElement.textContent = ` : ${postMain.data.post_like}`;
 
     titleInput.value = postMain.data.title;
     contentInput.value = postMain.data.content;
@@ -462,7 +496,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .map(
         (comment) =>
           `<li class="list-group-item" data-comment-id="${comment.comment_id}">
-  ${comment.User.user_name}: ${comment.content}
+  ${comment.User.nickname}: ${comment.content}
   <span class="text-muted">${formatDate(comment.updatedAt)}</span>
   <button class="btn btn-sm btn-outline-secondary edit-comment-btn">수정</button>
   <button class="btn btn-sm btn-outline-danger delete-comment-btn">삭제</button>
