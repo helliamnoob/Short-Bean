@@ -47,7 +47,7 @@ loginForm.addEventListener('submit', async function (event) {
 //댓글
 
 //댓글 조회
-function addCommentToDOM(commentList, content, commentId) {
+function addCommentToDOM(commentList, content, commentId, nickname) {
   const commentElement = document.createElement('div');
   commentElement.classList.add('comment');
   commentElement.dataset.id = commentId;
@@ -58,15 +58,24 @@ function addCommentToDOM(commentList, content, commentId) {
   commentText.textContent = content;
 
   commentElement.appendChild(commentText);
+
+  // 댓글에 닉네임 추가
+  const commentNickname = document.createElement('div');
+  commentNickname.className = 'comment-nickname';
+  commentNickname.textContent = `작성자: ${nickname}`;
+  commentElement.appendChild(commentNickname);
+
   commentList.appendChild(commentElement);
 
   // 현재 날짜 및 시간 정보 가져오기
   const currentDate = new Date();
+  // const createdDate = new Date();
 
   // 댓글 아이템에 생성일자 추가
   const commentDate = document.createElement('div');
   commentDate.className = 'comment-date';
-  commentDate.textContent = `작성 시간: ${currentDate.toLocaleDateString()}`;
+  // 작성 시간으로 바꾸기
+  commentDate.textContent = `작성 시간1: ${currentDate.toLocaleDateString()}`;
   commentElement.appendChild(commentDate);
 
   // 댓글 수정 버튼 추가
@@ -74,7 +83,7 @@ function addCommentToDOM(commentList, content, commentId) {
   updateButton.type = 'button';
   updateButton.className = 'btn btn-dark';
   updateButton.id = 'commentUpdate';
-  updateButton.textContent = '댓글 수정';
+  updateButton.textContent = '댓글 수정1';
   commentElement.appendChild(updateButton);
   updateButton.addEventListener('click', async function () {
     console.log('Update button clicked.'); // 버튼 클릭 로그
@@ -143,6 +152,18 @@ function addCommentToDOM(commentList, content, commentId) {
             // } else {
             //   alert('댓글 삭제에 실패했습니다.');
           }
+
+          const commentOwner = await getCommentOwner(comment_id);
+          const currentUser = getCurrentUser();
+
+          console.log(commentOwner, currentUser);
+          // console.log(getCommentOwner, getCurrentUser);
+
+          if (commentOwner !== currentUser) {
+            // 권한 없는 경우
+            alert('권한이 없습니다.');
+            return;
+          }
           window.location.reload();
           // } else {
           //   console.error(`Failed to delete comment: ${response.status}`);
@@ -172,7 +193,14 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         if (Array.isArray(comments.data)) {
           comments.data.forEach((comment) => {
-            addCommentToDOM(commentList, comment.content, comment.comment_id);
+            console.log(comment);
+
+            addCommentToDOM(
+              commentList,
+              comment.content,
+              comment.comment_id,
+              comment.User.nickname
+            );
           });
         } else {
           console.warn('Received data is not an array');
@@ -286,10 +314,13 @@ async function loadPostMain() {
     const postContentElement = document.getElementById('postContent');
     const postSubjectElement = document.getElementById('postSubject');
     const postImageElement = document.getElementById('postImage');
+    const postLikeImageElement = document.getElementById('postLikeImage');
+    const postLikeCountElement = document.getElementById('postLikesCount');
 
     postTitleElement.textContent = postMain.data.title;
     postContentElement.textContent = postMain.data.content;
     postSubjectElement.textContent = postMain.data.subject;
+    postLikeCountElement.textContent = ` : ${postMain.data.post_like}`;
 
     titleInput.value = postMain.data.title;
     contentInput.value = postMain.data.content;
@@ -374,6 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const commentInput = document.getElementById('comment-input');
   const commentList = document.getElementById('commentList');
 
+  console.log('DOMContentLoaded event handler');
   // const cardContainer = document.querySelector('.card');
   // const cardId = parseInt(cardContainer.dataset.cardId, 10);
   // console.log('cardId:', cardId);
@@ -383,13 +415,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const content = commentInput.value.trim();
     if (!content) return;
+    // 원래 이 코드인데 디버깅때문에 임시 주석
+    //   createComment(content).then(() => {
+    //     commentInput.value = '';
+    //     loadComments();
+    //   });
 
-    createComment(content).then(() => {
-      commentInput.value = '';
-      loadComments();
-    });
+    // 디버깅
+    createComment(content)
+      .then(() => {
+        commentInput.value = '';
+        loadComments();
+      })
+      .catch((error) => {
+        console.error('Error in createComment:', error);
+      });
   });
   console.log(commentList);
+
   commentList.addEventListener('click', async (e) => {
     if (
       e.target.classList.contains('edit-comment-btn') ||
@@ -401,11 +444,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (e.target.classList.contains('edit-comment-btn')) {
         const content = prompt('수정할 내용을 입력해주세요');
-        if (content !== null && comment_id !== null) {
+        if (content !== null && content.trim() !== '' && comment_id !== null) {
           await updateComment(comment_id, content);
           await loadComments();
+        } else {
+          alert('수정할 내용을 입력해주세요.');
         }
       } else if (e.target.classList.contains('delete-comment-btn')) {
+        const commentOwner = await getCommentOwner(comment_id);
+        const currentUser = getCurrentUser();
+
+        console.log(commentOwner, currentUser);
+        // console.log(getCommentOwner, getCurrentUser);
+
+        if (commentOwner !== currentUser) {
+          // 권한 없는 경우
+          alert('권한이 없습니다.');
+          return;
+        }
+
         if (confirm('댓글을 삭제하시겠습니까?')) {
           if (comment_id) {
             await deleteComment(comment_id);
@@ -431,81 +488,82 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const loadComments = async () => {
-    const comments = await getComments();
-    commentList.innerHTML = comments
-      .map(
-        (comment) =>
-          `<li class="list-group-item" data-comment-id="${comment.comment_id}">
-  ${comment.name}: ${comment.content}
-  <span class="text-muted">${formatDate(comment.updatedAt)}</span>
-  <button class="btn btn-sm btn-outline-secondary edit-comment-btn">수정</button>
-  <button class="btn btn-sm btn-outline-danger delete-comment-btn">삭제</button>
-  </li>`
-      )
-      .join('');
-
-    console.log('Generated HTML:', commentList.innerHTML);
+    //   const comments = await getComments();
+    //   console.log('test');
+    //   console.log(comments);
+    //   commentList.innerHTML = comments
+    //     .map(
+    //       (comment) =>
+    //         `<li class="list-group-item" data-comment-id="${comment.comment_id}">
+    // ${comment.User.nickname}: ${comment.content}
+    // <span class="text-muted">${formatDate(comment.updatedAt)}</span>
+    // <button class="btn btn-sm btn-outline-secondary edit-comment-btn">수정</button>
+    // <button class="btn btn-sm btn-outline-danger delete-comment-btn">삭제</button>
+    // </li>`
+    //     )
+    //     .join('');
+    //   console.log('Generated HTML:', commentList.innerHTML);
   };
 
   const getComments = async () => {
     const response = await fetch(`api/post/${post_id}/comment/${comment_id}`);
     const data = await response.json();
     console.log('comments data:', data);
-    return data.data;
+    return data;
   };
 
-  const createComment = async (content) => {
-    const response = await fetch(`/api/post/${post_id}/comment/${comment_id}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content }),
-    });
+  // const createComment = async (content) => {
+  //   const response = await fetch(`/api/post/${post_id}/comment/${comment_id}`, {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({ content }),
+  //   });
 
-    if (!response.ok) {
-      console.error(`Error: ${response.status} ${response.statusText}`);
-      const responseText = await response.text();
-      console.error(`Response Text: ${responseText}`);
-      throw new Error('Error creating comment');
-    }
+  //   if (!response.ok) {
+  //     console.error(`Error: ${response.status} ${response.statusText}`);
+  //     const responseText = await response.text();
+  //     console.error(`Response Text: ${responseText}`);
+  //     throw new Error('Error creating comment');
+  //   }
 
-    const newComment = await response.json();
-    return newComment.id;
-  };
+  //   const newComment = await response.json();
+  //   return newComment.id;
+  // };
 
-  const updateComment = async (comment_id, content) => {
-    const response = await fetch(`/api/post/${post_id}/comment/${comment_id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content }),
-    });
+  // const updateComment = async (comment_id, content) => {
+  //   const response = await fetch(`/api/post/${post_id}/comment/${comment_id}`, {
+  //     method: 'PUT',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({ content }),
+  //   });
 
-    if (!response.ok) {
-      console.error(`Error: ${response.status} ${response.statusText}`);
-      const responseText = await response.text();
-      console.error(`Response Text: ${responseText}`);
-      throw new Error('Error updating comment');
-    }
+  //   if (!response.ok) {
+  //     console.error(`Error: ${response.status} ${response.statusText}`);
+  //     const responseText = await response.text();
+  //     console.error(`Response Text: ${responseText}`);
+  //     throw new Error('Error updating comment');
+  //   }
 
-    const updatedComment = await response.json();
-    return updatedComment;
-  };
+  //   const updatedComment = await response.json();
+  //   return updatedComment;
+  // };
 
-  const deleteComment = async (comment_id) => {
-    const response = await fetch(`/api/post/${post_id}/comment/${comment_id}`, {
-      method: 'DELETE',
-    });
+  // const deleteComment = async (comment_id) => {
+  //   const response = await fetch(`/api/post/${post_id}/comment/${comment_id}`, {
+  //     method: 'DELETE',
+  //   });
 
-    if (!response.ok) {
-      console.error(`Error: ${response.status} ${response.statusText}`);
-      const responseText = await response.text();
-      console.error(`Response Text: ${responseText}`);
-      throw new Error('Error deleting comment');
-    }
+  //   if (!response.ok) {
+  //     console.error(`Error: ${response.status} ${response.statusText}`);
+  //     const responseText = await response.text();
+  //     console.error(`Response Text: ${responseText}`);
+  //     throw new Error('Error deleting comment');
+  //   }
 
-    return response.json();
-  };
+  //   return response.json();
+  // };
 
-  loadComments();
+  // loadComments();
   // -------------------------------------------------------------
 
   // 게시글 작성 버튼 클릭 이벤트 리스너 추가

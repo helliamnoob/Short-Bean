@@ -99,6 +99,17 @@ class PostController {
         return res.status(400).json({ error: '수정할 내용이 없습니다.' });
       }
 
+      // 게시글 작성자 확인
+      const post = await this.postService.findPost({ post_id });
+
+      if (!post) {
+        return res.status(404).json({ error: '게시글을 찾을 수 없습니다.' });
+      }
+
+      if (post.user_id !== user_id) {
+        return res.status(403).json({ error: '게시글 작성자만 수정할 수 있습니다.' });
+      }
+
       const { code, message } = await this.postService.updatePost({
         title,
         content,
@@ -124,9 +135,15 @@ class PostController {
         return res.status(400).json({ error: '게시글 ID가 필요합니다.' });
       }
 
-      // if (post_id !== req.body.requested_post_id) {
-      //   return res.status(400).json({ error: '올바른 게시글 ID가 아닙니다.' });
-      // }
+      const post = await this.postService.findPost({ post_id });
+
+      if (!post) {
+        return res.status(404).json({ error: '게시글을 찾을 수 없습니다.' });
+      }
+
+      if (post.user_id !== user_id) {
+        return res.status(403).json({ error: '게시글 작성자만 삭제할 수 있습니다.' });
+      }
 
       const { code, message } = await this.postService.deletePost({
         post_id,

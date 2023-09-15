@@ -21,7 +21,10 @@ class PostRepository {
   };
 
   findPost = async ({ post_id }) => {
-    return await Posts.findOne({ where: { post_id: parseInt(post_id) } });
+    return await Posts.findOne({
+      where: { post_id: parseInt(post_id) },
+      attributes: ['post_id', 'title', 'content', 'subject', 'image', 'post_like'],
+    });
   };
 
   createPost = async ({ user_id, title, content, subject, image }) => {
@@ -29,7 +32,7 @@ class PostRepository {
   };
 
   updatePost = async ({ user_id, post_id, title, content, subject, image }) => {
-    return await Posts.update({ title, content, subject, image }, { where: { post_id } });
+    return await Posts.update({ user_id, title, content, subject, image }, { where: { post_id } });
   };
 
   deletePost = async (post_id) => {
@@ -59,7 +62,7 @@ class PostRepository {
         ],
         status: 0,
       },
-      include: [{ model: this.UserModel, attributes: ['userName'] }],
+      include: [{ model: this.UserModel, attributes: ['user_name'] }],
       limit: 15,
       order: [['post_id', 'DESC']],
     };

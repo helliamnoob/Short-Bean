@@ -1,100 +1,63 @@
 <!doctype html>
-<link
-  href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-  rel="stylesheet"
-  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-  crossorigin="anonymous"
-/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-  src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-  crossorigin="anonymous"
-></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;400&display=swap"
-  rel="stylesheet"
-/>
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
   integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-  crossorigin="anonymous"
-  referrerpolicy="no-referrer"
-/>
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
 <html>
-  <head>
-    <title>짧공</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link rel="stylesheet" href="/public/css/post.css" />
-  </head>
+<head>
+  <title>짧공</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <body>
-    <!-- 페이지 상단에 위치하는 헤더 -->
-    <header class="d-flex justify-content-center py-3" id="nav">
-      <ul class="nav nav-pills">
-        <li class="nav-item">
-          <a
-            id="point"
-            href="/public/views/main.html"
-            class="nav-link active"
-            aria-current="page"
-            >메인페이지</a
-          >
-        </li>
-      </ul>
-  
-      <div class="col-md-3 text-end">
-        <button id="logout" type="button" class="btn btn-outline-primary me-2">Logout</button>
-      </div>
-    </header>
-    <div class="banner"></div>
-    <main>
-  <section class="post-main">
-    <h1>TITLE: <span id="postTitle"></span></h1>
-    <h3>Content:</h3><span id="postContent"></span>
-    <div id="postImage"></div>
-    <h3>과목: <span id="postSubject"></span></h3>
-  </section>
+  <link rel="stylesheet" href="/public/css/post.css" />
+</head>
 
-  <!-- 게시글 관련 버튼 -->
-  <div class="card__inner container gray" id="cardList">
-    <button type="button" class="btn btn-dark" id="postCreate">게시글 작성</button>
-    <button type="button" class="btn btn-dark" id="postUpdate">게시글 수정</button>
-    <button type="button" class="btn btn-dark" id="postDelete">게시글 삭제</button>
-    <button type="button" class="btn btn-dark" id="postReport">게시글 신고하기</button>
-    <button type="button" class="btn btn-dark" id="postLike">게시글 좋아요</button>
-  </div>
+<body>
+  <!-- 페이지 상단에 위치하는 헤더 -->
+  <header class="d-flex justify-content-center py-3" id="nav">
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <a id="point" href="/public/views/main.html" class="nav-link active" aria-current="page">메인페이지</a>
+      </li>
+    </ul>
 
-  <div id="updatePostModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2>게시글수정</h2>
-      <input type="text" id="titleInput" placeholder="title" />
-      <textarea id="contentInput" placeholder="content" rows="4" cols="50"></textarea>
-      <label for="subjectSelect">과목:</label>
-      <select id="subjectSelect">
-        <option value="국어">국어</option>
-        <option value="영어">영어</option>
-        <option value="수학">수학</option>
-      </select>
-
-      <!-- 이미지 업로드 -->
-      <label for="imageUpload">이미지 업로드:</label>
-      <input type="file" id="imageUpload" accept="image/*" />
-      <button id="editButton">수정하기</button>
+    <div class="col-md-3 text-end">
+      <button id="logout" type="button" class="btn btn-outline-primary me-2">Logout</button>
     </div>
-  </div>
-  <!-- 사용자의 댓글을 입력 받는 부분 -->
-  <form id="comment-form">
-    <label for="comment-input" class="form-label">댓글</label>
+  </header>
+  <div class="banner"></div>
+  <main>
+    <section class="post-main">
+      <h1>TITLE: <span id="postTitle"></span></h1>
+      <h3>Content:</h3><span id="postContent"></span>
+      <div id="postImage"></div>
+      <h3>과목: <span id="postSubject"></span></h3>
+      <h3>
+        <img src="../images/like.png" id="postLikeImage">
+        <span id="postLikesCount"></span>
+      </h3>
+    </section>
+
+    <!-- 게시글 관련 버튼 -->
+    <div class="card__inner container gray" id="cardList">
+      <button type="button" class="btn btn-dark" id="postCreate">게시글 작성</button>
+      <button type="button" class="btn btn-dark" id="postUpdate">게시글 수정</button>
+      <button type="button" class="btn btn-dark" id="postDelete">게시글 삭제</button>
+      <button type="button" class="btn btn-dark" id="postReport">게시글 신고하기</button>
+      <button type="button" class="btn btn-dark" id="postLike">게시글 좋아요</button>
+    </div>
+
     <div id="updatePostModal" class="modal">
       <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
+        <span class="close">&times;</span>
         <h2>게시글수정</h2>
         <input type="text" id="titleInput" placeholder="title" />
         <textarea id="contentInput" placeholder="content" rows="4" cols="50"></textarea>
@@ -111,91 +74,107 @@
         <button id="editButton">수정하기</button>
       </div>
     </div>
-
     <!-- 사용자의 댓글을 입력 받는 부분 -->
     <form id="comment-form">
       <label for="comment-input" class="form-label">댓글</label>
-      <div class="form-floating">
+      <div id="updatePostModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeModal()">&times;</span>
+          <h2>게시글수정</h2>
+          <input type="text" id="titleInput" placeholder="title" />
+          <textarea id="contentInput" placeholder="content" rows="4" cols="50"></textarea>
+          <label for="subjectSelect">과목:</label>
+          <select id="subjectSelect">
+            <option value="국어">국어</option>
+            <option value="영어">영어</option>
+            <option value="수학">수학</option>
+          </select>
 
-        <textarea class="form-control" placeholder="댓글을 남겨주세요" id="commentInput"
-          style="width: 600px; height: 100px"></textarea>
+          <!-- 이미지 업로드 -->
+          <label for="imageUpload">이미지 업로드:</label>
+          <input type="file" id="imageUpload" accept="image/*" />
+          <button id="editButton">수정하기</button>
+        </div>
       </div>
 
-      <!-- 댓글 관련 버튼 -->
-      <button type="button" class="btn btn-dark" id="commentCreate">댓글 작성</button>
-      <!-- <button type="button" class="btn btn-dark" id="commentUpdate">댓글 수정</button>
+      <!-- 사용자의 댓글을 입력 받는 부분 -->
+      <form id="comment-form">
+        <label for="comment-input" class="form-label">댓글</label>
+        <div class="form-floating">
+
+          <textarea class="form-control" placeholder="댓글을 남겨주세요" id="commentInput"
+            style="width: 600px; height: 100px"></textarea>
+        </div>
+
+        <!-- 댓글 관련 버튼 -->
+        <button type="button" class="btn btn-dark" id="commentCreate">댓글 작성</button>
+        <!-- <button type="button" class="btn btn-dark" id="commentUpdate">댓글 수정</button>
   <button type="button" class="btn btn-dark" id="commentDelete">댓글 삭제</button> -->
 
-      <!-- <button type="button" class="btn btn-sm btn-primary comment-update-button" data-comment-id="${comment.id}"
+        <!-- <button type="button" class="btn btn-sm btn-primary comment-update-button" data-comment-id="${comment.id}"
     data-comment-text="${comment.content}">
     수정
   </button> -->
-    </form>
-    <!-- 댓글 목록 표시 -->
-    <ul id="commentList">
-      <!-- 댓글들이 여기에 동적으로 추가됩니다. -->
-    </ul>
+      </form>
+      <!-- 댓글 목록 표시 -->
+      <div class="comment-box">
+        <ul id="commentList">
+          <!-- <span id="username">신짱구</span> -->
+          <!-- 댓글들이 여기에 동적으로 추가됩니다. -->
+        </ul>
+      </div>
 
-
-    <!-- 댓글 관련 버튼
+      <!-- 댓글 관련 버튼
   <button type="button" class="btn btn-dark" id="commentUpdate">댓글 수정</button> -->
 
-    <!-- 댓글 수정 모달 -->
-    <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="commentModalLabel">댓글 수정</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <textarea class="form-control" id="editCommentText"></textarea>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-            <button type="button" class="btn btn-primary" id="saveComment">저장</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 게시글 신고하기 모달 -->
-    <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="reportModalLabel">신고하기</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form id="reportForm">
-              <div class="mb-3">
-                <label for="content" class="form-label">신고내용</label>
-                <input type="text" class="form-control" id="content" required />
-              </div>
-              <button type="submit" class="btn btn-primary">신고하기</button>
-            </form>
+      <!-- 댓글 수정 모달 -->
+      <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="commentModalLabel">댓글 수정</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <textarea class="form-control" id="editCommentText"></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+              <button type="button" class="btn btn-primary" id="saveComment">저장</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- 사이트 제작 정보 -->
+      <!-- 게시글 신고하기 모달 -->
+      <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="reportModalLabel">신고하기</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="reportForm">
+                <div class="mb-3">
+                  <label for="content" class="form-label">신고내용</label>
+                  <input type="text" class="form-control" id="content" required />
+                </div>
+                <button type="submit" class="btn btn-primary">신고하기</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 사이트 제작 정보 -->
   </main>
-    <footer>
-      <a href="https://www.youtube.com"
-        ><img src="/public/images/유투브아이콘.png" alt="YouTube"
-      /></a>
-      <a href="https://www.facebook.com"
-        ><img src="/public/images/페북아이콘.png" alt="Facebook"
-      /></a>
-      <a href="https://www.instagram.com/"
-        ><img src="/public/images/인스타아이콘.png" alt="insta"
-      /></a>
-      <a href="https://twitter.com/"
-        ><img src="/public/images/트위터 아이콘.png" alt="twitter"
-      /></a>
-    </footer>
+  <footer>
+    <a href="https://www.youtube.com"><img src="/public/images/유투브아이콘.png" alt="YouTube" /></a>
+    <a href="https://www.facebook.com"><img src="/public/images/페북아이콘.png" alt="Facebook" /></a>
+    <a href="https://www.instagram.com/"><img src="/public/images/인스타아이콘.png" alt="insta" /></a>
+    <a href="https://twitter.com/"><img src="/public/images/트위터 아이콘.png" alt="twitter" /></a>
+  </footer>
 
     <script type="module" src="/public/js/post.js"></script>
 </body>
