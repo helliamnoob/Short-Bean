@@ -1,4 +1,21 @@
 import { jwtToken } from '../util/isLogin.util.js';
+// import { loadGraphModel } from '@tensorflow/tfjs-converter';
+
+// // 이게 아닌가..?
+// const usersModelPath = 'models/users.js';
+// const postsModelPath = 'models/posts.js';
+
+// // Users 모델 로드
+// const loadUsersModel = async () => {
+//   const usersModel = await loadGraphModel(usersModelPath);
+//   return usersModel;
+// };
+
+// // Posts 모델 로드
+// const loadPostsModel = async () => {
+//   const postsModel = await loadGraphModel(postsModelPath);
+//   return postsModel;
+// };
 
 //파라미터 값 받아오기
 const params = new URLSearchParams(window.location.search);
@@ -68,14 +85,14 @@ function addCommentToDOM(commentList, content, commentId, nickname) {
   commentList.appendChild(commentElement);
 
   // 현재 날짜 및 시간 정보 가져오기
-  const currentDate = new Date();
-  // const createdDate = new Date();
+  // const currentDate = new Date();
+  const createdDate = new Date();
 
   // 댓글 아이템에 생성일자 추가
   const commentDate = document.createElement('div');
   commentDate.className = 'comment-date';
   // 작성 시간으로 바꾸기
-  commentDate.textContent = `작성 시간1: ${currentDate.toLocaleDateString()}`;
+  commentDate.textContent = `작성 시간1: ${createdDate.toLocaleDateString()}`;
   commentElement.appendChild(commentDate);
 
   // 댓글 수정 버튼 추가
@@ -113,11 +130,25 @@ function addCommentToDOM(commentList, content, commentId, nickname) {
         if (data && data.success) {
           commentElement.textContent = newContent;
           commentElement.appendChild(updateButton);
-          alert('댓글이 수정되었습니다.');
-          // } else {
-          //   alert('댓글 수정에 실패했습니다.');
+          alert('댓글이1 수정되었습니다.');
+        } else if (data.error === '권한이 없습니다.') {
+          alert('권한이 없습니다.');
+        } else {
+          alert('댓글 수정에 실패했습니다.');
+          // const commentOwner = await getCommentOwner(comment_id);
+          // const currentUser = getCurrentUser();
+
+          // console.log(commentOwner, currentUser);
+          // // console.log(getCommentOwner, getCurrentUser);
+
+          // if (commentOwner !== currentUser) {
+          //   // 권한 없는 경우
+          // alert('권한이 없습니다.');
+          // return;
         }
-        window.location.reload();
+        // window.location.reload();
+        // }
+        // window.location.reload();
       } catch (error) {
         console.error('An error occurred:', error); // 에러 로그
         alert('오류가 발생했습니다.');
@@ -149,25 +180,27 @@ function addCommentToDOM(commentList, content, commentId, nickname) {
             // 성공적으로 삭제되면, DOM에서도 댓글을 제거합니다.
             commentElement.remove();
             alert('댓글이 삭제되었습니다.');
+          } else if (data.error === '권한이 없습니다.') {
+            alert('권한이 없습니다.');
             // } else {
             //   alert('댓글 삭제에 실패했습니다.');
           }
 
-          const commentOwner = await getCommentOwner(comment_id);
-          const currentUser = getCurrentUser();
+          // const commentOwner = await getCommentOwner(comment_id);
+          // const currentUser = getCurrentUser();
 
-          console.log(commentOwner, currentUser);
-          // console.log(getCommentOwner, getCurrentUser);
+          // console.log(commentOwner, currentUser);
+          // // console.log(getCommentOwner, getCurrentUser);
 
-          if (commentOwner !== currentUser) {
-            // 권한 없는 경우
-            alert('권한이 없습니다.');
-            return;
-          }
-          window.location.reload();
-          // } else {
-          //   console.error(`Failed to delete comment: ${response.status}`);
-          //   alert('댓글 삭제에 실패했습니다.');
+          // if (commentOwner !== currentUser) {
+          //   // 권한 없는 경우
+          //   alert('권한이 없습니다.');
+          //   return;
+          // }
+          // window.location.reload();
+        } else {
+          console.error(`Failed to delete comment: ${response.status}`);
+          alert('권한이 없습니다.');
         }
       } catch (error) {
         console.error('An error occurred:', error);
@@ -299,10 +332,23 @@ async function fetchPostMain(post_id) {
     throw error;
   }
 }
+// // 프론테 게시글 메인에 좋아요 띄우기
+// async function fetchPostMain(post_id) {
+//   try {
+//     const response = await fetch(`/api/post/${post_id}/likes`);
+//     if (!response.ok) {
+//       throw new Error('게시글을 불러오는 중 오류가 발생했습니다.');
+//     }
+//     const data = await response.json();
+//     return data;
+//   } catch (error) {
+//     console.error('게시글 조회 오류:', error);
+//     throw error;
+//   }
+// }
 
 const titleInput = document.getElementById('titleInput');
 const contentInput = document.getElementById('contentInput');
-
 // 페이지 로딩 시 게시글 상세 정보를 가져와서 화면에 표시
 async function loadPostMain() {
   const params = new URLSearchParams(window.location.search);
@@ -326,6 +372,7 @@ async function loadPostMain() {
     contentInput.value = postMain.data.content;
     // 만약 image가 null이 아니라면, 즉 이미지가 있다면 해당 image 문자열을 img 태그의 src로 설정합니다.
     if (postMain.data.image) {
+      // S3 버킷 경로와 파일 이름을 조합하여 전체 이미지 URL 생성
       let imageUrl = postMain.data.image;
       // img 태그를 문서에 추가합니다. 여기서는 'postImage' 요소 안에 추가합니다.
       postImageElement.innerHTML = `<img src="${imageUrl}" />`;
@@ -595,7 +642,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // 파일이 선택된 경우에만 실행
         formData.append('image', imageInput.files[0]);
       }
-      // console.log(imageInput.files);
       try {
         const response = await fetch(`/api/post/${post_id}`, {
           method: 'PUT',
@@ -650,25 +696,3 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 // ---------------------------------------------------------
-const logoutBtn = document.getElementById('logout');
-
-logoutBtn.addEventListener('click', logout);
-async function logout() {
-  try {
-    const response = await fetch('/api/logout', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        credentials: 'include',
-      },
-    });
-    if (response.ok) {
-      // 로그인 성공시 페이지 이동
-      alert('로그아웃이 되었습니다.');
-    } else {
-      alert(`로그아웃 실패: ${data.message}`);
-    }
-  } catch (error) {
-    console.error('Error:', error.message);
-  }
-}
