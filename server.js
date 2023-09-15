@@ -58,6 +58,8 @@ app.set('view engine', 'html');
 app.set('views', __dirname + '/public/views');
 app.set('io', io);
 app.use('/public', express.static(__dirname + '/public'));
+// app.use('/', express.static(__dirname + '/public/views'));
+// 경로숨기는 옵션도 존재한다.
 app.use('/api', [
   authRouter,
   chatRouter,
@@ -82,16 +84,15 @@ app.get('/login', (_, res) => {
 app.get('/facechat', (_, res) => {
   res.sendFile(__dirname + '/public/views/facechat.html');
 });
-app.get('/api/login', (_, res) => {
-  res.sendFile(__dirname + '/public/views/zoom.html');
-});
+// app.get('/api/login', (_, res) => {
+//   res.sendFile(__dirname + '/public/views/zoom.html');
+// });
 app.get('/admin', checkLogin, (req, res) => {
   res.sendFile(__dirname + '/public/views/admin.html');
 });
 app.get('/post', (_, res) => {
   res.sendFile(__dirname + '/public/views/post.html');
 });
-
 
 app.get('/admin/id=:id', (req, res) => {
   res.sendFile(__dirname + '/public/views/report-detail.html');
