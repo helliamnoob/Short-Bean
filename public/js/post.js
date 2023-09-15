@@ -302,6 +302,7 @@ async function fetchPostMain(post_id) {
 
 const titleInput = document.getElementById('titleInput');
 const contentInput = document.getElementById('contentInput');
+
 // 페이지 로딩 시 게시글 상세 정보를 가져와서 화면에 표시
 async function loadPostMain() {
   const params = new URLSearchParams(window.location.search);
@@ -325,7 +326,6 @@ async function loadPostMain() {
     contentInput.value = postMain.data.content;
     // 만약 image가 null이 아니라면, 즉 이미지가 있다면 해당 image 문자열을 img 태그의 src로 설정합니다.
     if (postMain.data.image) {
-      // S3 버킷 경로와 파일 이름을 조합하여 전체 이미지 URL 생성
       let imageUrl = postMain.data.image;
       // img 태그를 문서에 추가합니다. 여기서는 'postImage' 요소 안에 추가합니다.
       postImageElement.innerHTML = `<img src="${imageUrl}" />`;
@@ -595,6 +595,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 파일이 선택된 경우에만 실행
         formData.append('image', imageInput.files[0]);
       }
+      // console.log(imageInput.files);
       try {
         const response = await fetch(`/api/post/${post_id}`, {
           method: 'PUT',
@@ -649,3 +650,25 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 // ---------------------------------------------------------
+const logoutBtn = document.getElementById('logout');
+
+logoutBtn.addEventListener('click', logout);
+async function logout() {
+  try {
+    const response = await fetch('/api/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        credentials: 'include',
+      },
+    });
+    if (response.ok) {
+      // 로그인 성공시 페이지 이동
+      alert('로그아웃이 되었습니다.');
+    } else {
+      alert(`로그아웃 실패: ${data.message}`);
+    }
+  } catch (error) {
+    console.error('Error:', error.message);
+  }
+}
