@@ -48,7 +48,11 @@ class PostService {
   updatePost = async ({ user_id, post_id, title, content, subject, image }) => {
     try {
       const exPost = await this.postRepository.getPostById(post_id);
+      console.log(exPost);
       if (exPost.user_id !== user_id) throw new Error('수정 권한이 없습니다.');
+      if (!image) {
+        image = exPost.image;
+      }
       await this.postRepository.updatePost({
         user_id,
         post_id,
