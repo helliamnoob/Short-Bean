@@ -1,21 +1,4 @@
 import { jwtToken } from '../util/isLogin.util.js';
-// import { loadGraphModel } from '@tensorflow/tfjs-converter';
-
-// // 이게 아닌가..?
-// const usersModelPath = 'models/users.js';
-// const postsModelPath = 'models/posts.js';
-
-// // Users 모델 로드
-// const loadUsersModel = async () => {
-//   const usersModel = await loadGraphModel(usersModelPath);
-//   return usersModel;
-// };
-
-// // Posts 모델 로드
-// const loadPostsModel = async () => {
-//   const postsModel = await loadGraphModel(postsModelPath);
-//   return postsModel;
-// };
 
 //파라미터 값 받아오기
 const params = new URLSearchParams(window.location.search);
@@ -64,7 +47,7 @@ loginForm.addEventListener('submit', async function (event) {
 //댓글
 
 //댓글 조회
-function addCommentToDOM(commentList, content, commentId) {
+function addCommentToDOM(commentList, content, commentId, nickname) {
   const commentElement = document.createElement('div');
   commentElement.classList.add('comment');
   commentElement.dataset.id = commentId;
@@ -75,15 +58,24 @@ function addCommentToDOM(commentList, content, commentId) {
   commentText.textContent = content;
 
   commentElement.appendChild(commentText);
+
+  // 댓글에 닉네임 추가
+  const commentNickname = document.createElement('div');
+  commentNickname.className = 'comment-nickname';
+  commentNickname.textContent = `작성자: ${nickname}`;
+  commentElement.appendChild(commentNickname);
+
   commentList.appendChild(commentElement);
 
   // 현재 날짜 및 시간 정보 가져오기
   const currentDate = new Date();
+  // const createdDate = new Date();
 
   // 댓글 아이템에 생성일자 추가
   const commentDate = document.createElement('div');
   commentDate.className = 'comment-date';
-  commentDate.textContent = `작성 시간: ${currentDate.toLocaleDateString()}`;
+  // 작성 시간으로 바꾸기
+  commentDate.textContent = `작성 시간1: ${currentDate.toLocaleDateString()}`;
   commentElement.appendChild(commentDate);
 
   // 댓글 수정 버튼 추가
@@ -91,7 +83,7 @@ function addCommentToDOM(commentList, content, commentId) {
   updateButton.type = 'button';
   updateButton.className = 'btn btn-dark';
   updateButton.id = 'commentUpdate';
-  updateButton.textContent = '댓글 수정';
+  updateButton.textContent = '댓글 수정1';
   commentElement.appendChild(updateButton);
   updateButton.addEventListener('click', async function () {
     console.log('Update button clicked.'); // 버튼 클릭 로그
@@ -160,6 +152,18 @@ function addCommentToDOM(commentList, content, commentId) {
             // } else {
             //   alert('댓글 삭제에 실패했습니다.');
           }
+
+          const commentOwner = await getCommentOwner(comment_id);
+          const currentUser = getCurrentUser();
+
+          console.log(commentOwner, currentUser);
+          // console.log(getCommentOwner, getCurrentUser);
+
+          if (commentOwner !== currentUser) {
+            // 권한 없는 경우
+            alert('권한이 없습니다.');
+            return;
+          }
           window.location.reload();
           // } else {
           //   console.error(`Failed to delete comment: ${response.status}`);
@@ -189,7 +193,14 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         if (Array.isArray(comments.data)) {
           comments.data.forEach((comment) => {
-            addCommentToDOM(commentList, comment.content, comment.comment_id);
+            console.log(comment);
+
+            addCommentToDOM(
+              commentList,
+              comment.content,
+              comment.comment_id,
+              comment.User.nickname
+            );
           });
         } else {
           console.warn('Received data is not an array');
@@ -288,20 +299,6 @@ async function fetchPostMain(post_id) {
     throw error;
   }
 }
-// // 프론테 게시글 메인에 좋아요 띄우기
-// async function fetchPostMain(post_id) {
-//   try {
-//     const response = await fetch(`/api/post/${post_id}/likes`);
-//     if (!response.ok) {
-//       throw new Error('게시글을 불러오는 중 오류가 발생했습니다.');
-//     }
-//     const data = await response.json();
-//     return data;
-//   } catch (error) {
-//     console.error('게시글 조회 오류:', error);
-//     throw error;
-//   }
-// }
 
 const titleInput = document.getElementById('titleInput');
 const contentInput = document.getElementById('contentInput');
@@ -491,20 +488,21 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const loadComments = async () => {
-    const comments = await getComments();
-    commentList.innerHTML = comments
-      .map(
-        (comment) =>
-          `<li class="list-group-item" data-comment-id="${comment.comment_id}">
-  ${comment.User.nickname}: ${comment.content}
-  <span class="text-muted">${formatDate(comment.updatedAt)}</span>
-  <button class="btn btn-sm btn-outline-secondary edit-comment-btn">수정</button>
-  <button class="btn btn-sm btn-outline-danger delete-comment-btn">삭제</button>
-  </li>`
-      )
-      .join('');
-
-    console.log('Generated HTML:', commentList.innerHTML);
+    //   const comments = await getComments();
+    //   console.log('test');
+    //   console.log(comments);
+    //   commentList.innerHTML = comments
+    //     .map(
+    //       (comment) =>
+    //         `<li class="list-group-item" data-comment-id="${comment.comment_id}">
+    // ${comment.User.nickname}: ${comment.content}
+    // <span class="text-muted">${formatDate(comment.updatedAt)}</span>
+    // <button class="btn btn-sm btn-outline-secondary edit-comment-btn">수정</button>
+    // <button class="btn btn-sm btn-outline-danger delete-comment-btn">삭제</button>
+    // </li>`
+    //     )
+    //     .join('');
+    //   console.log('Generated HTML:', commentList.innerHTML);
   };
 
   const getComments = async () => {
