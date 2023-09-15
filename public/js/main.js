@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   }
+
+  tutorList();
 });
 socket.on('notice_message', (msg) => {
   if (Notification.permission === 'granted') {
@@ -87,7 +89,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
       // 데이터를 활용하여 화면에 게시글 리스트 표시하기
       const postListContainer = document.getElementById('posts-box1');
-
+      console.log(data);
       data.slice(0, 4).forEach((post) => {
         let title = post.title;
         let subject = post.subject;
@@ -255,4 +257,48 @@ function getCookieValue(cookieName) {
     }
   }
   return null;
+}
+
+const tutorImage = '/public/images/15.png';
+//튜터 좋아요기준 리스트
+function tutorList() {
+  fetch(`/api/tutors_likes`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      // 데이터를 활용하여 화면에 게시글 리스트 표시하기
+      const tutorListContainer = document.getElementById('tutorList');
+
+      data.slice(0, 4).forEach((data) => {
+        let name = data.User.user_name;
+        let school = data.school_name;
+        let career = data.career;
+        let image = tutorImage;
+
+        let temp_html = `
+
+  <ul class="tutor-list">
+    <li class="tutor-item">
+      <img src="${image}" class="card-img-top" alt="..." />
+      ${name} / ${school}   
+      <button id="heart">
+        <i class="fa-solid fa-heart"></i>
+      </button>
+    </li>
+    <div class="button-container">
+      <button>채팅하기</button>
+    </div>
+  </ul>`;
+        console.log(temp_html);
+        tutorListContainer.insertAdjacentHTML('beforeend', temp_html);
+      });
+    })
+    .catch((error) => {
+      console.error('튜터 조회 실패:', error);
+    });
 }

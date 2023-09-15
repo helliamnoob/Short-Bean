@@ -54,6 +54,20 @@ class TutorRepository {
     });
     return tutorData;
   };
+
+  // 게시글 좋아요순 조회
+  getByLikes = async () => {
+    const tutorData = await TutorInfos.findAll({
+      include: [
+        {
+          model: Users,
+          attributes: ['user_name'], // 가져올 Users 모델의 속성을 지정
+        },
+      ],
+      order: [['tutor_like', 'DESC']], // 'tutor_like' 필드를 기준으로 내림차순 정렬
+    });
+    return tutorData;
+  };
 }
 
 module.exports = TutorRepository;
