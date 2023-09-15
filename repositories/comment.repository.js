@@ -13,7 +13,7 @@ class CommentRepository {
   findComment = async ({ comment_id }) => {
     return await Comments.findOne({
       where: { comment_id },
-      include: [{ model: Users, attributes: ['nickname'] }], // 프론트에 보이게 못..하나
+      include: [{ model: Users, attributes: ['nickname', 'updatedAt'] }], // 프론트에 보이게 못..하나
       order: [['createdAt', 'DESC']],
     });
   };
