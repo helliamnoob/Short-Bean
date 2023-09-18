@@ -1,8 +1,10 @@
 import { socket } from '../util/socket.util.js';
+
 let myRole;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const jwtToken = getCookieValue('authorization');
+
   if (!jwtToken || !socket) {
     alert('로그인 후 이용가능한 서비스입니다.');
     window.location.href = `/`;
@@ -18,7 +20,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  tutorList();
+  await tutorList();
+
+  const tutorImage = '/public/images/15.png';
+  //튜터 좋아요기준 리스트
+  async function tutorList() {
+    fetch(`/api/tutors_likes`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // 데이터를 활용하여 화면에 게시글 리스트 표시하기
+        const tutorListContainer = document.getElementById('tutorList');
+
+        data.slice(0, 4).forEach((data) => {
+          let name = data.User.user_name;
+          let school = data.school_name;
+          let image = tutorImage;
+          let tutorId = data.tutor_id;
+          let temp_html = `<ul class="tutor-list">
+                            <li class="tutor-item">
+                              <img src="${image}" class="card-img-top" alt="..." />
+                              ${name} / ${school}   
+                              <button id="${tutorId}" class="usermark" >
+                              <i class="fa-solid fa-heart"></i>
+                              </button>
+                            </li>
+                          </ul>`;
+          tutorListContainer.insertAdjacentHTML('beforeend', temp_html);
+        });
+      })
+      .catch((error) => {
+        console.error('튜터 조회 실패:', error);
+      });
+  }
 });
 socket.on('notice_message', (msg) => {
   if (Notification.permission === 'granted') {
@@ -89,7 +127,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
       // 데이터를 활용하여 화면에 게시글 리스트 표시하기
       const postListContainer = document.getElementById('posts-box1');
-      console.log(data);
       data.slice(0, 4).forEach((post) => {
         let title = post.title;
         let subject = post.subject;
@@ -259,10 +296,73 @@ function getCookieValue(cookieName) {
   return null;
 }
 
-const tutorImage = '/public/images/15.png';
-//튜터 좋아요기준 리스트
-function tutorList() {
-  fetch(`/api/tutors_likes`, {
+window.onload = function () {
+  //async function test() {
+  // 즐겨찾기 api 요청
+  const markBtns = document.querySelectorAll('usermark');
+  console.log(markBtns);
+  const tutorId = document.querySelector('tutor-item');
+  markBtns.forEach((markBtn) => {
+    markBtn.addEventListener('click', function () {
+      console.log('버튼버튼');
+      fetch(`/api/userMarks/${tutorId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.data === true) {
+            alert('즐겨찾기 완료되었습니다.');
+            location.reload();
+          } else if (data.data === false) {
+            alert('즐겨찾기가 취소되었습니다.');
+            location.reload();
+          } else {
+            location.reload();
+          }
+        })
+        .catch((error) => {
+          console.error({ message: error.message });
+        });
+    });
+  });
+};
+//};
+
+const tutorListContainer = document.getElementById('tutorList');
+tutorListContainer.addEventListener('click', (e) => {
+  const markBtn = e.target.closest('button');
+
+  if (markBtn) {
+    const tutorId = markBtn.getAttribute('id');
+    console.log(tutorId);
+    fetch(`/api/userMarks/${tutorId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.data === true) {
+          alert('즐겨찾기 완료되었습니다.');
+          //location.reload();
+        } else if (data.data === false) {
+          alert('즐겨찾기가 취소되었습니다.');
+          //location.reload();
+        } else {
+          //location.reload();
+        }
+      })
+      .catch((error) => {
+        console.error({ message: error });
+      });
+  }
+});
+function getAdmin() {
+  fetch(`/api/admin/session`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -270,35 +370,9 @@ function tutorList() {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
-      // 데이터를 활용하여 화면에 게시글 리스트 표시하기
-      const tutorListContainer = document.getElementById('tutorList');
-
-      data.slice(0, 4).forEach((data) => {
-        let name = data.User.user_name;
-        let school = data.school_name;
-        let career = data.career;
-        let image = tutorImage;
-
-        let temp_html = `
-
-  <ul class="tutor-list">
-    <li class="tutor-item">
-      <img src="${image}" class="card-img-top" alt="..." />
-      ${name} / ${school}   
-      <button id="heart">
-        <i class="fa-solid fa-heart"></i>
-      </button>
-    </li>
-    <div class="button-container">
-      <button>채팅하기</button>
-    </div>
-  </ul>`;
-        console.log(temp_html);
-        tutorListContainer.insertAdjacentHTML('beforeend', temp_html);
-      });
+      return data;
     })
     .catch((error) => {
-      console.error('튜터 조회 실패:', error);
+      console.error({ message: error });
     });
 }

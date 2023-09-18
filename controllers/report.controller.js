@@ -24,9 +24,7 @@ class ReportController {
   };
   getReportaWeek = async (req, res, next) => {
     try {
-      console.log('컨트롤러');
       const report = await this.reportService.getReportaWeek();
-      console.log(report);
       res.status(200).json({ data: report });
     } catch (error) {
       return res.status(500).json({ message: error.message });
