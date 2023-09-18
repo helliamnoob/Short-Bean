@@ -1,12 +1,10 @@
 import { socket } from '../util/socket.util.js';
-const session = require('express-session');
 
 let myRole;
 
 document.addEventListener('DOMContentLoaded', async () => {
   const jwtToken = getCookieValue('authorization');
-  const admin = session.getId();
-  console.log(admin);
+
   if (!jwtToken || !socket) {
     alert('로그인 후 이용가능한 서비스입니다.');
     window.location.href = `/`;
@@ -21,10 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     }
   }
-  // 관리자 예시
-  if (admin) {
-    next();
-  }
+
   await tutorList();
 
   const tutorImage = '/public/images/15.png';
@@ -369,3 +364,18 @@ tutorListContainer.addEventListener('click', (e) => {
       });
   }
 });
+function getAdmin() {
+  fetch(`/api/admin/session`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error({ message: error });
+    });
+}
