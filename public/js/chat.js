@@ -324,7 +324,6 @@ function showRoom(targetUserName) {
   sendBtn.addEventListener('click', handleMessageSubmit);
   const input = chatContainer.querySelector('#message');
   input.addEventListener('keydown', (e) => {
-    e.preventDefault();
     if (e.key == 'Enter') {
       handleMessageSubmit();
     }

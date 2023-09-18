@@ -78,21 +78,19 @@ app.get('/', (_, res) => {
   res.sendFile(__dirname + '/public/views/login.html');
 });
 
-app.get('/login', (_, res) => {
-  res.sendFile(__dirname + '/public/views/login.html');
-});
-app.get('/facechat', (_, res) => {
-  res.sendFile(__dirname + '/public/views/facechat.html');
-});
-// app.get('/api/login', (_, res) => {
-//   res.sendFile(__dirname + '/public/views/zoom.html');
+// app.get('/login', (_, res) => {
+//   res.sendFile(__dirname + '/public/views/login.html');
 // });
+// app.get('/facechat', (_, res) => {
+//   res.sendFile(__dirname + '/public/views/facechat.html');
+// });
+
 app.get('/admin', checkLogin, (req, res) => {
   res.sendFile(__dirname + '/public/views/admin.html');
 });
-app.get('/post', (_, res) => {
-  res.sendFile(__dirname + '/public/views/post.html');
-});
+// app.get('/post', (_, res) => {
+//   res.sendFile(__dirname + '/public/views/post.html');
+// });
 
 app.get('/admin/id=:id', (req, res) => {
   res.sendFile(__dirname + '/public/views/report-detail.html');
@@ -100,12 +98,12 @@ app.get('/admin/id=:id', (req, res) => {
 app.get('/admin/tutors/id=:id', (req, res) => {
   res.sendFile(__dirname + '/public/views/tutor-detail.html');
 });
-app.get('/public/tutorlist', (req, res) => {
-  res.sendFile(__dirname + '/public/views/tutor-list.html');
-});
-app.get('/admin/login', (req, res) => {
-  res.sendFile(__dirname + '/public/views/admin_login.html');
-});
+// app.get('/public/tutorlist', (req, res) => {
+//   res.sendFile(__dirname + '/public/views/tutor-list.html');
+// });
+// app.get('/admin/login', (req, res) => {
+//   res.sendFile(__dirname + '/public/views/admin_login.html');
+// });
 
 // app.use(cookieParser(process.env.COOKIE_SECRET));
 
