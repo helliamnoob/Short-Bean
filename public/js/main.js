@@ -49,9 +49,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                               <i class="fa-solid fa-heart"></i>
                               </button>
                             </li>
-                            <div class="button-container">
-                              <button>채팅하기</button>
-                            </div>
                           </ul>`;
           tutorListContainer.insertAdjacentHTML('beforeend', temp_html);
         });
