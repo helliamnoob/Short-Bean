@@ -29,7 +29,6 @@ async function info() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         let rows = data['user'];
         email.textContent = rows.email;
         nickname.textContent = rows.nickname;
@@ -37,12 +36,6 @@ async function info() {
         phone_number.textContent = rows.phone_number;
         birth_date.textContent = rows.birth_date;
       });
-
-    if (response.ok) {
-    } else {
-      const data = await response.json();
-    }
-    return;
   } catch (error) {
     console.error('Error:', error.message);
   }
@@ -101,13 +94,19 @@ async function requestTutor() {
       console.log(data);
     }
   } catch (error) {
+    alert('이미 튜터 신청을 하였습니다');
+    location.reload();
     console.error('Error:', error.message);
   }
 }
+const getTutorBtn = document.getElementById('get_tutor_btn');
 
+getTutorBtn.addEventListener('click', showRequestTutorModal);
 function showRequestTutorModal() {
   requestTutorFormModal.style.display = 'block';
 }
+const close = document.getElementById('close');
+close.addEventListener('click', closeModal);
 function closeModal() {
   requestTutorFormModal.style.display = 'none';
 }

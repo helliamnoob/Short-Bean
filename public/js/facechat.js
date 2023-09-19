@@ -221,7 +221,28 @@ async function fetchFacechatId() {
   }
 }
 
-document.getElementById("leaveButton").addEventListener("click", async function() {
+let theirStream = null;
+
+function handleTrack(data) {
+  console.log("handle track");
+  const peerFace = document.querySelector("#peerFace");
+
+  // 상대방의 미디어 스트림을 저장
+  theirStream = data.streams[0];
+
+  peerFace.srcObject = theirStream;
+}
+
+
+
+document.getElementById("leaveButton").addEventListener("click", function() {
+  // Confirm with the user
+  const userConfirmed = confirm('채팅방을 나가시겠습니까?');
+
+  if (!userConfirmed) {
+    return;
+  }
+
   // Do the resource cleanup here
   if (myStream) {
     let tracks = myStream.getTracks();
@@ -232,31 +253,30 @@ document.getElementById("leaveButton").addEventListener("click", async function(
     myPeerConnection.close();
   }
 
-  // Notify other users via socket event
+  // Notify other users via socket event that you have left
   socket.emit('leave_room', roomId);
 
-  // Make the API call to change the state
-  if (facechat_id) {
-    try {
-      const response = await fetch(`/api/facechat/leave/${facechat_id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+  console.log('Successfully left the chat room');
+  alert('채팅방을 성공적으로 나갔습니다.');
 
-      if (response.status === 200) {
-        console.log('Successfully left the chat room');
-        alert('채팅방을 성공적으로 나갔습니다.');
-      } else {
-        console.log('Failed to leave the chat room');
-      }
-    } catch (error) {
-      console.error('An error occurred:', error);
-    }
-  } else {
-    console.error('facechat_id is not set. Cannot leave the chat room.');
+  if (window.location.pathname === '/facechat' && window.location.search === `?room=${roomId}`) {
+    window.close(); 
   }
+});
+
+// 상대방이 채팅방을 나갔을 때의 이벤트 핸들러
+socket.on('user_left', (message) => {
+  alert(message);
+
+  // 상대방의 미디어 스트림을 중지
+  if (theirStream) {
+    let tracks = theirStream.getTracks();
+    tracks.forEach(track => track.stop());
+  }
+
+  // 상대방의 비디오를 화면에서 제거
+  const peerFace = document.querySelector("#peerFace");
+  peerFace.srcObject = null;
 });
 
 // RTC Code

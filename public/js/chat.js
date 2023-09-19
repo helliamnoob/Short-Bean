@@ -14,6 +14,7 @@ const screenWidth = window.screen.width;
 const screenHeight = window.screen.height;
 
 faceChatForm.style.display = 'none';
+chatContainer.style.display = 'none';
 document.addEventListener('DOMContentLoaded', async () => {
   jwtToken = getCookieValue('authorization');
   if (!jwtToken || !socket) {
@@ -23,7 +24,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     currentUserId = getUserIdFromToken(jwtToken);
     socketOn();
     socket.emit('register', currentUserId);
-
     socket.on('receive_invite', async (inviterId, roomId) => {
       const accept = confirm('화상 채팅 초대가 도착했습니다! 수락하시겠습니까?');
       if (accept) {
@@ -115,6 +115,25 @@ async function socketOn() {
     userList.innerHTML = '';
     renderUsers(socketUser);
   });
+  socket.on('notice_message', (msg, targetUserName) => {
+    if (Notification.permission === 'granted') {
+      const notification = new Notification('새 메시지', {
+        body: msg,
+      });
+      notification.onclick = () => {
+        const targetUserDiv = document.querySelector(
+          `.userInterface[data-user-name="${targetUserName}"]`
+        );
+        if (targetUserDiv) {
+          const buttonChat = targetUserDiv.querySelector('.button-chat');
+          if (buttonChat) {
+            buttonChat.click();
+          }
+        }
+        notification.close();
+      };
+    }
+  });
   faceChatBtn.addEventListener('click', () => {
     faceChatForm.style.display = 'block';
     socket.emit('show_tutor', handleFaceChatBtn);
@@ -155,6 +174,7 @@ function addMessage(message, createdAt) {
   div.appendChild(createdAtSpan);
 
   chatBox.appendChild(div);
+  scrollToBottom();
 }
 
 async function createRoom(targetUesrId) {
@@ -296,19 +316,29 @@ function handleRoomSubmit(e) {
 }
 
 function showRoom(targetUserName) {
+  chatContainer.style.display = 'block';
   const h2 = chatContainer.querySelector('h2');
   h2.innerText = `${targetUserName}님 과 채팅`;
   h2.setAttribute('data-user-name', targetUserName); // 1
-  const msg = chatContainer.querySelector('#send');
-  msg.addEventListener('click', handleMessageSubmit);
+  const sendBtn = chatContainer.querySelector('#send');
+  sendBtn.addEventListener('click', handleMessageSubmit);
+  const input = chatContainer.querySelector('#message');
+  input.addEventListener('keydown', (e) => {
+    e.preventDefault();
+    if (e.key == 'Enter') {
+      handleMessageSubmit();
+    }
+  });
+  input.focus();
+  scrollToBottom();
 }
 function handleMessageSubmit() {
   const targetUserName = chatContainer.querySelector('h2').getAttribute('data-user-name');
   const input = chatContainer.querySelector('#message');
+  if (!input.value) return;
   socket.emit('new_message', input.value, roomId, targetUserName, () => {
     addMessage(`${userName}: ${input.value}`, getCurrentTime());
     input.value = '';
-    scrollToBottom();
   });
 }
 

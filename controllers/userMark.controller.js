@@ -20,17 +20,17 @@ class UserMarkController {
     try {
       const { tutor_id } = req.params;
       const { user_id } = res.locals.user;
-      const check = await this.tutorService.checkTutor({ user_id });
-      console.log(check);
-      if (!check) {
-        const marks = await this.userMarkService.creatMark({ tutor_id, user_id });
+      // const check = await this.tutorService.checkTutor({ user_id });
+      // console.log('체크');
+      // if (!check) {
+      const marks = await this.userMarkService.creatMark({ tutor_id, user_id });
 
-        res.status(201).json({ data: marks });
-      } else {
-        res.status(403).json({ message: '본인을 즐겨찾기 할 수 없습니다.' });
-      }
+      res.status(201).json({ data: marks });
+      // } else {
+      //   res.status(403).json({ message: '본인을 즐겨찾기 할 수 없습니다.' });
+      // }
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      return res.status(500).json({ error });
     }
   };
   updateMark = async (req, res, next) => {

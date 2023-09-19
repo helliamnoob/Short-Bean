@@ -11,8 +11,7 @@ const phone_number_input = document.getElementById('phone_number');
 const birth_date_input = document.getElementById('birth_date');
 const auth_input = document.getElementById('auth');
 
-
-signup_btn.style.display = "none";
+signup_btn.style.display = 'none';
 
 signup_btn.addEventListener('click', async () => {
   try {
@@ -46,16 +45,16 @@ signup_btn.addEventListener('click', async () => {
 
 sms_auth.addEventListener('click', async () => {
   try {
-      const response = await fetch('/api/smsauth', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name : user_name_input.value,
-          phone: phone_number_input.value,
-        }),
-      });
+    const response = await fetch('/api/smsauth', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: user_name_input.value,
+        phone: phone_number_input.value,
+      }),
+    });
 
     if (response.ok) {
       alert('전송 되었습니다.');
@@ -85,16 +84,14 @@ sms_check.addEventListener('click', async () => {
         let rows = data;
         code = rows['data'];
       });
-    
-        if(auth_input.value == code)
-        {
-          alert('인증 성공');
-          signup_btn.style.display = "block";
-          return;
-        }
-        alert(`인증 실패`);
-        return;
-    
+
+    if (auth_input.value == code) {
+      alert('인증 성공');
+      signup_btn.style.display = 'block';
+      return;
+    }
+    alert(`인증 실패`);
+    return;
   } catch (error) {
     console.error('Error:', error.message);
   }

@@ -7,6 +7,7 @@ const tutorController = new TutorController();
 
 router.get('/tutors', tutorController.getAllTutors);
 router.get('/tutors/:tutor_id', auth, tutorController.getTutor);
+router.get('/tutors_likes', tutorController.getByLikes);
 router.post('/tutors', auth, tutorController.creatTutor);
 router.put('/tutors/:tutor_id', auth, tutorController.updateTutor);
 router.put('/admin/tutors/:tutor_id', auth, tutorController.updateStatus);

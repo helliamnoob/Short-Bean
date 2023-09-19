@@ -19,9 +19,8 @@ module.exports = (io) => {
       isTutor,
       socketId: socket.id,
     };
-
     connectedUsers.push(user);
-    console.log(user);
+
     socket.emit('getName', userName);
     // 새로운 사용자가 접속했음을 모든  알림
     io.emit('show_users', connectedUsers);
@@ -61,9 +60,9 @@ module.exports = (io) => {
       await saveMsg(room, socket, msg);
       const findUser = connectedUsers.find((user) => user.userName === targetUserName);
 
-      socket.to(room).emit('new_message', `${userName}: ${msg}`);
+      socket.to(room).emit('new_message', `${userName}: ${msg}`); //방에띄워주는거
       if (findUser) {
-        io.to(findUser.socketId).emit('notice_message', `${userName}: ${msg}`);
+        io.to(findUser.socketId).emit('notice_message', `${userName}: ${msg}`, userName);
       }
       done();
     });
@@ -102,11 +101,12 @@ module.exports = (io) => {
       console.log(`[SERVER] 'ice' event emitted to room ${roomId}`);
     });
     //종료
+ 
     socket.on('leave_room', (roomId) => {
-      console.log(`User ${socket.id} has left room ${roomId}`);
-      socket.leave(roomId);
-      socket.to(roomId).emit('user_left');
+      // Notify other clients in the same room
+      socket.to(roomId).emit('user_left', '상대방이 채팅방을 나가셨습니다');
     });
+  
 
     //캔버스 화면 공유
 

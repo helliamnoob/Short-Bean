@@ -47,7 +47,6 @@ function loadReportWeek() {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
       showReportData(data);
     })
     .catch((error) => {
@@ -78,7 +77,6 @@ function renderReportData(data) {
     const reported_user_id = reportData['reported_user_id'];
     const report_id = reportData['report_id'];
     if (report_status == '처리중') {
-      console.log(report_status);
       const temp_html = `<li class="list-group-item"><a href="admin/id=${report_id}" class="reportA">${report_content},${reported_user_id},${report_status} </a></li>`;
       reportListDiv.insertAdjacentHTML('beforeend', temp_html);
     } else {
@@ -90,7 +88,6 @@ function renderReportData(data) {
 
 //7일간 신고들어온 유저아이디와 그 갯수
 function showReportData(data) {
-  console.log(data);
   let arr = [];
   data.data.forEach((reportData) => {
     const reported_user_id = reportData['reported_user_id'];
@@ -105,8 +102,7 @@ function showReportData(data) {
   JSON.stringify(result);
   let keys = Object.keys(result);
   let value = Object.values(result);
-  console.log(keys);
-  console.log(value);
+
   const ctx = document.getElementById('myChart');
 
   new Chart(ctx, {

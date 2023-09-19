@@ -110,7 +110,7 @@ function redircetlogin() {
 }
 
 function redircetmyinfo() {
-  window.location.href = `/public/views/userinfo.html`;
+  window.location.href = `/public/views/main.html`;
 }
 async function usercheck() {
   try {
