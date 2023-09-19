@@ -10,12 +10,13 @@ const node_cache = require('node-cache');
 const my_cache = new node_cache({ stdTTL: 500, checkperiod: 600 });
 const axios = require('axios');
 const crypto = require('crypto-js');
+const crypto1 = require('crypto');
 require('dotenv').config();
 const env = process.env;
+
 // 회원가입
 router.post('/signup', async (req, res) => {
   const { nickname, email, password, user_name, phone_number, birth_date } = req.body;
-
   try {
     const isExitstUser = await Users.findOne({ where: { email } });
     //이미 db에 이메일이 있다면
@@ -31,7 +32,10 @@ router.post('/signup', async (req, res) => {
   // 유저 & 유저정보 생성
   try {
     // 사용자 테이블에 데이터 삽입
-    await Users.create({ nickname, email, password, user_name, phone_number, birth_date });
+    const salt = salt();
+    const protectpass = salt + oneway(password);
+    console.log(protectpass);
+    await Users.create({ nickname, email, password : protectpass, user_name, phone_number, birth_date });
     // 사용자 정보 테이블에 데이터를 삽입
     res.status(201).json({ message: '회원가입이 완료되었습니다' });
   } catch (error) {
@@ -409,5 +413,19 @@ router.get('/user', middleware, async (req, res) => {
     res.status(500).json({ message: 'server error.' });
   }
 });
+
+function oneway(str) {
+  let hashAlgo = crypto.createHash('sha512');
+
+  let hashing = hashAlgo.update(str);
+
+  let hashedstring = hashing.digest('base64');
+
+  return hashedstring;
+}
+function salt() {
+  const salt = crypto.randomBytes(32);
+  return salt;
+}
 
 module.exports = router;
