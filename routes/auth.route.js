@@ -17,6 +17,9 @@ const env = process.env;
 // 회원가입
 router.post('/signup', async (req, res) => {
   const { nickname, email, password, user_name, phone_number, birth_date } = req.body;
+  console.log(nickname, email, password, user_name, phone_number, birth_date);
+  const salt = crypto1.randomBytes(parseInt(process.env.PW_HASH));
+  const protectpass =  salt+oneway(password);
   try {
     const isExitstUser = await Users.findOne({ where: { email } });
     //이미 db에 이메일이 있다면
@@ -32,9 +35,6 @@ router.post('/signup', async (req, res) => {
   // 유저 & 유저정보 생성
   try {
     // 사용자 테이블에 데이터 삽입
-    const salt = salt();
-    const protectpass = salt + oneway(password);
-    console.log(protectpass);
     await Users.create({ nickname, email, password : protectpass, user_name, phone_number, birth_date });
     // 사용자 정보 테이블에 데이터를 삽입
     res.status(201).json({ message: '회원가입이 완료되었습니다' });
@@ -46,10 +46,12 @@ router.post('/signup', async (req, res) => {
 // 로그인
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
+  console.log(password);
+  const protectpass =  oneway(password);
   try {
     if (!email || !password) {
       res.status(400).json({
-        message: 'check email or password',
+        message: 'no exist data',
       });
     }
 
@@ -59,7 +61,10 @@ router.post('/login', async (req, res) => {
         message: 'check email or password',
       });
     }
-    if (user.password !== password) {
+    const user_password = user.password;
+    console.log(protectpass);
+    console.log(user_password.slice(parseInt(process.env.PW_HASH)));
+    if (user_password.slice(parseInt(process.env.PW_HASH)-1) !== protectpass) {
       return res.status(400).json({
         message: 'check email or password',
       });
@@ -415,7 +420,7 @@ router.get('/user', middleware, async (req, res) => {
 });
 
 function oneway(str) {
-  let hashAlgo = crypto.createHash('sha512');
+  let hashAlgo = crypto1.createHash('sha512');
 
   let hashing = hashAlgo.update(str);
 
@@ -423,9 +428,6 @@ function oneway(str) {
 
   return hashedstring;
 }
-function salt() {
-  const salt = crypto.randomBytes(32);
-  return salt;
-}
+
 
 module.exports = router;
