@@ -112,6 +112,7 @@ camerasSelect.addEventListener('input', handleCameraChange);
 
 const urlParams = new URLSearchParams(window.location.search);
 const roomId = urlParams.get('room');
+const facechatId = localStorage.getItem('facechatId');
 if (roomId) {
   initCall().then(() => {
     socket.emit("join_room", roomId);
@@ -203,23 +204,23 @@ for (let ice of iceCandidatesQueue) {
 let facechat_id;
 
 // Fetch the facechat_id when the page loads
-window.addEventListener("load", fetchFacechatId);
+// window.addEventListener("load", fetchFacechatId);
 
-async function fetchFacechatId() {
-  try {
-    const response = await fetch('/api/facechats'); // Assuming the API endpoint returns facechat_id in a JSON object
-    const data = await response.json();
+// async function fetchFacechatId() {
+//   try {
+//     const response = await fetch('/api/facechats'); // Assuming the API endpoint returns facechat_id in a JSON object
+//     const data = await response.json();
 
-    if (response.ok) {
-      facechat_id = data.facechat_id;
-      console.log(`Successfully fetched facechat_id: ${facechat_id}`);
-    } else {
-      console.log(`Failed to fetch facechat_id: ${data.message}`);
-    }
-  } catch (error) {
-    console.error(`An error occurred while fetching facechat_id: ${error}`);
-  }
-}
+//     if (response.ok) {
+//       facechat_id = data.facechat_id;
+//       console.log(`Successfully fetched facechat_id: ${facechat_id}`);
+//     } else {
+//       console.log(`Failed to fetch facechat_id: ${data.message}`);
+//     }
+//   } catch (error) {
+//     console.error(`An error occurred while fetching facechat_id: ${error}`);
+//   }
+// }
 
 let theirStream = null;
 
@@ -245,7 +246,7 @@ document.getElementById("leaveButton").addEventListener("click", async function(
 
   try {
     // Call the API to leave the chat
-    const response = await fetch(`/facechat/leave/${facechat_id}`, {
+    const response = await fetch(`/api/facechat/leave/${facechatId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -288,6 +289,7 @@ document.getElementById("leaveButton").addEventListener("click", async function(
   if (window.location.pathname === '/facechat' && window.location.search === `?room=${roomId}`) {
     window.close();
   }
+  localStorage.removeItem('facechatId');
 });
 
 // 상대방이 채팅방을 나갔을 때의 이벤트 핸들러

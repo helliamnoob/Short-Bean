@@ -49,6 +49,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             const responseData = await response.json();
             facechatId = responseData.facechat_id;
             console.log('API POST successful');
+            
+            // 값을 localStorage에 저장
+            localStorage.setItem('facechatId', facechatId);
             socket.emit('accept_face_chat', inviterId, currentUserId, roomId);
           } else {
             console.error('API POST failed', response);
