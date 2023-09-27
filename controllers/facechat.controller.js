@@ -13,6 +13,15 @@ class FacechatController {
         }
     };
 
+    getFacechatAll = async (req, res, next) => {
+        try {
+          const facechat = await this.facechatService.getFacechatAll();
+          res.status(200).json({ data: facechat });
+        } catch (error) {
+          return res.status(500).json({ message: error.message });
+        }
+      };
+
     leaveChat = async(req, res) => {
         try {
             const { facechat_id } = req.params; 

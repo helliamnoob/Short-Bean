@@ -7,6 +7,11 @@ class FacechatRepository {
         });
     };
 
+    findFacechatAll = async () => {
+        const FacechatData = await FaceChats.findAll();
+        return FacechatData;
+      };
+
     leaveChat = async (facechat_id) => {
         return await FaceChats.update(
             { facechat_status: '나가기' },

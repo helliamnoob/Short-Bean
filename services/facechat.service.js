@@ -7,6 +7,11 @@ class FacechatService {
         return await this.facechatRepository.createChat(user_id, target_user_id,facechat_room_id);
     };
 
+    getFacechatAll = async () => {
+        const FacechatData = await this.facechatRepository.findFacechatAll();
+        return FacechatData;
+      };
+
     leaveChat = async (facechat_id) => {
         return await this.facechatRepository.leaveChat(facechat_id);
     };

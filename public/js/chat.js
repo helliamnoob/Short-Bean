@@ -9,6 +9,7 @@ let roomId;
 let jwtToken;
 let currentUserId;
 let userName;
+let facechatId;
 
 const screenWidth = window.screen.width;
 const screenHeight = window.screen.height;
@@ -45,6 +46,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           });
 
           if (response.status === 200 || response.status === 201) {
+            const responseData = await response.json();
+            facechatId = responseData.facechat_id;
             console.log('API POST successful');
             socket.emit('accept_face_chat', inviterId, currentUserId, roomId);
           } else {

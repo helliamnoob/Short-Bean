@@ -4,6 +4,7 @@ const facechatController = new FacechatController();
 const router = express.Router();
 
 router.post('/facechat', facechatController.createChat);
+router.get('/facechats', facechatController.getFacechatAll);
 router.put('/facechat/leave/:facechat_id', facechatController.leaveChat);
 router.get('/facechat/:facechat_id', facechatController.getChat);
 

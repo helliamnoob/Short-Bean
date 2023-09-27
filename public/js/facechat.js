@@ -207,7 +207,7 @@ window.addEventListener("load", fetchFacechatId);
 
 async function fetchFacechatId() {
   try {
-    const response = await fetch('/api/facechat'); // Assuming the API endpoint returns facechat_id in a JSON object
+    const response = await fetch('/api/facechats'); // Assuming the API endpoint returns facechat_id in a JSON object
     const data = await response.json();
 
     if (response.ok) {
@@ -235,11 +235,37 @@ function handleTrack(data) {
 
 
 
-document.getElementById("leaveButton").addEventListener("click", function() {
+document.getElementById("leaveButton").addEventListener("click", async function() {
   // Confirm with the user
   const userConfirmed = confirm('채팅방을 나가시겠습니까?');
 
   if (!userConfirmed) {
+    return;
+  }
+
+  try {
+    // Call the API to leave the chat
+    const response = await fetch(`/facechat/leave/${facechat_id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': jwtToken // assuming your server requires the JWT for authorization
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`API call failed with status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    // Optionally, you can handle the result here, e.g.:
+    // if (!result.success) {
+    //   throw new Error(result.message);
+    // }
+
+  } catch (error) {
+    console.error("Error leaving the chat room:", error);
+    alert('채팅방을 나가는 데 실패했습니다. 다시 시도해 주세요.');
     return;
   }
 
@@ -260,7 +286,7 @@ document.getElementById("leaveButton").addEventListener("click", function() {
   alert('채팅방을 성공적으로 나갔습니다.');
 
   if (window.location.pathname === '/facechat' && window.location.search === `?room=${roomId}`) {
-    window.close(); 
+    window.close();
   }
 });
 

@@ -27,12 +27,12 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
-      this.hasMany(models.FaceChats, {
-        sourceKey: 'tutor_id',
-        foreignKey: 'tutor_id',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-      });
+      // this.hasMany(models.FaceChats, {
+      //   sourceKey: 'tutor_id',
+      //   foreignKey: 'tutor_id',
+      //   onDelete: 'CASCADE',
+      //   onUpdate: 'CASCADE',
+      // });
     }
   }
   TutorInfos.init(
